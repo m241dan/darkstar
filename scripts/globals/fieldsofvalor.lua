@@ -427,8 +427,7 @@ function checkRegime(killer,mob,rid,index)
                         local tabs = (math.floor(reward/10)*TABS_RATE);
                         local VanadielEpoch = vanaDay();
 
-                        -- Award gil and tabs once per day.
-                        if (killer:getVar("fov_LastReward") < VanadielEpoch) then
+                        -- Award gil and tabs once per day. -- edited out by Davenge
                            killer:messageBasic(FOV_MSG_GET_GIL,reward);
                            killer:addGil(reward);
                            killer:addCurrency("valor_point", tabs);
@@ -436,7 +435,6 @@ function checkRegime(killer,mob,rid,index)
                            if (REGIME_WAIT == 1) then
                               killer:setVar("fov_LastReward",VanadielEpoch);
                            end
-                        end
 
                         --TODO: display msgs (based on zone annoyingly, so will need killer:getZoneID() then a lookup)
                         killer:addExp(reward);
