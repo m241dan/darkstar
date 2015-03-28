@@ -27,8 +27,8 @@ begin
   end
 
   item_array.each() do |entry|
-    rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid = '#{entry['itemId']}' AND buyer_name IS NULL"
-    count = 10 - rs.fetch_row()[1].to_i
+    rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid = #{entry['itemID']} AND buyer_name IS NULL"
+    count = 10 - rs.fetch_row().join().to_i
     until count <= 0
       con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( #{entry['itemID']}, 0, 0, '', #{Time.now().to_i()}, #{entry['cost']} )"
       count -= 1
