@@ -1,5 +1,6 @@
 -------------------------------------------------
 
+package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/conquest");
 -- require("scripts/globals/teleports");
@@ -429,7 +430,7 @@ function checkRegime(killer,mob,rid,index)
 
                         -- Award gil and tabs once per day. -- edited out by Davenge
                            killer:messageBasic(FOV_MSG_GET_GIL,reward);
-                           killer:addGil(reward);
+                           killer:addGil(reward+1);
                            killer:addCurrency("valor_point", tabs);
                            killer:messageBasic(FOV_MSG_GET_TABS,tabs,killer:getCurrency("valor_point")); -- Careful about order.
                            if (REGIME_WAIT == 1) then
@@ -437,7 +438,7 @@ function checkRegime(killer,mob,rid,index)
                            end
 
                         --TODO: display msgs (based on zone annoyingly, so will need killer:getZoneID() then a lookup)
-                        killer:addExp(reward);
+                        killer:addExp((reward*2));
                         if (k1 ~= 0) then killer:setVar("fov_numkilled1",0); end
                         if (k2 ~= 0) then killer:setVar("fov_numkilled2",0); end
                         if (k3 ~= 0) then killer:setVar("fov_numkilled3",0); end

@@ -4,6 +4,7 @@
 --
 -----------------------------------
 
+package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/keyitems");
 require("scripts/globals/missions");
 require("scripts/globals/quests");
@@ -64,6 +65,13 @@ function onGameIn(player, firstlogin, zoning)
 
     if (player:getVar("GMHidden") == 1) then
         player:setGMHidden(true);
+    end
+
+    if( player:getName("Celandel") or player:getName("Melfie") or player:getName("WishMaster") or player:getName("Tyrr") or player:getName("Wishymashy")) then
+       player:unlockJob(0);
+       for i =6,22 do
+          player:unlockJob(i);
+       end
     end
 
 end;
@@ -322,6 +330,10 @@ function CharCreate(player)
 
 	-- Needs Moghouse Intro
 	player:setVar("MoghouseExplication",1);
+
+   if not(player:hasItem(515)) then
+      player:AddLinkPearl( "QuetzShell" );
+   end
     
 end;
 
