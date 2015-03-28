@@ -15,6 +15,7 @@ begin
     hash_entry['itemID'] = row['itemID'].to_i()
     hash_entry['level']  = row['level'].to_i()
     hash_entry['name']   = name_rs.fetch_row.join()
+    if( hash_entry['name'].start_with?( 'judge' ) ) then next end
     if( hash_entry['name'].end_with?( '+1' ) )
       hash_entry['cost'] = hash_entry['level'] * 150
     elsif( hash_entry['name'].end_with?( '+2' ) )
@@ -28,9 +29,9 @@ begin
   item_array.each() do |entry|
     rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid = '#{entry['itemId']}' AND buyer_name IS NULL"
     count = 10 - rs.fetch_row()[1].to_i
-    if( count < 1 ) then next end
-    (0..count).each do
-      con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( #{entry['itemID']}, 1, 0, "", #{Time.localtime().to_i()}, #{entry['cost']} )"
+    until count <= 0
+      con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( #{entry['itemID']}, 0, 0, '', #{Time.now().to_i()}, #{entry['cost']} )"
+      count -= 1
     end
   end
 rescue Mysql::Error => e
