@@ -26,11 +26,12 @@ begin
   end
 
   item_array.each() do |entry|
-    rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid = #{entry['itemId']} AND buyer_name IS NULL"
-    count = 10 - rs.fetch_row()
-    count.each() do
-       con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( #{entry['itemID']}, 1, 0, "", #{Time.localtime().to_i()}, #{entry['cost']} )"
-    end     
+    rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid = '#{entry['itemId']}' AND buyer_name IS NULL"
+    count = 10 - rs.fetch_row()[1].to_i
+    if( count < 1 ) then next end
+    (0..count).each do
+      con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( #{entry['itemID']}, 1, 0, "", #{Time.localtime().to_i()}, #{entry['cost']} )"
+    end
   end
 rescue Mysql::Error => e
    puts e.errno
