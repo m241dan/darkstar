@@ -566,7 +566,6 @@ function checkGoVregime(killer,mob,rid,index)
                         end
 
                         -- Award gil and tabs once per day.
-                        if (killer:getVar("fov_LastReward") < VanadielEpoch) then
                             killer:messageBasic(GOV_MSG_GET_GIL,reward);
                             killer:addGil(reward);
                             killer:addCurrency("valor_point", tabs);
@@ -574,7 +573,6 @@ function checkGoVregime(killer,mob,rid,index)
                             if (REGIME_WAIT == 1) then
                                 killer:setVar("fov_LastReward",VanadielEpoch);
                             end
-                        end
 
                         -- Give player the candy and inform which Prowess they got.
                         killer:addExp(reward*EXP_RATE);

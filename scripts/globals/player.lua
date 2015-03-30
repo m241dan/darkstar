@@ -67,12 +67,10 @@ function onGameIn(player, firstlogin, zoning)
         player:setGMHidden(true);
     end
 
-    if( player:getName("Celandel") or player:getName("Melfie") or player:getName("WishMaster") or player:getName("Tyrr") or player:getName("Wishymashy")) then
-       player:unlockJob(0);
-       for i =6,22 do
-          player:unlockJob(i);
-       end
-    end
+
+    for i = 296, 307, 1 do
+       player:addSpell(i)
+    end  
 
 end;
 
