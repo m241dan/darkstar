@@ -4265,7 +4265,7 @@ inline int32 CLuaBaseEntity::setStatus(lua_State *L)
     DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
 
     m_PBaseEntity->status = (STATUSTYPE)lua_tointeger(L, 1);
-    m_PBaseEntity->loc.zone->PushPacket(m_PBaseEntity, CHAR_INRANGE, new CEntityUpdatePacket(m_PBaseEntity, ENTITY_UPDATE, UPDATE_COMBAT));
+    m_PBaseEntity->updatemask |= UPDATE_HP;
     return 0;
 }
 
@@ -6655,7 +6655,7 @@ inline int32 CLuaBaseEntity::getMeleeHitDamage(lua_State *L)
         hitrate = lua_tointeger(L,2);
     }
 
-    if(WELL512::irand()%100 < hitrate){
+    if(WELL512::GetRandomNumber(100) < hitrate){
         float DamageRatio = battleutils::GetDamageRatio(PAttacker, PDefender, false, 0);
         int damage = (uint16)((PAttacker->GetMainWeaponDmg() + battleutils::GetFSTR(PAttacker,PDefender,SLOT_MAIN)) * DamageRatio);
         lua_pushinteger( L,damage );
