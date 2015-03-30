@@ -3,6 +3,7 @@
 -- MOB:  Skeleton Warrior
 -----------------------------------
 
+package.loaded["scripts/globals/groundsofvalor"] = nil;
 require("scripts/globals/groundsofvalor");
 
 -----------------------------------

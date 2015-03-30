@@ -66,8 +66,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
--- printf("CSID: %u",csid);
--- printf("RESULT: %u",option);
+--printf("CSID: %u",csid);
+--printf("RESULT: %u",option);
 	
 	if(csid == 0x02ea) then
 		player:setMaskBit(player:getVar("WildcatSandy"),"WildcatSandy",14,true);

@@ -438,7 +438,7 @@ function checkRegime(killer,mob,rid,index)
                            end
 
                         --TODO: display msgs (based on zone annoyingly, so will need killer:getZoneID() then a lookup)
-                        killer:addExp((reward*2));
+                        killer:addExp((reward*EXP_RATE));
                         if (k1 ~= 0) then killer:setVar("fov_numkilled1",0); end
                         if (k2 ~= 0) then killer:setVar("fov_numkilled2",0); end
                         if (k3 ~= 0) then killer:setVar("fov_numkilled3",0); end

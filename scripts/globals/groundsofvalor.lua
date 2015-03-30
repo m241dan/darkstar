@@ -56,16 +56,16 @@ GOV_MENU_DRIED_AGARICUS  = 260;
 GOV_MENU_INSTANT_RICE    = 276;
 GOV_MENU_CIPHER_SAKURA   = 292;
 GOV_MENU_CANCEL_REGIME   = 3;
-GOV_MENU_REPEAT_REGIME1  = -2147483630; -- 2147483666;
-GOV_MENU_REPEAT_REGIME2  = -2147483614; -- 2147483682;
-GOV_MENU_REPEAT_REGIME3  = -2147483598; -- 2147483698;
-GOV_MENU_REPEAT_REGIME4  = -2147483582; -- 2147483714;
-GOV_MENU_REPEAT_REGIME5  = -2147483566; -- 2147483730;
-GOV_MENU_REPEAT_REGIME6  = -2147483550; -- 2147483746;
-GOV_MENU_REPEAT_REGIME7  = -2147483534; -- 2147483762;
-GOV_MENU_REPEAT_REGIME8  = -2147483518; -- 2147483778;
-GOV_MENU_REPEAT_REGIME9  = -2147483502; -- 2147483794;
-GOV_MENU_REPEAT_REGIME10 = -2147483486; -- 2147483810;
+GOV_MENU_REPEAT_REGIME1  = 2147483666;  -- -2147483630;
+GOV_MENU_REPEAT_REGIME2  = 2147483682;  -- -2147483614;
+GOV_MENU_REPEAT_REGIME3  = 2147483698;
+GOV_MENU_REPEAT_REGIME4  = 2147483714;
+GOV_MENU_REPEAT_REGIME5  = 2147483730;
+GOV_MENU_REPEAT_REGIME6  = 2147483746;
+GOV_MENU_REPEAT_REGIME7  = 2147483762;
+GOV_MENU_REPEAT_REGIME8  = 2147483778;
+GOV_MENU_REPEAT_REGIME9  = 2147483794;
+GOV_MENU_REPEAT_REGIME10 = 2147483810;
 
 -----------------------------------
 -- Message IDs
@@ -451,6 +451,7 @@ end
 -----------------------------------
 
 function writeRegime(player,rid,msg_accept,msg_jobs,regrepeat)
+    printf( "Writing Regime" );
     player:setVar("fov_regimeid",rid);
     player:setVar("fov_repeat",regrepeat);
     player:setVar("fov_numkilled1",0);
@@ -576,7 +577,7 @@ function checkGoVregime(killer,mob,rid,index)
                         end
 
                         -- Give player the candy and inform which Prowess they got.
-                        killer:addExp(reward);
+                        killer:addExp(reward*EXP_RATE);
                         killer:messageBasic(ProwessMessage);
                         
                         -- Debugging crap.
