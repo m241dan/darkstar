@@ -1067,6 +1067,11 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAction_
                     Samba = 0;
                 }
 
+                if( Samba == 0 && finaldamage != 0 )
+                {
+                    Samba = 1;
+                }
+
                 Action->additionalEffect = SUBEFFECT_HP_DRAIN;
                 Action->addEffectMessage = 161;
                 Action->addEffectParam = Samba;
