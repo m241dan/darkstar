@@ -1084,7 +1084,7 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAction_
   //                  lvlDiff = -5;
     //            }
 
-                Samba -= lvlDiff;
+//                Samba -= lvlDiff;
 
                 if (Samba >(finaldamage / 2)){
                     Samba = finaldamage / 2;
