@@ -1046,11 +1046,11 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAction_
                 int8 Samba = WELL512::GetRandomNumber(1, (delay * multiplier));
 
                 // vary damage based on lvl diff
-                int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
+//                int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
 
-                if (lvlDiff < -5){
-                    lvlDiff = -5;
-                }
+//                if (lvlDiff < -5){
+  //                  lvlDiff = -5;
+    //            }
 
                 Samba -= lvlDiff;
 
