@@ -209,6 +209,9 @@ public:
     int32 addWeaponSkill(lua_State*);       //
     int32 delWeaponSkill(lua_State*);       //
 
+    int32 getTotalLvls(lua_State*);          // Get the Total of All their levels, for retroactive stuff
+    int32 getSFJobs(lua_State*);	    // Get the number of 75 jobs
+
     int32 getMainJob(lua_State*);           // Returns Entity Main Job
     int32 getMainLvl(lua_State*);           // Gets Entity Main Job Level
     int32 getSubJob(lua_State*);            // Get Entity Sub Job

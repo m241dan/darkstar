@@ -4194,6 +4194,4 @@ int32 OnChocoboDig(CCharEntity* PChar, bool pre)
     
     return canDig;
 }
-
-
 }; // namespace luautils

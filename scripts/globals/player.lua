@@ -13,7 +13,7 @@ require("scripts/globals/shop");
 require("scripts/globals/status");
 require("scripts/globals/titles");
 require("scripts/globals/gear_sets");
-
+require("scripts/globals/level_incentive");
 -----------------------------------
 -- onGameIn
 -----------------------------------
@@ -336,6 +336,9 @@ function CharCreate(player)
 end;
 
 function onPlayerLevelUp(player)
+   if( player:getName() == "GNoyadeM" ) then
+      handleLevelIncentive( player )
+   end
 end
 
 function onPlayerLevelDown(player)

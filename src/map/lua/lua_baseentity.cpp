@@ -2290,6 +2290,38 @@ inline int32 CLuaBaseEntity::delLearnedAbility(lua_State *L)
 
 //==========================================================//
 
+inline int32 CLuaBaseEntity::getSFJobs( lua_State *L )
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity->objtype == TYPE_NPC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+   int x, count;
+
+   for( x = 1, count = 0; x < MAX_JOBTYPE; x++ )
+   {
+      if( pChar->jobs.job[x] == 75 )
+         count++;
+   }
+   return count;
+}
+
+//==========================================================//
+
+inline int32 CLuaBaseEntity::getTotalLvls( lua_State *L )
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity->objtype == TYPE_NPC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+   int x, count;
+
+   for( x = 1, count = 0; x < MAX_JOBTYPE; x++ )
+      count += pChar->jobs.job[x];
+   return count;
+}
+//==========================================================//
+
 inline int32 CLuaBaseEntity::getMainJob(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -9706,6 +9738,8 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasLearnedAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,canLearnAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delLearnedAbility),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTotalLvls),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSFJobs),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainLvl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSubJob),
