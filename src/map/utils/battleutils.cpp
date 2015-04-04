@@ -1090,10 +1090,6 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAction_
                     Samba = finaldamage / 2;
                 }
 
-                if (finaldamage <= 2){
-                    Samba = 0;
-                }
-
                 if (Samba < 0)
                 {
                     Samba = 0;

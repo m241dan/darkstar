@@ -1,4 +1,5 @@
 require("scripts/globals/status");
+require("scripts/globals/keyitems");
 
 -- level_incentive lib
 
@@ -6,7 +7,7 @@ mid_tier = {};
 
 -- repeatable, level, itemid, amount
 
-mid_tier[JOB_WAR] = { false, 43, { 15184 }, { 1 } }; --voyager sallet
+mid_tier[JOB_WAR] = { false, 41, { 15184 }, { 1 } }; --voyager sallet
 mid_tier[JOB_MNK] = { true, 10, { 4381 }, { 6 } }; --meat mithkabob
 mid_tier[JOB_WHM] = { false, 36, { 4731, 4730, 4732 }, { 1, 1, 1 } }; --telepack
 mid_tier[JOB_BLM] = { false, 40, { 4870, 4814 }, { 1, 1 } }; -- warp II and freeze
@@ -22,6 +23,7 @@ mid_tier[JOB_NIN] = { true, 5, { 1179 }, { 99 } }; -- shihei
 mid_tier[JOB_DRG] = { false, 38, { 15347 }, { 1 } }; -- volans greaves
 mid_tier[JOB_SMN] = { false, 24, { 14962 }, { 1 } }; -- carbuncle mitts
 mid_tier[JOB_SCH] = { false, 18, { 6041, 6042, 6043, 6044, 6045, 6046, 6047, 6048 }, { 1, 1, 1, 1, 1, 1, 1, 1 } }; -- helix pack 
+mid_tier[JOB_BLU] = { false, 58, { nil }, { nil } }; -- they get their spells
   
 high_tier = {};
 
@@ -55,7 +57,7 @@ function handleLevelIncentive( player )
    player:PrintToPlayer( "Leveling Incentive:", 0xE );
 
    if( player:getVar("FirstIncentiveGain") == 0 ) then
-      total = player:getTotalLvls();
+      local total = player:getTotalLvls();
       player:setVar("FirstIncentiveGain", 1 );
       player:PrintToPlayer( string.format( "You have been retroactively been rewarded %d gil", total * 1000 ), 0xE );
       player:addGil(total*1000);
@@ -68,7 +70,32 @@ function handleLevelIncentive( player )
    if( player:getVar( string.format( "LIAF%d", job ) ) == 0 and lvl >= 50 ) then
       player:setVar( string.format( "LIAF%d", job ), 1 );
       player:PrintToPlayer( "Congratulations, you have been awarded your AF, go to a storage NPC to retrieve it.", 0xE );
-      player:addKeyItem( job + 653 );
+      if( job >= JOB_BLU ) then
+         if( job == JOB_BLU ) then player:addKeyItem( MAGUS_ATTIRE_CLAIM_SLIP ) end
+         if( job == JOB_COR ) then player:addKeyItem( CORSAIRS_ATTIRE_CLAIM_SLIP ) end
+         if( job == JOB_PUP ) then player:addKeyItem( PUPPETRY_ATTIRE_CLAIM_SLIP ) end
+         if( job == JOB_DNC ) then 
+            player:addKeyItem( 1967 );
+            player:addKeyItem( 1968 );
+         end
+         if( job == JOB_SCH ) then player:addKeyItem( SCHOLARS_ATTIRE_CLAIM_SLIP ) end
+      else
+         player:addKeyItem( job + 653 );
+      end
+   end
+
+   if( lvl == 75 ) then
+      local count = player:getSFJobs();
+      if( count == 1 ) then
+         player:PrintToPlayer( "Congratulations on your first 75! Have a Turban and gil on us.", 0xE );
+         player:addGil(100000);
+         player:addItem( 15270 );
+      end
+      if( count == 2 ) then
+         player:PrinttoPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape and gil", 0xE );
+         player:addGil(500000);
+         player:addItem( 11538 );
+      end
    end
 
    -- mid tier rewards
@@ -112,21 +139,7 @@ function handleLevelIncentive( player )
       player:setVar( string.format( "LIHighTier%d", job ), 1 );
       player:PrintToPlayer( "New items have been added to your inventory!", 0xE );
       for x = 1, h_len, 1 do
-         player:addItem( high_table[2] );
-      end
-   end
-
-   if( lvl == 75 ) then
-      local count = player:getSFJobs();
-      if( count == 1 ) then
-         player:PrintToPlayer( "Congratulations on your first 75! Have a Turban on us.", 0xE );
-         player:addGil(100000);
-         player:addItem( 15270 );
-      end
-      if( count == 2 ) then
-         player:PrinttoPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape", 0xE );
-         player:addGil(500000);
-         player:addItem( 11538 );
+         player:addItem( h_items[x] );
       end
    end
 end

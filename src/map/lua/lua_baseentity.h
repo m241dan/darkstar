@@ -211,6 +211,7 @@ public:
 
     int32 getTotalLvls(lua_State*);          // Get the Total of All their levels, for retroactive stuff
     int32 getSFJobs(lua_State*);	    // Get the number of 75 jobs
+    int32 getTrueLvl(lua_State *);	    // bypass level sync
 
     int32 getMainJob(lua_State*);           // Returns Entity Main Job
     int32 getMainLvl(lua_State*);           // Gets Entity Main Job Level
@@ -516,8 +517,8 @@ public:
     int32 setGMLevel(lua_State* L);
     int32 getGMHidden(lua_State* L);
     int32 setGMHidden(lua_State* L);
-    int32 PrintToPlayer(lua_State* L);    // for sending debugging messages/command confirmations to the player's client
-    // == Pathfind Methods ==
+    int32 PrintToPlayer(lua_State* L);    // for messages to players ingame
+    int32 PrintToServer(lua_State* L);    // Print to SERVER (Prints to every zone on the server) -- Defaults to System Message, but can be altered with HEX or Integer of type of text    // == Pathfind Methods ==
     int32 pathThrough(lua_State* L);      // walk at normal speed through the given points
     // int32 WarpTo(lua_State* L);        // warp to the given point
     // int32 RoamAround(lua_State* L);    // pick a random point to walk to

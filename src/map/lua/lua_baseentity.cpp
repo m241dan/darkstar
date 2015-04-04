@@ -111,6 +111,7 @@
 #include "../ai/ai_mob_dummy.h"
 
 #include "../transport.h"
+#include "../message.h"
 
 CLuaBaseEntity::CLuaBaseEntity(lua_State* L)
 {
@@ -2303,7 +2304,8 @@ inline int32 CLuaBaseEntity::getSFJobs( lua_State *L )
       if( pChar->jobs.job[x] == 75 )
          count++;
    }
-   return count;
+   lua_pushinteger( L, count );
+   return 1;
 }
 
 //==========================================================//
@@ -2318,8 +2320,22 @@ inline int32 CLuaBaseEntity::getTotalLvls( lua_State *L )
 
    for( x = 1, count = 0; x < MAX_JOBTYPE; x++ )
       count += pChar->jobs.job[x];
-   return count;
+   lua_pushinteger( L, count );
+   return 1;
 }
+//==========================================================//
+inline int32 CLuaBaseEntity::getTrueLvl( lua_State *L )
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity->objtype == TYPE_NPC );
+
+   DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+   lua_pushinteger( L, pChar->jobs.job[(int8)lua_tonumber( L, 1 )] );
+   return 1;
+}
+
 //==========================================================//
 
 inline int32 CLuaBaseEntity::getMainJob(lua_State *L)
@@ -8652,17 +8668,60 @@ inline int32 CLuaBaseEntity::setGMHidden(lua_State* L)
     return 0;
 }
 
+//case 0:     // say
+//case 1:     // shout
+//case 8:     // emote
+//case 0x1A:  // yell
+//case 3:     // tell
+//case 4:     // party
+//case 5:     // linkshell
+//case 0x1B:  // linkshell (possibly new ls1)
+//case 0x1E:  // linkshell (possibly new ls2)
+//case 0x21:  // Unknown Message: {[GM] Atomos} This is a test message. (color was yellow/gold)
+//case 0x18:  // Unknown (Looks similar to say.)
+//case 0x19:  // Unknown (Looks similar to say.)
+//case 6:     // System Message
+//case 7:     // System Message
+//case 0xC:   // GM Tell
+//case 0x15:  // Unknown (Strips name, shows just the message.) (color was yellow/gold)
+//case 0xD:   // Unknown (Strips name, shows just the message.) (color was same as say)
+//case 0xE:   // Unknown (Strips name, shows just the message.) (color was same as shout)
+//case 0x10:  // Unknown (Strips name, shows just the message.) (color was same as linkshell)
+//case 0x13:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x16:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x1C:  // Unknown (Strips name, shows just the message.) (color was green)
+//case 0x1F:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0xF:   // Unknown (Strips name, shows just the message.) (color was same as party)
+//case 0x11:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x12:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x14:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x17:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x1D:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 0x20:  // Unknown (Strips name, shows just the message.) (color was yellow)
+//case 9:     // Do nothing.. packet is swallowed.
+//case 0xA:   // Do nothing.. packet is swallowed.
+//case 0xB:   // Do nothing.. packet is swallowed.
+
 inline int32 CLuaBaseEntity::PrintToPlayer(lua_State* L)
 {
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
-    DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isstring(L, 1));
-
-    ((CCharEntity*)m_PBaseEntity)->pushPacket(new CChatMessagePacket((CCharEntity*)m_PBaseEntity,MESSAGE_SYSTEM_1,(char*)lua_tostring(L,1)));
-
-    return 0;
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == NULL);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+   DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isstring(L, 1));
+   CHAT_MESSAGE_TYPE messageType = (!lua_isnil(L, 2) && lua_isnumber(L, 2) ? (CHAT_MESSAGE_TYPE)lua_tointeger(L, 2) : MESSAGE_SYSTEM_1);
+   ((CCharEntity*)m_PBaseEntity)->pushPacket(new CChatMessagePacket((CCharEntity*)m_PBaseEntity, messageType, (char*)lua_tostring(L, 1)));
+   return 0;
 }
+
+inline int32 CLuaBaseEntity::PrintToServer(lua_State* L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == NULL);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+   DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isstring(L, 1));
+   CHAT_MESSAGE_TYPE messageType = (!lua_isnil(L, 2) && lua_isnumber(L, 2) ? (CHAT_MESSAGE_TYPE)lua_tointeger(L, 2) : MESSAGE_SYSTEM_1);
+   message::send(MSG_CHAT_SERVMES, 0, 0, new CChatMessagePacket((CCharEntity*)m_PBaseEntity, messageType, (char*)lua_tostring(L, 1)));
+   return 0;
+}
+
 /*
 Walk through the given points. NPC only.
 
@@ -9740,6 +9799,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delLearnedAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTotalLvls),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSFJobs),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTrueLvl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainLvl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSubJob),
@@ -10014,6 +10074,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getGMHidden),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setGMHidden),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,PrintToPlayer),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,PrintToServer),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getBaseMP),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,pathThrough),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,atPoint),

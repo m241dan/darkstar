@@ -337,9 +337,7 @@ function CharCreate(player)
 end;
 
 function onPlayerLevelUp(player)
---   if( player:getName() == "GNoyadeM" or player:getName() == "Melfie" or player:getName() == "Celandel" ) then
-  --    handleLevelIncentive( player )
-   --end
+   handleLevelIncentive( player )
 end
 
 function onPlayerLevelDown(player)
