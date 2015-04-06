@@ -50,7 +50,7 @@ high_tier[JOB_BLU] = { 73, { 17741 }, { 1 } }; -- perdu hanger
 
 function handleLevelIncentive( player )
    local job = player:getMainJob();
-   local lvl = player:getMainLvl();
+   local lvl = player:getTrueLvl( job );
    local mid_table = mid_tier[job];
    local high_table = high_tier[job];
 
@@ -92,7 +92,7 @@ function handleLevelIncentive( player )
          player:addItem( 15270 );
       end
       if( count == 2 ) then
-         player:PrinttoPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape and gil", 0xE );
+         player:PrintToPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape and gil", 0xE );
          player:addGil(500000);
          player:addItem( 11538 );
       end
