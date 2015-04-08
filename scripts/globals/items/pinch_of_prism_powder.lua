@@ -20,6 +20,6 @@ end;
 
 function onItemUse(target)
 	if (not target:hasStatusEffect(EFFECT_INVISIBLE)) then
-		target:addStatusEffect(EFFECT_INVISIBLE,0,10,math.random(60, 180));
+		target:addStatusEffect(EFFECT_INVISIBLE,0,10,math.random(300, 600));
 	end
 end;
