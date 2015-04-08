@@ -478,11 +478,13 @@ function checkGoVregime(killer,mob,rid,index)
         return;
     end
 
+    partyType = killer:checkSoloPartyAlliance();
+
     if (killer:getVar("fov_regimeid") == rid) then -- Player is doing this regime
         -- Need to add difference because a lvl1 can XP with a level 75 at Ro'Maeve
         local difference = math.abs(mob:getMainLvl() - killer:getMainLvl());
 
-        if ((mob:checkBaseExp() and killer:checkDistance(mob) < 100 and difference <= 15) or killer:checkFovDistancePenalty() == 0) then
+        if ((mob:checkBaseExp() and killer:checkDistance(mob) < 100 and difference <= 15 and partyType < 2 ) or killer:checkFovDistancePenalty() == 0) then
             -- Get the number of mobs needed/killed
             local needed = killer:getVar("fov_numneeded"..index);
             local killed = killer:getVar("fov_numkilled"..index);
@@ -575,7 +577,9 @@ function checkGoVregime(killer,mob,rid,index)
                             end
 
                         -- Give player the candy and inform which Prowess they got.
-                        killer:addExp(reward*EXP_RATE);
+--                        killer:addExp(reward*EXP_RATE);
+	                reward = reward / 2;
+                        killer:addExp( ( ( ( 75 - killer:getTrueLvl(killer:getMainJob()) ) * .03 ) + 1.75 ) * reward );
                         killer:messageBasic(ProwessMessage);
                         
                         -- Debugging crap.

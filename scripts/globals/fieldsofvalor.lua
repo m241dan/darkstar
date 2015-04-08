@@ -393,13 +393,6 @@ function checkRegime(killer,mob,rid,index)
 
 	partyType = killer:checkSoloPartyAlliance();
 
-	if(killer:checkFovAllianceAllowed() == 1) then
-		partyType = 1;
-	end
-
-	
-	
-
 	if(killer:getVar("fov_regimeid") == rid) then --player is doing this regime
 		-- Need to add difference because a lvl1 can xp with a level 75 at ro'maeve
 		local difference = math.abs(mob:getMainLvl() - killer:getMainLvl());

@@ -36,20 +36,16 @@ end;
 
 function onTrigger(player,npc)
 
-	RegionOwner = GetRegionOwner(VOLLBOW);
 
-	if (RegionOwner ~= SANDORIA) then 
-		player:showText(npc,MILLECHUCA_CLOSED_DIALOG);
-	else
-		player:showText(npc,MILLECHUCA_OPEN_DIALOG);
+		player:showText(npc,MILLECHUCA_SHOP_DIALOG);
 
 		stock = {0x27c,119,  -- Chamomile
 				 0x360,88,   -- Fish Scales
 				 0x3a8,14,   -- Rock Salt
-				 0x582,1656} -- Sweet William
-		
-		showShop(player,SANDORIA,stock);	
-	end
+				 0x582,1656, -- Sweet William
+				 0x11DA,55}  -- Bird Egg
+		showShop(player,STATIC,stock);	
+	
 	
 end; 
 

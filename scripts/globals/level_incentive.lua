@@ -21,10 +21,11 @@ mid_tier[JOB_RNG] = { true, 10, { 17332, 18153 }, { 99, 99 } }; -- fang arrow an
 mid_tier[JOB_SAM] = { false, 50, { 17813 }, { 1 } }; -- Soboro
 mid_tier[JOB_NIN] = { true, 5, { 1179 }, { 99 } }; -- shihei
 mid_tier[JOB_DRG] = { false, 38, { 15347 }, { 1 } }; -- volans greaves
-mid_tier[JOB_SMN] = { false, 24, { 14962 }, { 1 } }; -- carbuncle mitts
+mid_tier[JOB_SMN] = { false, 24, { 14062 }, { 1 } }; -- carbuncle mitts
 mid_tier[JOB_SCH] = { false, 18, { 6041, 6042, 6043, 6044, 6045, 6046, 6047, 6048 }, { 1, 1, 1, 1, 1, 1, 1, 1 } }; -- helix pack 
 mid_tier[JOB_BLU] = { false, 58, { nil }, { nil } }; -- they get their spells
-  
+mid_tier[JOB_DNC] = { false, 50, { 14936 }, { 1 } }; -- storm monapolas  
+
 high_tier = {};
 
 -- level, itemid, amount
@@ -46,7 +47,7 @@ high_tier[JOB_DRG] = { 75, { 18110 }, { 1 } }; -- mezraq
 high_tier[JOB_SMN] = { 71, { 14468 }, { 1 } }; -- yinyang robe
 high_tier[JOB_SCH] = { 41, { 6049, 6050, 6051, 6052, 6053, 6054, 6055, 6056 }, { 1, 1, 1, 1, 1, 1, 1, 1 } } -- storm pack
 high_tier[JOB_BLU] = { 73, { 17741 }, { 1 } }; -- perdu hanger
-
+high_tier[JOB_DNC] = { 72, { 18031 }, { 1 } }; -- Amir Jambiya
 
 function handleLevelIncentive( player )
    local job = player:getMainJob();
@@ -96,15 +97,25 @@ function handleLevelIncentive( player )
          player:addGil(500000);
          player:addItem( 11538 );
       end
+      if( count == 3 ) then
+         player:PrintToPlayer( "Congratulations on your third 75! Enjoy your gil", 0xE );
+         player:addGil(1000000);
+      end
+      if( count == 4 ) then
+         player:PrintToPlayer( "Congratulations on your fourth 75! Enjoy your dynamis curreny.", 0xE );
+         player:addItem( 1456, 1 );
+         player:addItem( 1453, 1 );
+         player:addItem( 1450, 1 );         
+      end
    end
+
+   if( job == JOB_COR ) then return end
 
    -- mid tier rewards
 
    local m_items = mid_table[3];
    local m_amounts = mid_table[4];
    local m_len = #m_items;
-
-   if( job == JOB_DNC or job == JOB_COR ) then return end
 
 
    if( mid_table[1] == true ) then
