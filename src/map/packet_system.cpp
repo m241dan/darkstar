@@ -709,6 +709,22 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, int8* dat
         // remove weakness on homepoint
         PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_WEAKNESS);
         PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_LEVEL_SYNC);
+        if( PChar->PParty != nullptr && PChar->PParty->GetSyncTarget() == PChar )
+        {
+           for( uint32 i = 0; i < PChar->PParty->members.size(); i++ )
+           {
+              CCharEntity *PMember = (CCharEntity *)PChar->PParty->members.at(i);
+              if( PMember == PChar )
+                 continue;
+              CStatusEffect *sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
+              if( sync && sync->GetDuration() == 0 )
+              {
+                 PMember->pushPacket( new CMessageBasicPacket(PMember, PMember, 0, 30, 553 ) );
+                 sync->SetStartTime(gettick());
+                 sync->SetDuration(30000);
+              }
+           }
+        }
 
         PChar->health.hp = PChar->GetMaxHP();
         PChar->health.mp = PChar->GetMaxMP();
