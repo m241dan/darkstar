@@ -9753,6 +9753,39 @@ inline int32 CLuaBaseEntity::setElevator(lua_State *L)
     return 0;
 }
 
+//=========================================================//
+inline int32 CLuaBaseEntity::isSynced(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+
+   if( pChar->PParty != nullptr && pChar->PParty->GetSyncTarget() != nullptr )
+      lua_pushboolean( L, 0 );
+   else
+      lua_pushboolean( L, 1 );
+
+   return 1;
+}
+
+//=========================================================//
+inline int32 CLuaBaseEntity::isSyncInRange(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+   CBaseEntity *pMob = zoneutils::GetEntity(lua_tointeger(L, -1 ), TYPE_MOB | TYPE_PET);
+
+   if( distance( pMob->loc.p, pChar->PParty->GetSyncTarget()->loc.p ) || pChar->PParty->GetSyncTarget()->health.hp == 0 )
+      lua_pushboolean( L, 0 );
+   else
+      lua_pushboolean( L, 1 );
+   return 1;
+}
+
+
 //==========================================================//
 
 const int8 CLuaBaseEntity::className[] = "CBaseEntity";
@@ -10170,7 +10203,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,spawn),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getCurrentAction),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getAllegiance),
-	LUNAR_DECLARE_METHOD(CLuaBaseEntity,stun),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,stun),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,weaknessTrigger),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getBehaviour),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setBehaviour),
@@ -10185,5 +10218,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,removeAllManeuvers),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addBurden),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setElevator),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSynced),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
     {nullptr,nullptr}
 };
