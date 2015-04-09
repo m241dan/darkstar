@@ -21,11 +21,9 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
-player:showText(npc,BRAVEOX_SHOP_DIALOG);
-
-stock = 
-{
+   player:showText(npc,BRAVEOX_SHOP_DIALOG);
+   stock = 
+   {
 	0x122E,77350,	--Protect IV
 	0x1280,73710,	--Protectra IV
 	0x1304,63700,	--Dispel
@@ -37,11 +35,9 @@ stock =
 	0x125E,62192,	--Sacrifice
 	0x125F,64584,	--Esuna
 	0x1260,30967,	--Auspice
-	0x1206,141137,	--Cure VI	(Not Implemented yet)
-	0x122F,103882,	--Protect V	(Not Implemented yet)
-	0x1234,125069	--Shell V	(Not Implemented yet)
-}
-showShop(player, STATIC, stock);
+	0x17AA,81225,	--Klimaform	
+   }
+   showShop(player, STATIC, stock);
 end; 
 
 -----------------------------------

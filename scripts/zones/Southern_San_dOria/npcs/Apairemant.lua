@@ -36,11 +36,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	RegionOwner = GetRegionOwner(GUSTABERG);
-
-	if (RegionOwner ~= SANDORIA) then
-			player:showText(npc,APAIREMANT_CLOSED_DIALOG);
-	else
+	
 			player:showText(npc,APAIREMANT_OPEN_DIALOG);
 		   
 			stock = {0x0454,703,    -- Sulfur
@@ -48,8 +44,8 @@ function onTrigger(player,npc)
 							 0x0263,36,             -- Rye Flour
 							 0x1124,40}             -- Eggplant
 							 
-			showShop(player,SANDORIA,stock);
-	end
+			showShop(player, STATIC, stock);
+
 
 end;
 

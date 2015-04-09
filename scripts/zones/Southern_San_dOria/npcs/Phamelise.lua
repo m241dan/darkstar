@@ -34,11 +34,7 @@ end;
 
 function onTrigger(player,npc)
 
-	RegionOwner = GetRegionOwner(ZULKHEIM);
-
-	if (RegionOwner ~= SANDORIA) then
-		player:showText(npc,PHAMELISE_CLOSED_DIALOG);
-	else
+	
 		player:showText(npc,PHAMELISE_OPEN_DIALOG);
 
 		stock = {0x1114,44,       --Giant Sheep Meat
@@ -49,8 +45,8 @@ function onTrigger(player,npc)
 						 0x110e,22,       --La Theine Cabbage
 						 0x111a,55}       --Selbina Milk
 
-		showShop(player,SANDORIA,stock);
-	end
+		showShop(player,STATIC,stock);
+	
 
 end;
 

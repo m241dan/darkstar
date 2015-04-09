@@ -38,7 +38,7 @@ GOV_MENU_REVIEW_PROWESS = 7;
 -----------------------------------
 
 GOV_MENU_REPATRIATION    = 20;
-GOV_MENU_CIRCUMSPECTION  = 37;
+GOV_MENU_CIRCUMSPECTION  = 36;
 GOV_MENU_HOMING_INSTINCT = 52;
 GOV_MENU_RERAISE         = 68;
 GOV_MENU_RERAISE_II      = 84;
@@ -240,6 +240,8 @@ function finishGov(player,csid,option,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,msg_offset)
     local HAS_FOOD = player:hasStatusEffect(EFFECT_FOOD);
     local HAS_SUPPORT_FOOD = player:hasStatusEffect(EFFECT_FIELD_SUPPORT_FOOD);
 -- ================= FIELD SUPPORT ============================================
+   printf( "\nCSID: %u\n", option );
+   
     if (option == GOV_MENU_REPATRIATION) then -- Send to home nation
         if (tabs >= 50) then
             player:delCurrency("valor_point", 50);

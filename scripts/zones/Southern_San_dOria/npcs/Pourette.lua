@@ -34,11 +34,7 @@ end;
 
 function onTrigger(player,npc)
 
-        RegionOwner = GetRegionOwner(DERFLAND);
-
-        if (RegionOwner ~= SANDORIA) then
-                player:showText(npc,POURETTE_CLOSED_DIALOG);
-        else
+        
                 player:showText(npc,POURETTE_OPEN_DIALOG);
                
                 stock = {0x1100,128,  --Derfland Pear
@@ -48,8 +44,8 @@ function onTrigger(player,npc)
                                  0x0279,14,       --Olive Oil
                                  0x03b7,110}  --Wijnruit
 
-                showShop(player,SANDORIA,stock);
-        end
+                showShop(player,STATIC,stock);
+        
 
 end;
 
