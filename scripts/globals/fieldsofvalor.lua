@@ -393,6 +393,20 @@ function checkRegime(killer,mob,rid,index)
 
 	partyType = killer:checkSoloPartyAlliance();
 
+    if( killer:isSynced() ) then
+       local sync = killer:getSync();
+       if( sync ~= nil ) then
+          if( killer:getVar( "fov_regimeid" ) ~= sync:getVar( "fov_regimeid" ) ) then
+             killer:PrintToPlayer( "Your Level Sync must have the same Page active as you." );
+             return;
+          end
+          if( sync:checkDistance( mob ) >= 100 ) then
+             killer:PrintToPlayer( "Your Level Sync must be in range to get experience and credit." );
+             return;
+          end
+       end
+    end
+
 	if(killer:getVar("fov_regimeid") == rid) then --player is doing this regime
 		-- Need to add difference because a lvl1 can xp with a level 75 at ro'maeve
 		local difference = math.abs(mob:getMainLvl() - killer:getMainLvl());

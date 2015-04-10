@@ -9762,9 +9762,9 @@ inline int32 CLuaBaseEntity::isSynced(lua_State *L)
    CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
 
    if( pChar->PParty != nullptr && pChar->PParty->GetSyncTarget() != nullptr )
-      lua_pushboolean( L, 0 );
-   else
       lua_pushboolean( L, 1 );
+   else
+      lua_pushboolean( L, 0 );
 
    return 1;
 }
@@ -9778,7 +9778,7 @@ inline int32 CLuaBaseEntity::isSyncInRange(lua_State *L)
    CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
    CBaseEntity *pMob = zoneutils::GetEntity(lua_tointeger(L, -1 ), TYPE_MOB | TYPE_PET);
 
-   if( distance( pMob->loc.p, pChar->PParty->GetSyncTarget()->loc.p ) || pChar->PParty->GetSyncTarget()->health.hp == 0 )
+   if( distance( pMob->loc.p, pChar->PParty->GetSyncTarget()->loc.p ) > 100 || pChar->PParty->GetSyncTarget()->health.hp == 0 )
       lua_pushboolean( L, 0 );
    else
       lua_pushboolean( L, 1 );

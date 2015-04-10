@@ -5,6 +5,7 @@
 -----------------------------------	
 
 require("/scripts/zones/Valkurm_Dunes/MobIDs");
+package.loaded["/scripts/globals/fieldsofvalor"] = nil;
 require("/scripts/globals/fieldsofvalor");	
 	
 -----------------------------------	
