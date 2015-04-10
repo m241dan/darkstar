@@ -590,6 +590,7 @@ public:
     int32 setElevator(lua_State* L);
     int32 isSynced(lua_State *L);
     int32 isSyncInRange(lua_State *L);
+    int32 getSync(lua_State *L);
 };
 
 #endif
