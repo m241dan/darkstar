@@ -474,6 +474,7 @@ public:
 	bool			isAsleep();
 
 
+        uint8		    GetMTrueLevel();
 	JOBTYPE		    GetMJob();					// главная профессия
 	JOBTYPE		    GetSJob();					// дополнительная профессия
 	uint8		    GetMLevel();				// уровень главной профессии

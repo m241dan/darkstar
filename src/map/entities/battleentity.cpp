@@ -669,6 +669,15 @@ uint16 CBattleEntity::EVA()
 *                                                                       *
 *                                                                       *
 ************************************************************************/
+uint8 CBattleEntity::GetMTrueLevel()
+{
+   if( this->objtype == TYPE_PC )
+   {
+      CCharEntity *pChar = (CCharEntity *)this;
+      return pChar->jobs.job[m_mjob];
+   }
+   return m_mlvl;
+}
 
 JOBTYPE CBattleEntity::GetMJob()
 {
