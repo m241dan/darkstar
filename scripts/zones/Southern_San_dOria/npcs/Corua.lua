@@ -36,11 +36,7 @@ end;
 
 function onTrigger(player,npc)
 
-        RegionOwner = GetRegionOwner(RONFAURE);
--- player:startEvent(0x0351) - are you the chicks owner
-        if (RegionOwner ~= SANDORIA) then
-                player:showText(npc,CORUA_CLOSED_DIALOG);
-        else
+        
                 player:showText(npc,CORUA_OPEN_DIALOG);
                
                 stock = {0x1125,29,             -- San d'Orian Carrot
@@ -49,7 +45,7 @@ function onTrigger(player,npc)
                                  0x0262,55}             -- San d'Orian Flour
                                  
                 showShop(player,SANDORIA,stock);
-        end
+        
 
 end;
 

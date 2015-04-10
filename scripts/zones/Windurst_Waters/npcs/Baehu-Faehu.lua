@@ -22,10 +22,6 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(SARUTABARUTA);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,BAEHUFAEHU_CLOSED_DIALOG);
-    else
         player:showText(npc,BAEHUFAEHU_OPEN_DIALOG);
 
         stock = {
@@ -37,7 +33,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
+    
 
 end;
 

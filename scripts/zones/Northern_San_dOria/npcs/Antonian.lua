@@ -35,11 +35,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(ARAGONEU);
 
-        if(RegionOwner ~= SANDORIA) then
-                player:showText(npc,ANTONIAN_CLOSED_DIALOG);
-        else
                 player:showText(npc,ANTONIAN_OPEN_DIALOG);
 
                 stock = {0x0277,36,  --Horo Flour
@@ -49,7 +45,7 @@ RegionOwner = GetRegionOwner(ARAGONEU);
                                  0x1199,90}  --Sunflower Seeds
                                  
                 showShop(player,SANDORIA,stock);
-        end
+        
 end;
 
 -----------------------------------

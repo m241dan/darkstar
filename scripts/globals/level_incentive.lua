@@ -25,6 +25,7 @@ mid_tier[JOB_SMN] = { false, 24, { 14062 }, { 1 } }; -- carbuncle mitts
 mid_tier[JOB_SCH] = { false, 18, { 6041, 6042, 6043, 6044, 6045, 6046, 6047, 6048 }, { 1, 1, 1, 1, 1, 1, 1, 1 } }; -- helix pack 
 mid_tier[JOB_BLU] = { false, 58, { nil }, { nil } }; -- they get their spells
 mid_tier[JOB_DNC] = { false, 50, { 14936 }, { 1 } }; -- storm monapolas  
+mid_tier[JOB_COR] = { true, 5, { 19228 }, { 99 } }; -- paktong bullets
 
 high_tier = {};
 
@@ -48,6 +49,7 @@ high_tier[JOB_SMN] = { 71, { 14468 }, { 1 } }; -- yinyang robe
 high_tier[JOB_SCH] = { 41, { 6049, 6050, 6051, 6052, 6053, 6054, 6055, 6056 }, { 1, 1, 1, 1, 1, 1, 1, 1 } } -- storm pack
 high_tier[JOB_BLU] = { 73, { 17741 }, { 1 } }; -- perdu hanger
 high_tier[JOB_DNC] = { 72, { 18031 }, { 1 } }; -- Amir Jambiya
+high_tier[JOB_COR] = { 72, { 17275 }, { 1 } }; -- Coffinmaker
 
 function handleLevelIncentive( player )
    local job = player:getMainJob();
@@ -108,8 +110,6 @@ function handleLevelIncentive( player )
          player:addItem( 1450, 1 );         
       end
    end
-
-   if( job == JOB_COR ) then return end
 
    -- mid tier rewards
 

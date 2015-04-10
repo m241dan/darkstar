@@ -34,11 +34,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(NORVALLEN);
 
-if (RegionOwner ~= SANDORIA) then
-        player:showText(npc,MACHIELLE_CLOSED_DIALOG);
-else
         player:showText(npc,MACHIELLE_OPEN_DIALOG);
        
         stock = {0x02b0,18,     --Arrowwood Log
@@ -47,7 +43,7 @@ else
                          0x02ba,88}     --Ash Log
                          
 showShop(player,SANDORIA,stock);
-end
+
 end;
 
 -----------------------------------
