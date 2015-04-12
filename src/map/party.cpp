@@ -992,28 +992,28 @@ void CParty::SetSyncTarget(int8* MemberName, uint16 message)
         }
         else
         {
-            if (m_PSyncTarget != nullptr)
-            {
-                //disable level sync
-                for (uint8 i = 0; i < members.size(); ++i)
-	            {
-		            if(members.at(i)->objtype != TYPE_PC) continue;
+           if (m_PSyncTarget != nullptr)
+           {
+              //disable level sync
+              for (uint8 i = 0; i < members.size(); ++i)
+	      {
+	         if(members.at(i)->objtype != TYPE_PC)
+                    continue;
 
-		            CCharEntity* member = (CCharEntity*)members.at(i);
+                 CCharEntity* member = (CCharEntity*)members.at(i);
+                 if (member->status != STATUS_DISAPPEAR && member->getZone() == m_PSyncTarget->getZone() )
+                 {
 
-                    if (member->status != STATUS_DISAPPEAR &&
-                         member->getZone() == m_PSyncTarget->getZone() )
-		            {
-                        CStatusEffect* sync = member->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
-                        if (sync && sync->GetDuration() == 0)
-                        {
-			                member->pushPacket(new CMessageBasicPacket(member, member, 10, 30, message));
-                            sync->SetStartTime(gettick());
-                            sync->SetDuration(30000);
-                        }
-		            }
-	            }
-            }
+                    CStatusEffect* sync = member->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
+                    if (sync && sync->GetDuration() == 0)
+                    {
+                       member->pushPacket(new CMessageBasicPacket(member, member, 10, 30, message));
+                       sync->SetStartTime(gettick());
+                       sync->SetDuration(30000);
+                    }
+	         }
+	      }
+           }
         }
     }
 }
