@@ -1953,8 +1953,8 @@ CROW_JUPON_CLAIM_SLIP                    = 1963;
 MAGUS_ATTIRE_CLAIM_SLIP                  = 1964;
 CORSAIRS_ATTIRE_CLAIM_SLIP               = 1965;
 PUPPETRY_ATTIRE_CLAIM_SLIP               = 1966;
-DANCERS_ATTIRE_CLAIM_SLIP                = 1967; -- male
-DANCERS_ATTIRE_CLAIM_SLIP                = 1968; -- female
+DANCERS_ATTIRE_CLAIM_SLIP                = 1967; -- female
+DANCERS_ATTIRE_CLAIM_SLIP                = 1968; -- male
 SCHOLARS_ATTIRE_CLAIM_SLIP               = 1969;
 
 AMIR_ARMOR_CLAIM_SLIP                    = 1970;

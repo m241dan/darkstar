@@ -902,7 +902,7 @@ void CZone::CharZoneOut(CCharEntity* PChar)
         }
     }
 
-    if (PChar->m_LevelRestriction != 0)
+    if ( ( PChar->PParty && PChar->PParty->GetSyncTarget() != nullptr ) || PChar->m_LevelRestriction != 0)
     {
         if (PChar->PParty)
         {

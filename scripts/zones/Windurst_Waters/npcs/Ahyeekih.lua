@@ -24,10 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(KOLSHUSHU);
-    if (RegionOwner ~= WINDURST) then
-        player:showText(npc,AHYEEKIH_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,AHYEEKIH_OPEN_DIALOG);
        
         stock = {
@@ -39,8 +36,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
-
+    
 end;
 
 -----------------------------------

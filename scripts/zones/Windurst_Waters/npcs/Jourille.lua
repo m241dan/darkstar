@@ -23,9 +23,7 @@ end;
 
 function onTrigger(player,npc)
     RegionOwner = GetRegionOwner(RONFAURE);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,JOURILLE_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,JOURILLE_OPEN_DIALOG);
 
         stock = {
@@ -36,8 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
-
+   
 end;
 
 -----------------------------------

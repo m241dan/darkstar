@@ -24,20 +24,17 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(KUZOTZ);
-    if (RegionOwner ~= WINDURST) then
-        player:showText(npc,NHOBI_ZALKIA_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,NHOBI_ZALKIA_OPEN_DIALOG);
        
         stock = {
             0x0394,   855,   --Cactuar Needle
             0x113C,   299,   --Thundermelon
-            0x118B,   184    --Watermelon
-        }
+            0x118B,   184}    --Watermelon
+        
         showShop(player,WINDURST,stock);
 
-    end
+    
 
 end;
 

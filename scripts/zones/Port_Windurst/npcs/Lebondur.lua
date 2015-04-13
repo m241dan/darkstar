@@ -23,10 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(VOLLBOW);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,LEBONDUR_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,LEBONDUR_OPEN_DIALOG);
 
         stock = {
@@ -37,7 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);	
 
-    end
+   
 
 end; 
 
