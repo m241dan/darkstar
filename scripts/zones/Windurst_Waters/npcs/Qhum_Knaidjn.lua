@@ -112,8 +112,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option,target)
-	-- printf("CSID: %u",csid);
-	-- printf("RESULT: %u",option);
+--	printf("\nCSID: %u",csid);
+--	printf("RESULT: %u",option);
      
     if (csid == 0x2728) then
         unionRepresentativeTriggerFinish(player, option, target, 8, "guild_cooking", keyitems, items);

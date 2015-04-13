@@ -103,8 +103,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
-	-- printf("CSID: %u",csid);
-	-- printf("RESULT: %u",option);
+--	printf("CSID: %u",csid);
+--	printf("RESULT: %u\n",option);
 end;
 
 -----------------------------------
@@ -112,8 +112,8 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option,target)
-	-- printf("CSID: %u",csid);
-	-- printf("RESULT: %u",option);
+--	printf("CSID: %u",csid);
+--	printf("RESULT: %d\n",option);
      
     if (csid == 0x02db) then
         unionRepresentativeTriggerFinish(player, option, target, 1, "guild_woodworking", keyitems, items);
