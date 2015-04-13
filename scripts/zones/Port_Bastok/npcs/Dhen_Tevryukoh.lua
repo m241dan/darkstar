@@ -25,10 +25,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(ELSHIMOUPLANDS);
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,DHENTEVRYUKOH_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,DHENTEVRYUKOH_OPEN_DIALOG);
 
         stock = {
@@ -38,7 +35,7 @@ function onTrigger(player,npc)
             0x02D1,   147    --Rattan Lumber
         }
         showShop(player,BASTOK,stock);
-    end
+
 end; 
 
 -----------------------------------

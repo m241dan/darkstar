@@ -24,11 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(VOLLBOW);
-
-    if (RegionOwner ~= BASTOK) then
-        player:showText(npc,AULAVIA_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,AULAVIA_OPEN_DIALOG);
         stock = {
             0x27c,   119,    --Chamomile
@@ -38,7 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);  
 
-    end
+    
 
 end;
 

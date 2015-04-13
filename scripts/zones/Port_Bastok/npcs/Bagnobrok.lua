@@ -22,11 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(MOVALPOLOS);
-
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,BAGNOBROK_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,BAGNOBROK_OPEN_DIALOG);
         stock = {
             0x0280,    11,   --Copper Ore
@@ -36,7 +32,7 @@ function onTrigger(player,npc)
             0x142D,   736    --Movalpolos Water
         }
         showShop(player,BASTOK,stock);
-    end
+    
 end; 
 
 -----------------------------------

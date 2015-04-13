@@ -22,10 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(ELSHIMOLOWLANDS);
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,ZOBYQUHYO_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,ZOBYQUHYO_OPEN_DIALOG);
 	
         stock = {
@@ -39,7 +36,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);
 
-    end
+    
 
 end;
 
