@@ -34,6 +34,13 @@ begin
       count -= 1
     end
   end
+  rs = con.query "SELECT COUNT(*) AS count FROM auction_house WHERE itemid=1210 AND buyer_name IS NULL"
+  dscount = 10 - rs.fetch_row().join().to_i
+  until dscount <= 0
+     con.query "INSERT INTO auction_house ( itemid, stack, seller, seller_name, date, price ) VALUES ( 1210, 0, 0, '', #{Time.now().to_i()}, 1000 )"
+     dscount -= 1
+  end
+
 rescue Mysql::Error => e
    puts e.errno
    puts e.error
