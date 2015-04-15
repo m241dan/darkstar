@@ -57,10 +57,15 @@ function handleLevelIncentive( player )
    local mid_table = mid_tier[job];
    local high_table = high_tier[job];
 
+   if( player:getTotalLvls() - 22 < 15 ) then
+      player:PrintToPlayer( "Incentives do not kick in until you've achieved 15 levels.", 0xE );
+      return
+   end;
+
    player:PrintToPlayer( "Leveling Incentive:", 0xE );
 
    if( player:getVar("FirstIncentiveGain") == 0 ) then
-      local total = player:getTotalLvls();
+      local total = player:getTotalLvls() - 22;
       player:setVar("FirstIncentiveGain", 1 );
       player:PrintToPlayer( string.format( "You have been retroactively been rewarded %d gil", total * 1000 ), 0xE );
       player:addGil(total*1000);
