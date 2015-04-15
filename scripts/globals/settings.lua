@@ -36,7 +36,7 @@ INITIAL_LEVEL_CAP = 75; -- The initial level cap for new players.  There seems t
 MAX_LEVEL = 75; -- Level max of the server, lowers the attainable cap by disabling Limit Break quests.
 NORMAL_MOB_MAX_LEVEL_RANGE_MIN = 81; -- Lower Bound of Max Level Range for Normal Mobs (0 = Uncapped)
 NORMAL_MOB_MAX_LEVEL_RANGE_MAX = 84; -- Upper Bound of Max Level Range for Normal Mobs (0 = Uncapped)
-START_GIL = 10000; --Amount of gil given to newly created characters.
+START_GIL = 2000; --Amount of gil given to newly created characters.
 START_INVENTORY = 80; -- Starting inventory and satchel size.  Ignores values < 30.  Do not set above 80!
 OPENING_CUTSCENE_ENABLE = 0; --Set to 1 to enable opening cutscenes, 0 to disable.
 SUBJOB_QUEST_LEVEL = 0; -- Minimum level to accept either subjob quest.  Set to 0 to start the game with subjobs unlocked.
@@ -102,7 +102,7 @@ LandKingSystem_HQ = 2;
      CURRENCY_EXCHANGE_RATE = 90;       -- X Tier 1 ancient currency -> 1 Tier 2, and so on.  Certain values may conflict with shop items.  Not designed to exceed 198.
 RELIC_2ND_UPGRADE_WAIT_TIME = 604800;      -- wait time for 2nd relic upgrade (stage 2 -> stage 3) in seconds. 604800s = 1 RL week.
 RELIC_3RD_UPGRADE_WAIT_TIME = 295200;      -- wait time for 3rd relic upgrade (stage 3 -> stage 4) in seconds. 295200s = 82 hours.
-FREE_COP_DYNAMIS = 1 ; -- Authorize player to entering inside COP Dynamis without completing COP mission ( 1 = enable 0= disable)
+FREE_COP_DYNAMIS = 0 ; -- Authorize player to entering inside COP Dynamis without completing COP mission ( 1 = enable 0= disable)
 
 -- QUEST/MISSION SPECIFIC SETTINGS
 WSNM_LEVEL = 70; -- Min Level to get WSNM Quests
