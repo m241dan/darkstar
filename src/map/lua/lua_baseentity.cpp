@@ -398,7 +398,7 @@ inline int32 CLuaBaseEntity::isJugPet(lua_State* L)
             return 1;
         }
     }
-    return 0;   
+    return 0;
 }
 
 //======================================================//
@@ -1090,7 +1090,7 @@ inline int32 CLuaBaseEntity::getStorageItem(lua_State *L)
     DSP_DEBUG_BREAK_IF(lua_isnil(L, 2) || !lua_isnumber(L, 2));
 
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
-    
+
     uint8 container = lua_tointeger(L, 1); // LOC_INVENTORY etc
     uint8 slotID = lua_tointeger(L, 2);   // slot in container
     uint8 equipID = (!lua_isnil(L,3) ? lua_tointeger(L, 3) : 255); // SLOT_MAIN etc
@@ -1732,14 +1732,17 @@ inline int32 CLuaBaseEntity::completeMission(lua_State *L)
 
         if (PChar->m_missionLog[LogID].current != MissionID)
         {
-            ShowWarning(CL_YELLOW"Lua::completeMission: completion of not current mission\n" CL_RESET, LogID);
+            ShowWarning(CL_YELLOW"Lua::completeMission: can't complete non current mission\n" CL_RESET, LogID);
         }
-        PChar->m_missionLog[LogID].current = LogID > 2 ? 0 : -1;
-        PChar->m_missionLog[LogID].complete[MissionID] = true;
-        PChar->pushPacket(new CQuestMissionLogPacket(PChar, LogID+11, 1));
-        PChar->pushPacket(new CQuestMissionLogPacket(PChar, LogID+11, 2));
+        else
+        {
+            PChar->m_missionLog[LogID].current = LogID > 2 ? 0 : -1;
+            PChar->m_missionLog[LogID].complete[MissionID] = true;
+            PChar->pushPacket(new CQuestMissionLogPacket(PChar, LogID+11, 1));
+            PChar->pushPacket(new CQuestMissionLogPacket(PChar, LogID+11, 2));
 
-        charutils::SaveMissionsList(PChar);
+            charutils::SaveMissionsList(PChar);
+        }
     }
     else
     {
@@ -2479,7 +2482,6 @@ inline int32 CLuaBaseEntity::levelRestriction(lua_State* L)
                     petutils::DespawnPet(PChar);
                 }
             }
-
         }
     }
     lua_pushinteger( L, PChar->m_LevelRestriction );
@@ -6844,7 +6846,7 @@ inline int32 CLuaBaseEntity::bcnmEnter(lua_State *L){
 
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
     CZone* PZone = PChar->loc.zone == nullptr ? zoneutils::GetZone(PChar->loc.destination) : PChar->loc.zone;
-    
+
     DSP_DEBUG_BREAK_IF(PZone->m_BattlefieldHandler == nullptr);
 
     int ZoneID = PZone->GetID();
@@ -6971,14 +6973,14 @@ inline int32 CLuaBaseEntity::isBcnmsFull(lua_State *L){
 
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
     CZone* PZone = PChar->loc.zone == nullptr ? zoneutils::GetZone(PChar->loc.destination) : PChar->loc.zone;
-    
+
     DSP_DEBUG_BREAK_IF(PZone->m_BattlefieldHandler == nullptr);
 
     uint8 full = 1;
 
     if(PZone != nullptr && PZone->m_BattlefieldHandler != nullptr &&
         PZone->m_BattlefieldHandler->hasFreeBattlefield()){
-        
+
         full = 0;
     }
     lua_pushinteger( L,full);
@@ -7122,7 +7124,7 @@ inline int32 CLuaBaseEntity::addPlayerToSpecialBattlefield(lua_State *L)
 
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
     CZone* PZone = PChar->loc.zone == nullptr ? zoneutils::GetZone(PChar->loc.destination) : PChar->loc.zone;
-    
+
     DSP_DEBUG_BREAK_IF(PZone->m_BattlefieldHandler == nullptr);
 
     int bcnm = PZone->m_BattlefieldHandler->SpecialBattlefieldAddPlayer(lua_tointeger(L, 1), PChar);
@@ -9182,12 +9184,14 @@ inline int32 CLuaBaseEntity::getPartyLeader(lua_State* L) // Todo: also add abil
     if (PChar->PParty)
     {
         PLeader = PChar->PParty->GetLeader();
-        lua_pushstring(L, PLeader->GetName());
+        if (PLeader != nullptr)
+        {
+            lua_pushstring(L, PLeader->GetName());
+            return 1;
+        }
     }
-    else
-    {
-        lua_pushnil(L);
-    }
+
+    lua_pushnil(L);
     return 1;
 }
 
@@ -9203,27 +9207,68 @@ inline int32 CLuaBaseEntity::getParty(lua_State* L)
 
     CParty* party = ((CBattleEntity*)m_PBaseEntity)->PParty;
 
+    int size = 0;
     if (party)
     {
-        lua_createtable(L, party->MemberCount(m_PBaseEntity->getZone()), 0);
-        int8 newTable = lua_gettop(L);
-        int i = 1;
-        for (auto member : party->members)
-        {
-            lua_getglobal(L, CLuaBaseEntity::className);
-            lua_pushstring(L, "new");
-            lua_gettable(L, -2);
-            lua_insert(L, -2);
-            lua_pushlightuserdata(L, (void*)member);
-            lua_pcall(L, 2, 1, 0);
-
-            lua_rawseti(L, -2, i++);
-        }
+        size = party->MemberCount(m_PBaseEntity->getZone());
     }
     else
     {
-        lua_pushnil(L);
+        size = 1;
     }
+
+    lua_createtable(L, size, 0);
+    int i = 1;
+    ((CBattleEntity*)m_PBaseEntity)->ForParty([this, &L, &i](CBattleEntity* member)
+    {
+        lua_getglobal(L, CLuaBaseEntity::className);
+        lua_pushstring(L, "new");
+        lua_gettable(L, -2);
+        lua_insert(L, -2);
+        lua_pushlightuserdata(L, (void*)member);
+        lua_pcall(L, 2, 1, 0);
+
+        lua_rawseti(L, -2, i++);
+    });
+
+    return 1;
+}
+
+inline int32 CLuaBaseEntity::getAlliance(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
+
+    CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+
+    int size = 1;
+
+    if (PChar->PParty && PChar->PParty->m_PAlliance)
+    {
+        for (auto PParty : PChar->PParty->m_PAlliance->partyList)
+        {
+            size += PParty->MemberCount(m_PBaseEntity->getZone());
+        }
+    }
+    else if (PChar->PParty)
+    {
+        size = PChar->PParty->MemberCount(m_PBaseEntity->getZone());
+    }
+
+    lua_createtable(L, size, 0);
+    int i = 0;
+
+    PChar->ForAlliance([this, &L, &i](CBattleEntity* PMember)
+    {
+        lua_getglobal(L, CLuaBaseEntity::className);
+        lua_pushstring(L, "new");
+        lua_gettable(L, -2);
+        lua_insert(L, -2);
+        lua_pushlightuserdata(L, (void*)PMember);
+        lua_pcall(L, 2, 1, 0);
+
+        lua_rawseti(L, -2, i++);
+    });
+
     return 1;
 }
 
@@ -9532,7 +9577,7 @@ inline int32 CLuaBaseEntity::getModelId(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
     DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
-    
+
     lua_pushinteger(L, RBUFW(&m_PBaseEntity->look, 16));
 
     return 1;
@@ -10064,6 +10109,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,entityAnimationPacket),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getPartyLeader),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getParty),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getAlliance),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,messageText),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,instanceEntry),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getInstance),
