@@ -91,6 +91,8 @@ void CAIAutomatonDummy::CheckCurrentAction(uint32 tick)
 
 void CAIAutomatonDummy::ActionFall()
 {
+    if( !m_PPet )
+       return;
     m_PPet->PMaster->StatusEffectContainer->RemoveAllManeuvers();
     CAIPetDummy::ActionFall();
 }
@@ -337,6 +339,8 @@ bool CAIAutomatonDummy::CheckRangedAttack()
 
 void CAIAutomatonDummy::TransitionBack(bool skipWait /*= false*/)
 {
+    if( !m_PPet  )
+       return;
     if (m_PPet->animation == ANIMATION_ATTACK)
     {
         m_ActionType = ACTION_ATTACK;

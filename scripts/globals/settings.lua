@@ -167,7 +167,7 @@ SUNBREEZE_2011 = 1; -- Set to 1 to give starting characters Far East dress from 
 CHRISTMAS = 1; -- Set to 1 to give starting characters Christmas dress.
 HALLOWEEN = 1; -- Set to 1 to give starting characters Halloween items (Does not start event).
 HALLOWEEN_2005 = 1; -- Set to 1 to Enable the 2005 version of Harvest Festival, will start on Oct. 20 and end Nov. 1.
-HALLOWEEN_YEAR_ROUND = 1; -- Set to 1 to have Harvest Festival initialize outside of normal times.
+HALLOWEEN_YEAR_ROUND = 0; -- Set to 1 to have Harvest Festival initialize outside of normal times.
 
 -- MISC
 HOMEPOINT_HEAL = 0; --Set to 1 if you want Home Points to heal you like in single-player Final Fantasy games.

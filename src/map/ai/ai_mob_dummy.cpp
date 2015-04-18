@@ -425,9 +425,12 @@ void CAIMobDummy::ActionDropItems()
                         uint8 tries = 0;
                         uint8 maxTries = 1 + (m_PMob->m_THLvl > 2 ? 2 : m_PMob->m_THLvl);
                         uint8 bonus = (m_PMob->m_THLvl > 2 ? (m_PMob->m_THLvl - 2)*10 : 0);
+                        uint16 droprate = DropList->at(i).DropRate;
+                        uint16 calcdrop = ( DropList->at(i).DropRate * 2 ) + bonus;
                         while (tries < maxTries)
                         {
-                            if (WELL512::GetRandomNumber(1000) < DropList->at(i).DropRate * map_config.drop_rate_multiplier + bonus)
+                           uint16 random = rand()%1000+1;
+                            if ( random < calcdrop )
                             {
                                 PChar->PTreasurePool->AddItem(DropList->at(i).ItemID, m_PMob);
                                 break;
