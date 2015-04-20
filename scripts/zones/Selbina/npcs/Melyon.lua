@@ -86,7 +86,7 @@ function onEventFinish(player,csid,option)
 		player:messageSpecial(GIL_OBTAINED,100);
 		player:addFame(BASTOK,  BAS_FAME*10);
 		player:addFame(SANDORIA,SAN_FAME*10);
-        player:addFame(JEUNO, JEUNO_FAME*10);
+	        player:addFame(JEUNO, JEUNO_FAME*10);
 		player:completeQuest(OTHER_AREAS,ONLY_THE_BEST);
 	elseif(csid == 0x003f) then
 		player:tradeComplete();
@@ -94,7 +94,7 @@ function onEventFinish(player,csid,option)
 		player:messageSpecial(GIL_OBTAINED,120);
 		player:addFame(BASTOK,  BAS_FAME*20);
 		player:addFame(SANDORIA,SAN_FAME*20);
-        player:addFame(JEUNO, JEUNO_FAME*20);
+	        player:addFame(JEUNO, JEUNO_FAME*20);
 		player:completeQuest(OTHER_AREAS,ONLY_THE_BEST);
 	elseif(csid == 0x0040) then
 		player:tradeComplete();
@@ -102,7 +102,7 @@ function onEventFinish(player,csid,option)
 		player:messageSpecial(GIL_OBTAINED,600);
 		player:addFame(BASTOK,  BAS_FAME*30);
 		player:addFame(SANDORIA,SAN_FAME*30);
-        player:addFame(JEUNO, JEUNO_FAME*30);
+        	player:addFame(JEUNO, JEUNO_FAME*30);
 		player:completeQuest(OTHER_AREAS,ONLY_THE_BEST);
 	end
 	

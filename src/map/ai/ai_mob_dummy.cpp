@@ -426,7 +426,7 @@ void CAIMobDummy::ActionDropItems()
                         uint8 maxTries = 1 + (m_PMob->m_THLvl > 2 ? 2 : m_PMob->m_THLvl);
                         uint8 bonus = (m_PMob->m_THLvl > 2 ? (m_PMob->m_THLvl - 2)*10 : 0);
                         uint16 droprate = DropList->at(i).DropRate;
-                        uint16 calcdrop = ( DropList->at(i).DropRate * 2 ) + bonus;
+                        uint16 calcdrop = ( DropList->at(i).DropRate * .9 ) + bonus;
                         while (tries < maxTries)
                         {
                            uint16 random = rand()%1000+1;
