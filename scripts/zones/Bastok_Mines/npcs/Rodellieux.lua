@@ -21,10 +21,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(FAUREGANDI);
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,RODELLIEUX_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,RODELLIEUX_OPEN_DIALOG);
         stock = {
             0x11db,    90,   --Beaugreens
@@ -33,7 +30,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);
 
-    end
+    
 
 end; 
 

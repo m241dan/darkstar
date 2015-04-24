@@ -22,11 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(FAUREGANDI);
-
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,SHEIAPOHRICHAMAHA_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,SHEIAPOHRICHAMAHA_OPEN_DIALOG);
 
         stock = {
@@ -36,7 +32,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
+   
 
 end; 
 

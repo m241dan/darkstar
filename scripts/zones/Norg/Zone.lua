@@ -38,10 +38,10 @@ function onZoneIn(player,prevZone)
 
 	local cs = -1;
 
-	if((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then
+    if((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then
 		player:setPos(-19.238,-2.163,-63.964,187);
     end
-	if(player:getCurrentMission(ZILART) == THE_NEW_FRONTIER) then
+    if(player:getCurrentMission(ZILART) == THE_NEW_FRONTIER) then
 		cs = 0x0001;
     elseif(player:getCurrentMission(ZILART) == AWAKENING and player:getVar("ZilartStatus") == 0 or player:getVar("ZilartStatus") == 2) then
         cs = 0x00B0;
