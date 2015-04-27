@@ -51,7 +51,7 @@ high_tier[JOB_BLU] = { 73, { 17741 }, { 1 } }; -- perdu hanger
 high_tier[JOB_DNC] = { 72, { 18031 }, { 1 } }; -- Amir Jambiya
 high_tier[JOB_COR] = { 72, { 17275 }, { 1 } }; -- Coffinmaker
 
-function handleLevelIncentive( player )
+function handleLevelIncentive( player, command )
    local job = player:getMainJob();
    local lvl = player:getTrueLvl( job );
    local mid_table = mid_tier[job];
@@ -64,55 +64,74 @@ function handleLevelIncentive( player )
 
    player:PrintToPlayer( "Leveling Incentive:", 0xE );
 
-   if( player:getVar("FirstIncentiveGain") == 0 ) then
-      local total = player:getTotalLvls() - 22;
-      player:setVar("FirstIncentiveGain", 1 );
-      player:PrintToPlayer( string.format( "You have been retroactively been rewarded %d gil", total * 1000 ), 0xE );
-      player:addGil(total*1000);
-   else
-      player:PrintToPlayer( "You have gained 1000 gil from Leveling Incentives.", 0xE );
-      player:addGil(1000);
+   if( command == false ) then
+      if( player:getVar("FirstIncentiveGain") == 0 ) then
+         local total = player:getTotalLvls() - 22;
+         player:setVar("FirstIncentiveGain", 1 );
+         player:PrintToPlayer( string.format( "You have been retroactively been rewarded %d gil", total * 1000 ), 0xE );
+         player:addGil(total*1000);
+      else
+         player:PrintToPlayer( "You have gained 1000 gil from Leveling Incentives.", 0xE );
+         player:addGil(1000);
+      end
+
+      -- handle AF
+      if( player:getVar( string.format( "LIAF%d", job ) ) == 0 and lvl >= 50 ) then
+         player:setVar( string.format( "LIAF%d", job ), 1 );
+         player:PrintToPlayer( "Congratulations, you have been awarded your AF, go to a storage NPC to retrieve it.", 0xE );
+         if( job >= JOB_BLU ) then
+            if( job == JOB_BLU ) then player:addKeyItem( MAGUS_ATTIRE_CLAIM_SLIP ) end
+            if( job == JOB_COR ) then player:addKeyItem( CORSAIRS_ATTIRE_CLAIM_SLIP ) end
+            if( job == JOB_PUP ) then player:addKeyItem( PUPPETRY_ATTIRE_CLAIM_SLIP ) end
+            if( job == JOB_DNC ) then 
+               player:addKeyItem( 1967 );
+               player:addKeyItem( 1968 );
+            end
+            if( job == JOB_SCH ) then player:addKeyItem( SCHOLARS_ATTIRE_CLAIM_SLIP ) end
+         else
+            player:addKeyItem( job + 653 );
+         end
+      end
    end
 
-   -- handle AF
-   if( player:getVar( string.format( "LIAF%d", job ) ) == 0 and lvl >= 50 ) then
-      player:setVar( string.format( "LIAF%d", job ), 1 );
-      player:PrintToPlayer( "Congratulations, you have been awarded your AF, go to a storage NPC to retrieve it.", 0xE );
-      if( job >= JOB_BLU ) then
-         if( job == JOB_BLU ) then player:addKeyItem( MAGUS_ATTIRE_CLAIM_SLIP ) end
-         if( job == JOB_COR ) then player:addKeyItem( CORSAIRS_ATTIRE_CLAIM_SLIP ) end
-         if( job == JOB_PUP ) then player:addKeyItem( PUPPETRY_ATTIRE_CLAIM_SLIP ) end
-         if( job == JOB_DNC ) then 
-            player:addKeyItem( 1967 );
-            player:addKeyItem( 1968 );
-         end
-         if( job == JOB_SCH ) then player:addKeyItem( SCHOLARS_ATTIRE_CLAIM_SLIP ) end
-      else
-         player:addKeyItem( job + 653 );
-      end
+   if( player:getFreeSlotsCount() <= 0 ) then
+      player:PrintToPlayer( "Your inventory is full, please sort and type @claim.", 0xE );
+      return;
    end
 
    if( lvl == 75 ) then
       local count = player:getSFJobs();
       if( count == 1 ) then
-         player:PrintToPlayer( "Congratulations on your first 75! Have a Turban and gil on us.", 0xE );
-         player:addGil(100000);
-         player:addItem( 15270 );
+         if( player:getVar( "LIFirst75" ) == 0 ) then
+            player:PrintToPlayer( "Congratulations on your first 75! Have a Turban and gil on us.", 0xE );
+            player:addGil(100000);
+            player:setVar( "LIFirst75", 1 );
+            player:addItem( 15270 );
+         end
       end
       if( count == 2 ) then
-         player:PrintToPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape and gil", 0xE );
-         player:addGil(500000);
-         player:addItem( 11538 );
+         if( player:getVar( "LISecond75" ) == 0 ) then
+            player:PrintToPlayer( "Congratulations on your second 75! Enjoy your Nexus Cape and gil", 0xE );
+            player:addGil(500000);
+            player:setVar( "LISecond75", 1 );
+            player:addItem( 11538 );
+         end
       end
       if( count == 3 ) then
-         player:PrintToPlayer( "Congratulations on your third 75! Enjoy your gil", 0xE );
-         player:addGil(1000000);
+         if( player:getVar( "LIThird75" ) == 0 ) then
+            player:setVar( "LIThird75", 1 );
+            player:PrintToPlayer( "Congratulations on your third 75! Enjoy your gil", 0xE );
+            player:addGil(1000000);
+         end
       end
       if( count == 4 ) then
-         player:PrintToPlayer( "Congratulations on your fourth 75! Enjoy your dynamis curreny.", 0xE );
-         player:addItem( 1456, 1 );
-         player:addItem( 1453, 1 );
-         player:addItem( 1450, 1 );         
+         if( player:getVar( "LIFourth75" ) == 0 ) then
+            player:PrintToPlayer( "Congratulations on your fourth 75! Enjoy your dynamis curreny.", 0xE );
+            player:setVar( "LIFourth75", 1 );
+            player:addItem( 1456, 1 );
+            player:addItem( 1453, 1 );
+            player:addItem( 1450, 1 );         
+         end
       end
    end
 
@@ -124,7 +143,7 @@ function handleLevelIncentive( player )
 
 
    if( mid_table[1] == true ) then
-      if( lvl % mid_table[2] == 0 ) then
+      if( lvl % mid_table[2] == 0 and command == false ) then
          player:PrintToPlayer( "You have gained your per 5 or 10 level reward.", 0xE );
          for x = 1, m_len, 1 do 
             player:addItem( m_items[x], m_amounts[x] );

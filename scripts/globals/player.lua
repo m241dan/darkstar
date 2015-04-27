@@ -337,7 +337,7 @@ function CharCreate(player)
 end;
 
 function onPlayerLevelUp(player)
-   handleLevelIncentive( player )
+   handleLevelIncentive( player, false )
 end
 
 function onPlayerLevelDown(player)
