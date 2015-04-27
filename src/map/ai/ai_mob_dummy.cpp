@@ -427,9 +427,47 @@ void CAIMobDummy::ActionDropItems()
                         uint8 bonus = (m_PMob->m_THLvl > 2 ? (m_PMob->m_THLvl - 2)*10 : 0);
                         uint16 droprate = DropList->at(i).DropRate;
                         uint16 calcdrop = ( DropList->at(i).DropRate * .9 ) + bonus;
+                        uint16 itemID = DropList->at(i).ItemID;
+                        uint16 current_pop = m_PMob->loc.zone->GetZonePlayerCount();
+                        bool dynaDrop = false;
+                        //Melfnamis begin
+                        if( ( itemID >= 15072 && itemID <= 15146 ) ||
+                            ( itemID >= 11292 && itemID <= 11307 ) ||
+                            ( itemID >= 11382 && itemID <= 11398 ) ||
+                            ( itemID >= 11465 && itemID <= 11480 ) ||
+                            ( itemID >= 15025 && itemID <= 15040 ) ||
+                            ( itemID >= 15478 && itemID <= 15484 ) ||
+                            ( itemID >= 15871 && itemID <= 15879 ) ||
+                            ( itemID >= 16346 && itemID <= 16362 ) ||
+                            itemID == 15920 || itemID == 15925 || itemID == 16248 ||
+                            itemID == 16244 || itemID == 16245 )
+                        {
+                           dynaDrop = true;
+                           calcdrop = (uint16)(calcdrop * .2 );
+                           ShowDebug( CL_CYAN"Dyna Drop.\n" CL_RESET );
+                           if( current_pop <= 8 )
+                           {
+                              ShowDebug( CL_CYAN"Dyna: Less than 9 buff.\n" CL_RESET );
+                              droprate = (uint16)( calcdrop * 1.25 );
+                           }
+                        }
+
+                        if( itemID >= 1450 && itemID <= 1457 )
+                        {
+                           ShowDebug( CL_CYAN"Dyna Coin Drop.\n" CL_RESET );
+                           dynaDrop = true;
+                           if( current_pop > 8 )
+                              droprate = (uint16)( calcdrop * 1.10 );
+                        }
+
+                        if( dynaDrop )
+                           luautils::OnDynaDrop( m_PMob->loc.zone, itemID );
+
                         while (tries < maxTries)
                         {
                            uint16 random = rand()%1000+1;
+                           if( dynaDrop )
+                              ShowDebug( CL_CYAN"CDR: %u Rand: %u\n" CL_RESET, calcdrop, random );
                             if ( random < calcdrop )
                             {
                                 PChar->PTreasurePool->AddItem(DropList->at(i).ItemID, m_PMob);

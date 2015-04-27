@@ -3740,6 +3740,28 @@ int32 OnConquestUpdate(CZone* PZone, ConquestUpdate type)
     return 0;
 }
 
+int32 OnDynaDrop(CZone *PZone, uint16 itemID )
+{
+   lua_prepscript( "scripts/globals/melfnamis.lua" );
+   if( prepFile( File, "onDynaDrop" ) )
+   {
+      return -1;
+   }
+
+   CLuaZone LuaZone(PZone);
+   Lunar<CLuaZone>::push(LuaHandle, &LuaZone);
+
+   lua_pushinteger( LuaHandle, itemID );
+
+   if( lua_pcall( LuaHandle, 2, LUA_MULTRET, 0 ) )
+   {
+      ShowError( "luautils::onDynaDrop: %s\n", lua_tostring( LuaHandle, -1 ) );
+      lua_pop( LuaHandle, 1 );
+      return -1;
+   }
+   return 0;
+}
+
 /********************************************************************
 	onBcnmEnter - callback when you enter a BCNM via a lua call to bcnmEnter(bcnmid)
 *********************************************************************/

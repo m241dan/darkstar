@@ -708,6 +708,11 @@ void CZone::SpawnTransport(CCharEntity* PChar)
     m_zoneEntities->SpawnTransport(PChar);
 }
 
+uint16 CZone::GetZonePlayerCount( void )
+{
+   return m_zoneEntities->GetCharList().size();
+}
+
 /************************************************************************
 *                                                                       *
 *  Получаем указатель на любую сущность в зоне по ее targid             *
