@@ -34,8 +34,10 @@ stock = {0x0263,36,	--Rye Flour
 	 0x111A,54,	--Selbina Milk
 	 0x118A,432,	--Pickled Herring
 	 0x11CF,4485,	--Herb Quus
-	 0x0b32,9200}	--Selbina Waystone
- 
+	 0x0b32,9200,	--Selbina Waystone
+         
+	}
+
 showShop(player, STATIC, stock);
 end; 
 

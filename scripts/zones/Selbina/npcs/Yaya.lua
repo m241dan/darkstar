@@ -27,7 +27,7 @@ function onTrade(player,npc,trade)
 	 0x1132, 325, -- Red Terrapin
 	 0x1166,1100, -- Emperor Fish
 	 0x111F,1200, -- Gold Lobster
-	 
+	 0x111B,350,  -- Cheval Salmon
       };
       showShop( player, STATIC, stock );
       return;

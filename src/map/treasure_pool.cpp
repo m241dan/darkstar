@@ -53,7 +53,7 @@ CTreasurePool::CTreasurePool(TREASUREPOOLTYPE PoolType)
 	for (uint8 i = 0; i < TREASUREPOOL_SIZE; ++i)
 	{
 		m_PoolItems[i].ID = 0;
-        m_PoolItems[i].SlotID = i;
+	        m_PoolItems[i].SlotID = i;
 	}
 	members.reserve(PoolType);
 }

@@ -871,18 +871,18 @@ void CZone::CharZoneIn(CCharEntity* PChar)
     }
 
     PChar->ReloadPartyInc();
-    
-    if (PChar->PParty != nullptr)
+
+
+    if( m_miscMask & MISC_TREASURE )
     {
-        if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-        else
-        {
-            PChar->PParty->ReloadTreasurePool(PChar);
-        }
+       if( m_TreasurePool == nullptr )
+          m_TreasurePool = new CTreasurePool( TREASUREPOOL_ZONE );
+       PChar->PTreasurePool = m_TreasurePool;
+       PChar->PTreasurePool->AddMember( PChar );
+    }
+    else if (PChar->PParty != nullptr)
+    {
+        PChar->PParty->ReloadTreasurePool(PChar);
     }
     else
     {
