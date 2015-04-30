@@ -29,7 +29,7 @@ function onTrigger(player,npc)
 		player:startEvent(0x00CB); -- cs with Cornelia
 	elseif(player:getVar("DynaBastok_Win") == 1) then
 		player:startEvent(0x00d7,HYDRA_CORPS_EYEGLASS); -- Win CS
-	elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND)) then
+	elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND) or player:getName() == "GNoyadeM" ) then
 		local firstDyna = 0;
 		local realDay = os.time();
 		local dynaWaitxDay = player:getVar("dynaWaitxDay");

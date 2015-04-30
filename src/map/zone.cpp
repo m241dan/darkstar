@@ -376,6 +376,7 @@ void CZone::LoadZoneSettings()
         }
         if (m_miscMask & MISC_TREASURE)
         {
+            ShowDebug( CL_CYAN"Creating Global Treasure for %s.\n" CL_RESET, this->GetName() );
             m_TreasurePool = new CTreasurePool(TREASUREPOOL_ZONE);
         }
     }
@@ -875,17 +876,23 @@ void CZone::CharZoneIn(CCharEntity* PChar)
 
     if( m_miscMask & MISC_TREASURE )
     {
+       ShowDebug( CL_CYAN"Attemping to Assign Global Treasure for %s\n" CL_RESET, PChar->GetName() );
        if( m_TreasurePool == nullptr )
+       {
+          ShowDebug( CL_CYAN"Creating new global treasure for %s\n" CL_RESET, PChar->GetName() );
           m_TreasurePool = new CTreasurePool( TREASUREPOOL_ZONE );
+       }
        PChar->PTreasurePool = m_TreasurePool;
        PChar->PTreasurePool->AddMember( PChar );
     }
     else if (PChar->PParty != nullptr)
     {
+        ShowDebug( CL_CYAN"Doing Party treasure for %s\n" CL_RESET, PChar->GetName() );
         PChar->PParty->ReloadTreasurePool(PChar);
     }
     else
     {
+        ShowDebug( CL_CYAN"Doing solo treasure for %s\n" CL_RESET, PChar->GetName() );
         PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
         PChar->PTreasurePool->AddMember(PChar);
     }
