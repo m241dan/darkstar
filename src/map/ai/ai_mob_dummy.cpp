@@ -426,7 +426,7 @@ void CAIMobDummy::ActionDropItems()
                         uint8 maxTries = 1 + (m_PMob->m_THLvl > 2 ? 2 : m_PMob->m_THLvl);
                         uint8 bonus = (m_PMob->m_THLvl > 2 ? (m_PMob->m_THLvl - 2)*10 : 0);
                         uint16 droprate = DropList->at(i).DropRate;
-                        uint16 calcdrop = ( DropList->at(i).DropRate * .9 ) + bonus;
+                        uint16 calcdrop = DropList->at(i).DropRate + bonus;
                         uint16 itemID = DropList->at(i).ItemID;
                         uint16 current_pop = m_PMob->loc.zone->GetZonePlayerCount();
                         bool dynaDrop = false;
@@ -443,7 +443,7 @@ void CAIMobDummy::ActionDropItems()
                             itemID == 16244 || itemID == 16245 )
                         {
                            dynaDrop = true;
-                           calcdrop = (uint16)(calcdrop * .2 );
+                           calcdrop = (uint16)(calcdrop * .25 );
                            ShowDebug( CL_CYAN"Dyna Drop.\n" CL_RESET );
                            if( current_pop <= 8 )
                            {

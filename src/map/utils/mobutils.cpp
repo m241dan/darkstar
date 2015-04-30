@@ -66,13 +66,13 @@ uint16 GetBaseToRank(uint8 rank, uint16 lvl)
 {
 	switch (rank)
 	{
-		case 1: return (5+((lvl-1)*50)/100);
-		case 2: return (4+((lvl-1)*45)/100);
-		case 3: return (4+((lvl-1)*40)/100);
-		case 4: return (3+((lvl-1)*35)/100);
-		case 5: return (3+((lvl-1)*30)/100);
-		case 6: return (2+((lvl-1)*25)/100);
-		case 7: return (2+((lvl-1)*20)/100);
+		case 1: return (5+((lvl-1)*60)/100);
+		case 2: return (4+((lvl-1)*55)/100);
+		case 3: return (4+((lvl-1)*50)/100);
+		case 4: return (3+((lvl-1)*45)/100);
+		case 5: return (3+((lvl-1)*40)/100);
+		case 6: return (2+((lvl-1)*35)/100);
+		case 7: return (2+((lvl-1)*30)/100);
 	}
 	return 0;
 }

@@ -268,6 +268,22 @@ bool CAICharNormal::IsMobOwner(CBattleEntity* PBattleTarget)
 {
     DSP_DEBUG_BREAK_IF(PBattleTarget == nullptr);
 
+    switch( PBattleTarget->loc.zone->GetID() )
+    {
+       default: break;
+       case 39:
+       case 40:
+       case 41:
+       case 42:
+       case 134:
+       case 135:
+       case 185:
+       case 186:
+       case 187:
+       case 188:
+          return true;
+    }
+
     if (PBattleTarget->m_OwnerID.id == 0 || PBattleTarget->m_OwnerID.id == m_PChar->id || PBattleTarget->objtype == TYPE_PC)
     {
         return true;
