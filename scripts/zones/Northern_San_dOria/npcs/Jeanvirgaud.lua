@@ -9,7 +9,7 @@ package.loaded["scripts/zones/Northern_San_dOria/TextIDs"] = nil;
 
 require("scripts/globals/conquest");
 require("scripts/zones/Northern_San_dOria/TextIDs");
-
+require("scripts/globals/missions");
 guardnation = SANDORIA;
 csid 		= 0x02cc;
 
@@ -18,6 +18,17 @@ csid 		= 0x02cc;
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   local ZilartProgress = player:getCurrentMission(ZILART);
+   local ZVar = player:getVar("ZilartStatus");
+
+   if( trade:getItemCount() == 1 and trade:getGil() == 1500 ) then
+      if( ZilartProgress >= THE_GATE_OF_THE_GODS and ZilartProgress ~= 255 ) then
+         player:tradeComplete();
+         player:setPos( -12, -54, -597, 214, 0x82 );
+      else
+         player:PrintToPlayer( "You have not completed enough Zilart to warp to sky.", 0xE );
+      end
+   end
 end;
 
 -----------------------------------

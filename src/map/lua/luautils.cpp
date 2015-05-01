@@ -3759,6 +3759,21 @@ int32 OnDynaDrop(CZone *PZone, uint16 itemID )
       lua_pop( LuaHandle, 1 );
       return -1;
    }
+
+   int32 returns = lua_gettop(LuaHandle) - oldtop;
+   int32 to_return;
+   if( returns > 0 )
+   {
+      if( !lua_isboolean(LuaHandle, -1 ) || returns != 1 )
+      {
+         ShowError("luautils::onDynaDrop: bad return, not a boolean\n" );
+         lua_pop( LuaHandle, returns );
+         return -1;
+      }
+      to_return = lua_toboolean( LuaHandle, -1 );
+      lua_pop( LuaHandle, returns );
+      return to_return;
+   }
    return 0;
 }
 
