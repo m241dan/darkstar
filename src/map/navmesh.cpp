@@ -86,6 +86,8 @@ void CNavMesh::ToDetourPos(position_t* pos, float* out){
 CNavMesh::CNavMesh()
 {
   m_navMesh = nullptr;
+  m_hit.path = m_hitPath;
+  m_hit.maxPath = 20;
 }
 
 CNavMesh::~CNavMesh()
@@ -423,9 +425,7 @@ bool CNavMesh::raycast(position_t start, position_t end)
     return true;
   }
 
-  dtRaycastHit hit;
-
-  status = m_navMeshQuery->raycast(startRef, spos, epos, &filter, 0, &hit);
+  status = m_navMeshQuery->raycast(startRef, spos, epos, &filter, 0, &m_hit);
 
   if(dtStatusFailed(status))
   {
@@ -435,7 +435,7 @@ bool CNavMesh::raycast(position_t start, position_t end)
   }
 
   // no wall was hit
-  if(hit.t == FLT_MAX){
+  if(m_hit.t == FLT_MAX){
     return true;
   }
 
@@ -451,17 +451,6 @@ bool CNavMesh::test(uint16 zoneId)
   int8 expectedLength = 0;
 
   switch(zoneId){
-    case 100:
-      // west ronfaure
-      start.x = -224;
-      start.y = 60;
-      start.z = -316;
-
-      end.x = -224;
-      end.y = 60;
-      end.z = -324;
-      expectedLength = 2;
-    break;
     case 127:
       // behe dominion
       // navmesh transformation x, -y, -z
@@ -487,7 +476,6 @@ bool CNavMesh::test(uint16 zoneId)
       expectedLength = 4;
     break;
     default:
-      ShowWarning("CNavMesh::test Skipping sanity test for zone (%d)\n", zoneId);
       return true;
   }
 
