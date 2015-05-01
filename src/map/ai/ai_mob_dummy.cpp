@@ -452,7 +452,9 @@ void CAIMobDummy::ActionDropItems()
                         {
                            dynaDrop = true;
                            if( current_pop > 8 )
-                              droprate = (uint16)( calcdrop * 1.10 );
+                              droprate = (uint16)( calcdrop * 1.05 );
+                           else
+                              droprate = (uint16)( calcdrop * .95 );
                         }
 
                         while (tries < maxTries)
