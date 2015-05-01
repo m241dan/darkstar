@@ -10434,14 +10434,11 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,removeAllManeuvers),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addBurden),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setElevator),
-<<<<<<< HEAD
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSynced),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSync),
-=======
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,storeWithPorterMoogle),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getRetrievableItemsForSlip),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,retrieveItemFromSlip),
->>>>>>> master
     {nullptr,nullptr}
 };

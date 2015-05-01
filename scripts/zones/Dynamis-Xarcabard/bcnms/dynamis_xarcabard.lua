@@ -14,15 +14,10 @@ end;
 
 -- Physically entering the BCNM via bcnmEnter(bcnmid)
 function onBcnmEnter(player,instance)
-	
-	player:setVar("DynamisID",GetServerVariable("[DynaXarcabard]UniqueID"));
-	local realDay = os.time();
-    local dynaWaitxDay = player:getVar("dynaWaitxDay");
-
-    if ((dynaWaitxDay + (BETWEEN_2DYNA_WAIT_TIME * 24 * 60 * 60)) < realDay) then
-		player:setVar("dynaWaitxDay",realDay);
-	end
-	
+   if( player:getVar("DynamisID") ~= GetServerVariable("[DynaXarcabard]UniqueID") ) then
+      player:setVar("DynamisID",GetServerVariable("[DynaXarcabard]UniqueID"));
+      player:addVar("DynamisEntries", -1 );
+   end
 end;
 
 -- Leaving the Dynamis by every mean possible, given by the LeaveCode
