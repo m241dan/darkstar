@@ -103,7 +103,9 @@ void CAIGeneral::Reset()
 
 ACTIONTYPE CAIGeneral::GetCurrentAction()
 {
-	return m_ActionType;
+   if( this != nullptr )
+      return m_ActionType;
+   return ACTION_NONE;
 }
 
 /************************************************************************
