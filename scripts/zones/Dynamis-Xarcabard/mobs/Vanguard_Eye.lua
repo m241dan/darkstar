@@ -5,6 +5,7 @@
 -----------------------------------
 
 require("scripts/globals/status");
+package.loaded["scripts/globals/dynamis"] = nil;
 require("scripts/globals/dynamis");
 
 -----------------------------------
@@ -60,8 +61,6 @@ function onMobEngaged(mob,target)
 							end
 						elseif(mobNBR > 20) then
 							SpawnMob(mobNBR):setMobMod(MOBMOD_SUPERLINK, mob:getShortID());
-							GetMobByID(mobNBR):setPos(X,Y,Z);
-							GetMobByID(mobNBR):setSpawn(X,Y,Z);
 							
 							local MJob = GetMobByID(mobNBR):getMainJob();
 							if(MJob == 9 or MJob == 15) then

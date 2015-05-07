@@ -26,7 +26,6 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 --print("leave code "..leavecode);
-	
 	if(leavecode == 4) then
            if( player ~= nil ) then player:setPos(569.312,-0.098,-270.158,90,0x70); end
 	   GetNPCByID(17330778):setStatus(2);

@@ -1413,6 +1413,7 @@ INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330685', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330690', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330718', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330756', '3');
+INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330814', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330815', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330816', '3');
 INSERT INTO `bcnm_battlefield` VALUES ('1285', '1', '17330817', '3');
