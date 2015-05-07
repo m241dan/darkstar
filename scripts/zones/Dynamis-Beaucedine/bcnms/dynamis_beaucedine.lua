@@ -24,10 +24,11 @@ end;
 -- 4=Finish he dynamis
 
 function onBcnmLeave(player,instance,leavecode)
---print("leave code "..leavecode);
+print("leave code "..leavecode);
 	
 	if(leavecode == 4) then
-		SetServerVariable("[DynaBeaucedine]UniqueID",0);
+           if( player ~= nil ) then player:setPos(-284.751,-39.923,-422.948,235,0x6F); end
+	   SetServerVariable("[DynaBeaucedine]UniqueID",0);
 	end
 	
 end;

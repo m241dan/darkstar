@@ -27,17 +27,13 @@ function onTrigger(player,npc)
 	
 	if(player:getVar("DynaBeaucedine_Win") == 1) then
 		player:startEvent(0x0086,HYDRA_CORPS_INSIGNIA); -- Win CS
-	elseif(player:hasKeyItem(HYDRA_CORPS_COMMAND_SCEPTER) and 
-		   player:hasKeyItem(HYDRA_CORPS_EYEGLASS) and 
-		   player:hasKeyItem(HYDRA_CORPS_LANTERN) and 
-		   player:hasKeyItem(HYDRA_CORPS_TACTICAL_MAP)) then
-
+        elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND)) then
                 if( player:getVar( "FirstNewDyna" ) == 0 ) then
                    player:setVar( "FirstNewDyna", 1 );
                    player:setVar( "DynamisEntries", 1 );
                 end
 		
-		if(checkFirstDyna(player,4)) then  -- First Dyna-Bastok => CS
+		if(checkFirstDyna(player,5)) then  -- First Dyna-Bastok => CS
 			firstDyna = 1; 
 		end
 		
@@ -74,7 +70,7 @@ function onEventFinish(player,csid,option)
 	if(csid == 0x0086) then
 		player:setVar("DynaBeaucedine_Win",0);
 	elseif(csid == 0x0077 and option == 0) then
-		if(checkFirstDyna(player,4)) then
+		if(checkFirstDyna(player,5)) then
 			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 8);
 		end
 		
