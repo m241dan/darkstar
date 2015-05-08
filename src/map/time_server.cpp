@@ -47,6 +47,7 @@ int32 time_server(uint32 tick,CTaskMgr::CTask* PTask)
         {
             conquest::UpdateWeekConquest();
             CVanaTime::getInstance()->lastConquestTally = tick;
+            int32 ret = Sql_Query(SqlHandle, "UPDATE char_vars SET value=1 WHERE value=-1 AND varname='RelicBuys';" );
         }
     }
     // hourly conquest update

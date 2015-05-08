@@ -18,6 +18,13 @@ function onBcnmEnter(player,instance)
       player:setVar("DynamisID",GetServerVariable("[DynaXarcabard]UniqueID"));
       player:addVar("DynamisEntries", -1 );
    end
+--   local relicid = player:getVar( "RelicID" );
+--   local dynaid = player:getVar( "DynamisID" );
+--   if( relicid == dynaid or relicid == -2 ) then
+--      player:addItem( player:getVar( "RelicBought" ) );
+--      player:messageSpecial( ITEM_OBTAINED, player:getVar( "RelicBought" ) );
+--      player:setVar( "RelicID", dynaid );
+--   end
 end;
 
 -- Leaving the Dynamis by every mean possible, given by the LeaveCode
@@ -26,6 +33,10 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 --print("leave code "..leavecode);
+
+--   local rb = player:getVar( "RelicBought" );
+--   if( rb ~= 0 ) then player:delItem( rb ); end
+
 	if(leavecode == 4) then
            if( player ~= nil ) then player:setPos(569.312,-0.098,-270.158,90,0x70); end
 	   GetNPCByID(17330778):setStatus(2);

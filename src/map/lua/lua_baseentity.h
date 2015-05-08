@@ -150,6 +150,7 @@ public:
     int32 canUsePet(lua_State *L);          // check to see if character can call pet, 0 if so
 
     int32 addItem(lua_State*);              // Add item to Entity inventory (additem(itemNumber,quantity))
+    int32 delItem(lua_State*L);		    // Delete an item from anywhere on the on a character
     int32 hasItem(lua_State*);              // Check to see if Entity has item in inventory (hasItem(itemNumber))
     int32 addTempItem(lua_State*);          // Add temp item to Entity Temp inventory
     int32 getFreeSlotsCount(lua_State*);    // Gets value of free slots in Entity inventory
