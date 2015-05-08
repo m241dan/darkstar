@@ -222,6 +222,8 @@ enum MODIFIER
     MOD_SKILLCHAINBONUS           = 0xAE,  // Damage bonus applied to skill chain damage.  Modifier from effects/traits (modId = 174)
     MOD_SKILLCHAINDMG             = 0xAF,  // Damage bonus applied to skill chain damage.  Modifier from gear (multiplicative after effect/traits) (modId = 175)
 
+    MOD_MAGIC_DAMAGE             = 0x137, // Magic damage added directly to the spell's base damage (modId = 311)
+	
     // FOOD!
     MOD_FOOD_HPP                  = 0xB0,  // (modId = 176)
     MOD_FOOD_HP_CAP               = 0xB1,  // (modId = 177)
@@ -544,6 +546,7 @@ enum MODIFIER
     MOD_EAT_RAW_FISH              = 0x19C, // (modId = 412)
     MOD_EAT_RAW_MEAT              = 0x19D, // (modId = 413)
 
+    MOD_ENHANCES_CURSNA           = 0x136, // Used by gear with the "Enhances Cursna" attribute (modId = 310)
     MOD_RETALIATION               = 0x19E, // Increases damage of Retaliation hits (modId = 414)
     MOD_AUGMENTS_THIRD_EYE        = 0x1FC, // Adds counter to 3rd eye anticipates & if using Seigan counter rate is increased by 15% (modId = 508)
 
@@ -562,6 +565,7 @@ enum MODIFIER
     // MOD_SPARE = 0x139, // (modId = 313)
     // MOD_SPARE = 0x13A, // (modId = 314)
     // MOD_SPARE = 0x13B, // (modId = 315)
+    // MOD_SPARE = 0x206, // (modId = 518)
 
 };
 

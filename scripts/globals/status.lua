@@ -1109,6 +1109,7 @@ MOD_WYVERN_BREATH       = 0x192
 MOD_REGEN_DOWN      	 = 0x194			-- poison
 MOD_REFRESH_DOWN		 = 0x195			-- plague, reduce mp
 MOD_REGAIN_DOWN			 = 0x196			-- plague, reduce tp
+MOD_MAGIC_DAMAGE       = 0x137 --  Magic damage added directly to the spell's base damage (modId = 311)
 
 -- Gear set modifiers
 MOD_DA_DOUBLE_DAMAGE		  = 0x198 -- Double attack's double damage chance %.
@@ -1216,6 +1217,7 @@ MOD_OCC_DO_EXTRA_DMG          = 0x1FB -- Multiplier for "Occasionally do x times
 MOD_EAT_RAW_FISH              = 0x19C -- (modId = 412)
 MOD_EAT_RAW_MEAT              = 0x19D -- (modId = 413)
 
+MOD_ENHANCES_CURSNA           = 0x136 -- Raises success rate of Cursna when removing effect (like Doom) that are not 100% chance to remove (modId = 310)
 MOD_RETALIATION               = 0x19E -- Increases damage of Retaliation hits (modId = 414)
 MOD_AUGMENTS_THIRD_EYE        = 0x1FC -- Adds counter to 3rd eye anticipates & if using Seigan counter rate is increased by 15% (modId = 508)
 
@@ -1235,6 +1237,7 @@ MOD_EGGHELM                   = 0x205 -- Egg Helm (Chocobo Digging)
 -- MOD_SPARE = 0x139 -- (modId = 313)
 -- MOD_SPARE = 0x13A -- (modId = 314)
 -- MOD_SPARE = 0x13B -- (modId = 315)
+-- MOD_SPARE = 0x206 -- (modId = 518)
 
 ------------------------------------
 -- Merit Definitions
