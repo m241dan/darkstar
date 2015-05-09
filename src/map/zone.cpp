@@ -900,6 +900,7 @@ void CZone::CharZoneIn(CCharEntity* PChar)
 
 void CZone::CharZoneOut(CCharEntity* PChar)
 {
+    luautils::OnZoneOut( PChar );
     for (regionList_t::const_iterator region = m_regionList.begin(); region != m_regionList.end(); ++region)
     {
         if ((*region)->GetRegionID() == PChar->m_InsideRegionID)

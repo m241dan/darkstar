@@ -30,6 +30,8 @@ function onZoneIn(player,prevZone)
       player:setPos(40.658,-7.527,-24.001,128);
    end
   end
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+
  return cs;
 end;
 

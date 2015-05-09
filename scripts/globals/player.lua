@@ -24,6 +24,8 @@ function onGameIn(player, firstlogin, zoning)
         if (firstlogin) then
             CharCreate(player);
         end
+        local rb = player:getVar( "RelicBought" );
+        if( rb ~= 0 ) then player:delItem( rb ); end
     end
 
     if (zoning) then -- Things checked ONLY during zone in go here.

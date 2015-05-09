@@ -641,8 +641,7 @@ INSERT INTO `status_effects` VALUES (798,'chainbound',32,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (799,'skillchain',32,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (800,'dynamis',0,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (801,'meditate',32,0,0,0,0,0,7);
-
-INSERT INTO `status_effects` VALUES (980,'townmove',32,0,0,0,0,0,7);
+INSERT INTO `status_effects` VALUES (802,'townmove',32,0,0,0,0,0,7);
 
 /*!40000 ALTER TABLE `status_effects` ENABLE KEYS */;
 UNLOCK TABLES;

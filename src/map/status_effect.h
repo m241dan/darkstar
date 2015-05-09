@@ -682,13 +682,13 @@ enum EFFECT
     EFFECT_SKILLCHAIN               = 799,
 	EFFECT_DYNAMIS					= 800,
     EFFECT_MEDITATE                 = 801, // Dummy effect for SAM Meditate JA
-    EFFECT_TOWNMOVE                 = 980,
+    EFFECT_TOWNMOVE                 = 802,
     // EFFECT_PLACEHOLDER              = 802 // Description
     // 802-1022
     // EFFECT_PLACEHOLDER             = 1023 // The client dat file seems to have only this many "slots", results of exceeding that are untested.
 };
 
-#define MAX_EFFECTID    802  // 768 real + 32 custom
+#define MAX_EFFECTID    803  // 768 real + 32 custom
 
 /************************************************************************
 *																		*

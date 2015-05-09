@@ -1176,6 +1176,35 @@ int32 OnZoneIn(CCharEntity* PChar)
     return retVal;
 }
 
+int32 OnZoneOut(CCharEntity* PChar)
+{
+    lua_prepscript("scripts/zones/%s/Zone.lua", PChar->m_moghouseID ? "Residential_Area" : zoneutils::GetZone(PChar->loc.destination)->GetName());
+
+    if (prepFile(File, "onZoneOut"))
+    {
+        return -1;
+    }
+
+    CLuaBaseEntity LuaBaseEntity(PChar);
+    Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaBaseEntity);
+
+    lua_pushinteger(LuaHandle,PChar->loc.prevzone);
+
+    if( lua_pcall(LuaHandle,2,LUA_MULTRET,0) )
+    {
+        ShowError("luautils::onZoneOut: %s\n",lua_tostring(LuaHandle,-1));
+        lua_pop(LuaHandle, 1);
+        return -1;
+    }
+    int32 returns = lua_gettop(LuaHandle) - oldtop;
+    if (returns > 0)
+    {
+        ShowError("luautils::onZoneOut (%s): 0 return expected, got %d\n", File, returns);
+        return 0;
+    }
+    return 0;
+}
+
 int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask)
 {
     CCharEntity* PChar = zoneutils::GetChar((uintptr)PTask->m_data);

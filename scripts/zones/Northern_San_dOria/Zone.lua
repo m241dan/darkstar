@@ -64,6 +64,7 @@ function onZoneIn(player,prevZone)
 	elseif(player:hasCompletedMission(SANDORIA,COMING_OF_AGE) and tonumber(os.date("%j")) == player:getVar("Wait1DayM8-1_date")) then
 		cs = 0x0010;
 	end
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	return cs;
 end;
 

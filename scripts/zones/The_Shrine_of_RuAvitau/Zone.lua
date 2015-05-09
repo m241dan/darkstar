@@ -100,7 +100,10 @@ end;
 -----------------------------------
 
 function onRegionEnter(player,region)
-
+    if( region:GetRegionID() == 5 ) then
+       player:startEvent(5);
+       printf( "\nusing this one\n" );
+    else
     switch (region:GetRegionID()): caseof
     {
         [1] = function (x)
@@ -152,7 +155,7 @@ function onRegionEnter(player,region)
         default = function (x)
         end,
     }
-
+    end
 end;
 
 -----------------------------------

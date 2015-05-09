@@ -65,7 +65,7 @@ function onZoneIn(player,prevZone)
     if (player:getCurrentMission(COP) == THE_ENDURING_TUMULT_OF_WAR and player:getVar("PromathiaStatus") == 0) then
         cs = 0x0132;
     end
-
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;
 -----------------------------------
