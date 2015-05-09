@@ -11,6 +11,7 @@ require("scripts/globals/settings");
 require("scripts/zones/Bastok_Mines/TextIDs");
 require("scripts/globals/missions");
 require("scripts/globals/titles");
+require("scripts/globals/status");
 -----------------------------------
 -- onInitialize
 -----------------------------------
@@ -50,9 +51,15 @@ function onZoneIn(player,prevZone)
 			cs = 0x00b0
 		end
 	end -- this if was leaking into the other functions
-
+        player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	return cs;
 end;
+
+----------------------------------
+-- onZoneOut
+----------------------------------
+function onZoneOut(char,prevZone)
+end
 
 -----------------------------------
 -- onConquestUpdate

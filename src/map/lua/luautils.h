@@ -114,6 +114,7 @@ namespace luautils
 
     int32 OnGameIn(CCharEntity* PChar, bool zoning);							//
 	int32 OnZoneIn(CCharEntity* PChar);											// triggers when a player zones into a zone
+        int32 OnZoneOut(CCharEntity *PChar );
 	int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask);						// triggers after a player has finished zoning in
 	int32 OnZoneInitialise(uint16 ZoneID);										// triggers when zone is loaded
 	int32 OnRegionEnter(CCharEntity* PChar, CRegion* PRegion);					// when player enters a region of a zone

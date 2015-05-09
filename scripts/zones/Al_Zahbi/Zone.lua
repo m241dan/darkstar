@@ -27,6 +27,7 @@ function onZoneIn(player,prevZone)
 		position = math.random(1,5) + 37;
 		player:setPos(position,0,-62,192);
 	end
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	return cs;
 end;
 

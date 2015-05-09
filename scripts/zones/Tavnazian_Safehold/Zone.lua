@@ -50,6 +50,7 @@ function onZoneIn(player,prevZone)
 	elseif(player:getCurrentMission(COP) == CHAINS_AND_BONDS and player:getVar("PromathiaStatus") == 1) then
 	    cs = 0x0072;
 	end
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	
 	return cs;
 end;

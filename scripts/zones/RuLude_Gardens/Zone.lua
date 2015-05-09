@@ -36,7 +36,7 @@ function onZoneIn(player,prevZone)
     if (player:getCurrentMission(COP) == FOR_WHOM_THE_VERSE_IS_SUNG  and  player:getVar("PromathiaStatus") == 2) then
            cs = 0x273F;
     end
-
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;
 

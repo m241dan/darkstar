@@ -51,7 +51,7 @@ function onZoneIn(player,prevZone)
         player:setVar("MEMORIES_OF_A_MAIDEN_Status",2);
         cs = 0x0367;
     end
-
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;
 
