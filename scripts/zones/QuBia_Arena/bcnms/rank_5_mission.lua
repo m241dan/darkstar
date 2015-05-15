@@ -34,6 +34,8 @@ function onBcnmLeave(player,instance,leavecode)
 		if(player:hasKeyItem(NEW_FEIYIN_SEAL)) then
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,0);
 		else -- Gives skip dialogue if previously completed
+                        player:PrintToPlayer( "You have gained one Augment Buy for assisting others.", 0xE );
+                        player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 1 ) );
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,1);
 		end
 	elseif(leavecode == 4) then

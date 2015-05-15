@@ -25,14 +25,14 @@ function onTrigger(player,npc)
     player:showText(npc,RAGHD_SHOP_DIALOG);
 
     stock = {
-        0x3490,  1125,1,     --Silver Ring
-        0x340F,  1125,1,     --Silver Earring
+        0x3490,  1125,     --Silver Ring
+        0x340F,  1125,     --Silver Earring
 
-        0x3499,   180,2,     --Brass Ring
+        0x3499,   180,     --Brass Ring
 
-        0x348E,    68,3      --Copper Ring
+        0x348E,    68,      --Copper Ring
     }
-    showNationShop(player, BASTOK, stock);
+    showShop(player, BASTOK, stock);
 
 end; 
 

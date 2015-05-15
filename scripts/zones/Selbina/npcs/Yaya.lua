@@ -28,6 +28,7 @@ function onTrade(player,npc,trade)
 	 0x1166,1100, -- Emperor Fish
 	 0x111F,1200, -- Gold Lobster
 	 0x111B,350,  -- Cheval Salmon
+	 0x1102,355,  -- Shining Trout
       };
       showShop( player, STATIC, stock );
       return;

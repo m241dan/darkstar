@@ -34,11 +34,7 @@ end;
 
 function onZoneIn(player,prevZone)
     local cs = -1;
-
-    local realDay = os.time();
-    local dynaWaitxDay = player:getVar("dynaWaitxDay");
-
-    if ( player:getVar( "DynamisEntires" ) > 0 or player:getVar("DynamisID") == GetServerVariable("[DynaJeuno]UniqueID")) then
+    if ( player:getVar( "DynamisEntries" ) > 0 or player:getVar("DynamisID") == GetServerVariable("[DynaJeuno]UniqueID")) then
         if (player:isBcnmsFull() == 1) then
             if (player:hasStatusEffect(EFFECT_DYNAMIS, 0) == false) then
                 inst = player:addPlayerToDynamis(1283);
