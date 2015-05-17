@@ -3822,13 +3822,13 @@ int32 OnDynaDrop(CZone *PZone, uint16 itemID )
    int32 to_return;
    if( returns > 0 )
    {
-      if( !lua_isboolean(LuaHandle, -1 ) || returns != 1 )
+      if( !lua_isnumber(LuaHandle, -1 ) || returns != 1 )
       {
-         ShowError("luautils::onDynaDrop: bad return, not a boolean\n" );
+         ShowError("luautils::onDynaDrop: bad return an integer\n" );
          lua_pop( LuaHandle, returns );
          return -1;
       }
-      to_return = lua_toboolean( LuaHandle, -1 );
+      to_return = lua_tonumber( LuaHandle, -1 );
       lua_pop( LuaHandle, returns );
       return to_return;
    }

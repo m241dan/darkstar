@@ -15,15 +15,14 @@ require("scripts/zones/Maze_of_Shakhrami/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-               if(trade:hasItemQty(605,1) and trade:getItemCount() == 1) then
-                       if(player:getFreeSlotsCount(0) >= 1) then
-                               player:tradeComplete();
-                               player:addItem(1159);
-                               player:messageSpecial(ITEM_OBTAINED, 1159); -- Wyvern Egg
-                       else
-                          player:messageSpecial(ITEM_CANNOT_BE_OBTAINED, 1159); -- Wyvern Egg
-                       end
-               end
+       if(trade:hasItemQty(605,1) and trade:getItemCount() == 1) then
+          if(player:getFreeSlotsCount(0) >= 1) then
+             player:tradeComplete();
+             player:addItem(1159);
+             player:messageSpecial(ITEM_OBTAINED, 1159); -- Wyvern Egg
+          else
+             player:messageSpecial(ITEM_CANNOT_BE_OBTAINED, 1159); -- Wyvern Egg
+          end
        else
                startExcavation(player,player:getZoneID(),npc,trade,0x003C);
        end

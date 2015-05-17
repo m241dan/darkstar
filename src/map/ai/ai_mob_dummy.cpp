@@ -450,12 +450,12 @@ void CAIMobDummy::ActionDropItems()
                               droprate = (uint16)( calcdrop * 1.30 );
                         }
 
-                        if( itemID >= 1450 && itemID <= 1457 )
+                        if( itemID >= 1449 && itemID <= 1457 )
                         {
                            dynaDrop = true;
                            if( current_pop > 10 )
                               droprate = (uint16)( calcdrop * 1.00 );
-                           else if( current_pop > 4 && current_pop <= 8 )
+                           else if( current_pop > 4 && current_pop <= 10 )
                               droprate = (uint16)( calcdrop * .90 );
                            else if( current_pop <= 4 && current_pop > 0 )
                               droprate = (uint16)( calcdrop * 1.05 );
@@ -466,9 +466,14 @@ void CAIMobDummy::ActionDropItems()
                            uint16 random = rand()%1000+1;
                             if ( random < calcdrop )
                             {
-                                if( dynaDrop && luautils::OnDynaDrop( m_PMob->loc.zone, itemID ) )
-                                    break;
-                                PChar->PTreasurePool->AddItem(DropList->at(i).ItemID, m_PMob);
+                                int dropID = itemID;
+                                if( dynaDrop )
+                                {
+                                   dropID = luautils::OnDynaDrop( m_PMob->loc.zone, itemID );
+                                   if( dropID == 0 )
+                                      break;
+                                }
+                                PChar->PTreasurePool->AddItem(dropID, m_PMob);
                                 break;
                             }
                             tries++;

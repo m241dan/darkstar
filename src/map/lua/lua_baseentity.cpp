@@ -806,7 +806,6 @@ inline int32 CLuaBaseEntity::delItem(lua_State *L )
    lua_pushboolean( L, 1 );
    return 1;
 }
-
 inline int32 CLuaBaseEntity::addItem(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
