@@ -2426,7 +2426,7 @@ INSERT INTO `mob_skill` VALUES (1030,393,660,'Horrid_Roar_3',0,18.0,2000,1500,4,
 INSERT INTO `mob_skill` VALUES (432,393,432,'Mighty_Strikes',0,18.0,2000,0,1,0,30,0);
 
 -- Faust
-INSERT INTO `mob_skill` VALUES (283,367,283,'Typhoon',1,7.0,2000,1500,4,0,0,1);
+INSERT INTO `mob_skill` VALUES (283,367,283,'Typhoon',1,7.0,1500,1000,4,0,0,1);
 
 -- Despot
 INSERT INTO `mob_skill` VALUES (280,368,280,'Panzerfaust',0,7.0,2000,1500,4,0,0,0);

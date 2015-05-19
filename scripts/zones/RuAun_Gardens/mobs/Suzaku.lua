@@ -48,6 +48,12 @@ function onMonsterMagicPrepare(mob, target)
     end
 end;
 
+function onMobFight(mob, killer)
+   if( mob:hasStatusEffect( EFFECT_CHAINSPELL ) and mob:getCurrentAction() == 1 ) then
+      mob:castSpell();
+   end
+end
+
 -----------------------------------
 -- onAdditionalEffect
 -----------------------------------

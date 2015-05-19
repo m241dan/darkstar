@@ -14,10 +14,10 @@ function onMobDeath(mob,killer)
     SetServerVariable("[POP]Despot", os.time(t) + 7200); -- 2 hour
     DeterMob(mob:getID(), true);
 
-    -- Set PH back to normal, then set to respawn spawn
-    PH = GetServerVariable("[PH]Despot");
-    SetServerVariable("[PH]Despot", 0);
-    DeterMob(PH, false);
-    GetMobByID(PH):setRespawnTime(GetMobRespawnTime(PH));
-
 end;
+
+function onMobFight(mob,target)
+   if( mob:checkDistance( target ) <= 3.9 and mob:getCurrentAction() == 1 ) then
+      mob:useMobAbility(280);
+   end
+end

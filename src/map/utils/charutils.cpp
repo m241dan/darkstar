@@ -2155,10 +2155,13 @@ namespace charutils
 
         //add in melee ws
         uint8 skill = PChar->m_Weapons[SLOT_MAIN]->getSkillType();
+        DSP_DEBUG_BREAK_IF( skill > MAX_SKILLTYPE );
         std::list<CWeaponSkill*>&& WeaponSkillList = battleutils::GetWeaponSkills(skill);
         for (std::list<CWeaponSkill*>::iterator it = WeaponSkillList.begin(); it != WeaponSkillList.end(); ++it)
         {
-            CWeaponSkill* PSkill = *it;
+            CWeaponSkill* PSkill;
+            if( ( PSkill = *it ) == nullptr )
+               continue;
             if (PChar->GetSkill(skill) >= PSkill->getSkillLevel() && (PSkill->getJob(curMainJob) > 0 || PSkill->getJob(curSubJob) > 0 && !PSkill->mainOnly())
                 || PSkill->getID() == wsIDs[SLOT_MAIN] || PSkill->getID() == wsIDs[SLOT_SUB]
                 || isInDynamis && (PSkill->getID() == wsDynIDs[SLOT_MAIN] || PSkill->getID() == wsDynIDs[SLOT_SUB]))
