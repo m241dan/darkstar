@@ -29,7 +29,7 @@ function onTrigger(player)
         player:addStatusEffect(EFFECT_REGEN,99,0,0);
 
         -- Add bonus mods to the player..
-        player:addMod(MOD_RACC,2500);
+       player:addMod(MOD_RACC,2500);
         player:addMod(MOD_RATT,2500);
         player:addMod(MOD_ACC,2500);
         player:addMod(MOD_ATT,2500);

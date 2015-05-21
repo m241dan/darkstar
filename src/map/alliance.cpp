@@ -157,7 +157,8 @@ void CAlliance::delParty(CParty* party)
     for (uint8 i = 0; i < party->m_PAlliance->partyList.size(); ++i)
     {
         if (party == party->m_PAlliance->partyList.at(i))
-            party->m_PAlliance->partyList.erase(partyList.begin() + i);
+           if( party != nullptr && party->m_PAlliance != nullptr )
+              party->m_PAlliance->partyList.erase(partyList.begin() + i);
     }
 
     party->m_PAlliance = nullptr;
