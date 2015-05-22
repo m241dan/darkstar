@@ -322,7 +322,6 @@ function applyResistance(player,spell,target,diff,skill,bonus)
     local resist = 1.0;
     local magicaccbonus = 0;
     local element = spell:getElement();
-        printf( "\n resistMod = %d \n", target:getMod(resistMod[element]) );
 
     if(bonus ~= nil) then
         magicaccbonus = magicaccbonus + bonus;
@@ -1178,23 +1177,23 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
 	local mab = 0;
         local element = spell:getElement()
         local blm_potency_merit = 0;
-        if(player:getMainJob() == JOB_BLM and player:getMainLvl() >= 75) then
+        if(caster:getMainJob() == JOB_BLM and caster:getMainLvl() >= 75) then
            if(element == ELE_FIRE) then
-               blm_potency_merit =  player:getMerit(MERIT_FIRE_MAGIC_POTENCY);
+               blm_potency_merit =  caster:getMerit(MERIT_FIRE_MAGIC_POTENCY);
            elseif(element == ELE_EARTH) then
-               blm_potency_merit = player:getMerit(MERIT_EARTH_MAGIC_POTENCY);
+               blm_potency_merit = caster:getMerit(MERIT_EARTH_MAGIC_POTENCY);
            elseif(element == ELE_WATER) then
-               blm_potency_merit = player:getMerit(MERIT_WATER_MAGIC_POTENCY);
+               blm_potency_merit = caster:getMerit(MERIT_WATER_MAGIC_POTENCY);
            elseif(element == ELE_WIND) then
-               blm_potency_merit = player:getMerit(MERIT_WIND_MAGIC_POTENCY);
+               blm_potency_merit = caster:getMerit(MERIT_WIND_MAGIC_POTENCY);
            elseif(element == ELE_ICE) then
-               blm_potency_merit = player:getMerit(MERIT_ICE_MAGIC_POTENCY);
+               blm_potency_merit = caster:getMerit(MERIT_ICE_MAGIC_POTENCY);
            elseif(element == ELE_LIGHTNING) then
-               blm_potency_merit =  player:getMerit(MERIT_LIGHTNING_MAGIC_POTENCY);
+               blm_potency_merit =  caster:getMerit(MERIT_LIGHTNING_MAGIC_POTENCY);
            end
         end
 
-        blm_potency_merit = blm_potency_merit * 2; -- 2 matk per level invested
+        blm_potency_merit = blm_potency_merit; -- 2 matk per level invested
 
 	if(spell:getID() >= 245 and spell:getID() <= 248) then
 		mab = 1

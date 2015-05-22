@@ -19,6 +19,7 @@ function onTrade(player,npc,trade)
 	if(GetMobAction(17309983) == 0 and trade:hasItemQty(1420,1) and trade:hasItemQty(1421,1) and trade:getItemCount() == 2) then
 		player:tradeComplete();
 		SpawnMob(17309983,300):updateClaim(player); -- Spawn Suzaku
+                GetMobByID(17309983):setPos( -517, -70, -270 );
 		player:showText(npc,SKY_GOD_OFFSET + 7);
 	end
 	

@@ -51,3 +51,12 @@ function onAdditionalEffect(mob, target, damage)
 
     return SUBEFFECT_WATER_DAMAGE,163,dmg;
 end;
+
+function onMobFight( mob, target )
+   if( mob:getCurrentAction() == 1 and mob:getLocalVar( "twohrused" ) == 0 ) then
+      if( math.random(1, mob:getHPP() ) == 1 or math.random(1, mob:getHPP() ) == 1 or mob:getHPP() < 25 ) then
+         mob:useMobAbility(438);
+         mob:setLocalVar( "twohrused", 1 )
+      end
+   end
+end

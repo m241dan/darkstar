@@ -19,6 +19,7 @@ function onTrade(player,npc,trade)
 	if(GetMobAction(17309980) == 0 and trade:hasItemQty(1424,1) and trade:hasItemQty(1425,1) and trade:getItemCount() == 2) then
 		player:tradeComplete();
 		SpawnMob(17309980,300):updateClaim(player); -- Spawn Genbu
+                GetMobByID(17309980):setPos( 258, -70, 523 );
 		player:showText(npc,SKY_GOD_OFFSET + 5);
 	end
 	
