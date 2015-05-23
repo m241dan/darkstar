@@ -24,7 +24,7 @@ function onMobDeath(mob, killer)
 
     killer:addTitle(BEHEMOTH_DETHRONER);
 
-    if (math.random((1),(100)) <= 5) then -- Hardcoded "this or this item" drop rate until implemented.
+    if (math.random((1),(100)) <= 3) then -- Hardcoded "this or this item" drop rate until implemented.
         SetDropRate(1936,13566,1000); -- Defending Ring
         SetDropRate(1936,13415,0);
     else

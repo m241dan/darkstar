@@ -443,18 +443,18 @@ void CAIMobDummy::ActionDropItems()
                             itemID == 16244 || itemID == 16245 )
                         {
                            dynaDrop = true;
-                           calcdrop = (uint16)(calcdrop * .26 );
+                           calcdrop = (uint16)(calcdrop * .25 );
                            if( current_pop <= 10 && current_pop > 4 )
-                              droprate = (uint16)( calcdrop * 1.20 );
+                              droprate = (uint16)( calcdrop * 1.15 );
                            else if( current_pop <= 4 && current_pop > 0 )
-                              droprate = (uint16)( calcdrop * 1.30 );
+                              droprate = (uint16)( calcdrop * 1.25 );
                         }
 
                         if( itemID >= 1449 && itemID <= 1457 )
                         {
                            dynaDrop = true;
                            if( current_pop > 10 )
-                              droprate = (uint16)( calcdrop * 9.00 );
+                              droprate = (uint16)( calcdrop * .90 );
                            else if( current_pop > 4 && current_pop <= 10 )
                               droprate = (uint16)( calcdrop * .80 );
                            else if( current_pop <= 4 && current_pop > 0 )

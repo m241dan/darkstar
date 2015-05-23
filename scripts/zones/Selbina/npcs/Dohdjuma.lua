@@ -8,12 +8,15 @@ package.loaded["scripts/zones/Selbina/TextIDs"] = nil;
 
 require("scripts/zones/Selbina/TextIDs");
 require("scripts/globals/shop");
+package.loaded["scripts/globals/melfaugments"] = nil;
+require("scripts/globals/melfaugments" );
 
 -----------------------------------
 -- onTrade Action
 -----------------------------------
 
 function onTrade(player,npc,trade)
+--   onAugmentTrade( player, trade );   
 end; 
 
 -----------------------------------

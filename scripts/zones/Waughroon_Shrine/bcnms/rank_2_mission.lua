@@ -32,8 +32,8 @@ function onBcnmLeave(player,instance,leavecode)
 	if(leavecode == 2) then -- play end CS. Need time and battle id for record keeping + storage
 		if(player:hasCompletedMission(player:getNation(),5)) then
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,1);
-                        player:PrintToPlayer( "You have gained one Augment Buy for assisting others.", 0xE );
-                        player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 1 ) );
+                        player:PrintToPlayer( "You have gained four Augment Buy for assisting others.", 0xE );
+                        player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 4 ) );
 		else
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,0);
 		end
