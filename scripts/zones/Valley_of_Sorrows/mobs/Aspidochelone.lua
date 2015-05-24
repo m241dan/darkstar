@@ -46,6 +46,7 @@ function onMogEngaged( mob, target )
 end
 
 function onMobFight(mob, target)
+	
    local AspidInTime = mob:getLocalVar( "inTime" );
    local AspidOutTime = mob:getLocalVar( "outTime" );
    local AspidInHPP = mob:getLocalVar( "inHPP" );
@@ -59,6 +60,7 @@ function onMobFight(mob, target)
       end
    elseif( mob:AnimationSub() == 1 ) then
       mob:SetMobSkillAttack(true);
+      mob:clearPath();
       if( mob:getHPP() == 100 and AspidInTime < os.time() - 10 ) then
          exitShell( mob );
       elseif( mob:getHPP() > AspidInHPP + 30 ) then
@@ -70,16 +72,18 @@ function onMobFight(mob, target)
 end
 
 function enterShell( aspid )
-   aspid:addMod( MOD_REGEN, 300 );
+   aspid:addMod( MOD_REGEN, 100 );
    aspid:addMod( MOD_DEFP, 1000 );
+   aspid:addMod( MOD_MOVE, -40 );
    aspid:AnimationSub(1);
    aspid:setLocalVar( "inTime", os.time() );
    aspid:setLocalVar( "inHPP", aspid:getHPP() );
 end
 
 function exitShell( aspid )
+   aspid:delMod( MOD_REGEN, 100 );
+   aspid:addMod( MOD_MOVE, 40 );
    aspid:delMod( MOD_DEFP, 1000 );
-   aspid:delMod( MOD_REGEN, 300 );
    aspid:AnimationSub(2);
    aspid:setLocalVar( "outTime", os.time() );
    aspid:setLocalVar( "outHPP", aspid:getHPP() );

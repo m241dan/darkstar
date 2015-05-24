@@ -269,7 +269,7 @@ INSERT INTO `abilities` VALUES ('227', 'equanimity', '20', '75', '1', '0', '231'
 INSERT INTO `abilities` VALUES ('228', 'enlightenment', '20', '75', '1', '300', '231', '0', '0', '214', '20.0', '0', '1', '80', '3272', '1','WOTG');
 INSERT INTO `abilities` VALUES ('229', 'afflatus_solace', '3', '40', '1', '60', '29', '0', '0', '216', '20.0', '0', '1', '80', '0', '0','WOTG');
 INSERT INTO `abilities` VALUES ('230', 'afflatus_misery', '3', '40', '1', '60', '30', '0', '0', '217', '20.0', '0', '1', '80', '0', '0','WOTG');
-INSERT INTO `abilities` VALUES ('231', 'composure', '5', '50', '1', '300', '50', '0', '0', '215', '20.0', '0', '1', '80', '0', '0','WOTG');
+INSERT INTO `abilities` VALUES ('231', 'composure', '5', '50', '1', '60', '50', '0', '0', '215', '20.0', '0', '1', '80', '0', '0','WOTG');
 INSERT INTO `abilities` VALUES ('232', 'yonin', '13', '40', '1', '180', '146', '0', '0', '218', '20.0', '0', '1', '600', '0', '4','WOTG');
 INSERT INTO `abilities` VALUES ('233', 'innin', '13', '40', '1', '180', '147', '0', '0', '219', '20.0', '0', '1', '60', '0', '4','WOTG');
 INSERT INTO `abilities` VALUES ('241', 'double_shot', '11', '79', '1', '180', '126', '0', '0', '225', '20.0', '0', '1', '300', '0', '0','ABYSSEA');
