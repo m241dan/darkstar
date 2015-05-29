@@ -28,12 +28,12 @@ function onMobDeath(mob,killer)
         if (Despot_ToD <= os.time(t) and GetMobAction(Despot) == 0) then
 
             -- printf("Despot window open");
-            -- Give Groundskeeper 5 percent chance to pop Despot
+            -- Give Groundskeeper 10 percent chance to pop Despot
             if (math.random(1,10) == 5) then
                 -- printf("Despot will pop");
                 desp = SpawnMob(Despot);
+                desp:setPos( killer:getXPos()+2, killer:getYPos(), killer:getZPos()+2 );                
                 desp:updateClaim(killer);
-                desp:setPos( killer:getXPos(), killer:getYPos(), killer:getZPos() );                
             end
         end
     end

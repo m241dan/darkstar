@@ -376,16 +376,15 @@ bool CStatusEffectContainer::AddStatusEffect(CStatusEffect* PStatusEffect, bool 
 				//check for latents
 				PChar->PLatentEffectContainer->CheckLatentsFoodEffect();
 				PChar->PLatentEffectContainer->CheckLatentsStatusEffect();
-                PChar->PLatentEffectContainer->CheckLatentsRollSong(PStatusEffect->GetFlag() & (EFFECTFLAG_SONG | EFFECTFLAG_ROLL));
+		                PChar->PLatentEffectContainer->CheckLatentsRollSong(PStatusEffect->GetFlag() & (EFFECTFLAG_SONG | EFFECTFLAG_ROLL));
 				PChar->UpdateHealth();
 
 				PChar->pushPacket(new CCharHealthPacket(PChar));
 			}
             PChar->pushPacket(new CCharSyncPacket(PChar));
         }
-        m_POwner->updatemask |= UPDATE_HP;
-
-        return true;
+	        m_POwner->updatemask |= UPDATE_HP;
+        	return true;
 	}
 
     return false;
