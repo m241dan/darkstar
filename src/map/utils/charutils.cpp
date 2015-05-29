@@ -476,6 +476,7 @@ namespace charutils
         {
             PChar->getStorage(LOC_INVENTORY)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 0));
             PChar->getStorage(LOC_MOGSAFE)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 1));
+            PChar->getStorage(LOC_MOGSAFE2)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 1));
             PChar->getStorage(LOC_TEMPITEMS)->AddBuff(50);
             PChar->getStorage(LOC_MOGLOCKER)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 2));
             PChar->getStorage(LOC_MOGSATCHEL)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 3));
@@ -1838,9 +1839,10 @@ namespace charutils
         else
             for (uint8 i = 0; i < SLOT_LINK1; i++)
                 PChar->styleItems[i] = 0;
+        
+        if (PChar->getStyleLocked() != isStyleLocked)
+            PChar->pushPacket(new CMessageStandardPacket(isStyleLocked ? 0x10B : 0x10C));
         PChar->setStyleLocked(isStyleLocked);
-
-        PChar->pushPacket(new CMessageStandardPacket(PChar->getStyleLocked() ? 0x10B : 0x10C));
     }
 
     void UpdateWeaponStyle(CCharEntity* PChar, uint8 equipSlotID, CItemWeapon* PItem) 
@@ -2061,6 +2063,7 @@ namespace charutils
 
         BuildingCharWeaponSkills(PChar);
         SaveCharEquip(PChar);
+        SaveCharLook(PChar);
     }
 
     void RemoveAllEquipment(CCharEntity* PChar)
@@ -2081,6 +2084,7 @@ namespace charutils
 
         BuildingCharWeaponSkills(PChar);
         SaveCharEquip(PChar);
+        SaveCharLook(PChar);
     }
 
     /************************************************************************
@@ -4011,7 +4015,10 @@ namespace charutils
                 Sql_Query(SqlHandle, fmtQuery, PChar->id, i, PChar->equip[i], PChar->equipLoc[i], PChar->equip[i], PChar->equipLoc[i]);
             }
         }
+    }
 
+    void SaveCharLook(CCharEntity* PChar)
+    {
         const int8* Query = "UPDATE char_look "
             "SET head = %u, body = %u, hands = %u, legs = %u, feet = %u, main = %u, sub = %u, ranged = %u "
             "WHERE charid = %u;";
@@ -4379,7 +4386,7 @@ namespace charutils
 
         DSP_DEBUG_BREAK_IF(element > 7);
 
-        int16 affinity = PChar->getMod(strong[element]);
+        int16 affinity = PChar->getMod(strong[element]) - PChar->getMod(weak[element]);
 
         // TODO: don't use ItemIDs in CORE. it must be MOD
 
