@@ -2362,6 +2362,7 @@ void SmallPacket0x050(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     charutils::EquipItem(PChar, slotID, equipSlotID, containerID); //current
     charutils::SaveCharEquip(PChar);
+    charutils::SaveCharLook(PChar);
     luautils::CheckForGearSet(PChar); // check for gear set on gear change
     PChar->UpdateHealth();
     return;
@@ -2389,6 +2390,7 @@ void SmallPacket0x051(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     }
     charutils::SaveCharEquip(PChar);
+    charutils::SaveCharLook(PChar);
     luautils::CheckForGearSet(PChar); // check for gear set on gear change
     PChar->UpdateHealth();
     return;
@@ -2426,7 +2428,7 @@ void SmallPacket0x053(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     if (type == 0 && PChar->getStyleLocked()) 
     {
         charutils::SetStyleLock(PChar, false);
-        charutils::SaveCharEquip(PChar);
+        charutils::SaveCharLook(PChar);
     }
     else if (type == 1) 
     {
@@ -2447,12 +2449,11 @@ void SmallPacket0x053(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             uint8 locationId = RBUFB(data, i + 0x02);
             uint16 itemId = RBUFW(data, i + 0x04);
 
-            if (itemId > 0) {
-                CItemArmor* PItem = (CItemArmor*)PChar->getStorage(locationId)->GetItem(slotId);
-                if (PItem != nullptr && !(PItem->getEquipSlotId() & (1 << equipSlotId))) {
-                    return;
-                }
-            }
+            auto PItem = itemutils::GetItem(itemId);
+            if (PItem == nullptr || !(PItem->isType(ITEM_WEAPON) || PItem->isType(ITEM_ARMOR)))
+                itemId = 0;
+            else if (!((CItemArmor*)PItem)->getEquipSlotId() & (1 << equipSlotId))
+                itemId = 0;
 
             PChar->styleItems[equipSlotId] = itemId;
 
@@ -2472,12 +2473,12 @@ void SmallPacket0x053(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 break;
             }
         }
-        charutils::SaveCharEquip(PChar);
+        charutils::SaveCharLook(PChar);
     }
     else if (type == 4) 
     {
         charutils::SetStyleLock(PChar, true);
-        charutils::SaveCharEquip(PChar);
+        charutils::SaveCharLook(PChar);
     }
 
     if (type != 1 && type != 2) 
@@ -2546,14 +2547,23 @@ void SmallPacket0x05B(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     uint16 EventID = RBUFW(data, (0x12));
     uint32 Result = RBUFL(data, (0x08));
 
-    if (PChar->m_event.Option != 0) Result = PChar->m_event.Option;
+    if (PChar->m_event.EventID == EventID)
+    {
+        if (PChar->m_event.Option != 0) Result = PChar->m_event.Option;
 
-    if (RBUFB(data, (0x0E)) != 0){
-        luautils::OnEventUpdate(PChar, EventID, Result);
-    }
-    else{
-        luautils::OnEventFinish(PChar, EventID, Result);
-        PChar->m_event.reset();
+        if (RBUFB(data, (0x0E)) != 0) {
+            luautils::OnEventUpdate(PChar, EventID, Result);
+        }
+        else
+        {
+            luautils::OnEventFinish(PChar, EventID, Result);
+            //reset if this event did not initiate another event
+            if (PChar->m_event.EventID == EventID)
+            {
+                PChar->m_event.reset();
+            }
+
+        }
     }
 
     PChar->pushPacket(new CReleasePacket(PChar, RELEASE_EVENT));
@@ -4793,13 +4803,13 @@ void SmallPacket0x0FA(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         return;
 
     uint8  slotID = RBUFB(data, (0x06));
-    //uint8  containerID = RBUFB(data, (0x07)); //not used
+    uint8  containerID = RBUFB(data, (0x07));
     uint8  col = RBUFB(data, (0x09));
     uint8  level = RBUFB(data, (0x0A));
     uint8  row = RBUFB(data, (0x0B));
     uint8  rotation = RBUFB(data, (0x0C));
 
-    CItemFurnishing* PItem = (CItemFurnishing*)PChar->getStorage(LOC_MOGSAFE)->GetItem(slotID);
+    CItemFurnishing* PItem = (CItemFurnishing*)PChar->getStorage(containerID)->GetItem(slotID);
 
     if (PItem != nullptr &&
         PItem->getID() == ItemID &&
@@ -4833,7 +4843,7 @@ void SmallPacket0x0FA(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
             PChar->pushPacket(new CInventorySizePacket(PChar));
         }
-        PChar->pushPacket(new CInventoryItemPacket(PItem, LOC_MOGSAFE, slotID));
+        PChar->pushPacket(new CInventoryItemPacket(PItem, containerID, slotID));
         PChar->pushPacket(new CInventoryFinishPacket());
     }
     return;
@@ -4855,8 +4865,9 @@ void SmallPacket0x0FB(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     }
 
     uint8  slotID = RBUFB(data, (0x06));
+    uint8 containerID = RBUFB(data, (0x07));
 
-    CItemContainer* PItemContainer = PChar->getStorage(LOC_MOGSAFE);
+    CItemContainer* PItemContainer = PChar->getStorage(containerID);
 
     CItemFurnishing* PItem = (CItemFurnishing*)PItemContainer->GetItem(slotID);
 
@@ -4901,7 +4912,7 @@ void SmallPacket0x0FB(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
                 PChar->pushPacket(new CInventorySizePacket(PChar));
             }
-            PChar->pushPacket(new CInventoryItemPacket(PItem, LOC_MOGSAFE, PItem->getSlotID()));
+            PChar->pushPacket(new CInventoryItemPacket(PItem, containerID, PItem->getSlotID()));
             PChar->pushPacket(new CInventoryFinishPacket());
         }
         else
@@ -4969,6 +4980,7 @@ void SmallPacket0x100(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             }
 
         }
+        
         charutils::SetStyleLock(PChar, false);
         luautils::CheckForGearSet(PChar); // check for gear set on gear change
 

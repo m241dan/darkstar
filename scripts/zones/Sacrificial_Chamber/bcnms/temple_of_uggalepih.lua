@@ -35,7 +35,7 @@ function onBcnmLeave(player,instance,leavecode)
 		else
                         player:PrintToPlayer( "You have gained four Augment Buy for assisting others.", 0xE );
                         player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 4 ) );
-			player:startEvent(0x7d01,1,1,1,0,1,0,1);
+			player:startEvent(0x7d01,1,1,1,0,1,1,0);
 		end
 	elseif(leavecode == 4) then
 		player:startEvent(0x7d02);

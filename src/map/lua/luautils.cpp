@@ -2199,17 +2199,70 @@ int32 OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell)
         lua_pop(LuaHandle, 1);
         return 0;
     }
+
     int32 returns = lua_gettop(LuaHandle) - oldtop;
     if (returns < 1)
     {
         ShowError("luautils::onMagicHit (%s): 1 return expected, got %d\n", File, returns);
         return 0;
     }
+
     uint32 retVal = (!lua_isnil(LuaHandle, -1) && lua_isnumber(LuaHandle, -1) ? (int32)lua_tonumber(LuaHandle, -1) : 0);
     lua_pop(LuaHandle, 1);
     if (returns > 1)
     {
         ShowError("luautils::onMagicHit (%s): 1 return expected, got %d\n", File, returns);
+        lua_pop(LuaHandle, returns - 1);
+    }
+    return retVal;
+}
+
+/************************************************************************
+*                                                                       *
+*  Called when mob is struck by a Weaponskill                           *
+*                                                                       *
+************************************************************************/
+
+int32 OnWeaponskillHit(CBattleEntity* PMob, CBaseEntity* PAttacker, uint16 PWeaponskill)
+{
+    DSP_DEBUG_BREAK_IF(PMob == nullptr);
+    DSP_DEBUG_BREAK_IF(PAttacker == nullptr);
+    DSP_DEBUG_BREAK_IF(PWeaponskill == NULL);
+
+    lua_prepscript("scripts/zones/%s/mobs/%s.lua", PMob->loc.zone->GetName(), PMob->GetName());
+
+    if (prepFile(File, "onWeaponskillHit"))
+    {
+        return 0;
+    }
+
+    CLuaBaseEntity LuaMobEntity(PMob);
+    Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaMobEntity);
+
+    CLuaBaseEntity LuaBaseEntity(PAttacker);
+    Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaBaseEntity);
+
+    lua_pushinteger(LuaHandle, PWeaponskill);
+
+    if (lua_pcall(LuaHandle, 3, LUA_MULTRET, 0))
+    {
+        ShowError("luautils::onWeaponskillHit: %s\n", lua_tostring(LuaHandle, -1));
+        lua_pop(LuaHandle, 1);
+        return 0;
+    }
+
+    int32 returns = lua_gettop(LuaHandle) - oldtop;
+    if (returns < 1)
+    {
+        ShowError("luautils::onWeaponskillHit (%s): 1 return expected, got %d\n", File, returns);
+        return 0;
+    }
+
+    uint32 retVal = (!lua_isnil(LuaHandle, -1) && lua_isnumber(LuaHandle, -1) ? (int32)lua_tonumber(LuaHandle, -1) : 0);
+    lua_pop(LuaHandle, 1);
+    if (returns > 1)
+    {
+        ShowError("luautils::onWeaponskillHit (%s): 1 return expected, got %d\n", File, returns);
         lua_pop(LuaHandle, returns - 1);
     }
     return retVal;
@@ -2234,7 +2287,6 @@ int32 OnMobInitialize(CBaseEntity* PMob)
 
     CLuaBaseEntity LuaMobEntity(PMob);
     Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaMobEntity);
-
 
     if( lua_pcall(LuaHandle,1,LUA_MULTRET,0) )
     {
@@ -2505,7 +2557,7 @@ int32 OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller)
 
                 bool isKillShot = PMember->id == PKiller->id;
                 bool isWeaponSkillKill = PChar->getWeaponSkillKill();
-                
+
                 Lunar<CLuaBaseEntity>::push(LuaHandle, &LuaMobEntity);
                 Lunar<CLuaBaseEntity>::push(LuaHandle, &LuaKillerEntity);
                 lua_pushboolean(LuaHandle, isKillShot);
@@ -2514,7 +2566,7 @@ int32 OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller)
                 // lua_pushboolean(LuaHandle, isPetKill);
                 // Rather than use even more bools for this, I'm thinking it's better to replace isWeaponSkillKill with a "killType" value
                 // Checking that sort of thing could also make Colibri mimic and Jailer of Fortitude reflect easier to do.
-                
+
                 if (lua_pcall(LuaHandle, 4, 0, 0))
                 {
                     ShowError("luautils::onMobDeathEx: %s\n", lua_tostring(LuaHandle, -1));
@@ -2538,17 +2590,17 @@ int32 OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller)
             {
                 CLuaBaseEntity LuaMobEntity(PMob);
                 CLuaBaseEntity LuaKillerEntity(PMember);
-                
+
                 PMember->m_event.reset();
                 PMember->m_event.Target = PMob;
                 PMember->m_event.Script.insert(0, File);
-                
+
                 if ( luaL_loadfile(LuaHandle,File) || lua_pcall(LuaHandle,0,0,0) )
                 {
                     lua_pop(LuaHandle, 1);
                     return;
                 }
-                
+
                 lua_getglobal(LuaHandle, "onMobDeath");
                 if ( lua_isnil(LuaHandle,-1) )
                 {
@@ -2556,7 +2608,7 @@ int32 OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller)
                     lua_pop(LuaHandle, 1);
                     return;
                 }
-                
+
                 Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaMobEntity);
                 if (PMember)
                 {
@@ -2567,14 +2619,14 @@ int32 OnMobDeath(CBaseEntity* PMob, CBaseEntity* PKiller)
                 {
                     lua_pushnil(LuaHandle);
                 }
-                
+
                 if ( lua_pcall(LuaHandle,2,LUA_MULTRET,0) )
                 {
                     ShowError("luautils::onMobDeath: %s\n",lua_tostring(LuaHandle,-1));
                     lua_pop(LuaHandle, 1);
                     return;
                 }
-                
+
                 int32 returns = lua_gettop(LuaHandle) - oldtop;
                 if (returns > 0)
                 {
@@ -4040,7 +4092,7 @@ int32 UpdateNMSpawnPoint(lua_State* L)
 			ShowDebug(CL_RED"UpdateNMSpawnPoint: SQL error: No entries for mobid <%u> found.\n" CL_RESET, mobid);
             return 0;
           }
-          
+
 		  ret = Sql_Query(SqlHandle, "SELECT pos_x, pos_y, pos_z FROM `nm_spawn_points` WHERE mobid=%u AND pos=%i", mobid, r);
 		  if( ret != SQL_ERROR && Sql_NumRows(SqlHandle) != 0 && Sql_NextRow(SqlHandle) == SQL_SUCCESS) {
 			PMob->m_SpawnPoint.rotation = WELL512::GetRandomNumber(256);
@@ -4332,9 +4384,9 @@ int32 OnChocoboDig(CCharEntity* PChar, bool pre)
         ShowError("luautils::onChocoboDig (%s): 1 return expected, got %d\n", File, returns);
         lua_pop(LuaHandle, returns);
     }
-    
+
     bool canDig = lua_toboolean(LuaHandle, -1);
-    
+
     return canDig;
 }
 }; // namespace luautils
