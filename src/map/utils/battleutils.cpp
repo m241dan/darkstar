@@ -624,7 +624,7 @@ bool HandleSpikesDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAc
             // FINISH HIM! dun dun dun
             // TP and stoneskin are handled inside TakePhysicalDamage
             Action->spikesMessage = 536;
-            Action->spikesParam = battleutils::TakePhysicalDamage(PDefender, PAttacker, dmg, false, SLOT_MAIN, 1, nullptr, true, true, true);
+            Action->spikesParam = battleutils::TakePhysicalDamage(PDefender, PAttacker, dmg, false, SLOT_MAIN, 1, nullptr, true, true, true, false);
         }
     }
 
@@ -1744,7 +1744,7 @@ uint8 GetGuardRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 *																		*
 ************************************************************************/
 
-int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter)
+int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter, bool isZanshin)
 {
     bool isRanged = (slot == SLOT_AMMO || slot == SLOT_RANGED);
 
@@ -1919,6 +1919,12 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
 
         if (giveTPtoAttacker)
         {
+            if( isZanshin )
+            {
+               ShowDebug(CL_CYAN"Ikishoten bonus from merits = %u\n" CL_RESET, getIkishotenTPbonusFromMerit(PAttacker) );
+               baseTp += getIkishotenTPbonusFromMerit(PAttacker);
+            }
+
             PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
             if (PAttacker->objtype == TYPE_PC)
                 charutils::UpdateHealth((CCharEntity*)PAttacker);
@@ -3605,7 +3611,20 @@ uint8 getStoreTPbonusFromMerit(CBattleEntity* PEntity)
 	return 0;
 }
 
-
+/************************************************************************
+*                                                                       *
+*       Samurai get merit Ikishoten value                               *
+*                                                                       *
+************************************************************************/
+uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
+{
+   if( PEntity->objtype == TYPE_PC )
+   {
+      if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
+         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ) * 3);
+   }
+   return 0;
+}
 
 /************************************************************************
 *                                                                       *
@@ -3842,7 +3861,7 @@ uint16 jumpAbility(CBattleEntity* PAttacker, CBattleEntity* PVictim, uint8 tier)
 		charutils::TrySkillUP((CCharEntity*)PAttacker, (SKILLTYPE)PWeapon->getSkillType(), PVictim->GetMLevel());
 
 	// jump + high jump doesn't give any tp to victim
-	battleutils::TakePhysicalDamage(PAttacker, PVictim, totalDamage, false, fstrslot, realHits, nullptr, false, true);
+	battleutils::TakePhysicalDamage(PAttacker, PVictim, totalDamage, false, fstrslot, realHits, nullptr, false, true, false);
 
 	return totalDamage;
 }

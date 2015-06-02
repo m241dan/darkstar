@@ -1152,7 +1152,7 @@ void CAICharNormal::ActionRangedFinish()
                 Action.speceffect = SPECEFFECT_CRITICAL_HIT;
             }
 
-            Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, totalDamage, false, slot, realHits, nullptr, true, true);
+            Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, totalDamage, false, slot, realHits, nullptr, true, true, false);
 
             // lower damage based on shadows taken
             if (shadowsTaken)
@@ -2005,7 +2005,7 @@ void CAICharNormal::ActionJobAbilityFinish()
             // if a hit did occur (even without barrage)
             if (hitOccured == true)
             {
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, damage, false, SLOT_RANGED, 1, nullptr, true, false);
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, damage, false, SLOT_RANGED, 1, nullptr, true, false, false);
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);
@@ -3140,7 +3140,7 @@ void CAICharNormal::DoAttack()
                     Action.reaction = REACTION_BLOCK;
                 }
 
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true);
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, attack.GetAttackType() == ZANSHIN_ATTACK ? true : false );
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);

@@ -21,7 +21,10 @@ end
 -- onMobSpawn Action
 -----------------------------------
 function onMobSpawn(mob)
-    mob:setMod(MOD_WINDRES, -64);
+    mob:setMod(MOD_WINDRES, -60);
+    mob:setMod(MOD_REGEN, 100);
+    mob:setMod(MOD_STUNRES, 100);
+    mob:setMod( MOD_MDEF, -30 );
 end
 
 -----------------------------------

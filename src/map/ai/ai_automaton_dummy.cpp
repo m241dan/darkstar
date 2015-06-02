@@ -242,7 +242,7 @@ void CAIAutomatonDummy::ActionAttack()
                     if (isBlocked){ Action.reaction = REACTION_BLOCK; }
 
 
-                    Action.param = battleutils::TakePhysicalDamage(m_PPet, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true);
+                    Action.param = battleutils::TakePhysicalDamage(m_PPet, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true, false);
                     if (Action.param < 0)
                     {
                         Action.param = -(Action.param);

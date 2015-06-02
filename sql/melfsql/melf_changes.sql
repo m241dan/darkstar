@@ -24,7 +24,8 @@ UPDATE mob_family_system SET Lightning=.8125, Dark=1.25, Light=.5, Ice=1, Earth=
 UPDATE mob_family_system SET Light=1, Dark=1, Fire=.5, Ice=.75, Water=1.25, Lightning=1, Earth=1, Wind=.85 WHERE family='Suzaku';
 
 -- sky god kirin
-UPDATE mob_family_system SET DEF=1, EVA=1, MND=3, Ice=.9, Lightning=.9, Fire=.9, Earth=.5, Dark=.9, Light=.9, Fire=.9, Wind=1.15  WHERE family='Kirin'; -- buffing kirin
+UPDATE mob_family_system SET DEF=1, EVA=1, Ice=.9, Lightning=.9, Fire=.9, Earth=.5, Dark=.9, Light=.9, Fire=.9, Wind=1.25 WHERE family='Kirin'; -- buffing kirin
+UPDATE mob_family_system SET mob_family_system.INT=4, VIT=2, MND=4 WHERE family='Kirin';
 
 -- sky god general
 UPDATE mob_pools SET immunity=17 WHERE name='Kirin' OR name='Byakko' OR name='Suzaku' OR name='Genbu'; -- immunity to sleep and silence

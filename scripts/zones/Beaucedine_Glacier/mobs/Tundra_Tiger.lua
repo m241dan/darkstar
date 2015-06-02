@@ -35,7 +35,7 @@ function onMobDeath(mob,killer)
 
         ToD = GetServerVariable("[POP]Nue");
         if (ToD <= os.time(t) and GetMobAction(Nue) == 0) then
-            if (math.random((1),(15)) == 5) then
+            if (math.random((1),(5)) == 5) then
                 UpdateNMSpawnPoint(Nue);
                 GetMobByID(Nue):setRespawnTime(GetMobRespawnTime(mob));
                 SetServerVariable("[PH]Nue", mob);

@@ -14,6 +14,9 @@ require("scripts/globals/status");
 function onMobInitialize(mob)
 end;
 
+function onMobEngaged(mob, target)
+   mod:addMod( MOD_SLEEPRES, 20 );
+end;
 
 -----------------------------------
 -- onMobDeath

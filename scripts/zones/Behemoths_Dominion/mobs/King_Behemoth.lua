@@ -16,6 +16,12 @@ function onMobInitialize(mob)
 end;
 
 
+function onMobEngaged(mob,target)
+   mob:addMod(MOD_SILENCERES,100);
+   mob:addMod(MOD_STUNRES,10);
+   mob:setMobMod(MOBMOD_DRAW_IN,100);
+end
+
 -----------------------------------
 -- onMobDeath
 -----------------------------------
@@ -24,7 +30,7 @@ function onMobDeath(mob, killer)
 
     killer:addTitle(BEHEMOTH_DETHRONER);
 
-    if (math.random((1),(100)) <= 3) then -- Hardcoded "this or this item" drop rate until implemented.
+    if (math.random((1),(100)) <= 4) then -- Hardcoded "this or this item" drop rate until implemented.
         SetDropRate(1936,13566,1000); -- Defending Ring
         SetDropRate(1936,13415,0);
     else
