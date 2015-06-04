@@ -13455,7 +13455,7 @@ INSERT INTO `item_mods` VALUES (15128, 1, 40);
 INSERT INTO `item_mods` VALUES (15128, 2, 18);
 INSERT INTO `item_mods` VALUES (15128, 11, 3);
 INSERT INTO `item_mods` VALUES (15128, 27, 1);
-INSERT INTO `item_mods` VALUES (15128, 508, 15); -- Augment's Third Eye
+INSERT INTO `item_mods` VALUES (15128, 508, 25); -- Augment's Third Eye
 
 INSERT INTO `item_mods` VALUES (15129, 1, 31);
 INSERT INTO `item_mods` VALUES (15129, 2, 40);

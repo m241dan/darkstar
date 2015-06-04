@@ -16,7 +16,7 @@ end;
 function onBcnmEnter(player,instance)
    if( player:getVar( "DynamisID" ) ~= GetServerVariable( "[DynaSandoria]UniqueID" ) ) then
       player:setVar( "DynamisID", GetServerVariable("[DynaSandoria]UniqueID" ) );
-      player:addVar( "DynamisEntires", -1 );
+      player:addVar( "DynamisEntries", -1 );
    end
    local relicid = player:getVar( "RelicID" );
    local dynaid = player:getVar( "DynamisID" );

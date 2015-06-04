@@ -84,7 +84,7 @@ function onDynaDrop( zone, itemID )
       for _, player in pairs(players) do 
          player:PrintToPlayer( "Melfnamus Tier 1 Reward: 1k gil and 1k exp", 0xE );
          player:addGil( 1000 );
-         player:addExp( 1000 );
+         player:addExp( 500 );
       end
    elseif( roll >= 31 and roll <= 55 ) then
       for _, player in pairs(players) do

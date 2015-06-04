@@ -19,25 +19,15 @@ end;
 -----------------------------------
 
 function onMobDeath(mob, killer)
+   killer:addTitle(ASPIDOCHELONE_SINKER);
 
-    killer:addTitle(ASPIDOCHELONE_SINKER);
-
-    -- Set Aspidochelone's Window Open Time
-    if (LandKingSystem_HQ == 0 or LandKingSystem_HQ == 2) then
-        local wait = 72 * 3600
-        SetServerVariable("[POP]Aspidochelone", os.time(t) + wait); -- 3 days
-        DeterMob(mob:getID(), true);
-    end
-
-    -- Set Adamantoise's spawnpoint and respawn time (21-24 hours)
-    if (LandKingSystem_NQ == 0 or LandKingSystem_NQ == 2) then
-        Adamantoise = 17301537;
-        SetServerVariable("[PH]Aspidochelone", 0);
-        DeterMob(Adamantoise, false);
-        UpdateNMSpawnPoint(Adamantoise);
-        GetMobByID(Adamantoise):setRespawnTime(math.random((75600),(86400)));
-    end
-
+   -- Set Aspidochelone's Window Open Time
+   local wait = 72 * 3600
+   local Adamantoise = 17301537;
+   SetServerVariable("[POP]Aspidochelone", os.time(t) + wait); -- 3 days
+   SetServerVariable("[PH]Aspidochelone", 0);
+   SetServerVariable("[WindowOpen]Aspidochelone", os.time(t) + ( 21 * 3600 ) );
+   onHNMInit( "Aspidochelone", Adamantoise, mob:getID() );
 end;
 
 function onMobEngaged( mob, target )

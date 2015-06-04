@@ -51,18 +51,18 @@ public:
 
 	float   CalculateEnmityBonus(CBattleEntity* PEntity);
 	void	Clear(uint32 EntityID = 0);			// Removes Entries from list
-    void	AddBaseEnmity(CBattleEntity* PEntity);
+        void	AddBaseEnmity(CBattleEntity* PEntity);
 	void	UpdateEnmity(CBattleEntity* PEntity, int16 CE, int16 VE, bool withMaster = true);
 	void	UpdateEnmityFromDamage(CBattleEntity* PEntity, uint16 Damage);
 	void	UpdateEnmityFromCure(CBattleEntity* PEntity, uint16 level, uint16 CureAmount, bool isCureV);
 	void	UpdateEnmityFromAttack(CBattleEntity* PEntity,uint16 Damage);
-  void  AddLinkEnmity(CBattleEntity* PEntity);
+        void    AddLinkEnmity(CBattleEntity* PEntity);
 	void	AddPartyEnmity(CCharEntity* PChar);
 	bool    HasTargetID(uint32 TargetID); //true if ID is in the container with non-zero enmity level
 	void    LowerEnmityByPercent(CBattleEntity* PEntity, uint8 percent, CBattleEntity* HateReceiver); // lower % of hate or transfer it
 	void	DecayEnmity();
-  bool  IsWithinEnmityRange(CBattleEntity* PEntity);
-    uint8   GetHighestTH();
+        bool    IsWithinEnmityRange(CBattleEntity* PEntity);
+        uint8   GetHighestTH();
   EnmityList_t* GetEnmityList();
 
 private:

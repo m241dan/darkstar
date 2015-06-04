@@ -10,7 +10,7 @@
 function onMobDeath(mob,killer)	
 
     -- Set Nue's Window Open Time
-    wait = math.random((3600),(7200));
+    wait = 3600;
     SetServerVariable("[POP]Nue", os.time(t) + wait); -- 1-2 hours
     DeterMob(mob:getID(), true);
     

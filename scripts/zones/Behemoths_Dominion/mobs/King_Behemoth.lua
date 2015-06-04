@@ -38,20 +38,12 @@ function onMobDeath(mob, killer)
         SetDropRate(1936,13415,1000); -- Pixie Earring
     end
     -- Set King_Behemoth's Window Open Time
-    if (LandKingSystem_HQ == 0 or LandKingSystem_HQ == 2) then
-        local wait = 72 * 3600
-        SetServerVariable("[POP]King_Behemoth", os.time(t) + wait); -- 3 days
-        DeterMob(mob:getID(), true);
-    end
-
-    -- Set Behemoth's spawnpoint and respawn time (21-24 hours)
-    if (LandKingSystem_NQ == 0 or LandKingSystem_NQ == 2) then
-        SetServerVariable("[PH]King_Behemoth", 0);
-        local Behemoth = 17297440;
-        DeterMob(Behemoth, false);
-        UpdateNMSpawnPoint(Behemoth);
-        GetMobByID(Behemoth):setRespawnTime(math.random((75600),(86400)));
-    end
+    local wait = 72 * 3600
+    local Behemoth = 17297440;
+    SetServerVariable("[POP]King_Behemoth", os.time(t) + wait); -- 3 days
+    SetServerVariable("[PH]King_Behemoth", 0);
+    SetServerVariable("[WindowOpen]King_Behemoth", os.time(t) + ( 21 * 3600 ) );
+    onHNMInit( "King_Behemoth", Behemoth, mob:getID() );
 end;
 
 function onSpellPrecast(mob, spell)

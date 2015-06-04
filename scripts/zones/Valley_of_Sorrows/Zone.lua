@@ -9,6 +9,7 @@ package.loaded["scripts/zones/Valley_of_Sorrows/TextIDs"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/zone");
 require("scripts/zones/Valley_of_Sorrows/TextIDs");
+require("scripts/globals/melfnm.lua");
 
 -----------------------------------
 -- onInitialize
@@ -22,17 +23,7 @@ function onInitialize(zone)
     -- Adamantoise
     local Adamantoise = 17301537;
     local Aspidochelone = 17301538;
-    local ToD     = GetServerVariable("[POP]Aspidochelone");
-    local kills   = GetServerVariable("[PH]Aspidochelone");
-    if (ToD <= os.time(t) and GetMobAction(Aspidochelone) == 0) then
-       if ( math.random((1),(5)) == 3 or kills > 6) then
-          SetRespawnTime(Aspidochelone, 900, 10800 );
-       else
-          SetRespawnTime(Adamantoise, 900, 10800 );
-       end
-    else
-       SetRespawnTime(Adamantoise, 900, 10800 );
-    end
+    onHNMInit( "Aspidochelone", Adamantoise, Aspidochelone );
 end;
 
 -----------------------------------

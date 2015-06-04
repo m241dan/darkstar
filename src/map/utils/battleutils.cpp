@@ -391,6 +391,7 @@ CWeaponSkill* GetWeaponSkill(uint16 WSkillID)
 std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
 {
 	DSP_DEBUG_BREAK_IF(skill >= MAX_SKILLTYPE);
+        DSP_DEBUG_BREAK_IF( g_PWeaponSkillsList[skill] == nullptr );
 
 	return g_PWeaponSkillsList[skill];
 }
@@ -2080,7 +2081,7 @@ uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 att
 {
     int32 hitrate = 75;
 
-    if (PAttacker->objtype == TYPE_PC && ((PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK) && (abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23 || PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_HIDE))) ||
+    if (PAttacker->objtype == TYPE_PC && ((PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK) && (abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 30 || PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_HIDE))) ||
         (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_ASSASSIN) && PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK) && battleutils::getAvailableTrickAttackChar(PAttacker, PDefender))))
     {
         hitrate = 100; //attack with SA active or TA/Assassin cannot miss
@@ -2088,7 +2089,7 @@ uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 att
     else
 	{
         //Check For Ambush Merit - Melee
-        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23))) {
+        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 30))) {
 	        offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
         }
         // Check for Closed Position merit on attacker and that attacker and defender are facing each other (within ~20 degrees from straight on)
@@ -2547,8 +2548,8 @@ bool IsAnticipated(CBattleEntity* PDefender, bool forceRemove, bool ignore, bool
 		if(WELL512::GetRandomNumber(100) < (100-(pastAnticipations*15))){
 			//increment power and don't remove
 			effect->SetPower(effect->GetPower()+1);
-            //chance to counter - 25% base
-            if (WELL512::GetRandomNumber(100) < 25 + PDefender->getMod(MOD_AUGMENTS_THIRD_EYE))
+            //chance to counter - 15% base
+            if (WELL512::GetRandomNumber(100) < 15 + PDefender->getMod(MOD_AUGMENTS_THIRD_EYE) + PDefender->GetMJob() == JOB_SAM ? (PDefender->getMod(MOD_ZANSHIN) / 4 ) : 0 )
                 *thirdEyeCounter = true;
 			return true;
 		}

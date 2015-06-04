@@ -1,5 +1,5 @@
 -- fafnir + nidhogg 
-UPDATE mob_family_system SET Lightning=1.25, Water=1.25 WHERE familyid=260 or familyid=263; -- fix faf and nid elemental reses
+UPDATE mob_family_system SET Lightning=1.15, Water=1.15 WHERE familyid=260 or familyid=263; -- fix faf and nid elemental reses
 UPDATE mob_family_system SET Fire=.875, Ice=.875 WHERE familyid=260 or familyid=263; -- ibid
 UPDATE mob_pool_mods SET value=30 WHERE poolid=1280; -- nerf fafnir regain
 UPDATE mob_pool_mods SET value=50 WHERE poolid=2840; -- nerf nidhogg regain

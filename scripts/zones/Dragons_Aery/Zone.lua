@@ -8,6 +8,7 @@ package.loaded["scripts/zones/Dragons_Aery/TextIDs"] = nil;
 
 require("scripts/globals/settings");
 require("scripts/globals/zone");
+require("scripts/globals/melfnm.lua");
 require("scripts/zones/Dragons_Aery/TextIDs");
 
 -----------------------------------
@@ -19,17 +20,7 @@ function onInitialize(zone)
    -- Fafnir
    local Fafnir  = 17408018;
    local Nidhogg = 17408019;
-   local ToD     = GetServerVariable("[POP]Nidhogg");
-   local kills   = GetServerVariable("[PH]Nidhogg");
-   if (ToD <= os.time(t) and GetMobAction(Nidhogg) == 0) then
-      if (math.random((1),(5)) == 3 or kills > 6) then
-         SetRespawnTime(Nidhogg, 900, 10800);
-      else
-         SetRespawnTime(Fafnir, 900, 10800);
-      end
-   else
-      SetRespawnTime(Fafnir, 900, 10800);
-   end
+   onHNMInit("Nidhogg", Fafnir, Nidhogg );
 end;
 
 -----------------------------------
