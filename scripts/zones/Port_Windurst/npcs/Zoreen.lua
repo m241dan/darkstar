@@ -23,10 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(VALDEAUNIA);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,ZOREEN_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,ZOREEN_OPEN_DIALOG);
 
         stock = {
@@ -34,7 +31,7 @@ function onTrigger(player,npc)
             0x027e,   170    --Sage
         }
         showShop(player,WINDURST,stock);
-    end
+    
 end; 
 
 -----------------------------------

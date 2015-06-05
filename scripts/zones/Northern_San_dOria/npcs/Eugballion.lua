@@ -32,15 +32,13 @@ end;
 
 function onTrigger(player,npc)
 	
-	if(GetRegionOwner(QUFIMISLAND) ~= SANDORIA) then 
-		player:showText(npc,EUGBALLION_CLOSED_DIALOG);
-	else
+
 		player:showText(npc,EUGBALLION_OPEN_DIALOG);
 		
-		stock = {0x03ba,4121}		-- Magic Pot Shard
-				  
+		stock = {0x03ba,4121,		-- Magic Pot Shard
+			0X399,200,}		-- Ahriman Tears  
 		showShop(player,SANDORIA,stock);
-	end
+	
 	
 end; 
 

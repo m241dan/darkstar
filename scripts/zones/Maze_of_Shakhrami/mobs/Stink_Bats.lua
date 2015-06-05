@@ -3,6 +3,7 @@
 -- MOB:  Stink Bats
 -----------------------------------
 
+package.loaded["scripts/globals/groundsofvalor"] = nil;
 require("scripts/globals/groundsofvalor");
 
 -----------------------------------

@@ -797,14 +797,13 @@ INSERT INTO `bcnm_loot` VALUES ('35', '643', '131', '4');
 INSERT INTO `bcnm_loot` VALUES ('35', '644', '79', '4');
 INSERT INTO `bcnm_loot` VALUES ('35', '736', '79', '4');
 INSERT INTO `bcnm_loot` VALUES ('35', '795', '131', '4');
-INSERT INTO `bcnm_loot` VALUES ('35', '17867', '552', '5');
 INSERT INTO `bcnm_loot` VALUES ('35', '4877', '263', '5');
 INSERT INTO `bcnm_loot` VALUES ('35', '4878', '210', '5');
 INSERT INTO `bcnm_loot` VALUES ('35', '4876', '289', '5');
 INSERT INTO `bcnm_loot` VALUES ('35', '4868', '105', '5');
-INSERT INTO `bcnm_loot` VALUES ('35', '4751', '79', '5');
-INSERT INTO `bcnm_loot` VALUES ('35', '5070', '421', '5');
-INSERT INTO `bcnm_loot` VALUES ('35', '4947', '79', '5');
+INSERT INTO `bcnm_loot` VALUES ('35', '4751', '289', '5');
+INSERT INTO `bcnm_loot` VALUES ('35', '5070', '321', '5');
+INSERT INTO `bcnm_loot` VALUES ('35', '4947', '289', '5');
 INSERT INTO `bcnm_loot` VALUES ('35', '15271', '552', '6');
 INSERT INTO `bcnm_loot` VALUES ('35', '15272', '131', '6');
 INSERT INTO `bcnm_loot` VALUES ('35', '809', '0', '6'); -- yes 0%

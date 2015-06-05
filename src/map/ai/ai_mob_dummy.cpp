@@ -199,7 +199,7 @@ void CAIMobDummy::ActionRoaming()
         // if I just disengaged check if I should despawn
         if (m_checkDespawn && m_PMob->IsFarFromHome())
         {
-            if (m_PMob->CanRoamHome() && m_PPathFind->PathTo(m_PMob->m_SpawnPoint, PATHFLAG_WALLHACK))
+            if (m_PMob->CanRoamHome() && m_PPathFind->PathTo(m_PMob->m_SpawnPoint))
             {
                 // walk back to spawn if too far away
 
@@ -256,7 +256,7 @@ void CAIMobDummy::ActionRoaming()
                 luautils::OnMobRoamAction(m_PMob);
                 m_LastActionTime = m_Tick;
             }
-            else if (m_PMob->CanRoam() && m_PPathFind->RoamAround(m_PMob->m_SpawnPoint, m_PMob->m_roamFlags))
+            else if (m_PMob->CanRoam() && m_PPathFind->RoamAround(m_PMob->m_SpawnPoint, m_PMob->m_roamDistance, m_PMob->m_roamFlags))
             {
 
                 if (m_PMob->m_roamFlags & ROAMFLAG_WORM)
@@ -425,11 +425,55 @@ void CAIMobDummy::ActionDropItems()
                         uint8 tries = 0;
                         uint8 maxTries = 1 + (m_PMob->m_THLvl > 2 ? 2 : m_PMob->m_THLvl);
                         uint8 bonus = (m_PMob->m_THLvl > 2 ? (m_PMob->m_THLvl - 2)*10 : 0);
+                        uint16 droprate = DropList->at(i).DropRate;
+                        uint16 calcdrop = DropList->at(i).DropRate + bonus;
+                        uint16 itemID = DropList->at(i).ItemID;
+                        uint16 current_pop = m_PMob->loc.zone->GetZonePlayerCount();
+                        bool dynaDrop = false;
+                        //Melfnamis begin
+                        if( ( itemID >= 15072 && itemID <= 15146 ) ||
+                            ( itemID >= 11292 && itemID <= 11307 ) ||
+                            ( itemID >= 11382 && itemID <= 11398 ) ||
+                            ( itemID >= 11465 && itemID <= 11480 ) ||
+                            ( itemID >= 15025 && itemID <= 15040 ) ||
+                            ( itemID >= 15478 && itemID <= 15484 ) ||
+                            ( itemID >= 15871 && itemID <= 15879 ) ||
+                            ( itemID >= 16346 && itemID <= 16362 ) ||
+                            itemID == 15920 || itemID == 15925 || itemID == 16248 ||
+                            itemID == 16244 || itemID == 16245 )
+                        {
+                           dynaDrop = true;
+                           calcdrop = (uint16)(calcdrop * .25 );
+                           if( current_pop <= 10 && current_pop > 4 )
+                              droprate = (uint16)( calcdrop * 1.15 );
+                           else if( current_pop <= 4 && current_pop > 0 )
+                              droprate = (uint16)( calcdrop * 1.25 );
+                        }
+
+                        if( itemID >= 1449 && itemID <= 1457 )
+                        {
+                           dynaDrop = true;
+                           if( current_pop > 10 )
+                              droprate = (uint16)( calcdrop * .90 );
+                           else if( current_pop > 4 && current_pop <= 10 )
+                              droprate = (uint16)( calcdrop * .80 );
+                           else if( current_pop <= 4 && current_pop > 0 )
+                              droprate = (uint16)( calcdrop * 1.05 );
+                        }
+
                         while (tries < maxTries)
                         {
-                            if (WELL512::GetRandomNumber(1000) < DropList->at(i).DropRate * map_config.drop_rate_multiplier + bonus)
+                           uint16 random = rand()%1000+1;
+                            if ( random < calcdrop )
                             {
-                                PChar->PTreasurePool->AddItem(DropList->at(i).ItemID, m_PMob);
+                                int dropID = itemID;
+                                if( dynaDrop )
+                                {
+                                   dropID = luautils::OnDynaDrop( m_PMob->loc.zone, itemID );
+                                   if( dropID == 0 )
+                                      break;
+                                }
+                                PChar->PTreasurePool->AddItem(dropID, m_PMob);
                                 break;
                             }
                             tries++;
@@ -1487,10 +1531,12 @@ void CAIMobDummy::ActionAttack()
             if (m_Tick >= m_LastStandbackTime + m_PMob->getBigMobMod(MOBMOD_STANDBACK_TIME))
             {
                 // speed up my ranged attacks cause i'm waiting here
-                m_LastSpecialTime -= 1000;
-                m_LastMagicTime -= 500;
+                if (m_LastSpecialTime > 1000 && m_LastMagicTime > 500)
+                {
+                    m_LastSpecialTime -= 1000;
+                    m_LastMagicTime -= 500;
+                }
                 FinishAttack();
-                return;
             }
 
         }
@@ -1698,7 +1744,7 @@ void CAIMobDummy::ActionAttack()
                                     isCritical = (WELL512::GetRandomNumber(100) < battleutils::GetCritHitRate(m_PBattleTarget, m_PMob, false));
                                     float DamageRatio = battleutils::GetDamageRatio(m_PBattleTarget, m_PMob, isCritical, 0);
                                     damage = (int32)((m_PBattleTarget->GetMainWeaponDmg() + naturalh2hDMG + battleutils::GetFSTR(m_PBattleTarget, m_PMob, SLOT_MAIN)) * DamageRatio);
-                                    Action.spikesParam = battleutils::TakePhysicalDamage(m_PBattleTarget, m_PMob, damage, false, SLOT_MAIN, 1, nullptr, true, false, true);
+                                    Action.spikesParam = battleutils::TakePhysicalDamage(m_PBattleTarget, m_PMob, damage, false, SLOT_MAIN, 1, nullptr, true, false, true, false);
                                     Action.spikesMessage = 33;
                                     if (m_PBattleTarget->objtype == TYPE_PC)
                                     {
@@ -1804,7 +1850,7 @@ void CAIMobDummy::ActionAttack()
                                     Action.reaction = REACTION_BLOCK;
                                 }
 
-                                Action.param = battleutils::TakePhysicalDamage(m_PMob, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true);
+                                Action.param = battleutils::TakePhysicalDamage(m_PMob, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true, false);
                                 if (Action.param < 0)
                                 {
                                     Action.param = -(Action.param);
@@ -1849,7 +1895,7 @@ void CAIMobDummy::ActionAttack()
                                     isCritical = (WELL512::GetRandomNumber(100) < battleutils::GetCritHitRate(m_PBattleTarget, m_PMob, false));
                                     float DamageRatio = battleutils::GetDamageRatio(m_PBattleTarget, m_PMob, isCritical, 0);
                                     damage = (int32)((m_PBattleTarget->GetMainWeaponDmg() + naturalh2hDMG + battleutils::GetFSTR(m_PBattleTarget, m_PMob, SLOT_MAIN)) * DamageRatio);
-                                    Action.spikesParam = battleutils::TakePhysicalDamage(m_PBattleTarget, m_PMob, damage, false, SLOT_MAIN, 1, nullptr, true, false, true);
+                                    Action.spikesParam = battleutils::TakePhysicalDamage(m_PBattleTarget, m_PMob, damage, false, SLOT_MAIN, 1, nullptr, true, false, true, false);
                                     Action.spikesMessage = 33;
                                     
                                     if (m_PBattleTarget->objtype == TYPE_PC)
@@ -2109,22 +2155,22 @@ bool CAIMobDummy::CanDetectTarget(CBattleEntity* PTarget, bool forceSight)
 
 	if ((aggro & AGGRO_DETECT_LOWHP) && PTarget->GetHPP() < 75)
     {
-        return true;
+        return CanSeePoint(PTarget->loc.p);
     }
 
 	if ((aggro & AGGRO_DETECT_MAGIC) && PTarget->PBattleAI->GetCurrentAction() == ACTION_MAGIC_CASTING && PTarget->PBattleAI->GetCurrentSpell()->hasMPCost())
     {
-        return true;
+        return CanSeePoint(PTarget->loc.p);
     }
 
 	if ((aggro & AGGRO_DETECT_WEAPONSKILL) && PTarget->PBattleAI->GetCurrentAction() == ACTION_WEAPONSKILL_FINISH)
     {
-        return true;
+        return CanSeePoint(PTarget->loc.p);
     }
 
 	if ((aggro & AGGRO_DETECT_JOBABILITY) && PTarget->PBattleAI->GetCurrentAction() == ACTION_JOBABILITY_FINISH)
     {
-        return true;
+        return CanSeePoint(PTarget->loc.p);
     }
 
     return false;

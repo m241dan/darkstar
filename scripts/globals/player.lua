@@ -4,6 +4,7 @@
 --
 -----------------------------------
 
+package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/keyitems");
 require("scripts/globals/missions");
 require("scripts/globals/quests");
@@ -12,7 +13,8 @@ require("scripts/globals/shop");
 require("scripts/globals/status");
 require("scripts/globals/titles");
 require("scripts/globals/gear_sets");
-
+package.loaded["scripts/globals/level_incentive"] = nil;
+require("scripts/globals/level_incentive");
 -----------------------------------
 -- onGameIn
 -----------------------------------
@@ -22,10 +24,18 @@ function onGameIn(player, firstlogin, zoning)
         if (firstlogin) then
             CharCreate(player);
         end
+        local rb = player:getVar( "RelicBought" );
+        if( rb ~= 0 ) then player:delItem( rb ); end
     end
 
     if (zoning) then -- Things checked ONLY during zone in go here.
         -- Nothing here yet :P
+       local z = player:getZoneID();
+       if( ( z >= 230 and z <= 250 ) or z == 50 or z == 53 or z == 48 ) then
+          player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+       else
+          player:delStatusEffect(EFFECT_TOWNMOVE);
+       end
     end
 
     -- Things checked BOTH during logon AND zone in below this line.
@@ -65,6 +75,11 @@ function onGameIn(player, firstlogin, zoning)
     if (player:getVar("GMHidden") == 1) then
         player:setGMHidden(true);
     end
+
+
+    for i = 296, 307, 1 do
+       player:addSpell(i)
+    end  
 
 end;
 
@@ -322,10 +337,15 @@ function CharCreate(player)
 
 	-- Needs Moghouse Intro
 	player:setVar("MoghouseExplication",1);
+
+   if not(player:hasItem(515)) then
+      player:AddLinkPearl( "QuetzShell" );
+   end
     
 end;
 
 function onPlayerLevelUp(player)
+   handleLevelIncentive( player, false )
 end
 
 function onPlayerLevelDown(player)

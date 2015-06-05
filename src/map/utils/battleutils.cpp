@@ -390,7 +390,7 @@ CWeaponSkill* GetWeaponSkill(uint16 WSkillID)
 
 std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
 {
-    DSP_DEBUG_BREAK_IF(skill >= MAX_SKILLTYPE);
+	DSP_DEBUG_BREAK_IF(skill >= MAX_SKILLTYPE);
 
 	return g_PWeaponSkillsList[skill];
 }
@@ -623,7 +623,7 @@ bool HandleSpikesDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAc
             // FINISH HIM! dun dun dun
             // TP and stoneskin are handled inside TakePhysicalDamage
             Action->spikesMessage = 536;
-            Action->spikesParam = battleutils::TakePhysicalDamage(PDefender, PAttacker, dmg, false, SLOT_MAIN, 1, nullptr, true, true, true);
+            Action->spikesParam = battleutils::TakePhysicalDamage(PDefender, PAttacker, dmg, false, SLOT_MAIN, 1, nullptr, true, true, true, false);
         }
     }
 
@@ -1078,25 +1078,26 @@ void HandleEnspell(CBattleEntity* PAttacker, CBattleEntity* PDefender, apAction_
                 int8 Samba = WELL512::GetRandomNumber(1, (delay * multiplier) / 100 + 1);
 
                 // vary damage based on lvl diff
-                int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
+//                int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
 
-                if (lvlDiff < -5){
-                    lvlDiff = -5;
-                }
+//                if (lvlDiff < -5){
+  //                  lvlDiff = -5;
+    //            }
 
-                Samba -= lvlDiff;
+//                Samba -= lvlDiff;
 
                 if (Samba >(finaldamage / 2)){
                     Samba = finaldamage / 2;
                 }
 
-                if (finaldamage <= 2){
-                    Samba = 0;
-                }
-
                 if (Samba < 0)
                 {
                     Samba = 0;
+                }
+
+                if( Samba == 0 && finaldamage != 0 )
+                {
+                    Samba = 1;
                 }
 
                 Action->additionalEffect = SUBEFFECT_HP_DRAIN;
@@ -1742,7 +1743,7 @@ uint8 GetGuardRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 *																		*
 ************************************************************************/
 
-int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter)
+int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter, bool isZanshin)
 {
     bool isRanged = (slot == SLOT_AMMO || slot == SLOT_RANGED);
 
@@ -1917,6 +1918,12 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
 
         if (giveTPtoAttacker)
         {
+            if( isZanshin )
+            {
+               ShowDebug(CL_CYAN"Ikishoten bonus from merits = %u\n" CL_RESET, getIkishotenTPbonusFromMerit(PAttacker) );
+               baseTp += getIkishotenTPbonusFromMerit(PAttacker);
+            }
+
             PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
             if (PAttacker->objtype == TYPE_PC)
                 charutils::UpdateHealth((CCharEntity*)PAttacker);
@@ -2073,26 +2080,34 @@ uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 att
 {
     int32 hitrate = 75;
 
-	if (PAttacker->objtype == TYPE_PC && ((PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK) && (abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23 || PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_HIDE))) ||
-		(charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_ASSASSIN) && PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK) && battleutils::getAvailableTrickAttackChar(PAttacker, PDefender))))
+    if (PAttacker->objtype == TYPE_PC && ((PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK) && (abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23 || PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_HIDE))) ||
+        (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_ASSASSIN) && PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK) && battleutils::getAvailableTrickAttackChar(PAttacker, PDefender))))
     {
-		hitrate = 100; //attack with SA active or TA/Assassin cannot miss
-	}
+        hitrate = 100; //attack with SA active or TA/Assassin cannot miss
+    }
     else
 	{
-		//Check For Ambush Merit - Melee
-		if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23))) {
-			offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
-		}
+        //Check For Ambush Merit - Melee
+        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23))) {
+	        offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
+        }
+        // Check for Closed Position merit on attacker and that attacker and defender are facing each other (within ~20 degrees from straight on)
+        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation)-128) < 15))) {
+            offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PAttacker);
+        }
+        // Check for Closed Position merit on defender that attacker and defender are facing each other (within ~20 degrees from straight on)
+        if (PDefender->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PDefender, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15))) {
+            offsetAccuracy -= ((CCharEntity*)PDefender)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PDefender);
+        }
 
-		hitrate = hitrate + (PAttacker->ACC(attackNumber, offsetAccuracy) - PDefender->EVA()) / 2 + (PAttacker->GetMLevel() - PDefender->GetMLevel()) * 2;
+        hitrate = hitrate + (PAttacker->ACC(attackNumber, offsetAccuracy) - PDefender->EVA()) / 2 + (PAttacker->GetMLevel() - PDefender->GetMLevel()) * 2;
 
         if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
             hitrate += PAttacker->getMod(MOD_ENSPELL_DMG);
 
-		hitrate = dsp_cap(hitrate, 20, 95);
-	}
-	return (uint8)hitrate;
+        hitrate = dsp_cap(hitrate, 20, 95);
+    }
+    return (uint8)hitrate;
 }
 uint8 GetHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 {
@@ -2801,7 +2816,7 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CWeaponSkill* PWeaponSki
     if (PSCEffect == nullptr && PCBEffect == nullptr)
     {
         // No effect exists, apply an effect using the weaponskill ID as the power with a tier of 0.
-        PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, PWeaponSkill->getID(), 0, 6, 0, 0, 0));
+        PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, PWeaponSkill->getID(), 0, 10, 0, 0, 0));
         return SUBEFFECT_NONE;
     }
     else
@@ -2816,47 +2831,54 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CWeaponSkill* PWeaponSki
         // Chainbound active on target
         if(PCBEffect)
         {
-            //Konzen-Ittai
-            if (PCBEffect->GetPower() > 1)
+            if (PCBEffect->GetStartTime() + 3000 < gettick())
             {
-                resonanceProperties.push_back(SC_LIGHT);
-                resonanceProperties.push_back(SC_DARKNESS);
-                resonanceProperties.push_back(SC_GRAVITATION);
-                resonanceProperties.push_back(SC_FRAGMENTATION);
-                resonanceProperties.push_back(SC_DISTORTION);
-                resonanceProperties.push_back(SC_FUSION);
-            }
-            resonanceProperties.push_back(SC_LIQUEFACTION);
-            resonanceProperties.push_back(SC_INDURATION);
-            resonanceProperties.push_back(SC_REVERBERATION);
-            resonanceProperties.push_back(SC_IMPACTION);
-            resonanceProperties.push_back(SC_COMPRESSION);
+                //Konzen-Ittai
+                if (PCBEffect->GetPower() > 1)
+                {
+                    resonanceProperties.push_back(SC_LIGHT);
+                    resonanceProperties.push_back(SC_DARKNESS);
+                    resonanceProperties.push_back(SC_GRAVITATION);
+                    resonanceProperties.push_back(SC_FRAGMENTATION);
+                    resonanceProperties.push_back(SC_DISTORTION);
+                    resonanceProperties.push_back(SC_FUSION);
+                }
+                resonanceProperties.push_back(SC_LIQUEFACTION);
+                resonanceProperties.push_back(SC_INDURATION);
+                resonanceProperties.push_back(SC_REVERBERATION);
+                resonanceProperties.push_back(SC_IMPACTION);
+                resonanceProperties.push_back(SC_COMPRESSION);
 
-            skillchain = FormSkillchain(resonanceProperties, skillProperties);
-            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, PWeaponSkill->getID(), 0, 6, 0, 0, 0));
+                skillchain = FormSkillchain(resonanceProperties, skillProperties);
+            }
+            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, PWeaponSkill->getID(), 0, 10, 0, 0, 0));
             PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_CHAINBOUND);
             PSCEffect = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN, 0);
+
         }
         // Previous effect exists
-        else if(PSCEffect->GetTier() == 0)
+        else if(PSCEffect && PSCEffect->GetTier() == 0)
         {
             DSP_DEBUG_BREAK_IF(!PSCEffect->GetPower() && !PSCEffect->GetSubPower());
             // Previous effect is an opening effect, meaning the power is
             // actually the ID of the opening weaponskill.  We need all 3
             // of the possible skillchain properties on the initial link.
-            if (PSCEffect->GetPower())
+            if (PSCEffect->GetStartTime() + 3000 < gettick())
             {
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getPrimarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getSecondarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getTertiarySkillchain());
+                if (PSCEffect->GetPower())
+                {
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getPrimarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getSecondarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getTertiarySkillchain());
+                }
+                else
+                {
+                    CBlueSpell* oldSpell = (CBlueSpell*)spell::GetSpell(PSCEffect->GetSubPower());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getPrimarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getSecondarySkillchain());
+                }
+                skillchain = FormSkillchain(resonanceProperties, skillProperties);
             }
-            else
-            {
-                CBlueSpell* oldSpell = (CBlueSpell*)spell::GetSpell(PSCEffect->GetSubPower());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getPrimarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getSecondarySkillchain());
-            }
-            skillchain = FormSkillchain(resonanceProperties, skillProperties);
         }
         else
         {
@@ -2869,6 +2891,8 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CWeaponSkill* PWeaponSki
         if(skillchain != SC_NONE)
         {
             PSCEffect->SetStartTime(gettick());
+            ShowDebug("duration: %d", PSCEffect->GetDuration());
+            PSCEffect->SetDuration(PSCEffect->GetDuration() - 1000);
             PSCEffect->SetTier(GetSkillchainTier((SKILLCHAIN_ELEMENT)skillchain));
             PSCEffect->SetPower(skillchain);
             PSCEffect->SetSubPower(dsp_min(PSCEffect->GetSubPower() + 1, 5)); // Linked, limited to 5
@@ -2877,6 +2901,7 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CWeaponSkill* PWeaponSki
         }
 
         PSCEffect->SetStartTime(gettick());
+        PSCEffect->SetDuration(10000);
         PSCEffect->SetTier(0);
         PSCEffect->SetPower(PWeaponSkill->getID());
         PSCEffect->SetSubPower(0);
@@ -2894,7 +2919,7 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CBlueSpell* PSpell)
     if (PSCEffect == nullptr && PCBEffect == nullptr)
     {
         // No effect exists, apply an effect using the weaponskill ID as the power with a tier of 0.
-        PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, 0, 0, 6, 0, PSpell->getID(), 0));
+        PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, 0, 0, 10, 0, PSpell->getID(), 0));
         return SUBEFFECT_NONE;
     }
     else
@@ -2908,47 +2933,53 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CBlueSpell* PSpell)
         // Chainbound active on target
         if(PCBEffect)
         {
-            //Konzen-Ittai
-            if (PCBEffect->GetPower() > 1)
+            if (PCBEffect->GetStartTime() + 3000 < gettick())
             {
-                resonanceProperties.push_back(SC_LIGHT);
-                resonanceProperties.push_back(SC_DARKNESS);
-                resonanceProperties.push_back(SC_GRAVITATION);
-                resonanceProperties.push_back(SC_FRAGMENTATION);
-                resonanceProperties.push_back(SC_DISTORTION);
-                resonanceProperties.push_back(SC_FUSION);
-            }
-            resonanceProperties.push_back(SC_LIQUEFACTION);
-            resonanceProperties.push_back(SC_INDURATION);
-            resonanceProperties.push_back(SC_REVERBERATION);
-            resonanceProperties.push_back(SC_IMPACTION);
-            resonanceProperties.push_back(SC_COMPRESSION);
+                //Konzen-Ittai
+                if (PCBEffect->GetPower() > 1)
+                {
+                    resonanceProperties.push_back(SC_LIGHT);
+                    resonanceProperties.push_back(SC_DARKNESS);
+                    resonanceProperties.push_back(SC_GRAVITATION);
+                    resonanceProperties.push_back(SC_FRAGMENTATION);
+                    resonanceProperties.push_back(SC_DISTORTION);
+                    resonanceProperties.push_back(SC_FUSION);
+                }
+                resonanceProperties.push_back(SC_LIQUEFACTION);
+                resonanceProperties.push_back(SC_INDURATION);
+                resonanceProperties.push_back(SC_REVERBERATION);
+                resonanceProperties.push_back(SC_IMPACTION);
+                resonanceProperties.push_back(SC_COMPRESSION);
 
-            skillchain = FormSkillchain(resonanceProperties, skillProperties);
-            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, 0, 0, 6, 0, PSpell->getID(), 0));
+                skillchain = FormSkillchain(resonanceProperties, skillProperties);
+            }
+            PDefender->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_SKILLCHAIN, 0, 0, 0, 10, 0, PSpell->getID(), 0));
             PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_CHAINBOUND);
             PSCEffect = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_SKILLCHAIN, 0);
         }
         // Previous effect exists
-        else if(PSCEffect->GetTier() == 0)
+        else if(PSCEffect && PSCEffect->GetTier() == 0)
         {
             DSP_DEBUG_BREAK_IF(!PSCEffect->GetPower() && !PSCEffect->GetSubPower());
             // Previous effect is an opening effect, meaning the power is
             // actually the ID of the opening weaponskill.  We need all 3
             // of the possible skillchain properties on the initial link.
-            if (PSCEffect->GetPower())
+            if (PSCEffect->GetStartTime() + 3000 < gettick())
             {
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getPrimarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getSecondarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getTertiarySkillchain());
+                if (PSCEffect->GetPower())
+                {
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getPrimarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getSecondarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)g_PWeaponSkillList[PSCEffect->GetPower()]->getTertiarySkillchain());
+                }
+                else
+                {
+                    CBlueSpell* oldSpell = (CBlueSpell*)spell::GetSpell(PSCEffect->GetSubPower());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getPrimarySkillchain());
+                    resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getSecondarySkillchain());
+                }
+                skillchain = FormSkillchain(resonanceProperties, skillProperties);
             }
-            else
-            {
-                CBlueSpell* oldSpell = (CBlueSpell*)spell::GetSpell(PSCEffect->GetSubPower());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getPrimarySkillchain());
-                resonanceProperties.push_back((SKILLCHAIN_ELEMENT)oldSpell->getSecondarySkillchain());
-            }
-            skillchain = FormSkillchain(resonanceProperties, skillProperties);
         }
         else
         {
@@ -2961,6 +2992,7 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CBlueSpell* PSpell)
         if(skillchain != SC_NONE)
         {
             PSCEffect->SetStartTime(gettick());
+            PSCEffect->SetDuration(PSCEffect->GetDuration() - 1000);
             PSCEffect->SetTier(GetSkillchainTier((SKILLCHAIN_ELEMENT)skillchain));
             PSCEffect->SetPower(skillchain);
             PSCEffect->SetSubPower(dsp_min(PSCEffect->GetSubPower() + 1, 5)); // Linked, limited to 5
@@ -2969,6 +3001,7 @@ SUBEFFECT GetSkillChainEffect(CBattleEntity* PDefender, CBlueSpell* PSpell)
         }
 
         PSCEffect->SetStartTime(gettick());
+        PSCEffect->SetDuration(10000);
         PSCEffect->SetTier(0);
         PSCEffect->SetSubPower(PSpell->getID());
         PSCEffect->SetPower(0);
@@ -3577,7 +3610,20 @@ uint8 getStoreTPbonusFromMerit(CBattleEntity* PEntity)
 	return 0;
 }
 
-
+/************************************************************************
+*                                                                       *
+*       Samurai get merit Ikishoten value                               *
+*                                                                       *
+************************************************************************/
+uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
+{
+   if( PEntity->objtype == TYPE_PC )
+   {
+      if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
+         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ) * 3);
+   }
+   return 0;
+}
 
 /************************************************************************
 *                                                                       *
@@ -3814,7 +3860,7 @@ uint16 jumpAbility(CBattleEntity* PAttacker, CBattleEntity* PVictim, uint8 tier)
 		charutils::TrySkillUP((CCharEntity*)PAttacker, (SKILLTYPE)PWeapon->getSkillType(), PVictim->GetMLevel());
 
 	// jump + high jump doesn't give any tp to victim
-	battleutils::TakePhysicalDamage(PAttacker, PVictim, totalDamage, false, fstrslot, realHits, nullptr, false, true);
+	battleutils::TakePhysicalDamage(PAttacker, PVictim, totalDamage, false, fstrslot, realHits, nullptr, false, true, false);
 
 	return totalDamage;
 }

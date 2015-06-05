@@ -1,5 +1,7 @@
 ---------------------------------------------------------------------------------------------------
--- Deprecated
+-- func: @getmod
+-- auth: TeoTwawki
+-- desc: Prints the ID of the currently selected target under the cursor
 ---------------------------------------------------------------------------------------------------
 
 cmdprops =
@@ -9,5 +11,5 @@ cmdprops =
 };
 
 function onTrigger(player)
-    player:PrintToPlayer("Deprecated. Use @posfix instead.");
-end
+   if( player:hasStatusEffect( EFFECT_TOWNMOVE ) ) then player:PrintToPlayer( "You have town move.", 0xE ); end
+end;

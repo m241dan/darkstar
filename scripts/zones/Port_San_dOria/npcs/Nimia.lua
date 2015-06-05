@@ -35,11 +35,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(ELSHIMOLOWLANDS);
 
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,NIMIA_CLOSED_DIALOG);
-else
 	player:showText(npc,NIMIA_OPEN_DIALOG);
 	
 	stock = {0x0264,55,	  --Kazham Peppers
@@ -50,8 +46,7 @@ else
 			 0x0278,110,  --Kukuru Bean
 			 0x0583,1656} --Phalaenopsis
 			  
-showShop(player,SANDORIA,stock);
-end
+showShop(player,STATIC,stock);
 end; 
 
 -----------------------------------

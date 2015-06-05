@@ -36,6 +36,8 @@ function onBcnmLeave(player,instance,leavecode)
 		if(player:getCurrentMission(ZILART) == THROUGH_THE_QUICKSAND_CAVES) then
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,0);
 		else
+                        player:PrintToPlayer( "You have gained four Augment Buy for assisting others.", 0xE );
+                        player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 4 ) );
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,1);
 		end
 	elseif(leavecode == 4) then

@@ -37,7 +37,7 @@ function onSpellCast(caster,target,spell)
 
 	duration = duration + caster:getMod(MOD_REGEN_DURATION);
 
-	if (caster:hasStatusEffect(EFFECT_COMPOSURE) == true and caster:getID() == target:getID()) then
+	if (caster:hasStatusEffect(EFFECT_COMPOSURE) == true and caster:getID() == target:getID() ) then
 		duration = duration * 3;
 	end
 

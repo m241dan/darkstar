@@ -43,7 +43,7 @@ function onMobDeath(mob,killer)
 		npc:setPos(mob:getXPos(),mob:getYPos(),mob:getZPos());
 		npc:setStatus(0);
 
-		killer:launchDynamisSecondPart(); -- Spawn dynamis second part
+--		killer:launchDynamisSecondPart(); -- Spawn dynamis second part
 	end
 
 	for i = 17534978, 17534979 do

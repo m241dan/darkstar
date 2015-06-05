@@ -24,10 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(DERFLAND);
-    if (RegionOwner ~= WINDURST) then
-        player:showText(npc,TARAIHIPERUNHI_CLOSED_DIALOG);
-    else
+ 
         player:showText(npc,TARAIHIPERUNHI_OPEN_DIALOG);
 
         stock = {
@@ -40,9 +37,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
-
-end;
+ end;
 
 -----------------------------------
 -- onEventUpdate

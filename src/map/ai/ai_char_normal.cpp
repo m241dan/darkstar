@@ -268,6 +268,22 @@ bool CAICharNormal::IsMobOwner(CBattleEntity* PBattleTarget)
 {
     DSP_DEBUG_BREAK_IF(PBattleTarget == nullptr);
 
+    switch( PBattleTarget->loc.zone->GetID() )
+    {
+       default: break;
+       case 39:
+       case 40:
+       case 41:
+       case 42:
+       case 134:
+       case 135:
+       case 185:
+       case 186:
+       case 187:
+       case 188:
+          return true;
+    }
+
     if (PBattleTarget->m_OwnerID.id == 0 || PBattleTarget->m_OwnerID.id == m_PChar->id || PBattleTarget->objtype == TYPE_PC)
     {
         return true;
@@ -1136,7 +1152,7 @@ void CAICharNormal::ActionRangedFinish()
                 Action.speceffect = SPECEFFECT_CRITICAL_HIT;
             }
 
-            Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, totalDamage, false, slot, realHits, nullptr, true, true);
+            Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, totalDamage, false, slot, realHits, nullptr, true, true, false);
 
             // lower damage based on shadows taken
             if (shadowsTaken)
@@ -1989,7 +2005,7 @@ void CAICharNormal::ActionJobAbilityFinish()
             // if a hit did occur (even without barrage)
             if (hitOccured == true)
             {
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, damage, false, SLOT_RANGED, 1, nullptr, true, false);
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleSubTarget, damage, false, SLOT_RANGED, 1, nullptr, true, false, false);
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);
@@ -2555,6 +2571,12 @@ void CAICharNormal::ActionWeaponSkillFinish()
         {
             Action.param = damage;
             Action.messageID = 185; //damage ws
+
+            if (m_PBattleSubTarget->objtype == TYPE_MOB)
+            {
+                uint16 PWeaponskill = m_PWeaponSkill->getID();
+                luautils::OnWeaponskillHit(m_PBattleSubTarget, m_PChar, PWeaponskill);
+            }
         }
     }
     else
@@ -3118,7 +3140,7 @@ void CAICharNormal::DoAttack()
                     Action.reaction = REACTION_BLOCK;
                 }
 
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true);
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, attack.GetAttackType() == ZANSHIN_ATTACK ? true : false );
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);

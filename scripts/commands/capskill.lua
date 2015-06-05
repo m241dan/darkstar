@@ -1,16 +1,16 @@
 ---------------------------------------------------------------------------------------------------
 -- func: capskill
--- auth: <Unknown> :: Modded by atom0s.
 -- desc: Caps a specific skill.
 ---------------------------------------------------------------------------------------------------
 
 cmdprops =
 {
     permission = 1,
-    parameters = "s"
+    parameters = "ss"
 };
 
-function onTrigger(player, skill)
+function onTrigger(player, skill, target)
+    local targ;
     local skillList =
     {
         -- Combat Skills
@@ -58,13 +58,19 @@ function onTrigger(player, skill)
         return;
     end
     
+    if( target == nil ) then
+       targ = player;
+    else
+       targ = GetPlayerByName( target );
+    end
+
     if (tonumber(skill) ~= 0 and tonumber(skill) ~= nil) then
         local skillId = tonumber(skill);
-        player:capSkill( skillId );
+        targ:capSkill( skillId );
         
         for k, v in pairs(skillList) do
             if (v == skillId) then
-                player:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
+                targ:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
                 return;
             end
         end
@@ -74,8 +80,8 @@ function onTrigger(player, skill)
     if (skillId == nil) then
         player:PrintToPlayer( string.format( "Invalid skill '%s' given.", skill ) );
     else
-        player:capSkill( skillId );
-        player:PrintToPlayer( string.format( "Capped skill '%s'.", skill ) );
+        targ:capSkill( skillId );
+        targ:PrintToPlayer( string.format( "Capped skill '%s'.", skill ) );
     end
 end
     --[[
@@ -87,11 +93,11 @@ end
     local skillId = skillList[ string.lower( skill ) ];
     if (tonumber(skill) ~= 0) then
         skillId = tonumber(skill);
-        player:capSkill( skillId );
+        targ:capSkill( skillId );
         
         for k, v in pairs(skillList) do
             if (v == skillId) then
-                player:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
+                targ:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
                 return;
             end
         end

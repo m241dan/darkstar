@@ -21,10 +21,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(VALDEAUNIA);
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,TIBELDA_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,TIBELDA_OPEN_DIALOG);
         stock = {
             0x111e,    29,   --Frost Turnip
@@ -32,7 +29,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);
 
-    end
+    
 
 end; 
 

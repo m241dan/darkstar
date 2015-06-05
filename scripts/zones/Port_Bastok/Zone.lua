@@ -17,6 +17,8 @@ require("scripts/zones/Port_Bastok/TextIDs");
 
 function onInitialize(zone)
     zone:registerRegion(1,-112,-3,-17,-96,3,-3);--event COP
+    zone:registerRegion( 2, 67, 5, -79, 53, -5, -73 ); -- non-MH side of bridge
+    zone:registerRegion( 3, 52, 5, -160, 67, -5, -165 ); -- MH side
 end;
 
 -----------------------------------
@@ -63,7 +65,7 @@ function onZoneIn(player,prevZone)
     if (player:getCurrentMission(COP) == THE_ENDURING_TUMULT_OF_WAR and player:getVar("PromathiaStatus") == 0) then
         cs = 0x0132;
     end
-
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;
 -----------------------------------
@@ -72,9 +74,15 @@ end;
 
 function onRegionEnter(player,region)
     local regionID =region:GetRegionID();
-    -- printf("regionID: %u",regionID);
+    printf( "\nregionID = %u\n", regionID );
     if (regionID == 1 and player:getCurrentMission(COP) == THE_CALL_OF_THE_WYRMKING and player:getVar("PromathiaStatus") == 0) then
         player:startEvent(0x0131);
+    elseif( regionID == 2 ) then
+       --pos x:58 y:5 z:-171
+       player:setPos( 58, 5, -171 );
+    elseif( regionID == 3 ) then    
+       --pos x:60 y:5 z:-73
+       player:setPos( 60, 5, -73 );
     end
 end;
 -----------------------------------

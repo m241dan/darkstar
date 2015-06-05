@@ -24,11 +24,11 @@ GOV_MENU_PAGE_2         = 34;
 GOV_MENU_PAGE_3         = 50;
 GOV_MENU_PAGE_4         = 66;
 GOV_MENU_PAGE_5         = 82;
-GOV_MENU_PAGE_6         = 98;
-GOV_MENU_PAGE_7         = 114;
-GOV_MENU_PAGE_8         = 130;
-GOV_MENU_PAGE_9         = 146;
-GOV_MENU_PAGE_10        = 162;
+GOV_MENU_PAGE_6         = -1;
+GOV_MENU_PAGE_7         = -1;
+GOV_MENU_PAGE_8         = -1;
+GOV_MENU_PAGE_9         = -1;
+GOV_MENU_PAGE_10        = -1;
 GOV_MENU_VIEW_REGIME    = 1;
 GOV_MENU_LEVEL_RANGE    = 5;
 GOV_MENU_REVIEW_PROWESS = 7;
@@ -38,7 +38,7 @@ GOV_MENU_REVIEW_PROWESS = 7;
 -----------------------------------
 
 GOV_MENU_REPATRIATION    = 20;
-GOV_MENU_CIRCUMSPECTION  = 37;
+GOV_MENU_CIRCUMSPECTION  = 36;
 GOV_MENU_HOMING_INSTINCT = 52;
 GOV_MENU_RERAISE         = 68;
 GOV_MENU_RERAISE_II      = 84;
@@ -56,16 +56,16 @@ GOV_MENU_DRIED_AGARICUS  = 260;
 GOV_MENU_INSTANT_RICE    = 276;
 GOV_MENU_CIPHER_SAKURA   = 292;
 GOV_MENU_CANCEL_REGIME   = 3;
-GOV_MENU_REPEAT_REGIME1  = -2147483630; -- 2147483666;
-GOV_MENU_REPEAT_REGIME2  = -2147483614; -- 2147483682;
-GOV_MENU_REPEAT_REGIME3  = -2147483598; -- 2147483698;
-GOV_MENU_REPEAT_REGIME4  = -2147483582; -- 2147483714;
-GOV_MENU_REPEAT_REGIME5  = -2147483566; -- 2147483730;
-GOV_MENU_REPEAT_REGIME6  = -2147483550; -- 2147483746;
-GOV_MENU_REPEAT_REGIME7  = -2147483534; -- 2147483762;
-GOV_MENU_REPEAT_REGIME8  = -2147483518; -- 2147483778;
-GOV_MENU_REPEAT_REGIME9  = -2147483502; -- 2147483794;
-GOV_MENU_REPEAT_REGIME10 = -2147483486; -- 2147483810;
+GOV_MENU_REPEAT_REGIME1  = 2147483666;  -- -2147483630;
+GOV_MENU_REPEAT_REGIME2  = 2147483682;  -- -2147483614;
+GOV_MENU_REPEAT_REGIME3  = 2147483698;
+GOV_MENU_REPEAT_REGIME4  = 2147483714;
+GOV_MENU_REPEAT_REGIME5  = 2147483730;
+GOV_MENU_REPEAT_REGIME6  = -1; -- 2147483746;
+GOV_MENU_REPEAT_REGIME7  = -1; -- 2147483762;
+GOV_MENU_REPEAT_REGIME8  = -1; -- 2147483778;
+GOV_MENU_REPEAT_REGIME9  = -1; -- 2147483794;
+GOV_MENU_REPEAT_REGIME10 = -1; -- 2147483810;
 
 -----------------------------------
 -- Message IDs
@@ -240,6 +240,8 @@ function finishGov(player,csid,option,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,msg_offset)
     local HAS_FOOD = player:hasStatusEffect(EFFECT_FOOD);
     local HAS_SUPPORT_FOOD = player:hasStatusEffect(EFFECT_FIELD_SUPPORT_FOOD);
 -- ================= FIELD SUPPORT ============================================
+   printf( "\nCSID: %u\n", option );
+   
     if (option == GOV_MENU_REPATRIATION) then -- Send to home nation
         if (tabs >= 50) then
             player:delCurrency("valor_point", 50);
@@ -451,6 +453,7 @@ end
 -----------------------------------
 
 function writeRegime(player,rid,msg_accept,msg_jobs,regrepeat)
+    printf( "Writing Regime" );
     player:setVar("fov_regimeid",rid);
     player:setVar("fov_repeat",regrepeat);
     player:setVar("fov_numkilled1",0);
@@ -477,11 +480,27 @@ function checkGoVregime(killer,mob,rid,index)
         return;
     end
 
+    partyType = killer:checkSoloPartyAlliance();
+
+    if( killer:isSynced() ) then
+       local sync = killer:getSync();
+       if( sync ~= nil ) then
+          if( killer:getVar( "fov_regimeid" ) ~= sync:getVar( "fov_regimeid" ) ) then
+             killer:PrintToPlayer( "Your Level Sync must have the same Page active as you." );
+             return;
+          end
+          if( sync:checkDistance( mob ) >= 100 ) then
+             killer:PrintToPlayer( "Your Level Sync must be in range to get experience and credit." );
+             return;
+          end
+       end
+    end
+
     if (killer:getVar("fov_regimeid") == rid) then -- Player is doing this regime
         -- Need to add difference because a lvl1 can XP with a level 75 at Ro'Maeve
         local difference = math.abs(mob:getMainLvl() - killer:getMainLvl());
 
-        if ((mob:checkBaseExp() and killer:checkDistance(mob) < 100 and difference <= 15) or killer:checkFovDistancePenalty() == 0) then
+        if ((mob:checkBaseExp() and killer:checkDistance(mob) < 100 and difference <= 15 and partyType < 2 ) or killer:checkFovDistancePenalty() == 0) then
             -- Get the number of mobs needed/killed
             local needed = killer:getVar("fov_numneeded"..index);
             local killed = killer:getVar("fov_numkilled"..index);
@@ -565,7 +584,6 @@ function checkGoVregime(killer,mob,rid,index)
                         end
 
                         -- Award gil and tabs once per day.
-                        if (killer:getVar("fov_LastReward") < VanadielEpoch) then
                             killer:messageBasic(GOV_MSG_GET_GIL,reward);
                             killer:addGil(reward);
                             killer:addCurrency("valor_point", tabs);
@@ -573,10 +591,11 @@ function checkGoVregime(killer,mob,rid,index)
                             if (REGIME_WAIT == 1) then
                                 killer:setVar("fov_LastReward",VanadielEpoch);
                             end
-                        end
 
                         -- Give player the candy and inform which Prowess they got.
-                        killer:addExp(reward);
+--                        killer:addExp(reward*EXP_RATE);
+	                reward = reward / 2;
+                        killer:addExp( ( ( ( 75 - killer:getTrueLvl(killer:getMainJob()) ) * .03 ) + 1.75 ) * reward );
                         killer:messageBasic(ProwessMessage);
                         
                         -- Debugging crap.

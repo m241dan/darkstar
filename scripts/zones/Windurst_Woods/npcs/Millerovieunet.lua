@@ -25,9 +25,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    if(GetRegionOwner(QUFIMISLAND) ~= WINDURST) then
-        player:showText(npc,MILLEROVIEUNET_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,MILLEROVIEUNET_OPEN_DIALOG);
 
         stock = {
@@ -35,8 +33,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
-
+ 
 end;
 
 -----------------------------------

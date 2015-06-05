@@ -34,11 +34,6 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(KOLSHUSHU);
-
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,FIVA_CLOSED_DIALOG);
-else
 	player:showText(npc,FIVA_OPEN_DIALOG);
 	
 	stock = {0x1197,184,  --Buburimu Grape
@@ -48,7 +43,7 @@ else
 			 0x115d,40}   --Yagudo Cherry
 
 showShop(player,SANDORIA,stock);
-end
+
 end; 
 
 -----------------------------------

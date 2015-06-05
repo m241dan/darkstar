@@ -33,22 +33,15 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-
-RegionOwner = GetRegionOwner(SARUTABARUTA);
-
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,MILVA_CLOSED_DIALOG);
-else
 	player:showText(npc,MILVA_OPEN_DIALOG);
-	
-	stock = {0x115c,22, --Rarab Tail
+	stock = {
+                         0x115c,22, --Rarab Tail
 			 0x02b1,33, --Lauan Log
 			 0x026b,43, --Popoto
 			 0x1128,29, --Saruta Orange
 			 0x027b,18} --Windurstian Tea Leaves
 	
-showShop(player,SANDORIA,stock);	
-end
+	showShop(player,STATIC,stock);	
 end; 
 
 -----------------------------------

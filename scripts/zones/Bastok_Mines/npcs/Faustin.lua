@@ -23,10 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(RONFAURE);
-    if (RegionOwner ~= BASTOK) then
-        player:showText(npc,FAUSTIN_CLOSED_DIALOG);
-    else
+ 
         player:showText(npc,FAUSTIN_OPEN_DIALOG);
 
         stock = {
@@ -37,7 +34,7 @@ function onTrigger(player,npc)
         };
         showShop(player,BASTOK,stock);
 
-    end
+   
 
 end;
 

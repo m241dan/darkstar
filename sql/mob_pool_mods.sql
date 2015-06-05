@@ -37,6 +37,8 @@ CREATE TABLE `mob_pool_mods` (
 
 LOCK TABLES `mob_pool_mods` WRITE;
 /*!40000 ALTER TABLE `mob_pool_mods` DISABLE KEYS */;
+INSERT INTO `mob_pool_mods` VALUES (2227,383,10,0);
+INSERT INTO `mob_pool_mods` VALUES (2181,383,10,0);
 INSERT INTO `mob_pool_mods` VALUES (519,160,-50,0);
 INSERT INTO `mob_pool_mods` VALUES (532,160,-50,0);
 INSERT INTO `mob_pool_mods` VALUES (676,160,-50,0);
@@ -217,3 +219,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2013-09-20 13:54:52
+

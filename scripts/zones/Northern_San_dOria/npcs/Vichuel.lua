@@ -34,11 +34,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(FAUREGANDI);
 
-if (RegionOwner ~= SANDORIA) then
-        player:showText(npc,VICHUEL_CLOSED_DIALOG);
-else
         player:showText(npc,VICHUEL_OPEN_DIALOG);
        
         stock = {0x11db,90,             -- Beaugreens
@@ -46,7 +42,7 @@ else
                  0x02b3,54}             -- Maple Log
                          
 showShop(player,SANDORIA,stock);
-end
+
 end;
 
 -----------------------------------

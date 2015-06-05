@@ -93,6 +93,8 @@ void CAIAutomatonDummy::CheckCurrentAction(uint32 tick)
 
 void CAIAutomatonDummy::ActionFall()
 {
+    if( !m_PPet )
+       return;
     m_PPet->PMaster->StatusEffectContainer->RemoveAllManeuvers();
     CAIPetDummy::ActionFall();
 }
@@ -240,7 +242,7 @@ void CAIAutomatonDummy::ActionAttack()
                     if (isBlocked){ Action.reaction = REACTION_BLOCK; }
 
 
-                    Action.param = battleutils::TakePhysicalDamage(m_PPet, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true);
+                    Action.param = battleutils::TakePhysicalDamage(m_PPet, m_PBattleTarget, damage, isBlocked, SLOT_MAIN, 1, nullptr, true, true, false);
                     if (Action.param < 0)
                     {
                         Action.param = -(Action.param);
@@ -340,6 +342,8 @@ bool CAIAutomatonDummy::CheckRangedAttack()
 
 void CAIAutomatonDummy::TransitionBack(bool skipWait /*= false*/)
 {
+    if( !m_PPet  )
+       return;
     if (m_PPet->animation == ANIMATION_ATTACK)
     {
         m_ActionType = ACTION_ATTACK;

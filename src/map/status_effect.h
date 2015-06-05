@@ -62,7 +62,8 @@ enum EFFECTFLAG
     EFFECTFLAG_SONG             = 0x10000,  // bard songs
     EFFECTFLAG_ROLL             = 0x20000,  // corsair rolls
     EFFECTFLAG_SYNTH_SUPPORT    = 0x40000,  // Synthesis Image Support
-    EFFECTFLAG_CONFRONTATION    = 0x80000
+    EFFECTFLAG_CONFRONTATION    = 0x80000,
+    EFFECTFLAG_LOGOUT           = 0x100000
 };
 
 enum EFFECT
@@ -682,12 +683,13 @@ enum EFFECT
     EFFECT_SKILLCHAIN               = 799,
 	EFFECT_DYNAMIS					= 800,
     EFFECT_MEDITATE                 = 801, // Dummy effect for SAM Meditate JA
+    EFFECT_TOWNMOVE                 = 802,
     // EFFECT_PLACEHOLDER              = 802 // Description
     // 802-1022
     // EFFECT_PLACEHOLDER             = 1023 // The client dat file seems to have only this many "slots", results of exceeding that are untested.
 };
 
-#define MAX_EFFECTID    802  // 768 real + 32 custom
+#define MAX_EFFECTID    803  // 768 real + 32 custom
 
 /************************************************************************
 *																		*

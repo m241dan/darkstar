@@ -26,7 +26,11 @@ function onSpellCast(caster,target,spell)
 		-- no effect
 		spell:setMsg(75);
 	else
-        if(target:addStatusEffect(EFFECT_STUN,1,0,duration*resist)) then
+        duration = duration * resist;
+        if( duration < 1 ) then
+           duration = 1;
+        end
+        if(target:addStatusEffect(EFFECT_STUN,1,0,duration)) then
             spell:setMsg(236);
         else
             spell:setMsg(75);

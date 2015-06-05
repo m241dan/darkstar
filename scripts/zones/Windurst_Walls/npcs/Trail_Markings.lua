@@ -32,19 +32,22 @@ function onTrigger(player,npc)
 	elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND)) then
 		local firstDyna = 0;
 		local realDay = os.time();
-		local dynaWaitxDay = player:getVar("dynaWaitxDay");
-		
+
+                if( player:getVar( "FirstNewDyna" ) == 0 ) then
+                   player:setVar( "FirstNewDyna", 1 );
+                   player:setVar( "DynamisEntries", 1 );
+                end
+
 		if(checkFirstDyna(player,3)) then  -- First Dyna-Windurst => CS
 			firstDyna = 1; 
 		end
 		
 		if(player:getMainLvl() < DYNA_LEVEL_MIN) then
 			player:messageSpecial(PLAYERS_HAVE_NOT_REACHED_LEVEL,DYNA_LEVEL_MIN);
-		elseif((dynaWaitxDay + (BETWEEN_2DYNA_WAIT_TIME * 24 * 60 * 60)) < realDay or player:getVar("DynamisID") == GetServerVariable("[DynaWindurst]UniqueID")) then
+		elseif( player:getVar( "DynamisEntries" ) > 0 or player:getVar("DynamisID") == GetServerVariable("[DynaWindurst]UniqueID")) then
 			player:startEvent(0x01c4,3,firstDyna,0,BETWEEN_2DYNA_WAIT_TIME,64,VIAL_OF_SHROUDED_SAND,4236,4237);
 		else
-			dayRemaining = math.floor(((dynaWaitxDay + (BETWEEN_2DYNA_WAIT_TIME * 24 * 60 * 60)) - realDay)/3456);
-			player:messageSpecial(YOU_CANNOT_ENTER_DYNAMIS,dayRemaining,3);
+                   player:PrintToPlayer( "You have no more Dynamis Entires left.", 0xE );
 		end
 	else
 		player:messageSpecial(STRANDS_OF_GRASS_HERE);
@@ -79,7 +82,7 @@ function onEventFinish(player,csid,option)
 		if(checkFirstDyna(player,3)) then
 			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 8);
 		end
-		
+	
 		player:setPos(-221.988,1.000,-120.184,0,0xbb);
 	end
 	

@@ -1,3 +1,4 @@
+
 -----------------------------------
 --	Area: Port San d'Oria
 --	NPC:  Deguerendars
@@ -32,16 +33,8 @@ end;
 -----------------------------------
 -- onTrigger Action
 -----------------------------------
-
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(TAVNAZIANARCH);
-cop = 40; --player:getVar("chainsOfPromathiaMissions");
-
-if (cop >= 40) then
-	if (RegionOwner ~= SANDORIA) then 
-		player:showText(npc,DEGUERENDARS_CLOSED_DIALOG);
-	else
 		player:showText(npc,DEGUERENDARS_OPEN_DIALOG);
 
 		stock = {0x05f3,290,  --Apple Mint
@@ -49,11 +42,7 @@ if (cop >= 40) then
 				 0x426d,99,   --Lufaise Fly
 				 0x144b,233}  --Misareaux Parsley
 				 
-		showShop(player,SANDORIA,stock);
-	end
-else
-	player:showText(npc,DEGUERENDARS_COP_NOT_COMPLETED);
-end
+		showShop(player,STATIC,stock);
 end; 
 
 -----------------------------------

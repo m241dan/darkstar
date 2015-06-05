@@ -27,36 +27,28 @@ function onTrigger(player,npc)
     player:showText(npc,UPIHKHACHLA_SHOP_DIALOG);
 
     stock = {
-        0x43A1,  1107,1,     --Grenade
-        0x1010,   837,1,     --Potion
-        0x03B7,   108,1,     --Wijnruit
+        0x43A1,  1107,     --Grenade
+        0x1010,   837,     --Potion
+        0x03B7,   108,     --Wijnruit
 
-        0x027C,   119,2,     --Chamomile
-        0x1037,   736,2,     --Echo Drops
-        0x1020,  4445,2,     --Ether
+        0x027C,   119,     --Chamomile
+        0x1037,   736,     --Echo Drops
+        0x1020,  4445,     --Ether
 
-        0x1034,   290,3,     --Antidote
-        0x0764,  3960,3,     --Desalinator
-        0x026E,    44,3,     --Dried Marjoram
-        0x1036,  2387,3,     --Eye Drops
-        0x025D,   180,3,     --Pickaxe
-        0x0765,  3960,3,     --Salinator
-        0x03FC,   276,3,     --Sickle
-        0x04D9,   354,3      --Twinkle Powder
-    }               
+        0x1034,   290,     --Antidote
+        0x0764,  3960,     --Desalinator
+        0x026E,    44,     --Dried Marjoram
+        0x1036,  2387,     --Eye Drops
+        0x025D,   180,     --Pickaxe
+        0x0765,  3960,     --Salinator
+        0x03FC,   276,     --Sickle
+        0x04D9,   354,     --Twinkle Powder
+	0x03FE,  3643,     --Thief's Tools
+        0x03FF,  5520,     --Living Key
+		    }               
 
-    rank = getNationRank(WINDURST);
-    if (rank ~= 1) then
-        table.insert(stock,0x03fe); --Thief's Tools
-        table.insert(stock,3643);
-        table.insert(stock,3);
-    end
-    if (rank == 3) then
-        table.insert(stock,0x03ff); --Living Key
-        table.insert(stock,5520);
-        table.insert(stock,3);
-    end
-    showNationShop(player, WINDURST, stock);
+  
+    showShop(player, WINDURST, stock);
 
 end;
 

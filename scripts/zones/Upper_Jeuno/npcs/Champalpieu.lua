@@ -23,7 +23,10 @@ function onTrigger(player,npc)
 	
 player:showText(npc,CHAMPALPIEU_SHOP_DIALOG);
 
-stock = {0x110D,120,	--Rolanberry
+stock = {
+        0x046E,2020,    --Bast Parchment
+        0x03A1,1051,    --Black Ink
+        0x110D,120,	--Rolanberry
 	0x43A8,7,	--Iron Arrow
 	0x43B8,5,	--Crossbow Bolt
 	0x025D,180,	--Pickaxe

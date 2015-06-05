@@ -22,6 +22,7 @@
 */
 
 #include "../common/showmsg.h"
+#include "../common/sql.h"
 
 #include "utils/guildutils.h"
 #include "utils/instanceutils.h"
@@ -46,6 +47,7 @@ int32 time_server(uint32 tick,CTaskMgr::CTask* PTask)
         {
             conquest::UpdateWeekConquest();
             CVanaTime::getInstance()->lastConquestTally = tick;
+            int32 ret = Sql_Query(SqlHandle, "UPDATE char_vars SET value=1 WHERE value=-1 AND varname='RelicBuys';" );
         }
     }
     // hourly conquest update
@@ -84,6 +86,7 @@ int32 time_server(uint32 tick,CTaskMgr::CTask* PTask)
         {
             guildutils::UpdateGuildPointsPattern();
             CVanaTime::getInstance()->lastMidnight = tick;
+            int32 ret = Sql_Query(SqlHandle, "UPDATE char_vars SET value = value+1 WHERE value < 3 AND varname='DynamisEntries';" );
         }
     }
 
@@ -93,7 +96,7 @@ int32 time_server(uint32 tick,CTaskMgr::CTask* PTask)
         {
 			zoneutils::ForEachZone([](CZone* PZone)
 			{
-                luautils::OnGameDay(PZone);
+		                luautils::OnGameDay(PZone);
 				PZone->ForEachChar([](CCharEntity* PChar)
 				{
 					PChar->PLatentEffectContainer->CheckLatentsWeekDay();

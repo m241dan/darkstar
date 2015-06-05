@@ -29,7 +29,7 @@
 #include "../entities/battleentity.h"
 #include "../conquest_system.h"
 
-#define lua_prepscript(n,...) int8 File[255]; memset(File, 0, sizeof(File)); int32 oldtop = lua_gettop(LuaHandle); \
+#define lua_prepscript(n,...) int8 File[255]; int32 oldtop = lua_gettop(LuaHandle); \
                               snprintf( File, sizeof(File), n, ##__VA_ARGS__);
 
 /************************************************************************
@@ -114,12 +114,14 @@ namespace luautils
 
     int32 OnGameIn(CCharEntity* PChar, bool zoning);							//
 	int32 OnZoneIn(CCharEntity* PChar);											// triggers when a player zones into a zone
+        int32 OnZoneOut(CCharEntity *PChar );
 	int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask);						// triggers after a player has finished zoning in
 	int32 OnZoneInitialise(uint16 ZoneID);										// triggers when zone is loaded
 	int32 OnRegionEnter(CCharEntity* PChar, CRegion* PRegion);					// when player enters a region of a zone
 	int32 OnRegionLeave(CCharEntity* PChar, CRegion* Pregion);					// when player leaves a region of a zone
     int32 OnTransportEvent(CCharEntity* PChar, uint32 TransportID);
     int32 OnConquestUpdate(CZone* PZone, ConquestUpdate type);                  // hourly conquest update
+    int32 OnDynaDrop(CZone *PZone, uint16 itemID );
 
 	int32 OnTrigger(CCharEntity* PChar, CBaseEntity* PNpc);						// triggered when user targets npc and clicks action button
 	int32 OnEventUpdate(CCharEntity* PChar, uint16 eventID, uint32 result);		// triggered when game triggers event update during cutscene
@@ -144,7 +146,8 @@ namespace luautils
 	int32 OnSpellCast(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);		// triggered when casting a spell
 	int32 OnSpellPrecast(CBattleEntity* PCaster, CSpell* PSpell);				            // triggered just before casting a spell
 	int32 OnMonsterMagicPrepare(CBattleEntity* PCaster, CBattleEntity* PTarget);            // triggered when monster wants to use a spell on target
-    int32 OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);       //triggered when spell cast on monster
+    int32 OnMagicHit(CBattleEntity* PCaster, CBattleEntity* PTarget, CSpell* PSpell);       // triggered when spell cast on monster
+    int32 OnWeaponskillHit(CBattleEntity* PMob, CBaseEntity* PAttacker, uint16 PWeaponskill); // Triggered when Weaponskill strikes monster
 
     int32 OnMobInitialize(CBaseEntity* PMob);                                     // Used for passive trait
     int32 OnMobSpawn(CBaseEntity* PMob);                                          // triggers on mob spawn

@@ -22,10 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(DERFLAND);
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,BELKA_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,BELKA_OPEN_DIALOG);
         stock = {
             0x1100,   128,   --Derfland Pear
@@ -37,7 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);
 
-    end
+   
 
 end; 
 

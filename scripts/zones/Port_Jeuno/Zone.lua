@@ -56,7 +56,7 @@ function onZoneIn(player,prevZone)
     and player:getQuestStatus(ABYSSEA, A_JOURNEY_BEGINS) == QUEST_AVAILABLE) then
         cs = 0x0144;
     end
-
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs
 end;
 

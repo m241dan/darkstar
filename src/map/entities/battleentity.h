@@ -227,7 +227,7 @@ enum SLOTTYPE
 	SLOT_RING2	= 0x0E,
 	SLOT_BACK	= 0x0F,
 	SLOT_LINK1	= 0x10,
-    SLOT_LINK2  = 0x11,
+	SLOT_LINK2      = 0x11,
 };
 
 // CROSSBOW и GUN - это Piercing, разделение сделано из-за одинакового skilltype
@@ -474,7 +474,7 @@ public:
 	bool			isAsleep();
 
 
-        uint8		    GetMTrueLevel();
+        uint8		    GetMTrueLevel();			//return the true level of this battle entity
 	JOBTYPE		    GetMJob();					// главная профессия
 	JOBTYPE		    GetSJob();					// дополнительная профессия
 	uint8		    GetMLevel();				// уровень главной профессии

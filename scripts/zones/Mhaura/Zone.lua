@@ -39,6 +39,7 @@ function onZoneIn(player,prevZone)
 	if(player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus")==3 and player:getVar("Promathia_kill_day") ~= currentday and player:getVar("COP_shikarees_story")== 0 )then
 		cs=0x0142;
 	end
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 return cs;
 end;
 

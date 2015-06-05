@@ -63,17 +63,15 @@ end;
 
 function onTrigger(player,npc)
 
-	if(player:getCurrentMission(COP) == BELOW_THE_ARKS and player:getVar("PromathiaStatus") == 1)then
+	if(player:getCurrentMission(COP) == BELOW_THE_ARKS and player:getVar("PromathiaStatus") == 1) then
+		player:startEvent(0x006f);
+	elseif(player:getQuestStatus(JEUNO,EMPTY_MEMORIES) == QUEST_AVAILABLE and player:getCurrentMission(COP) >= THE_MOTHERCRYSTALS) then
 		player:startEvent(0x0071);
-	elseif(player:getQuestStatus(JEUNO,EMPTY_MEMORIES) == QUEST_AVAILABLE and player:getCurrentMission(COP) >= THE_MOTHERCRYSTALS)then
-		player:addQuest(JEUNO,EMPTY_MEMORIES);
-		player:startEvent(0x0072);
 	elseif(player:getQuestStatus(JEUNO,EMPTY_MEMORIES) >= QUEST_ACCEPTED)then
 		player:startEvent(0x0072);
 	else
 		player:startEvent(0x006f);
-	end
-	
+	end	
 end;
 
 -----------------------------------
@@ -100,6 +98,8 @@ function onEventFinish(player,csid,option)
 		player:addItem(objecttrade);
 		player:messageSpecial(ITEM_OBTAINED,objecttrade);
 		player:setVar("harithreward",0);
+	elseif(csid == 0x0071) then	
+		player:addQuest(JEUNO,EMPTY_MEMORIES);
 	end
 	
 end;

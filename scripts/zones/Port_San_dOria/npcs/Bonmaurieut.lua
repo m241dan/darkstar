@@ -34,11 +34,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(ELSHIMOUPLANDS);
 
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,BONMAURIEUT_CLOSED_DIALOG);
-else
 	player:showText(npc,BONMAURIEUT_OPEN_DIALOG);
 	
 	stock = {0x0585,1656, --Cattleya
@@ -47,7 +43,7 @@ else
 			 0x02d1,147}  --Rattan Lumber
 			  
 showShop(player,SANDORIA,stock);
-end
+
 end; 
 
 -----------------------------------

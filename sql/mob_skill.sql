@@ -1119,10 +1119,10 @@ INSERT INTO `mob_skill` VALUES (419,135,419,'Heavy_Strike',0,7.0,2000,1500,4,0,0
 INSERT INTO `mob_skill` VALUES (420,135,420,'Ice_Break',1,15.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (421,135,421,'Thunder_Break',1,15.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (422,135,422,'Crystal_Rain',1,15.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (423,135,423,'Crystal_Weapon_Fire',1,15.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (424,135,424,'Crystal_Weapon_Stone',1,15.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (425,135,425,'Crystal_Weapon_Water',1,15.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (426,135,426,'Crystal_Weapon_Wind',1,15.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (423,135,423,'Crystal_Weapon_Fire',0,15.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (424,135,424,'Crystal_Weapon_Stone',0,15.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (425,135,425,'Crystal_Weapon_Water',0,15.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (426,135,426,'Crystal_Weapon_Wind',0,15.0,2000,1500,4,0,0,0);
 
 -- Sapling
 INSERT INTO `mob_skill` VALUES (429,216,429,'Sprout_Spin',1,15.0,2000,1500,4,0,0,0);
@@ -1218,6 +1218,17 @@ INSERT INTO `mob_skill` VALUES (544,281,472,'Heat_Breath',4,15.0,2000,1500,4,0,0
 INSERT INTO `mob_skill` VALUES (545,281,473,'Riddle',1,15.0,2000,1500,4,0,0,0); -- might not use this move,according to wiki list
 INSERT INTO `mob_skill` VALUES (546,281,474,'Great_Sandstorm',0,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (547,281,475,'Great_Whirlwind',4,12.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (478,281,432,'Astral_Flow',0,7.0,2000,0,1,2,0,0);
+
+-- Kirin's Avatar
+INSERT INTO `mob_skill` VALUES (656,495,611,'searing_light',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (583,495,521,'Howling_Moon',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (592,495,534,'Inferno',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (628,495,586,'Diamond_Dust',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (610,495,560,'Tidal_Wave',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (637,495,599,'judgment_bolt',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (619,495,573,'aerial_blast',1,30.0,0,0,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (601,495,547,'earthen_fury',1,30.0,0,0,4,0,0,0);
 
 -- Pet Suzaku
 INSERT INTO `mob_skill` VALUES (143,333,143,'Scratch',0,7.0,2000,1500,4,0,0,0);
@@ -2415,7 +2426,7 @@ INSERT INTO `mob_skill` VALUES (1030,393,660,'Horrid_Roar_3',0,18.0,2000,1500,4,
 INSERT INTO `mob_skill` VALUES (432,393,432,'Mighty_Strikes',0,18.0,2000,0,1,0,30,0);
 
 -- Faust
-INSERT INTO `mob_skill` VALUES (283,367,283,'Typhoon',1,7.0,2000,1500,4,0,0,1);
+INSERT INTO `mob_skill` VALUES (283,367,283,'Typhoon',1,7.0,1500,1000,4,0,0,1);
 
 -- Despot
 INSERT INTO `mob_skill` VALUES (280,368,280,'Panzerfaust',0,7.0,2000,1500,4,0,0,0);

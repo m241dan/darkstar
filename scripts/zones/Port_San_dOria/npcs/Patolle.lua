@@ -35,11 +35,6 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(KUZOTZ);
-
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,PATOLLE_CLOSED_DIALOG);
-else
 	player:showText(npc,PATOLLE_OPEN_DIALOG);
 	
 	stock = {0x0394,855, --Cactuar Needle
@@ -47,7 +42,7 @@ else
 			 0x118b,184} --Watermelon
  
 showShop(player,SANDORIA,stock);
-end
+
 end; 
 
 -----------------------------------

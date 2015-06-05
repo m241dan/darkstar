@@ -43,7 +43,7 @@ function onZoneIn(player,prevZone)
 	elseif (currentMission == COMING_OF_AGE and MissionStatus == 0) then
 		cs = 0x0074;
 	end
-	
+        player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	return cs;
 	
 end;		

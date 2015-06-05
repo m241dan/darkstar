@@ -192,6 +192,7 @@ public:
     bool					m_EquipSwap;					// true if equipment was recently changed
     uint8					equip[18];						//      SlotID where equipment is
     uint8					equipLoc[18];					// ContainerID where equipment is
+    uint16                  styleItems[16];                 // Item IDs for items that are style locked.
 
     uint8					m_ZonesList[36];				// список посещенных персонажем зон
     uint8					m_SpellList[128];				// список изученных заклинаний
@@ -340,6 +341,7 @@ private:
     CItemContainer*	  m_Mogsack;
     CItemContainer*   m_Mogcase;
     CItemContainer*   m_Wardrobe;
+    CItemContainer*   m_Mogsafe2;
 
     bool			m_isWeaponSkillKill;
     bool			m_isMijinGakure;

@@ -31,7 +31,7 @@ function onZoneIn(player,prevZone)
 	elseif(player:getCurrentMission(BASTOK) == THE_EMISSARY_WINDURST and player:getVar("MissionStatus") == 2) then
 		cs = 0x002a;
 	end
-	
+        player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 	return cs;
 
 end;

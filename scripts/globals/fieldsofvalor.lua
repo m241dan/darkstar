@@ -1,5 +1,6 @@
 -------------------------------------------------
 
+package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/conquest");
 -- require("scripts/globals/teleports");
@@ -392,12 +393,19 @@ function checkRegime(killer,mob,rid,index)
 
 	partyType = killer:checkSoloPartyAlliance();
 
-	if(killer:checkFovAllianceAllowed() == 1) then
-		partyType = 1;
-	end
-
-	
-	
+    if( killer:isSynced() ) then
+       local sync = killer:getSync();
+       if( sync ~= nil ) then
+          if( killer:getVar( "fov_regimeid" ) ~= sync:getVar( "fov_regimeid" ) ) then
+             killer:PrintToPlayer( "Your Level Sync must have the same Page active as you." );
+             return;
+          end
+          if( sync:checkDistance( mob ) >= 100 ) then
+             killer:PrintToPlayer( "Your Level Sync must be in range to get experience and credit." );
+             return;
+          end
+       end
+    end
 
 	if(killer:getVar("fov_regimeid") == rid) then --player is doing this regime
 		-- Need to add difference because a lvl1 can xp with a level 75 at ro'maeve
@@ -429,7 +437,7 @@ function checkRegime(killer,mob,rid,index)
 
                         -- Award gil and tabs once per day. -- edited out by Davenge
                            killer:messageBasic(FOV_MSG_GET_GIL,reward);
-                           killer:addGil(reward);
+                           killer:addGil(reward+1);
                            killer:addCurrency("valor_point", tabs);
                            killer:messageBasic(FOV_MSG_GET_TABS,tabs,killer:getCurrency("valor_point")); -- Careful about order.
                            if (REGIME_WAIT == 1) then
@@ -437,7 +445,7 @@ function checkRegime(killer,mob,rid,index)
                            end
 
                         --TODO: display msgs (based on zone annoyingly, so will need killer:getZoneID() then a lookup)
-                        killer:addExp(reward);
+                        killer:addExp((reward*EXP_RATE));
                         if (k1 ~= 0) then killer:setVar("fov_numkilled1",0); end
                         if (k2 ~= 0) then killer:setVar("fov_numkilled2",0); end
                         if (k3 ~= 0) then killer:setVar("fov_numkilled3",0); end

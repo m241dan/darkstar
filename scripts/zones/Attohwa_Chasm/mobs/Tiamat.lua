@@ -63,7 +63,7 @@ function onMobFight(mob,target)
             mob:setLocalVar("changeTime", mob:getBattleTime());
             mob:setLocalVar("changeHP", mob:getHP()/1000);
         end
-	end
+   end
 end;
 
 -----------------------------------

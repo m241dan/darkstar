@@ -144,12 +144,13 @@ public:
     int32 setAnimation(lua_State*);         // Set Entity Animation
     int32 AnimationSub(lua_State*);         // get or set animationsub
     int32 costume(lua_State*);              // get or set user costume
-	int32 costume2(lua_State*);				// set monstrosity costume
+    int32 costume2(lua_State*);				// set monstrosity costume
     int32 canUseCostume(lua_State*);        // check to see if character can use costume, 0 if so
     int32 canUseChocobo(lua_State *L);      // check to see if character can use chocobo, 0 if so
     int32 canUsePet(lua_State *L);          // check to see if character can call pet, 0 if so
 
     int32 addItem(lua_State*);              // Add item to Entity inventory (additem(itemNumber,quantity))
+    int32 delItem(lua_State*L);		    // Delete an item from anywhere on the on a character
     int32 hasItem(lua_State*);              // Check to see if Entity has item in inventory (hasItem(itemNumber))
     int32 addTempItem(lua_State*);          // Add temp item to Entity Temp inventory
     int32 getFreeSlotsCount(lua_State*);    // Gets value of free slots in Entity inventory
@@ -194,6 +195,7 @@ public:
     int32 delKeyItem(lua_State*);           // Removes key item from Entity key item collection
 
     int32 getSkillLevel(lua_State*);        // Get Current Skill Level
+    int32 setSkillLevel(lua_State*);        // Set Current Skill Level
     int32 getMaxSkillLevel(lua_State*);     // Get Skill Cap for skill and rank
     int32 getSkillRank(lua_State*);         // Get your current skill craft Rank
     int32 setSkillRank(lua_State*);         // Set new skill craft rank
@@ -211,6 +213,10 @@ public:
 
     int32 addWeaponSkill(lua_State*);       //
     int32 delWeaponSkill(lua_State*);       //
+
+    int32 getTotalLvls(lua_State*);          // Get the Total of All their levels, for retroactive stuff
+    int32 getSFJobs(lua_State*);	    // Get the number of 75 jobs
+    int32 getTrueLvl(lua_State *);	    // bypass level sync
 
     int32 getMainJob(lua_State*);           // Returns Entity Main Job
     int32 getMainLvl(lua_State*);           // Gets Entity Main Job Level
@@ -314,7 +320,7 @@ public:
     int32 getFameLevel(lua_State*);         // Gets Fame Level for specified nation
 
     int32 setStatus(lua_State*);            // Sets Character's Status
-	int32 getStatus(lua_State*);
+    int32 getStatus(lua_State*);
 
     int32 sendRaise(lua_State*);            // send raise request to char
     int32 sendReraise(lua_State*);          // send raise request to char
@@ -322,6 +328,7 @@ public:
     int32 SendRevision(lua_State*);         // send Git revision to char
 
     int32 updateEnmity(lua_State*);           // Adds Enmity to player for specified mob
+    int32 updateClaim(lua_State*);           // Adds Enmity to player for specified mob and claims
     int32 updateEnmityFromDamage(lua_State*); // Adds Enmity to player for specified mob for the damage specified
     int32 updateEnmityFromCure(lua_State*);
     int32 addEnmity(lua_State*);            // Add specified amount of enmity (target, CE, VE)
@@ -514,8 +521,8 @@ public:
     int32 setGMLevel(lua_State* L);
     int32 getGMHidden(lua_State* L);
     int32 setGMHidden(lua_State* L);
-    int32 PrintToPlayer(lua_State* L);    // for sending debugging messages/command confirmations to the player's client
-    // == Pathfind Methods ==
+    int32 PrintToPlayer(lua_State* L);    // for messages to players ingame
+    int32 PrintToServer(lua_State* L);    // Print to SERVER (Prints to every zone on the server) -- Defaults to System Message, but can be altered with HEX or Integer of type of text    // == Pathfind Methods ==
     int32 pathThrough(lua_State* L);      // walk at normal speed through the given points
     // int32 WarpTo(lua_State* L);        // warp to the given point
     // int32 RoamAround(lua_State* L);    // pick a random point to walk to
@@ -566,7 +573,7 @@ public:
     int32 spawn(lua_State* L);
     int32 getCurrentAction(lua_State* L);
     int32 getAllegiance(lua_State* L);
-	int32 stun(lua_State* L);
+    int32 stun(lua_State* L);
     int32 weaknessTrigger(lua_State* L);
     int32 setBehaviour(lua_State* L);
     int32 getBehaviour(lua_State* L);
@@ -583,6 +590,12 @@ public:
     int32 addBurden(lua_State* L);
 
     int32 setElevator(lua_State* L);
+    int32 isSynced(lua_State *L);
+    int32 isSyncInRange(lua_State *L);
+    int32 getSync(lua_State *L);
+    int32 storeWithPorterMoogle(lua_State* L);
+    int32 getRetrievableItemsForSlip(lua_State *L);
+    int32 retrieveItemFromSlip(lua_State *L);
 };
 
 #endif

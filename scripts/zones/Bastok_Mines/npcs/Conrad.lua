@@ -9,7 +9,7 @@ package.loaded["scripts/zones/Bastok_Mines/TextIDs"] = nil;
 
 require("scripts/globals/conquest");
 require("scripts/zones/Bastok_Mines/TextIDs");
-
+require("scripts/globals/missions");
 guardnation = BASTOK;
 csid 		= 0x0245;
 
@@ -18,6 +18,17 @@ csid 		= 0x0245;
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   local ZilartProgress = player:getCurrentMission(ZILART);
+   local ZVar = player:getVar("ZilartStatus");
+
+   if( trade:getItemCount() == 1 and trade:getGil() == 1500 ) then
+      if( ZilartProgress >= THE_GATE_OF_THE_GODS and ZilartProgress ~= 255 ) then
+         player:tradeComplete();
+         player:setPos( -12, -54, -597, 214, 0x82 );
+      else
+         player:PrintToPlayer( "You have not completed enough Zilart to warp to sky.", 0xE );
+      end
+   end
 end;
 
 -----------------------------------
@@ -56,14 +67,14 @@ function onEventFinish(player,csid,option)
 	
 	if(option >= 5 and option <= 23) then
 		if (player:delGil(OP_TeleFee(player,option-5))) then
-            toOutpost(player,option);
+	            toOutpost(player,option);
+        	end
+        elseif(option >= 1029 and option <= 1047) then
+                local cpCost = OP_TeleFee(player,option-1029);
+                --printf("CP Cost: %u",cpCost);
+                if (player:getCP()>=cpCost) then
+                        player:delCP(cpCost);
+                        toOutpost(player,option-1024);
+                end
         end
-		elseif(option >= 1029 and option <= 1047) then
-        	local cpCost = OP_TeleFee(player,option-1029);
-        	--printf("CP Cost: %u",cpCost);
-		if (player:getCP()>=cpCost) then
-			player:delCP(cpCost);
-			toOutpost(player,option-1024);
-		end
-	end
 end;

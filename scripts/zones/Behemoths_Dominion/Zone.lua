@@ -19,8 +19,21 @@ function onInitialize(zone)
     
     SetFieldManual(manuals);
     
-    -- Behemoth
-    SetRespawnTime(17297440, 900, 10800);
+   -- Behemoth
+   local Behemoth      = 17297440;
+   local King_Behemoth = 17297441;
+   local ToD     = GetServerVariable("[POP]King_Behemoth");
+   local kills   = GetServerVariable("[PH]King_Behemoth");
+   if (ToD <= os.time(t) and GetMobAction(King_Behemoth) == 0) then
+      if (math.random((1),(5)) == 3 or kills > 6) then
+         SetRespawnTime(King_Behemoth, 900, 10800);
+      else
+         SetRespawnTime(Behemoth, 900, 10800);
+      end
+   else
+      SetRespawnTime(Behemoth, 900, 10800);
+   end
+
 end;
 
 -----------------------------------		

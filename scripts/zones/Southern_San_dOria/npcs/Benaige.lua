@@ -38,23 +38,23 @@ function onTrigger(player,npc)
 	
 	player:showText(npc,BENAIGE_SHOP_DIALOG);
 
-	stock = {0x0274,234,1,	--Cinnamon
-			 0x0275,43,1,	--Millioncorn
+	stock = {0x0274,234,	--Cinnamon
+			 0x0275,43,	--Millioncorn
 
-			 0x026e,43,2,	--Dried Marjoram
-			 0x0262,54,2,	--San d'Orian Flour
-			 0x0273,36,2,	--Maple Sugar
-			 0x0730,1800,2,	--Semolina
-			 0x165e,442,2,	--Zucchini
-			 0x166c,511,2,	--Paprika
+			 0x026e,43,	--Dried Marjoram
+			 0x0262,54,	--San d'Orian Flour
+			 0x0273,36,	--Maple Sugar
+			 0x0730,1800,	--Semolina
+			 0x165e,442,	--Zucchini
+			 0x166c,511,	--Paprika
 
-			 0x026d,25,3,	--Crying Mustard
-			 0x0263,36,3,	--Rye Flour
-			 0x03a8,14,3,	--Rock Salt
-			 0x119d,10,3,	--Distilled Water
-			 0x1472,198,3}	--Cibol
+			 0x026d,25,	--Crying Mustard
+			 0x0263,36,	--Rye Flour
+			 0x03a8,14,	--Rock Salt
+			 0x119d,10,	--Distilled Water
+			 0x1472,198}	--Cibol
 	 
-	showNationShop(player, SANDORIA, stock);
+	showShop(player, SANDORIA, stock);
 
 end; 
 

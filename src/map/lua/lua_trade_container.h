@@ -48,12 +48,13 @@ public:
 
 	int32 getGil(lua_State*);
 	int32 getItem(lua_State*);
+        int32 getItemObj(lua_State *);
 	int32 getItemSubId(lua_State*);
 	int32 getItemQty(lua_State*);
 	int32 hasItemQty(lua_State*);
 	int32 getSlotQty(lua_State*);		// количество предметов в указанной ячейке
 	int32 getItemCount(lua_State*);		// общее количество предметов
-    int32 getSlotCount(lua_State*);
+        int32 getSlotCount(lua_State*);
 	int32 confirmItem(lua_State*);
 };
 

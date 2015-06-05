@@ -22,10 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(MOVALPOLOS);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,PRESTAPIQ_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,PRESTAPIQ_OPEN_DIALOG);
 
         stock = {
@@ -37,8 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
-
+   
 end;
 
 -----------------------------------

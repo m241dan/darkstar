@@ -23,10 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(ELSHIMOUPLANDS);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,SATTSUHAHKANPARI_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,SATTSUHAHKANPARI_OPEN_DIALOG);
 
         stock = {
@@ -37,7 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
+    
 
 end; 
 

@@ -23,11 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(SARUTABARUTA);
-
-    if (RegionOwner ~= BASTOK) then 
-        player:showText(npc,SOMNPAEMN_CLOSED_DIALOG);
-    else
+  
         player:showText(npc,SOMNPAEMN_OPEN_DIALOG);
 
         stock = {
@@ -39,7 +35,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);	
 
-    end
+    
 
 end; 
 

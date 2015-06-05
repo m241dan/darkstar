@@ -44,6 +44,19 @@ function onBcnmEnter(player,instance)
     if ((dynaWaitxDay + (BETWEEN_2DYNA_WAIT_TIME * 24 * 60 * 60)) < realDay) then
 		player:setVar("dynaWaitxDay",realDay);
 	end
+   local relicid = player:getVar( "RelicID" );
+   local dynaid = player:getVar( "DynamisID" );
+
+   if( relicid == dynaid or relicid == -2 ) then
+      if( player:getFreeSlotsCount() <= 0 ) then
+         player:PrintToPlayer( "Your inventory is full. Clear it and rezone.", 0xE );
+         return;
+      end
+      player:addItem( player:getVar( "RelicBought" ) );
+      player:messageSpecial( ITEM_OBTAINED, player:getVar( "RelicBought" ) );
+      if( relicid == -2 ) then player:setVar( "RelicBuys", -1 ); end
+      player:setVar( "RelicID", dynaid );
+   end
 	
 end;
 
@@ -53,6 +66,8 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 --print("leave code "..leavecode);
+   local rb = player:getVar( "RelicBought" );
+   if( rb ~= 0 ) then player:delItem( rb ); end
 	
 	if(leavecode == 4) then
 		SetServerVariable("[DynaValkurm]UniqueID",0);

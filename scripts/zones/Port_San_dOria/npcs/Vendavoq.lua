@@ -35,11 +35,7 @@ end;
 
 function onTrigger(player,npc)
 
-RegionOwner = GetRegionOwner(MOVALPOLOS);
 
-if (RegionOwner ~= SANDORIA) then 
-	player:showText(npc,VENDAVOQ_CLOSED_DIALOG);
-else
 	player:showText(npc,VENDAVOQ_OPEN_DIALOG);
 	
 	stock = {0x0280,11,   --Copper Ore
@@ -49,7 +45,7 @@ else
 			 0x142d,736}  --Movalpolos Water
 
 showShop(player,SANDORIA,stock);
-end
+
 end; 
 
 -----------------------------------

@@ -1175,13 +1175,32 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
 
 	dmg = math.floor(dmg * burst);
 	local mab = 0;
+        local element = spell:getElement()
+        local blm_potency_merit = 0;
+        if(caster:getMainJob() == JOB_BLM and caster:getMainLvl() >= 75) then
+           if(element == ELE_FIRE) then
+               blm_potency_merit =  caster:getMerit(MERIT_FIRE_MAGIC_POTENCY);
+           elseif(element == ELE_EARTH) then
+               blm_potency_merit = caster:getMerit(MERIT_EARTH_MAGIC_POTENCY);
+           elseif(element == ELE_WATER) then
+               blm_potency_merit = caster:getMerit(MERIT_WATER_MAGIC_POTENCY);
+           elseif(element == ELE_WIND) then
+               blm_potency_merit = caster:getMerit(MERIT_WIND_MAGIC_POTENCY);
+           elseif(element == ELE_ICE) then
+               blm_potency_merit = caster:getMerit(MERIT_ICE_MAGIC_POTENCY);
+           elseif(element == ELE_LIGHTNING) then
+               blm_potency_merit =  caster:getMerit(MERIT_LIGHTNING_MAGIC_POTENCY);
+           end
+        end
+
+        blm_potency_merit = blm_potency_merit; -- 2 matk per level invested
 
 	if(spell:getID() >= 245 and spell:getID() <= 248) then
 		mab = 1
 	elseif (bonusmab ~= nil) then
-		mab = (100 + caster:getMod(MOD_MATT) + bonusmab) / (100 + target:getMod(MOD_MDEF));
+		mab = (100 + caster:getMod(MOD_MATT) + bonusmab + blm_potency_merit) / (100 + target:getMod(MOD_MDEF));
 	else
-		mab = (100 + caster:getMod(MOD_MATT)) / (100 + target:getMod(MOD_MDEF));
+		mab = (100 + caster:getMod(MOD_MATT) + blm_potency_merit) / (100 + target:getMod(MOD_MDEF));
 	end
 
     if(mab < 0) then
@@ -1428,8 +1447,65 @@ function canOverwrite(target, effect, power, mod)
     return true;
 end
 
-function doElementalNuke(V,M,caster,spell,target,hasMultipleTargetReduction,resistBonus)
-	return doNuke(V,M,caster,spell,target,hasMultipleTargetReduction,resistBonus,ELEMENTAL_MAGIC_SKILL,MOD_INT);
+function doElementalNuke(caster, spell, target, spellParams)
+    local DMG = 0;
+    local V = 0;
+    local M = 0;
+    local dINT = caster:getStat(MOD_INT) - target:getStat(MOD_INT);
+    local hasMultipleTargetReduction = spellParams.hasMultipleTargetReduction; --still unused!!!
+    local resistBonus = spellParams.resistBonus;
+    local mDMG = caster:getMod(MOD_MAGIC_DAMAGE);
+
+    --[[
+            Calculate base damage:       
+            D = mDMG + V + (dINT × M)
+            D is then floored
+            For dINT reduce by amount factored into the V value (example: at 134 INT, when using V100 in the calculation, use dINT = 134-100 = 34)             
+      ]]
+
+    if (dINT <= 49) then
+        V = spellParams.V0;
+        M = spellParams.M0;
+        DMG = math.floor(DMG + mDMG + V + (dINT * M));
+		
+        if(DMG <= 0) then 
+            return 0;
+        end
+
+    elseif (dINT >= 50 and dINT <= 99) then
+        V = spellParams.V50;
+        M = spellParams.M50;
+        DMG = math.floor(DMG + mDMG + V + ((dINT - 50) * M));
+
+    elseif (dINT >= 100 and dINT <= 199) then
+        V = spellParams.V100;
+        M = spellParams.M100;
+        DMG = math.floor(DMG + mDMG + V + ((dINT - 100) * M));
+
+    elseif (dINT > 199) then
+        V = spellParams.V200;
+        M = spellParams.M200;
+        DMG = math.floor(DMG + mDMG + V + ((dINT - 200) * M)); 
+    end
+
+    --get resist multiplier (1x if no resist)
+    local diff = caster:getStat(MOD_INT) - target:getStat(MOD_INT);
+    local resist = applyResistance(caster, spell, target, diff, ELEMENTAL_MAGIC_SKILL, resistBonus);
+
+    --get the resisted damage
+    DMG = DMG * resist;
+
+    --add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
+    DMG = addBonuses(caster, spell, target, DMG);
+
+    --add in target adjustment
+    local ele = spell:getElement();
+    DMG = adjustForTarget(target, DMG, ele);
+
+    --add in final adjustments
+    DMG = finalMagicAdjustments(caster, target, spell, DMG);
+	
+    return DMG;
 end
 
 function doDivineNuke(V,M,caster,spell,target,hasMultipleTargetReduction,resistBonus)

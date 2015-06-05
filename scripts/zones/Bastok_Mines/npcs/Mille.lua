@@ -23,10 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(NORVALLEN);
-    if (RegionOwner ~= BASTOK) then
-        player:showText(npc,MILLE_CLOSED_DIALOG);
-    else
+   
         player:showText(npc,MILLE_OPEN_DIALOG);
 
         stock = {
@@ -37,7 +34,7 @@ function onTrigger(player,npc)
         }
         showShop(player,BASTOK,stock);
 
-    end
+    
 
 end;
 

@@ -8,12 +8,19 @@ package.loaded["scripts/zones/Selbina/TextIDs"] = nil;
 
 require("scripts/zones/Selbina/TextIDs");
 require("scripts/globals/shop");
+package.loaded["scripts/globals/melfaugments"] = nil;
+require("scripts/globals/melfaugments" );
 
 -----------------------------------
 -- onTrade Action
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   if( trade:getItemCount() == 1 ) then
+      onAugmentID( player, trade );
+   else
+      onAugmentTrade( player, trade );   
+   end
 end; 
 
 -----------------------------------
@@ -34,8 +41,10 @@ stock = {0x0263,36,	--Rye Flour
 	 0x111A,54,	--Selbina Milk
 	 0x118A,432,	--Pickled Herring
 	 0x11CF,4485,	--Herb Quus
-	 0x0b32,9200}	--Selbina Waystone
- 
+	 0x0b32,9200,	--Selbina Waystone
+         
+	}
+
 showShop(player, STATIC, stock);
 end; 
 

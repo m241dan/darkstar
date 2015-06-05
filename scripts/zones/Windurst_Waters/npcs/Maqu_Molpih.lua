@@ -24,10 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(ARAGONEU);
-    if (RegionOwner ~= WINDURST) then
-        player:showText(npc,MAQUMOLPIH_CLOSED_DIALOG);
-    else
+    
         player:showText(npc,MAQUMOLPIH_OPEN_DIALOG);
 
         stock = {
@@ -39,7 +36,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
+   
 
 end;
 

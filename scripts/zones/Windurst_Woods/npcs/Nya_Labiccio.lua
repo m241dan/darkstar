@@ -22,10 +22,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    RegionOwner = GetRegionOwner(GUSTABERG);
-    if (RegionOwner ~= WINDURST) then 
-        player:showText(npc,NYALABICCIO_CLOSED_DIALOG);
-    else
+  
         player:showText(npc,NYALABICCIO_OPEN_DIALOG);
 
         stock = {
@@ -36,7 +33,7 @@ function onTrigger(player,npc)
         }
         showShop(player,WINDURST,stock);
 
-    end
+  
 
 end; 
 

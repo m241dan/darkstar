@@ -392,7 +392,7 @@ void CZone::LoadNavMesh()
 
     if (m_navMesh == nullptr)
     {
-        m_navMesh = new CNavMesh();
+        m_navMesh = new CNavMesh((uint16)GetID());
     }
 
     int8 file[255];
@@ -402,11 +402,13 @@ void CZone::LoadNavMesh()
     if (m_navMesh->load(file))
     {
         // verify it can find proper paths
-        m_navMesh->test((int16)GetID());
+        m_navMesh->test((uint16)GetID());
     }
     else
     {
         m_useNavMesh = false;
+        delete m_navMesh;
+        m_navMesh = nullptr;
     }
 }
 
@@ -708,6 +710,11 @@ void CZone::SpawnTransport(CCharEntity* PChar)
     m_zoneEntities->SpawnTransport(PChar);
 }
 
+uint16 CZone::GetZonePlayerCount( void )
+{
+   return m_zoneEntities->GetCharList().size();
+}
+
 /************************************************************************
 *                                                                       *
 *  Получаем указатель на любую сущность в зоне по ее targid             *
@@ -822,11 +829,27 @@ void CZone::ForEachCharInstance(CBaseEntity* PEntity, std::function<void(CCharEn
     }
 }
 
+void CZone::ForEachMob(std::function<void(CMobEntity*)> func)
+{
+    for (auto PMob : m_zoneEntities->m_mobList)
+    {
+        func((CMobEntity*)PMob.second);
+    }
+}
+
 void CZone::ForEachMobInstance(CBaseEntity* PEntity, std::function<void(CMobEntity*)> func)
 {
     for (auto PMob : m_zoneEntities->m_mobList)
     {
         func((CMobEntity*)PMob.second);
+    }
+}
+
+void CZone::ForEachNpc(std::function<void(CNpcEntity*)> func)
+{
+    for (auto PNpc : m_zoneEntities->m_npcList)
+    {
+        func((CNpcEntity*)PNpc.second);
     }
 }
 
@@ -866,19 +889,17 @@ void CZone::CharZoneIn(CCharEntity* PChar)
     }
 
     PChar->ReloadPartyInc();
-    
-    if (PChar->PParty != nullptr)
+
+
+    if( m_miscMask & MISC_TREASURE )
     {
-        if (m_TreasurePool != nullptr)
-        {
-            PChar->PTreasurePool = m_TreasurePool;
-            PChar->PTreasurePool->AddMember(PChar);
-        }
-        else
-        {
-            PChar->PParty->ReloadTreasurePool(PChar);
-        }
+       if( m_TreasurePool == nullptr )
+          m_TreasurePool = new CTreasurePool( TREASUREPOOL_ZONE );
+       PChar->PTreasurePool = m_TreasurePool;
+       PChar->PTreasurePool->AddMember( PChar );
     }
+    else if (PChar->PParty != nullptr)
+        PChar->PParty->ReloadTreasurePool(PChar);
     else
     {
         PChar->PTreasurePool = new CTreasurePool(TREASUREPOOL_SOLO);
@@ -895,6 +916,7 @@ void CZone::CharZoneIn(CCharEntity* PChar)
 
 void CZone::CharZoneOut(CCharEntity* PChar)
 {
+    luautils::OnZoneOut( PChar );
     for (regionList_t::const_iterator region = m_regionList.begin(); region != m_regionList.end(); ++region)
     {
         if ((*region)->GetRegionID() == PChar->m_InsideRegionID)
@@ -904,7 +926,7 @@ void CZone::CharZoneOut(CCharEntity* PChar)
         }
     }
 
-    if (PChar->m_LevelRestriction != 0)
+    if ( ( PChar->PParty && PChar->PParty->GetSyncTarget() != nullptr ) || PChar->m_LevelRestriction != 0)
     {
         if (PChar->PParty)
         {

@@ -1,6 +1,5 @@
 ---------------------------------------------------------------------------------------------------
 -- func: @ah
--- auth: TeoTwawki, Tagban, probably others independently as well.
 -- desc: opens the Auction House menu anywhere in the world just to see if we can
 ---------------------------------------------------------------------------------------------------
 
@@ -11,5 +10,5 @@ cmdprops =
 };
 
 function onTrigger(player,npc)
-    player:sendMenu(3);
+   player:sendMenu(3);
 end;
