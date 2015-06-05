@@ -63,7 +63,7 @@ function onMobFight(mob, target)
 end
 
 function enterShell( aspid )
-   aspid:addMod( MOD_REGEN, 300 );
+   aspid:addMod( MOD_REGEN, 200 );
    aspid:addMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(1);
    aspid:speed( 0 );
@@ -72,7 +72,7 @@ function enterShell( aspid )
 end
 
 function exitShell( aspid )
-   aspid:delMod( MOD_REGEN, 300 );
+   aspid:delMod( MOD_REGEN, 200 );
    aspid:delMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(2);
    aspid:speed( 40 );
