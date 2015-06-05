@@ -1,10 +1,9 @@
 -----------------------------------	
 -- Area: Valkurm Dunes	
 -- MOB:  Snipper	
------------------------------------
-
-package.loaded["/scripts/globals/fieldsofvalor"] = nil;
-require("/scripts/globals/fieldsofvalor");	
+-----------------------------------	
+	
+require("scripts/globals/fieldsofvalor");	
 	
 -----------------------------------	
 -- onMobDeath	
