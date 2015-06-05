@@ -6,6 +6,7 @@
 require("scripts/globals/settings");
 require("scripts/globals/titles");
 require("scripts/globals/status");
+require("scripts/globals/melfnm");
 
 -----------------------------------
 -- onMobInitialize Action

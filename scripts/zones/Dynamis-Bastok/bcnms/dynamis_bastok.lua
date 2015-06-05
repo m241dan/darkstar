@@ -39,9 +39,6 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 --print("leave code "..leavecode);
-   local rb = player:getVar( "RelicBought" );
-   if( rb ~= 0 ) then player:delItem( rb ); end
-	
 	if(leavecode == 4) then
 		GetNPCByID(17539323):setStatus(2);
 		SetServerVariable("[DynaBastok]UniqueID",0);

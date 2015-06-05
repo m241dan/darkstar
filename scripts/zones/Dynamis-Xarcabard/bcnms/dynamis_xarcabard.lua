@@ -27,7 +27,6 @@ function onBcnmEnter(player,instance)
          player:PrintToPlayer( "Your inventory is full. Clear it and rezone.", 0xE );
          return;
       end
-      printf( string.format( "\ngetting to the additem part relic bought %d\n", player:getVar( "RelicBought" ) ) );
       player:addItem( player:getVar( "RelicBought" ) );
       player:messageSpecial( ITEM_OBTAINED, player:getVar( "RelicBought" ) );
       if( relicid == -2 ) then player:setVar( "RelicBuys", -1 ); end
@@ -42,10 +41,6 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 --print("leave code "..leavecode);
-
-   local rb = player:getVar( "RelicBought" );
-   if( rb ~= 0 ) then player:delItem( rb ); end
-
 	if(leavecode == 4) then
            if( player ~= nil ) then player:setPos(569.312,-0.098,-270.158,90,0x70); end
 	   GetNPCByID(17330778):setStatus(2);

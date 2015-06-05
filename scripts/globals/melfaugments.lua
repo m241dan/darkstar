@@ -88,15 +88,6 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
 
 
 function onAugmentID(player, trade)
-   local item = trade:getItemObj();
-   local aug1, aug1val = item:getAugment(0);
-   local aug2, aug2val = item:getAugment(1);
-
-   if( aug2 ~= 0 ) then
-      player:PrintToPlayer( string.format( "%s %d and %s %d", augment_strings[aug1], aug1val, augment_strings[aug2], aug2val ), 0xE );
-   elseif( aug1 ~= 0 ) then
-      player:PrintToPlayer( string.format( "%s %d", augment_strings[aug1], aug1val ), 0xE);
-   end   
 end
 
 function onAugmentTrade(player, trade)
@@ -168,10 +159,8 @@ function onAugmentTrade(player, trade)
    else
       if( aug_table[3] ~= nil ) then
          player:addItem( itemID, 1, aug_table[1], aug_table[2], aug_table[3], aug_table[4] );
-         player:PrintToPlayer( string.format( "%s %d and %s + %d", augment_strings[aug_table[1]], aug_table[2], augment_strings[aug_table[3]], aug_table[4] ), 0xE );
       else
          player:addItem( itemID, 1, aug_table[1], aug_table[2] );
-         player:PrintToPlayer( string.format( "%s %d", augment_strings[aug_table[1]], aug_table[2] ), 0xE );
       end
       player:tradeComplete();
    end

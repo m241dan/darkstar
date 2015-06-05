@@ -38,9 +38,6 @@ end;
 
 function onBcnmLeave(player,instance,leavecode)
 print("leave code "..leavecode);
-   local rb = player:getVar( "RelicBought" );
-   if( rb ~= 0 ) then player:delItem( rb ); end
-	
 	if(leavecode == 4) then
            if( player ~= nil ) then player:setPos(-284.751,-39.923,-422.948,235,0x6F); end
 	   SetServerVariable("[DynaBeaucedine]UniqueID",0);

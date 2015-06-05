@@ -28,10 +28,6 @@ cmdprops =
 };
 
 function onTrigger(player,arg)
-   player:PrintToPlayer( "RelicBuys disabled until they are more stable.", 0xE );
-   return;
-end
---[[
    if( player:getVar( "RelicBuys" ) == 0 ) then player:setVar( "RelicBuys", 1 ); end
 
    if( arg == nil ) then
@@ -80,4 +76,4 @@ end
       player:setVar( "RelicID", -2 );
       player:PrintToPlayer( "Relic set. You will receive upon loading into Dynamis.", 0xE );
    end
-end; ]]--
+end;

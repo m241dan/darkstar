@@ -8,7 +8,7 @@ package.loaded["scripts/zones/Dragons_Aery/TextIDs"] = nil;
 
 require("scripts/globals/settings");
 require("scripts/globals/zone");
-require("scripts/globals/melfnm.lua");
+require("scripts/globals/melfnm");
 require("scripts/zones/Dragons_Aery/TextIDs");
 
 -----------------------------------
