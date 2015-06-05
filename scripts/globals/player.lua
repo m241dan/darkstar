@@ -24,14 +24,6 @@ function onGameIn(player, firstlogin, zoning)
         if (firstlogin) then
             CharCreate(player);
         end
-        local zoneid = player:getZoneID();
-        local rb = player:getVar( "RelicBought" );
-        if( rb ~= 0 ) then
-           if( zoneid ~= 39 and zoneid ~= 40 and zoneid ~= 41 and zoneid ~= 42 and zoneid ~= 134 and zoneid ~= 135 and zoneid ~= 185 and zoneid ~= 186 and zoneid ~= 187 and zoneid ~= 188 ) then 
-              player:delItem( rb );
-              player:setVar( "RelicBought", 0 );
-           end
-        end
     end
 
     if (zoning) then -- Things checked ONLY during zone in go here.
@@ -41,6 +33,11 @@ function onGameIn(player, firstlogin, zoning)
           player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
        else
           player:delStatusEffect(EFFECT_TOWNMOVE);
+       end
+       local rb = player:getVar( "RelicBought" );
+       if( rb ~= 0 ) then
+          player:delItem( rb );
+          player:setVar( "RelicBought", 0 );
        end
     end
 

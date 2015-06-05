@@ -28,6 +28,9 @@ cmdprops =
 };
 
 function onTrigger(player,arg)
+   if( player:getName() ~= "GNoyadeM" ) then
+      return;
+   end
    if( player:getVar( "RelicBuys" ) == 0 ) then player:setVar( "RelicBuys", 1 ); end
 
    if( arg == nil ) then
