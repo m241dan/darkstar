@@ -1437,7 +1437,7 @@ float GetRangedPDIF(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 
 		if (PItem != nullptr && PItem->isType(ITEM_WEAPON))
 		{
-			rAttack = PChar->RATT(PItem->getSkillType());
+			rAttack = PChar->RATT(PItem->getSkillType(), PItem->getILvlSkill());
 		}
 		else
 		{
@@ -1448,7 +1448,7 @@ float GetRangedPDIF(CBattleEntity* PAttacker, CBattleEntity* PDefender)
 			}
 			else
 			{
-				rAttack = PChar->RATT(PItem->getSkillType());
+				rAttack = PChar->RATT(PItem->getSkillType(), PItem->getILvlSkill());
 			}
 		}
 	}
@@ -1674,7 +1674,7 @@ uint8 GetParryRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
         	// http://wiki.ffxiclopedia.org/wiki/Talk:Parrying_Skill
         	// {(Parry Skill x .125) + ([Player Agi - Enemy Dex] x .125)} x Diff
 
-            float skill = PDefender->GetSkill(SKILL_PAR) + PDefender->getMod(MOD_PARRY);
+            float skill = PDefender->GetSkill(SKILL_PAR) + PDefender->getMod(MOD_PARRY) + PWeapon->getILvlParry();
 
         	float diff = 1.0f + (((float)PDefender->GetMLevel() - PAttacker->GetMLevel()) / 15.0f);
 
@@ -1721,6 +1721,9 @@ uint8 GetGuardRate(CBattleEntity* PAttacker, CBattleEntity* PDefender)
     {
     	// assuming this is like parry
         float skill = PDefender->GetSkill(SKILL_GRD) + PDefender->getMod(MOD_GUARD);
+
+        if (PWeapon)
+            skill += PWeapon->getILvlParry(); //no weapon will ever have ilvl guard and parry
 
     	float diff = 1.0f + (((float)PDefender->GetMLevel() - PAttacker->GetMLevel()) / 15.0f);
 
