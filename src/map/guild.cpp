@@ -30,7 +30,7 @@ This file is part of DarkStar-server source code.
 CGuild::CGuild(uint8 id, const char* _pointsName)
 {
     m_id = id;
-    
+
     for (auto i = 0; i < m_GPItemsRank.size(); ++i)
     {
         m_GPItemsRank[i] = (CVanaTime::getInstance()->getVanaTime() / (60 * 60 * 24)) % (i + 4);

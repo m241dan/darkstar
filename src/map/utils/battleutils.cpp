@@ -2552,7 +2552,7 @@ bool IsAnticipated(CBattleEntity* PDefender, bool forceRemove, bool ignore, bool
 			//increment power and don't remove
 			effect->SetPower(effect->GetPower()+1);
             //chance to counter - 15% base
-            if (WELL512::GetRandomNumber(100) < 15 + PDefender->getMod(MOD_AUGMENTS_THIRD_EYE) + PDefender->GetMJob() == JOB_SAM ? (PDefender->getMod(MOD_ZANSHIN) / 4 ) : 0 )
+            if (WELL512::GetRandomNumber(100) < 15 + PDefender->getMod(MOD_AUGMENTS_THIRD_EYE) )
                 *thirdEyeCounter = true;
 			return true;
 		}
@@ -3624,7 +3624,7 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
    if( PEntity->objtype == TYPE_PC )
    {
       if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
-         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ) * 3);
+         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ));
    }
    return 0;
 }

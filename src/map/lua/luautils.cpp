@@ -776,17 +776,17 @@ int32 SpawnMob(lua_State* L)
 			CLuaInstance* PLuaInstance = Lunar<CLuaInstance>::check(L, 2);
 			PMob = (CMobEntity*)PLuaInstance->GetInstance()->GetEntity(mobid & 0xFFF, TYPE_MOB);
 		}
-        else if (((mobid >> 12) & 0x0FFF) < MAX_ZONEID)
+      		else if (((mobid >> 12) & 0x0FFF) < MAX_ZONEID)
 		{
 			PMob = (CMobEntity*)zoneutils::GetEntity(mobid, TYPE_MOB);
 		}
-        if (PMob != nullptr)
-        {
+	        if (PMob != nullptr)
+        	{
 
-            if( !lua_isnil(L,2) && lua_isnumber(L,2))
-            {
-                PMob->SetDespawnTimer((uint32)lua_tointeger(L,2));
-            }
+	           if( !lua_isnil(L,2) && lua_isnumber(L,2))
+	            {
+	                PMob->SetDespawnTimer((uint32)lua_tointeger(L,2));
+	            }
 
             if( !lua_isnil(L,3) && lua_isnumber(L,3))
             {

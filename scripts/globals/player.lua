@@ -34,10 +34,13 @@ function onGameIn(player, firstlogin, zoning)
        else
           player:delStatusEffect(EFFECT_TOWNMOVE);
        end
-       local rb = player:getVar( "RelicBought" );
-       if( rb ~= 0 ) then
-          player:delItem( rb );
-          player:setVar( "RelicBought", 0 );
+       local zid = player:getZoneID();
+       if( zid ~= 39 and zid ~= 40 and zid ~= 41 and zid ~= 42 and zid ~= 134 and zid ~= 135 and zid ~= 185 and zid ~= 186 and zid ~= 187 and zid ~= 188 ) then
+          local rb = player:getVar( "RelicBought" );
+          if( rb ~= 0 ) then
+             player:delItem( rb );
+             player:setVar( "RelicBought", 0 );
+          end
        end
     end
 

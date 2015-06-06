@@ -802,16 +802,11 @@ inline int32 CLuaBaseEntity::delItem(lua_State *L )
       lua_pushboolean( L, 0 );
       return 1;
    }
-   if( SlotID >= SLOT_MAIN && SlotID <= SLOT_LINK2 )
-   {
-      if( SlotID == SLOT_MAIN || SlotID == SLOT_SUB )
-      {
-         charutils::UnequipItem( PChar, SLOT_MAIN );
-         charutils::UnequipItem( PChar, SLOT_SUB );
-      }
-      if( SlotID == SLOT_RANGED )
-         charutils::UnequipItem( PChar, SLOT_AMMO );
-   }
+
+   charutils::UnequipItem( PChar, SLOT_MAIN, true );
+   charutils::UnequipItem( PChar, SLOT_SUB, true );
+   charutils::UnequipItem( PChar, SLOT_RANGED, true );
+   charutils::UnequipItem( PChar, SLOT_AMMO, true );
    charutils::SaveCharEquip( PChar );
    charutils::UpdateItem( PChar, LocID, SlotID, -1 );
    lua_pushboolean( L, 1 );

@@ -6,10 +6,10 @@
 
 cmdprops =
 {
-    permission = 1,
+    permission = 0,
     parameters = ""
 };
 
 function onTrigger(player)
-   if( player:hasStatusEffect( EFFECT_TOWNMOVE ) ) then player:PrintToPlayer( "You have town move.", 0xE ); end
+   player:PrintToPlayer( string.format( "You have %d Ikishoten", player:getMerit(MERIT_IKISHOTEN) ) );
 end;

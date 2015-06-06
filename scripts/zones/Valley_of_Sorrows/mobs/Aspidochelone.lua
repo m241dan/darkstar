@@ -33,7 +33,12 @@ end;
 
 function onMobEngaged( mob, target )
    mob:setLocalVar( "outHPP", mob:getHHP() );
+end
+
+function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 300 );
+   mob:addMod( MOD_MND, 10 );
+   mob:addMod( MOD_INT, 10 );
 end
 
 function onMobFight(mob, target)
