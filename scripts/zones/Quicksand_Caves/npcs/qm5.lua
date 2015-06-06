@@ -23,7 +23,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	TheMissingPiece = player:getQuestStatus(OTHER_AREAS,THE_MISSING_PIECE);
+	TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
 	TheMissingPieceVar = player:getVar("TheMissingPieceVar");
 	
     if(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 1 and
