@@ -25,23 +25,30 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	TheMissingPiece = player:getQuestStatus(OTHER_AREAS,THE_MISSING_PIECE);
+	TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
 	TheMissingPieceVar = player:getVar("TheMissingPieceVar");
-		
-	if(TheMissingPiece == QUEST_COMPLETED) then
-		player:startEvent(0x000B); -- Standard dialog after completing "The Missing Piece"
-	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 3) then
-		player:startEvent(0x000A); -- Spoke to Charlaimagnat, waiting for JP Midnight
-	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 2) then
-		player:startEvent(0x0009); -- Haven't spoken to Charlaimagnat	
+	
+	if(TheMissingPiece == QUEST_AVAILABLE and player:getFameLevel(4) >= 4 and player:getMainLvl() >= 10) then
+		-- Start quest "The Missing Piece"
+		player:startEvent(0x0006,ANCIENT_TABLET_FRAGMENT,ANCIENT_TABLET_FRAGMENT);
 	elseif(TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(ANCIENT_TABLET_FRAGMENT)) then
-		player:startEvent(0x0008); -- Obtain KIs to give to Charlaimagnat
+		-- Obtain KIs to give to Charlaimagnat
+		player:startEvent(0x0008,ANCIENT_TABLET_FRAGMENT,TABLET_OF_ANCIENT_MAGIC);
 	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 1) then
-		player:startEvent(0x0007); -- Haven't been to Quicksand Caves
-	elseif(TheMissingPiece == QUEST_AVAILABLE and player:getFameLevel(OTHER_AREAS) >= 4 and player:getMainLvl() >= 10) then
-		player:startEvent(0x0006); -- Start quest "The Missing Piece"
+		-- Haven't been to Quicksand Caves
+		player:startEvent(0x0007,ANCIENT_TABLET_FRAGMENT);  
+	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 2) then
+		-- Haven't spoken to Charlaimagnat
+		player:startEvent(0x0009,0,TABLET_OF_ANCIENT_MAGIC); 
+	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 3) then
+		-- Spoke to Charlaimagnat, waiting for JP Midnight
+		player:startEvent(0x000A,0,TABLET_OF_ANCIENT_MAGIC); 
+	elseif(TheMissingPiece == QUEST_COMPLETED) then
+		-- Standard dialog after completing "The Missing Piece"
+		player:startEvent(0x000B); 
 	else
-		player:startEvent(0x0034); -- Standard dialog before "The Missing Piece"
+		-- Standard dialog before "The Missing Piece"
+		player:startEvent(0x0034); 
 	end
 end; 
 
@@ -63,7 +70,7 @@ function onEventFinish(player,csid,option)
 --printf("RESULT: %u",option);
 	
 	if(csid == 0x0006) then
-		player:addQuest(OTHER_AREAS,THE_MISSING_PIECE);
+		player:addQuest(OUTLANDS,THE_MISSING_PIECE);
 		player:setVar("TheMissingPieceVar",1);
 	elseif(csid == 0x0008)	then
 		player:setVar("TheMissingPieceVar",2);
