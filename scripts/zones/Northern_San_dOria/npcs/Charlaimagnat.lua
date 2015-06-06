@@ -37,7 +37,7 @@ function onTrigger(player,npc)
 	
 	realday = tonumber(os.date("%j")); -- %M for next minute, %j for next day
 	starttime = player:getVar("TheMissingPiece_date");
-	TheMissingPiece = player:getQuestStatus(OTHER_AREAS,THE_MISSING_PIECE);
+	TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
 	TheMissingPieceVar = player:getVar("TheMissingPieceVar");
 	
 	if(TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(TABLET_OF_ANCIENT_MAGIC) 
@@ -82,7 +82,8 @@ function onEventFinish(player,csid,option)
 			player:addItem(4729);
 			player:messageSpecial(ITEM_OBTAINED,4729);			
 			player:addTitle(ACQUIRER_OF_ANCIENT_ARCANUM);
-			player:completeQuest(OTHER_AREAS,THE_MISSING_PIECE);
+			player:addFame(SANDORA,SAN_FAME*30);
+			player:completeQuest(OUTLANDS,THE_MISSING_PIECE);
 		end
 	end
 end;
