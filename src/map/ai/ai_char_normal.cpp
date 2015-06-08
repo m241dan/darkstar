@@ -3140,7 +3140,7 @@ void CAICharNormal::DoAttack()
                     Action.reaction = REACTION_BLOCK;
                 }
 
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, attack.GetAttackType() == ZANSHIN_ATTACK ? true : false );
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, false, attack.GetAttackType() == ZANSHIN_ATTACK ? true : false );
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);
