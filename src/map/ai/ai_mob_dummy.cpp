@@ -1776,13 +1776,13 @@ void CAIMobDummy::ActionAttack()
 
 
                             //counter check (rate AND your hit rate makes it land, else its just a regular hit)
-                            //having seigan active gives chance to counter at 25% of the zanshin proc rate
+                            //having seigan active gives chance to counter at 33% of the zanshin proc rate
                             uint16 seiganChance = 0;
                             if (m_PBattleTarget->objtype == TYPE_PC && m_PBattleTarget->StatusEffectContainer->HasStatusEffect(EFFECT_SEIGAN))
                             {
                                 seiganChance = m_PBattleTarget->getMod(MOD_ZANSHIN) + ((CCharEntity*)m_PBattleTarget)->PMeritPoints->GetMeritValue(MERIT_ZASHIN_ATTACK_RATE, (CCharEntity*)m_PBattleTarget);
                                 seiganChance = dsp_cap(seiganChance, 0, 100);
-                                seiganChance /= 4;
+                                seiganChance /= 3;
                             }
                             if ((WELL512::GetRandomNumber(100) < (m_PBattleTarget->getMod(MOD_COUNTER) + meritCounter) || WELL512::GetRandomNumber(100) < seiganChance) &&
                                 isFaceing(m_PBattleTarget->loc.p, m_PMob->loc.p, 40) && WELL512::GetRandomNumber(100) < battleutils::GetHitRate(m_PBattleTarget, m_PMob))

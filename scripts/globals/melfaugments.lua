@@ -1,3 +1,5 @@
+-- Abyssea Augs --
+
 augmentable_items = {}
 
 augment_strings = { 
@@ -86,9 +88,104 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
                              { 41, 0, 1  },
                              { 772, 2, 3 } };
 
+-- Skahnowa || Eraser --
+
+general_pool = { { 768, 0, 4 }, -- resistances
+                 { 769, 0, 4 },
+                 { 770, 0, 4 },
+                 { 771, 0, 4 },
+                 { 772, 0, 4 },
+                 { 773, 0, 4 },
+                 { 774, 0, 4 },
+                 { 775, 0, 4 },
+                 { 512, 0, 0 }, -- +1 stats
+                 { 513, 0, 0 },
+                 { 514, 0, 0 },
+                 { 515, 0, 0 },
+                 { 516, 0, 0 },
+                 { 517, 0, 0 },
+                 { 518, 0, 0 },
+                 { 1, 0, 14  }, -- HP 1-15
+                 { 9, 0, 14  }, -- MP 1-15
+                 { 21, 0, 29 }, -- -HP, +HP 
+                 { 19, 0, 9  }} -- +HP, - MP
+
+one_time_pool = { { 49, 0, 2  }, -- haste
+                  { 176, 0, 4 }, --resists
+                  { 177, 0, 4 },
+                  { 178, 0, 4 },
+                  { 179, 0, 4 },
+                  { 180, 0, 4 },
+                  { 181, 0, 4 },
+                  { 182, 0, 4 },
+                  { 183, 0, 4 },
+                  { 184, 0, 4 },
+                  { 185, 0, 4 },
+                  { 186, 0, 4 },
+                  { 187, 0, 4 },
+                  { 188, 0, 4 },
+                  { 512, 1, 1 }, -- stat +2
+                  { 513, 1, 1 },
+                  { 514, 1, 1 },
+                  { 515, 1, 1 },
+                  { 516, 1, 1 },
+                  { 517, 1, 1 },
+                  { 518, 1, 1 },
+                  { 796, 1, 4 }, -- all res
+                  { 18,  0, 0 }} -- hp mp +33
+
+mob_specific_pool = {}
+-- skahnowa
+mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
+                                { 35, 0, 2  }, -- magic acc
+                                { 323, 0, q }, -- Cure Casting Time
+                                { 330, 0, 2 }, -- waltz potency
+                                { 329, 0, 2 }, -- cure potency
+                                { 57, 0, 1  }, -- magic crit chance
+                                { 335, 0, 4 }, -- magic crit dmg
+                                { 343, 0, 4 }, -- Drain + Aspir potency
+                                { 556, 0, 0 }, -- +1int +1mnd +1 chr
+                                { 543, 0, 2 }, -- +1 int -mnd -chr
+                                { 546, 0, 2 }, -- +mnd -chr -int
+                                { 549, 0, 2 }, -- +chr, -int,-mnd
+                                { 141, 0, 1 }, -- conserve mp
+                                { 140, 0, 0 }} -- fast cast
+
+-- eraser
+mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
+                                { 23, 0, 4  }, -- acc
+                                { 41, 0, 0  }, -- crit chance
+                                { 328, 0, 2 }, -- crit hit dmg
+                                { 42, 0, 0, }, -- enemy crit -1
+                                { 143, 0, 0 }, -- double atk
+                                { 146, 0, 1 }, -- dual wield
+                                { 139, 0, 0 }, -- rapid shot
+                                { 145, 0, 0 }, -- coutner
+                                { 153, 0, 0 }, -- shield mastery
+                                { 211, 0, 0 }, -- snapshot
+                                { 550, 0, 0 }, -- +1 str +1 dex
+                                { 551, 0, 0 }, -- +1 str +1 vit
+                                { 552, 0, 0 }, -- +1 str +1 agi
+                                { 526, 0, 2 }, -- +str -vit -dex
+                                { 532, 0, 2 }, -- +vit - -
+                                { 529, 0, 2 }, -- +dex - -
+                                { 535, 0, 2 }} -- +agi
+item_pool = {};
+item_pool[1]  = { { 33, 0, 9  }, -- Def armor
+                      { 31, 0, 9  }, -- Evasion
+                      { 134, 0, 1 }} -- Magic Defense
+
+item_pool[2]  = { { 740, 0, 3 }, -- DMG+ melee
+                      { 756, 9, 19}, -- -Delay
+                      { 327, 0, 9 }} -- WeaponSkill DMG
+
+item_pool[3] = { { 746, 0, 3 }, -- DMG+ ranged
+                      { 764, 9, 19}, -- -Delay
+                      { 327, 0, 9 }} -- WeaponSkill DMG
+
 
 function onAugmentID(player, trade)
-end
+end;
 
 function onAugmentTrade(player, trade)
    -- sanity checks
@@ -104,8 +201,8 @@ function onAugmentTrade(player, trade)
    end
 
    local itemObj = trade:getItemObj(1);
-   if( itemObj:getAugment(0) ~= 0) then
-      player:PrintToPlayer( "You may not Augment the same item.", 0xE );
+   if( itemObj:isSubType(4) == true ) then
+      player:PrintToPlayer( "That item is already augmented.", 0xE );
       return;
    end
 
@@ -162,6 +259,137 @@ function onAugmentTrade(player, trade)
       else
          player:addItem( itemID, 1, aug_table[1], aug_table[2] );
       end
+      player:PrintToPlayer( "Augment complete.", 0xE );
       player:tradeComplete();
    end
+end;
+
+
+
+function onFieldParchmentTrade(npc, player, trade)
+   if( player:getVar( string.format("%dItemTraded", npc:getID() ) ) ~= 0 ) then
+      player:PrintToPlayer( "You've already traded an item.", 0xE );
+      return;
+   end
+
+   if( trade:getItemCount() ~= 2 ) then
+      player:PrintToPlayer( "You need to trade a gil amount and an item", 0xE );
+      return;
+   end
+
+
+   local itemObj = trade:getItemObj(1);
+   if( itemObj:isSubType(4) == true ) then
+      player:PrintToPlayer( "That item is already augmented.", 0xE );
+      return;
+   end
+
+   if( itemObj:isType(0x08) == false and itemObj:isType(0x10) == false ) then
+      player:PrintToPlayer( "You may only augment weapons or armor.", 0xE );
+      return;
+   end
+   if( bit.band(itemObj:getFlag(), 16384 ) == 16384 ) then
+      player:PrintToPlayer( "You cannot augment an EX item.", 0xE );
+      return;      
+   end
+
+   if( bit.band(itemObj:getFlag(), 32768 ) == 32768 ) then
+      player:PrintToPlayer( "You cannot augment a RARE item.", 0xE );
+      return;
+   end
+
+   local gil = trade:getGil();
+   if( gil ~= 5000 and gil ~= 10000 and gil ~= 15000 and gil ~= 20000 ) then
+      player:PrintToPlayer( "Improper gil value traded.", 0xE );
+      return;
+   end
+   gil = gil / 5000;
+   local availableaugs = player:getVar( "AugBuys" );
+   if( availableaugs < gil ) then
+      player:PrintToPlayer( "You do not have enough AugBuys", 0xE );
+      return;
+   end
+
+   player:setVar( string.format( "%dItemTraded", npc:getID() ), itemObj:getID() );
+   player:setVar( string.format( "%dNumAugs", npc:getID() ), gil );
+
+   if( itemObj:getAHCat() == 13 ) then
+      player:setVar( string.format( "%dItemType", npc:getID() ), 3 );
+   elseif( itemObj:isType(8) == true ) then
+      player:setVar( string.format( "%dItemType", npc:getID() ), 1 );
+   else
+      player:setVar( string.format( "%dItemType", npc:getID() ), 2 );
+   end
+
+   player:setVar( "AugBuys", availableaugs - gil );
+   player:tradeComplete();
+   -- spawn proper mob
+   if( npc:getID() == 17301590 ) then
+      SpawnMob(17301539):updateClaim(player)
+   elseif( npc:getID() == 17310106 ) then
+      SpawnMob(17309984):updateClaim(player)
+   end
+   npc:setStatus(2);
+end;
+
+function onFieldParchmentTrigger(npc, player)
+   if( player:getVar( string.format( "%dItemTraded", npc:getID() ) ) == 0 ) then
+      player:PrintToPlayer( "You need to trade an augmentable item, have AugBuys and gil first!", 0xE );
+      return;
+   end
+
+   local chance = 100;
+   local generalPool = {};
+   local itemPool = item_pool[player:getVar( string.format( "%dItemType", npc:getID() ) )];
+   local mobSpecificPool = mob_specific_pool[npc:getID()];
+   local selectedAugs = {};
+   local augPool = { [1] = {}, [2] = {}, [3] = {}, [4] = {} };
+   -- setup the general pool --
+
+   for i,v in ipairs( general_pool ) do
+      table.insert( generalPool, 1, v );
+   end
+
+   for i,v in ipairs( itemPool ) do
+      table.insert( generalPool, 1, v );
+   end
+
+   -- build the aug pool
+   table.insert( augPool[1], 1, generalPool );
+   table.insert( augPool[1], 1, one_time_pool );
+   table.insert( augPool[1], 1, mobSpecificPool );
+   table.insert( augPool[2], 1, generalPool );
+   table.insert( augPool[2], 1, mobSpecificPool );
+   table.insert( augPool[3], 1, mobSpecificPool );
+   table.insert( augPool[4], 1, mobSpecificPool );
+
+   -- loop "NumAugs" times for the augs
+   printf( "%d numaugs", player:getVar( string.format( "%dNumAugs", npc:getID() ) ) );
+   for i=1, player:getVar( string.format( "%dNumAugs", npc:getID() ) ), 1 do
+      local augGroup;
+      if( math.random(1,100) <= chance ) then
+         printf( "aug %d success", i );
+         augGroup = augPool[i][math.random(1,#augPool[i])];
+         printf( "auggroup size = %d", #augGroup );
+         aug = augGroup[math.random(1,#augGroup)]
+         if( selectedAugs[aug[1]] ~= nil ) then
+            selectedAugs[aug[1]] = selectedAugs[aug[1]] + math.random(aug[2], aug[3] ); 
+         else
+            selectedAugs[aug[1]] = math.random(aug[2], aug[3]);
+         end
+      end
+      chance = chance - 25;
+   end
+   local augID = {};
+   local augVal = {};
+   for i,v in pairs( selectedAugs ) do
+      printf( "\n%d and %d\n", i, v );
+      augID[#augID+1] = i;
+      augVal[#augID+1] = v;
+   end
+   player:PrintToPlayer( "Good luck!", 0xE );
+   player:addItem( player:getVar( string.format( "%dItemTraded", npc:getID() ) ), 1, augID[1], augVal[1], augID[2], augVal[2], augID[3], augVal[3], augID[4], augVal[4] );
+   player:setVar( string.format( "%dItemTraded", npc:getID() ), 0 );
+   player:setVar( string.format( "%dNumAugs", npc:getID() ), 0 );
+   player:setVar( string.format( "%dItemType", npc:getID() ), 0 );
 end;
