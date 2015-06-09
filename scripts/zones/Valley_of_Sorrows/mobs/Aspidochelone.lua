@@ -81,7 +81,9 @@ function exitShell( aspid )
    aspid:delMod( MOD_REGEN, 200 );
    aspid:delMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(2);
-   aspid:speed( 40 );
+   if( aspid:hasStatusEffect( EFFECT_BIND ) ~= true ) then
+      aspid:speed( 40 );
+   end
    aspid:setLocalVar( "outTime", os.time() );
    aspid:setLocalVar( "outHPP", aspid:getHPP() );
 end

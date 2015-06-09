@@ -110,8 +110,7 @@ general_pool = { { 768, 0, 4 }, -- resistances
                  { 21, 0, 29 }, -- -HP, +HP 
                  { 19, 0, 9  }} -- +HP, - MP
 
-one_time_pool = { { 49, 0, 2  }, -- haste
-                  { 176, 0, 4 }, --resists
+one_time_pool = { { 176, 0, 4 }, --resists
                   { 177, 0, 4 },
                   { 178, 0, 4 },
                   { 179, 0, 4 },
@@ -132,8 +131,12 @@ one_time_pool = { { 49, 0, 2  }, -- haste
                   { 517, 1, 1 },
                   { 518, 1, 1 },
                   { 796, 1, 4 }, -- all res
-                  { 18,  0, 0 }} -- hp mp +33
-
+                  { 18,  0, 0 }, -- hp mp +33
+                  { 134, 0, 1 }, -- magic defense
+                  { 133, 0, 0 }, -- magic atk bonus
+                  { 23,  0, 2 }, -- acc
+                  { 31,  0, 4 }} -- evasion
+ 
 mob_specific_pool = {}
 -- skahnowa
 mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
