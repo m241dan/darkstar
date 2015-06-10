@@ -20,6 +20,7 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
+   mob:addMod( MOD_BINDRES, 20 );
 end;
 
 -----------------------------------

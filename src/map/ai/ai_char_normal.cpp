@@ -3185,10 +3185,10 @@ void CAICharNormal::DoAttack()
         {
             uint16 zanshinChance = m_PChar->getMod(MOD_ZANSHIN) + m_PChar->PMeritPoints->GetMeritValue(MERIT_ZASHIN_ATTACK_RATE, m_PChar);
             zanshinChance = dsp_cap(zanshinChance, 0, 100);
-            //zanshin may only proc on a missed/guarded/countered swing or as SAM main with hasso up (at 25% of the base zanshin rate)
+            //zanshin may only proc on a missed/guarded/countered swing or as SAM main with hasso up (at 33% of the base zanshin rate)
             if (((Action.reaction == REACTION_EVADE || Action.reaction == REACTION_GUARD || 
                 Action.spikesEffect == SUBEFFECT_COUNTER) && WELL512::GetRandomNumber(100) < zanshinChance) || 
-                (m_PChar->GetMJob() == JOB_SAM && m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_HASSO) && WELL512::GetRandomNumber(100) < (zanshinChance / 4)))
+                (m_PChar->GetMJob() == JOB_SAM && m_PChar->StatusEffectContainer->HasStatusEffect(EFFECT_HASSO) && WELL512::GetRandomNumber(100) < (zanshinChance / 3)))
             {
                 attack.SetAttackType(ZANSHIN_ATTACK);
                 attack.SetAsFirstSwing(false);

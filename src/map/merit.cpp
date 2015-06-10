@@ -116,10 +116,10 @@ struct MeritCategoryInfo_t
 
 static const MeritCategoryInfo_t meritCatInfo[] =
 {
-    {2,15,0},  //MCATEGORY_HP_MP
-    {7,12,1},  //MCATEGORY_ATTRIBUTES
-    {19,32,2}, //MCATEGORY_COMBAT
-    {12,24,4}, //MCATEGORY_MAGIC
+    {2,8,0},  //MCATEGORY_HP_MP
+    {7,15,1},  //MCATEGORY_ATTRIBUTES
+    {19,20,2}, //MCATEGORY_COMBAT
+    {12,20,4}, //MCATEGORY_MAGIC
     {5,10,5},  //MCATEGORY_OTHERS
 
     {5,10,6},  //MCATEGORY_WAR_1

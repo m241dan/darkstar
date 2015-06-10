@@ -28,7 +28,7 @@ end;
 
 function onMobDeath(mob, killer)
     killer:showText(mob,SKY_GOD_OFFSET + 10);
-    GetNPCByID(17310052):hideNPC(900);
+    GetNPCByID(17310052):hideNPC(120);
     SetDropRate(3117,1312,150);
     SetDropRate(3117,722,150);
 end;
