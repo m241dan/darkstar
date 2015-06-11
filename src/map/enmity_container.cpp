@@ -145,8 +145,8 @@ void CEnmityContainer::UpdateEnmity(CBattleEntity* PEntity, int16 CE, int16 VE, 
         PEnmity->second->VE += VE > 0 ? VE * bonus : VE;
 
         //Check for cap limit
-        PEnmity->second->CE = dsp_cap(PEnmity->second->CE, 1, 20000);
-        PEnmity->second->VE = dsp_cap(PEnmity->second->VE, 0, 20000);
+        PEnmity->second->CE = dsp_cap(PEnmity->second->CE, 1, 10000);
+        PEnmity->second->VE = dsp_cap(PEnmity->second->VE, 0, 10000);
 
         if (CE + VE > 0 && PEntity->getMod(MOD_TREASURE_HUNTER) > PEnmity->second->maxTH)
             PEnmity->second->maxTH = (uint8)(PEntity->getMod(MOD_TREASURE_HUNTER));

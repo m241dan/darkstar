@@ -12,7 +12,10 @@ require("scripts/globals/status");
 -----------------------------------
 
 function onMobInitialize(mob)
-    mob:setMobMod(MOBMOD_ADD_EFFECT,mob:getShortID());
+   mob:setMobMod(MOBMOD_ADD_EFFECT,mob:getShortID());
+   mob:addMod( MOD_BINDRES, 5 );
+   mob:addMod( MOD_GRAVITYRES, -10 );
+   mob:addMod( MOD_STUNRES, -20 );
 end;
 
 -----------------------------------

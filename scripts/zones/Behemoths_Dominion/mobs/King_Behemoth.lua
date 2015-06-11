@@ -20,6 +20,7 @@ end;
 function onMobEngaged(mob,target)
    mob:addMod(MOD_SILENCERES,100);
    mob:addMod(MOD_STUNRES,10);
+   mob:addMod(MOD_BINDRES,50);
    mob:setMobMod(MOBMOD_DRAW_IN,100);
 end
 

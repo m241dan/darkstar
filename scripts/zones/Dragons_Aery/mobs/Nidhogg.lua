@@ -15,7 +15,7 @@ function onMobInitialize(mob)
 end;
 
 function onMobSpawn(mob)
-   mob:addMod( MOD_MDEF, 20 );
+   mob:addMod( MOD_MDEF, 25 );
 end;
 
 function onMobFight(mob, target)

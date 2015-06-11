@@ -1000,7 +1000,7 @@ INSERT INTO `mob_skill` VALUES (367,55,367,'Wing_Cutter',4,10.0,2000,1500,4,0,0,
 
 -- Behemoth
 INSERT INTO `mob_skill` VALUES (372,51,372,'Wild_Horn',4,10.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (373,51,373,'Thunderbolt',1,40.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skill` VALUES (373,51,373,'Thunderbolt',1,30.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (374,51,374,'Kick_Out',4,10.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (375,51,375,'Shock_Wave',4,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (376,51,376,'Flame_Armor',0,7.0,2000,1500,1,0,0,0);
@@ -1009,7 +1009,7 @@ INSERT INTO `mob_skill` VALUES (377,51,377,'Howl',0,7.0,2000,1500,1,0,0,0);
 
 -- King Behemoth
 INSERT INTO `mob_skill` VALUES (372,479,372,'Wild_Horn',4,10.0,2000,1500,4,8,0,0);
-INSERT INTO `mob_skill` VALUES (373,479,373,'Thunderbolt',1,40.0,2000,1500,4,8,0,0);
+INSERT INTO `mob_skill` VALUES (373,479,373,'Thunderbolt',1,30.0,2000,1500,4,8,0,0);
 INSERT INTO `mob_skill` VALUES (374,479,374,'Kick_Out',4,10.0,2000,1500,4,8,0,0);
 INSERT INTO `mob_skill` VALUES (375,479,375,'Shock_Wave',4,7.0,2000,1500,4,8,0,0);
 INSERT INTO `mob_skill` VALUES (376,479,376,'Flame_Armor',0,7.0,2000,1500,1,0,0,0);
@@ -1215,7 +1215,6 @@ INSERT INTO `mob_skill` VALUES (541,281,469,'Deadly_Hold',0,7.0,2000,1800,4,0,0,
 INSERT INTO `mob_skill` VALUES (542,281,470,'Tail_Swing',0,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (543,281,471,'Tail_Smash',0,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (544,281,472,'Heat_Breath',4,15.0,2000,1500,4,0,0,0);
-INSERT INTO `mob_skill` VALUES (545,281,473,'Riddle',1,15.0,2000,1500,4,0,0,0); -- might not use this move,according to wiki list
 INSERT INTO `mob_skill` VALUES (546,281,474,'Great_Sandstorm',0,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (547,281,475,'Great_Whirlwind',4,12.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skill` VALUES (478,281,432,'Astral_Flow',0,7.0,2000,0,1,2,0,0);
