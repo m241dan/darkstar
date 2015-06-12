@@ -20,7 +20,7 @@ function onMobDeath(mob,killer)
 
         local ToD = GetServerVariable("[POP]Arachne");
         if (ToD <= os.time(t) and GetMobAction(Arachne) == 0) then
-            if (math.random((1),(20)) == 5) then
+            if (math.random((1),(5)) == 5) then
                 UpdateNMSpawnPoint(Arachne);
                 GetMobByID(Arachne):setRespawnTime(GetMobRespawnTime(mob));
                 SetServerVariable("[PH]Arachne", mob);
