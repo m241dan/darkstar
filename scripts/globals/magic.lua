@@ -12,7 +12,7 @@ require("scripts/globals/utils")
 	ELEMENTAL_MAGIC_SKILL 	= 36;
     DARK_MAGIC_SKILL 		= 37;
     NINJUTSU_SKILL          = 39;
-    SUMMENING_SKILL 	    = 38;
+    SUMMONING_SKILL 	    = 38;
     SINGING_SKILL           = 40;
     STRING_SKILL            = 41;
     WIND_SKILL              = 42;
@@ -579,7 +579,7 @@ function applyResistanceEffect(player,spell,target,diff,skill,bonus,effect)
 			effectres = MOD_POISONRES;
 		elseif(effect == EFFECT_PARALYZE) then
 			effectres = MOD_PARALYZERES;
-		elseif(effect == EFFECT_BLIND) then
+		elseif(effect == EFFECT_BLINDNESS) then
 			effectres = MOD_BLINDRES
 		elseif(effect == EFFECT_SILENCE) then
 			effectres = MOD_SILENCERES;
@@ -1566,7 +1566,7 @@ function calculateBarspellPower(caster,enhanceSkill)
 		enhanceSkill = 0;
 	end
 
-	local power = 40 + 0.2 * enchanceSkill + meritBonus;
+	local power = 40 + 0.2 * enhanceSkill + meritBonus;
 	
 	local equippedLegs = caster:getEquipID(SLOT_LEGS);
 	if(equippedLegs == 15119) then
