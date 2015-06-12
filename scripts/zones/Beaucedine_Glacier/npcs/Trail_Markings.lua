@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Beaucedine Glacier
--- NPC:  Trail Markings
+--  NPC: Trail Markings
 -- Dynamis-Beaucedine Enter
 -- @pos -284 -39 -422 111
 -----------------------------------
@@ -17,14 +17,13 @@ require("scripts/zones/Beaucedine_Glacier/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-end; 
+end;
 
 -----------------------------------
 -- onTrigger Action
 -----------------------------------
 
 function onTrigger(player,npc)
-	
 	if(player:getVar("DynaBeaucedine_Win") == 1) then
 		player:startEvent(0x0086,HYDRA_CORPS_INSIGNIA); -- Win CS
         elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND)) then
@@ -55,8 +54,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("updateRESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("updateRESULT: %u",option);
 end;
 
 -----------------------------------

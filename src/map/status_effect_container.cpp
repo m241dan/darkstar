@@ -1179,6 +1179,8 @@ void CStatusEffectContainer::LoadStatusEffects()
 
 	int32 ret = Sql_Query(SqlHandle, Query, m_POwner->id);
 
+    std::vector<CStatusEffect*> PEffectList;
+
 	if( ret != SQL_ERROR && Sql_NumRows(SqlHandle) != 0)
 	{
 		while(Sql_NextRow(SqlHandle) == SQL_SUCCESS)
@@ -1193,7 +1195,7 @@ void CStatusEffectContainer::LoadStatusEffects()
                 (uint16)Sql_GetUIntData(SqlHandle,6),
                 (uint16)Sql_GetUIntData(SqlHandle,7));
 
-			AddStatusEffect(PStatusEffect);
+			PEffectList.push_back(PStatusEffect);
 
             // load shadows left
             if(PStatusEffect->GetStatusID() == EFFECT_COPY_IMAGE){
@@ -1203,6 +1205,12 @@ void CStatusEffectContainer::LoadStatusEffects()
             }
 		}
 	}
+
+    for (auto&& PStatusEffect : PEffectList)
+    {
+        AddStatusEffect(PStatusEffect);
+    }
+
     m_POwner->UpdateHealth(); // после загрузки эффектов пересчитываем максимальное количество HP/MP
 }
 
