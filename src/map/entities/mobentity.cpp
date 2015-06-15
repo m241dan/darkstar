@@ -307,8 +307,8 @@ void CMobEntity::ChangeMJob(uint16 job)
 {
     this->SetMJob(job);
 
-    // give him a spell list based on job
-    if(m_EcoSystem == SYSTEM_BEASTMEN || m_EcoSystem == SYSTEM_UNDEAD || m_EcoSystem == SYSTEM_HUMANOID){
+    // give him a spell list based on job (added SYSTEM_ARCANA for Eraser)
+    if(m_EcoSystem == SYSTEM_BEASTMEN || m_EcoSystem == SYSTEM_UNDEAD || m_EcoSystem == SYSTEM_HUMANOID || m_EcoSystem == SYSTEM_ARCANA ){
         uint16 spellList = 0;
 
         switch(job){

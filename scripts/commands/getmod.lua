@@ -11,5 +11,11 @@ cmdprops =
 };
 
 function onTrigger(player)
-   player:PrintToPlayer( string.format( "You have %d Ikishoten", player:getMerit(MERIT_IKISHOTEN) ) );
+    local targ = player:fetchTargetsID();
+    if( targ == nil ) then return; end
+
+    mob = GetMobByID(targ);
+    if( mob == nil ) then return; end
+
+    player:PrintToPlayer( string.format( "%s's water def %d and water res %d", mob:getName(), mob:getMod( MOD_DARKDEF ), mob:getMod( MOD_DARKRES ) ), 0xE);
 end;

@@ -5351,6 +5351,21 @@ inline int32 CLuaBaseEntity::isJailed(lua_State *L)
     return 1;
 }
 
+inline int32 CLuaBaseEntity::changeMobJob(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_NPC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1) );
+    int16 job = lua_tointeger(L,1);
+    DSP_DEBUG_BREAK_IF( job < 0 || job > 22 );
+
+    CMobEntity* PMob = (CMobEntity*)m_PBaseEntity;
+
+    PMob->ChangeMJob(job);
+    return 0;
+}
+
 /************************************************************************
 *                                                                       *
 *  GM command @changeJOB !!! FOR DEBUG ONLY !!!                         *
@@ -10353,6 +10368,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isJailed),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setLevel),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setsLevel),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,changeMobJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,changeJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,changesJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setMerits),
