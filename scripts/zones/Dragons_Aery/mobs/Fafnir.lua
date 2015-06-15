@@ -27,6 +27,7 @@ function onMobSpawn(mob)
    end
    mob:addMod( MOD_SLEEPRES, 20 );
    mob:addMod( MOD_MDEF, 20 );
+   mob:addMod( MOD_ELEGYRES, -20 );
 end;
 
 -----------------------------------

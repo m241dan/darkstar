@@ -375,17 +375,9 @@ namespace battleutils
     *                                                                       *
     ************************************************************************/
 
-<<<<<<< HEAD
-std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
-{
-	DSP_DEBUG_BREAK_IF(skill >= MAX_SKILLTYPE);
-        DSP_DEBUG_BREAK_IF( g_PWeaponSkillsList[skill] == nullptr );
-=======
     CWeaponSkill* GetWeaponSkill(uint16 WSkillID)
     {
         DSP_DEBUG_BREAK_IF(WSkillID >= MAX_WEAPONSKILL_ID);
->>>>>>> master
-
         return g_PWeaponSkillList[WSkillID];
     }
 
@@ -514,12 +506,6 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
         else if (resvar <= half)
             resist = 0.5;
 
-<<<<<<< HEAD
-            // FINISH HIM! dun dun dun
-            // TP and stoneskin are handled inside TakePhysicalDamage
-            Action->spikesMessage = 536;
-            Action->spikesParam = battleutils::TakePhysicalDamage(PDefender, PAttacker, dmg, false, SLOT_MAIN, 1, nullptr, true, true, true, false);
-=======
         if (PAttacker->objtype == TYPE_PC)
         {
             CItemArmor* waist = ((CCharEntity*)PAttacker)->getEquip(SLOT_WAIST);
@@ -527,7 +513,6 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
             {
                 obiBonus = true;
             }
->>>>>>> master
         }
         else
         {
@@ -1091,16 +1076,6 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
                     uint16 multiplier = 3 + (5.5f * power - 1);
                     int8 Samba = WELL512::GetRandomNumber(1, (delay * multiplier) / 100 + 1);
 
-<<<<<<< HEAD
-                // vary damage based on lvl diff
-//                int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
-
-//                if (lvlDiff < -5){
-  //                  lvlDiff = -5;
-    //            }
-
-//                Samba -= lvlDiff;
-=======
                     // vary damage based on lvl diff
                     int8 lvlDiff = (PDefender->GetMLevel() - PAttacker->GetMLevel()) / 2;
 
@@ -1109,23 +1084,11 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
                     }
 
                     Samba -= lvlDiff;
->>>>>>> master
 
                     if (Samba > (finaldamage / 2)) {
                         Samba = finaldamage / 2;
                     }
 
-<<<<<<< HEAD
-                if (Samba < 0)
-                {
-                    Samba = 0;
-                }
-
-                if( Samba == 0 && finaldamage != 0 )
-                {
-                    Samba = 1;
-                }
-=======
                     if (finaldamage <= 2) {
                         Samba = 0;
                     }
@@ -1134,7 +1097,6 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
                     {
                         Samba = 0;
                     }
->>>>>>> master
 
                     Action->additionalEffect = SUBEFFECT_HP_DRAIN;
                     Action->addEffectMessage = 161;
@@ -1586,18 +1548,12 @@ std::list<CWeaponSkill*> GetWeaponSkills(uint8 skill)
 
             float cap = GetMaxSkill((SKILLTYPE)PChar->PBattleAI->GetCurrentSpell()->getSkillType(), PChar->GetMJob(), PChar->GetMLevel());
 
-<<<<<<< HEAD
-int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter, bool isZanshin)
-{
-    bool isRanged = (slot == SLOT_AMMO || slot == SLOT_RANGED);
-=======
             //if cap is 0 then player is using a spell from their subjob
             if (cap == 0)
             {
                 cap = GetMaxSkill((SKILLTYPE)PChar->PBattleAI->GetCurrentSpell()->getSkillType(), PChar->GetSJob(),
                                   PChar->GetSLevel()); // << this might be GetMLevel, however this leaves no chance of avoiding interuption
             }
->>>>>>> master
 
             if (skill > cap)
                 skill = cap;
@@ -1753,25 +1709,11 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
     {
         CItemWeapon* PWeapon = GetEntityWeapon(PDefender, SLOT_MAIN);
 
-<<<<<<< HEAD
-        if (giveTPtoAttacker)
-        {
-            if( isZanshin )
-            {
-               ShowDebug(CL_CYAN"Ikishoten bonus from merits = %u\n" CL_RESET, getIkishotenTPbonusFromMerit(PAttacker) );
-               baseTp += getIkishotenTPbonusFromMerit(PAttacker);
-            }
-
-            PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
-            if (PAttacker->objtype == TYPE_PC)
-                charutils::UpdateHealth((CCharEntity*)PAttacker);
-=======
         // Defender must have no weapon equipped, or a hand to hand weapon equipped to guard
         bool validWeapon = (PWeapon == nullptr || PWeapon->getSkillType() == SKILL_H2H);
 
         if (PDefender->objtype == TYPE_MOB || PDefender->objtype == TYPE_PET) {
             validWeapon = PDefender->GetMJob() == JOB_MNK || PDefender->GetMJob() == JOB_PUP;
->>>>>>> master
         }
 
         if (validWeapon && battleutils::IsEngauged(PDefender))
@@ -1802,7 +1744,7 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
     *																		*
     ************************************************************************/
 
-    int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter)
+    int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int32 damage, bool isBlocked, uint8 slot, uint16 tpMultiplier, CBattleEntity* taChar, bool giveTPtoVictim, bool giveTPtoAttacker, bool isCounter, bool isZanshin)
     {
         bool isRanged = (slot == SLOT_AMMO || slot == SLOT_RANGED);
         int32 baseDamage = damage;
@@ -1989,40 +1931,23 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
 
                 float ratio = 1.0f;
 
-<<<<<<< HEAD
-    if (PAttacker->objtype == TYPE_PC && ((PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_SNEAK_ATTACK) && (abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 30 || PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_HIDE))) ||
-        (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_ASSASSIN) && PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_TRICK_ATTACK) && battleutils::getAvailableTrickAttackChar(PAttacker, PDefender))))
-    {
-        hitrate = 100; //attack with SA active or TA/Assassin cannot miss
-    }
-    else
-	{
-        //Check For Ambush Merit - Melee
-        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 30))) {
-	        offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
-        }
-        // Check for Closed Position merit on attacker and that attacker and defender are facing each other (within ~20 degrees from straight on)
-        if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation)-128) < 15))) {
-            offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PAttacker);
-        }
-        // Check for Closed Position merit on defender that attacker and defender are facing each other (within ~20 degrees from straight on)
-        if (PDefender->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PDefender, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15))) {
-            offsetAccuracy -= ((CCharEntity*)PDefender)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PDefender);
-        }
-=======
                 if (PAttacker->m_Weapons[slot]->getDmgType() == DAMAGE_HTH)
                     ratio = 2.0f;
->>>>>>> master
-
                 baseTp = CalculateBaseTP((delay * 60) / 1000) / ratio;
             }
 
 
             if (giveTPtoAttacker)
             {
-                PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
-                if (PAttacker->objtype == TYPE_PC)
-                    charutils::UpdateHealth((CCharEntity*)PAttacker);
+               if( isZanshin )
+               {
+                  ShowDebug(CL_CYAN"Ikishoten bonus from merits = %u\n" CL_RESET, getIkishotenTPbonusFromMerit(PAttacker) );
+                  baseTp += getIkishotenTPbonusFromMerit(PAttacker);
+               }
+
+               PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
+               if (PAttacker->objtype == TYPE_PC)
+                   charutils::UpdateHealth((CCharEntity*)PAttacker);
             }
 
             if (giveTPtoVictim)
@@ -2102,313 +2027,10 @@ int32 TakePhysicalDamage(CBattleEntity* PAttacker, CBattleEntity* PDefender, int
 
                     break;
 
-<<<<<<< HEAD
-int32 GetFSTR(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 SlotID)
-{
-	int32 rank = 0;
-	int32 fstr = 0;
-	float dif = PAttacker->STR() - PDefender->VIT();
-	if (dif >= 12) {
-		fstr = (dif+4)/2;
-	} else if (dif >= 6){
-		fstr = (dif+6)/2;
-	} else if (dif >= 1){
-		fstr = (dif+7)/2;
-	} else if (dif >= -2){
-		fstr = (dif+8)/2;
-	} else if (dif >= -7){
-		fstr = (dif+9)/2;
-	} else if (dif >= -15){
-		fstr = (dif+10)/2;
-	} else if (dif >= -21){
-		fstr = (dif+12)/2;
-	} else {
-		fstr = (dif+13)/2;
-	}
-	if(SlotID==SLOT_RANGED)
-	{
-		rank = PAttacker->GetRangedWeaponRank();
-		//different caps than melee weapons
-		if(fstr <= (-rank*2))
-			return (-rank*2);
-
-		if((fstr > (-rank*2)) && (fstr <= (2*(rank + 8))))
-			return fstr;
-
-		else
-			return 2*(rank + 8);
-	}
-	else
-	{
-		fstr /= 2;
-		if( SlotID == SLOT_MAIN)
-		{
-			rank = PAttacker->GetMainWeaponRank();
-		} else if( SlotID == SLOT_SUB )
-		{
-			rank = PAttacker->GetSubWeaponRank();
-		}
-		// everything else
-		if(fstr <= (-rank))
-			return (-rank);
-
-		if((fstr > (-rank)) && (fstr <= rank + 8))
-			return fstr;
-		else
-			return rank + 8;
-	}
-}
-
-/************************************************************************
-*                                                                       *
-*  Multihit calculator											        *
-*                                                                       *
-************************************************************************/
-
-uint8 getHitCount(uint8 hits)
-{
-    uint8 distribution = WELL512::GetRandomNumber(100);
-    uint8 num = 1;
-
-	switch (hits)
-    {
-        case 0: break;
-        case 1: break;
-        case 2: // cdf = 55,100
-		    if(distribution < 55){ break; }
-		    else{ num+=1; break;}
-		    break;
-        case 3: // cdf = 30,80,100
-		    if(distribution < 30){ break; }
-		    else if(distribution < 80){ num+=1; break; }
-		    else{ num+=2; break; }
-		    break;
-        case 4: // cdf = 20,50,80,100
-		    if(distribution < 20){ break; }
-		    else if(distribution < 50){ num+=1; break; }
-		    else if(distribution < 80){ num+=2; break; }
-		    else{ num+=3; break; }
-		    break;
-        case 5: // cdf = 10,30,60,90,100
-		    if(distribution < 10){ break; }
-		    else if(distribution < 30){ num+=1; break; }
-		    else if(distribution < 60){ num+=2; break; }
-		    else if(distribution < 90){ num+=3; break; }
-		    else{ num+=4; break; }
-		    break;
-        case 6: // cdf = 10,30,50,70,90,100
-            if(distribution < 10){ break; }
-		    else if(distribution < 30){num+=1; break; }
-		    else if(distribution < 50){num+=2; break; }
-		    else if(distribution < 70){num+=3; break; }
-		    else if(distribution < 90){num+=4; break; }
-		    else{ num+=5; break; }
-            break;
-        case 7: // cdf = 5,20,45,70,85,95,100
-            if(distribution < 5){ break; }
-		    else if(distribution < 20){num+=1; break; }
-		    else if(distribution < 45){num+=2; break; }
-		    else if(distribution < 70){num+=3; break; }
-		    else if(distribution < 85){num+=4; break; }
-		    else if(distribution < 95){num+=5; break; }
-		    else{ num+=6; break; }
-            break;
-        case 8: // cdf = 5,20,45,70,85,95,98,100
-		    if(distribution < 5){ break; }
-		    else if(distribution < 20){num+=1; break; }
-		    else if(distribution < 45){num+=2; break; }
-		    else if(distribution < 70){num+=3; break; }
-		    else if(distribution < 85){num+=4; break; }
-		    else if(distribution < 95){num+=5; break; }
-		    else if(distribution < 98){num+=6; break; }
-		    else{ num+=7; break; }
-            break;
-	}
-    return dsp_min(num,8); // не более восьми ударов за одну атаку
-}
-
-/************************************************************************
-*                                                                       *
-*  Returns a mob / pets multihits								        *
-*                                                                       *
-************************************************************************/
-
-uint8 CheckMobMultiHits(CBattleEntity* PEntity)
-{
-
-	if (PEntity->objtype == TYPE_MOB || PEntity->objtype == TYPE_PET)
-	{
-		uint8 num = 1;
-
-		//Monk
-		if(PEntity->GetMJob() == JOB_MNK)
-		{
-			num = 2;
-		}
-
-		//check for unique mobs
-		switch (PEntity->id)
-		{
-			case 17498522:// Charybdis 2-6
-				return (1 + getHitCount(5));
-
-			default:
-				break;
-		}
-
-		int16 tripleAttack = PEntity->getMod(MOD_TRIPLE_ATTACK);
-		int16 doubleAttack = PEntity->getMod(MOD_DOUBLE_ATTACK);
-		doubleAttack = dsp_cap(doubleAttack,0,100);
-		tripleAttack = dsp_cap(tripleAttack,0,100);
-		if (WELL512::GetRandomNumber(100) < tripleAttack)
-		{
-			num +=2;
-		}
-		else if (WELL512::GetRandomNumber(100) < doubleAttack)
-		{
-			num +=1;
-		}
-		return num;
-	}
-	return 0;
-}
-
-/************************************************************************
-*                                                                       *
-*  Returns the number of hits for multihit weapons if applicable        *
-*  (Keeping this for backwards compatibility with the old system)       *
-************************************************************************/
-
-uint8 CheckMultiHits(CBattleEntity* PEntity, CItemWeapon* PWeapon)
-{
-	//checking players weapon hit count
-	uint8 num = PWeapon->getHitCount();
-
-	int16 tripleAttack = PEntity->getMod(MOD_TRIPLE_ATTACK);
-	int16 doubleAttack = PEntity->getMod(MOD_DOUBLE_ATTACK);
-
-	//check for merit upgrades
-	if (PEntity->objtype == TYPE_PC)
-	{
-		CCharEntity* PChar = (CCharEntity*)PEntity;
-
-		//merit chance only applies if player has the job trait
-		if (charutils::hasTrait(PChar, TRAIT_TRIPLE_ATTACK)) {
-			tripleAttack += PChar->PMeritPoints->GetMeritValue(MERIT_TRIPLE_ATTACK_RATE,(CCharEntity*)PEntity);
-		}
-		if (charutils::hasTrait(PChar, TRAIT_DOUBLE_ATTACK)) {
-			doubleAttack += PChar->PMeritPoints->GetMeritValue(MERIT_DOUBLE_ATTACK_RATE,(CCharEntity*)PEntity);
-		}
-	}
-    doubleAttack = dsp_cap(doubleAttack,0,100);
-    tripleAttack = dsp_cap(tripleAttack,0,100);
-
-	if (WELL512::GetRandomNumber(100) < tripleAttack)
-	{
-		num +=2;
-	}
-	else if (WELL512::GetRandomNumber(100) < doubleAttack)
-	{
-		num +=1;
-	}
-
-	// hasso occasionally triggers Zanshin after landing a normal attack, only active while Samurai is set as Main
-	if(PEntity->GetMJob() == JOB_SAM)
-	{
-		if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_HASSO))
-		{
-			uint16 zanshin = PEntity->getMod(MOD_ZANSHIN);
-			if (PEntity->objtype == TYPE_PC)
-				zanshin += ((CCharEntity*)PEntity)->PMeritPoints->GetMeritValue(MERIT_ZASHIN_ATTACK_RATE, (CCharEntity*)PEntity);
-
-			if(WELL512::GetRandomNumber(100) < (zanshin / 4) )
-				num++;
-		}
-	}
-	return dsp_min(num, 8);
-}
-
-/************************************************************************
-*                                                                       *
-*  Chance paralysis will cause you to be paralyzed                      *
-*                                                                       *
-************************************************************************/
-
-bool IsParalyzed(CBattleEntity* PAttacker)
-{
-	return (WELL512::GetRandomNumber(100) < dsp_cap(PAttacker->getMod(MOD_PARALYZE) - PAttacker->getMod(MOD_PARALYZERES), 0, 100));
-}
-
-/*****************************************************************************
-Returns true if the Third Eye anticipates the attacks. Must specify various
-parameters including if the effect should 100% be removed (e.g. in the case of AoE)
-by setting forceRemove to true. Must also specify the ignore boolean, which is true
-to ignore the effects of Third Eye (but NOT try to remove).
-******************************************************************************/
-bool IsAnticipated(CBattleEntity* PDefender, bool forceRemove, bool ignore, bool* thirdEyeCounter)
-{
-	if(ignore){
-		return false;
-	}
-
-	if(PDefender->GetMJob() != JOB_SAM && PDefender->GetSJob() != JOB_SAM){
-		//faster check than via hasStatusEffect
-		return false;
-	}
-	if(!PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_THIRD_EYE)){
-		return false;
-	}
-
-	CStatusEffect* effect = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_THIRD_EYE,0);
-	if(effect == nullptr) { //shouldn't occur but checking anyway
-		return false;
-	}
-	if(forceRemove){
-		PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_THIRD_EYE);
-		return false;
-	}
-
-	//power stores how many times this effect has anticipated
-	uint8 pastAnticipations = effect->GetPower();
-
-	if(pastAnticipations>7){
-		//max 7 anticipates!
-		PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_THIRD_EYE);
-		return false;
-	}
-
-	bool hasSeigan = PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_SEIGAN,0);
-
-	if(!hasSeigan && pastAnticipations == 0){
-		PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_THIRD_EYE);
-		return true;
-	}
-	else if(!hasSeigan){
-		PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_THIRD_EYE);
-		return false;
-	}
-	else{ //do have seigan, decay anticipations correctly (guesstimated)
-		//5-6 anticipates is a 'lucky' streak, going to assume 15% decay per proc, with a 100% base w/ Seigan
-		if(WELL512::GetRandomNumber(100) < (100-(pastAnticipations*15))){
-			//increment power and don't remove
-			effect->SetPower(effect->GetPower()+1);
-            //chance to counter - 15% base
-            if (WELL512::GetRandomNumber(100) < 15 + PDefender->getMod(MOD_AUGMENTS_THIRD_EYE) )
-                *thirdEyeCounter = true;
-			return true;
-		}
-		PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_THIRD_EYE);
-		return false;
-	}
-
-	return false;
-}
-=======
                 case TYPE_PET:
                     ((CPetEntity*)PDefender)->loc.zone->PushPacket(PDefender, CHAR_INRANGE, new CEntityUpdatePacket(PDefender, ENTITY_UPDATE, UPDATE_COMBAT));
                     break;
             }
->>>>>>> master
 
             // try to interrupt spell
             if (PDefender->PBattleAI->m_PMagicState)
@@ -3049,22 +2671,6 @@ bool IsAnticipated(CBattleEntity* PDefender, bool forceRemove, bool ignore, bool
 
         int16 KillerEffect = 0;
 
-<<<<<<< HEAD
-/************************************************************************
-*                                                                       *
-*       Samurai get merit Ikishoten value                               *
-*                                                                       *
-************************************************************************/
-uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
-{
-   if( PEntity->objtype == TYPE_PC )
-   {
-      if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
-         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ));
-   }
-   return 0;
-}
-=======
         switch (PAttacker->m_EcoSystem)
         {
             case SYSTEM_AMORPH:		KillerEffect = PDefender->getMod(MOD_AMORPH_KILLER);   break;
@@ -3089,8 +2695,6 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
     /****************************************************************
     *	Determine if an enfeeble spell will land - untested			*
     ****************************************************************/
->>>>>>> master
-
     bool EnfeebleHit(CBattleEntity* PCaster, CBattleEntity* PDefender, EFFECT Effect)
     {
 
@@ -3496,10 +3100,6 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
                     defMod = resistances[element][1];
                 break;
 
-<<<<<<< HEAD
-	// jump + high jump doesn't give any tp to victim
-	battleutils::TakePhysicalDamage(PAttacker, PVictim, totalDamage, false, fstrslot, realHits, nullptr, false, true, false);
-=======
                 // Level 3 & 4 skill chains
             case SC_LIGHT:
             case SC_LIGHT_II:
@@ -3514,7 +3114,6 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
                 if (PDefender->getMod(resistances[element][3]) < PDefender->getMod(defMod))
                     defMod = resistances[element][3];
                 break;
->>>>>>> master
 
             default:
                 DSP_DEBUG_BREAK_IF(true);
@@ -4052,6 +3651,20 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
         }
         return 0;
     }
+/************************************************************************
+*                                                                       *
+*       Samurai get merit Ikishoten value                               *
+*                                                                       *
+************************************************************************/
+uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
+{
+   if( PEntity->objtype == TYPE_PC )
+   {
+      if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
+         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ));
+   }
+   return 0;
+}
 
 
 

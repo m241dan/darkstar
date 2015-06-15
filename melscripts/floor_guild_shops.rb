@@ -7,7 +7,7 @@ begin
   con = Mysql.new 'localhost', 'darkstar', 'Grc937!', 'dspdb'
   rs = con.query "SELECT guildid, itemid, min_price, max_price FROM guild_shops;"
 
-  f = File.open( '../sql/guild_shop_change.sql', 'w' )
+  f = File.open( '../sql/guild_shops_change.sql', 'w' )
 
   rs.each_hash() do |row|  
      if( ( row['max_price'] = row['max_price'].to_i() * 0.33 ) < row['min_price'].to_i() ) 

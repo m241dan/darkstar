@@ -52,7 +52,6 @@ function onMonsterMagicPrepare(mob, target)
 end;
 
 function onMobFight(mob, killer)
-   mob:setMod( MOD_MDEF, -100 );
    if( mob:hasStatusEffect( EFFECT_CHAINSPELL ) and mob:getCurrentAction() == 1 ) then
       mob:castSpell();
    end

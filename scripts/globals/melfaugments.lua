@@ -135,13 +135,14 @@ one_time_pool = { { 176, 0, 4 }, --resists
                   { 134, 0, 1 }, -- magic defense
                   { 133, 0, 0 }, -- magic atk bonus
                   { 23,  0, 2 }, -- acc
-                  { 31,  0, 4 }} -- evasion
+                  { 25,  0, 4 }, -- attack
+                  { 31,  0, 7 }} -- evasion
  
 mob_specific_pool = {}
 -- skahnowa
 mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 35, 0, 2  }, -- magic acc
-                                { 323, 0, q }, -- Cure Casting Time
+                                { 323, 0, 2 }, -- Cure Casting Time
                                 { 330, 0, 2 }, -- waltz potency
                                 { 329, 0, 2 }, -- cure potency
                                 { 57, 0, 1  }, -- magic crit chance
@@ -152,6 +153,7 @@ mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 546, 0, 2 }, -- +mnd -chr -int
                                 { 549, 0, 2 }, -- +chr, -int,-mnd
                                 { 141, 0, 1 }, -- conserve mp
+                                { 40, 0, 2  }, -- -enmity
                                 { 140, 0, 0 }} -- fast cast
 
 -- eraser
@@ -159,7 +161,7 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 23, 0, 4  }, -- acc
                                 { 41, 0, 0  }, -- crit chance
                                 { 328, 0, 2 }, -- crit hit dmg
-                                { 42, 0, 0, }, -- enemy crit -1
+                                { 42,  0, 0 }, -- enemy crit -1
                                 { 143, 0, 0 }, -- double atk
                                 { 146, 0, 1 }, -- dual wield
                                 { 139, 0, 0 }, -- rapid shot
@@ -172,6 +174,7 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 526, 0, 2 }, -- +str -vit -dex
                                 { 532, 0, 2 }, -- +vit - -
                                 { 529, 0, 2 }, -- +dex - -
+                                { 39, 0, 2  }, -- +enmity
                                 { 535, 0, 2 }} -- +agi
 item_pool = {};
 item_pool[1]  = { { 33, 0, 9  }, -- Def armor
@@ -274,6 +277,12 @@ function onFieldParchmentTrade(npc, player, trade)
       player:PrintToPlayer( "You've already traded an item.", 0xE );
       return;
    end
+   local lasttrade = player:getVar( string.format( "%dlasttrade", npc:getID() ) );
+
+   if( lasttrade > os.time(t) ) then
+      player:PrintToPlayer( string.format( "You need to wait %d minutes before you can trade again.", (lasttrade - os.time(t))/60), 0xE );
+      return;
+   end 
 
    if( trade:getItemCount() ~= 2 ) then
       player:PrintToPlayer( "You need to trade a gil amount and an item", 0xE );
@@ -326,6 +335,7 @@ function onFieldParchmentTrade(npc, player, trade)
 
    player:setVar( "AugBuys", availableaugs - gil );
    player:tradeComplete();
+   player:setVar( string.format("%dlasttrade", npc:getID()), os.time(t) + ( 3600 * 3 ) );
    -- spawn proper mob
    if( npc:getID() == 17301590 ) then
       SpawnMob(17301539):updateClaim(player)

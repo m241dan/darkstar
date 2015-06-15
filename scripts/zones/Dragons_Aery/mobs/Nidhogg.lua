@@ -16,6 +16,7 @@ end;
 
 function onMobSpawn(mob)
    mob:addMod( MOD_MDEF, 25 );
+   mob:addMod( MOD_ELEGYRES, -10 );
 end;
 
 function onMobFight(mob, target)

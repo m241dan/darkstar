@@ -1,10 +1,6 @@
 -----------------------------------
 -- Area: The Labyrinth of Onzozo
-<<<<<<< HEAD
--- MOB:  Goblin Robber
-=======
 --  MOB: Goblin Robber
->>>>>>> master
 -----------------------------------
 
 require("scripts/globals/groundsofvalor");

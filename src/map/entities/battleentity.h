@@ -210,26 +210,6 @@ enum SUBSKILLTYPE
 
 enum SLOTTYPE
 {
-<<<<<<< HEAD
-	SLOT_MAIN	= 0x00,
-	SLOT_SUB	= 0x01,
-	SLOT_RANGED	= 0x02,
-	SLOT_AMMO	= 0x03,
-	SLOT_HEAD	= 0x04,
-	SLOT_BODY	= 0x05,
-	SLOT_HANDS	= 0x06,
-	SLOT_LEGS	= 0x07,
-	SLOT_FEET	= 0x08,
-	SLOT_NECK	= 0x09,
-	SLOT_WAIST	= 0x0A,
-	SLOT_EAR1	= 0x0B,
-	SLOT_EAR2	= 0x0C,
-	SLOT_RING1	= 0x0D,
-	SLOT_RING2	= 0x0E,
-	SLOT_BACK	= 0x0F,
-	SLOT_LINK1	= 0x10,
-	SLOT_LINK2      = 0x11,
-=======
     SLOT_MAIN = 0x00,
     SLOT_SUB = 0x01,
     SLOT_RANGED = 0x02,
@@ -248,7 +228,6 @@ enum SLOTTYPE
     SLOT_BACK = 0x0F,
     SLOT_LINK1 = 0x10,
     SLOT_LINK2 = 0x11,
->>>>>>> master
 };
 
 // CROSSBOW и GUN - это Piercing, разделение сделано из-за одинакового skilltype

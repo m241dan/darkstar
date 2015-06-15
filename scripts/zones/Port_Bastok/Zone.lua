@@ -18,7 +18,7 @@ require("scripts/zones/Port_Bastok/TextIDs");
 function onInitialize(zone)
     zone:registerRegion(1,-112,-3,-17,-96,3,-3);--event COP
     zone:registerRegion( 2, 67, 5, -79, 53, -5, -73 ); -- non-MH side of bridge
-    zone:registerRegion( 3, 52, 5, -160, 67, -5, -165 ); -- MH side
+    zone:registerRegion( 3, 53, 2, -160, 67, 7, -165 ); -- MH side
 end;
 
 -----------------------------------
