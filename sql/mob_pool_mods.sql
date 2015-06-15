@@ -192,6 +192,8 @@ INSERT INTO `mob_pool_mods` VALUES (2105,48,434,1);
 INSERT INTO `mob_pool_mods` VALUES (70,48,434,1);
 INSERT INTO `mob_pool_mods` VALUES (1270,39,-1,1);
 
+INSERT INTO `mob_pool_mods` VALUES (1249,3,4000,1);
+
 -- -------------------------
 --  Antlion MOBMOD_SPECIAL_SKILL Pit_Ambush 
 -- -------------------------
