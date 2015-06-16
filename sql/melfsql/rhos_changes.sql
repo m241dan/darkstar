@@ -1,5 +1,8 @@
--- Tarasque spawn point
-UPDATE mob_spawn_points SET pos_x=124, pos_y=19, pos_z=163, pos_rot=100 WHERE mobId=17617164;
+-- Tarasque's Spawn Point
+UPDATE mob_spawn_points SET pos_x=124, pos_y=19, pos_z=163, pos_rot=100 WHERE mobname="Tarasque";
+
+-- Habetrot's Spawn Point
+UPDATE mob_spawn_points SET pos_x=-60, pos_y=-8, pos_z=56, pos_rot=220 WHERE mobname="Habetrot";
 
 -- Correct droplist for Thread Leeches (in Pashhow Marshlands, zoneID = 109)
 -- (poolid = 5133; vial of beastman's blood = 930; dropid = 3472; vial of fiend blood = 924)
