@@ -10,12 +10,13 @@ function onMobSpawn( mob )
       MobBuffMove( mob, enspells[math.random(1,#enspells)], 50, 0, 0 );
    end
    mob:addMod( absorb[math.random(1, #absorb)], 100 );
-   if( math.random(1,3) == 1 ) then
-      mob:addMod( MOD_MDEF, 100 );
-   elseif( math.random(1,3) == 1 ) then
-      mob:addMod( MOD_INT, 100 );
-   end
-   mob:setDelay(2500);
+
+   mob:addMod( MOD_INT, 100 );
+   mob:addMod( MOD_MND, 20 );
+   mob:addMod( MOD_DEF, 200 );
+   mob:addMod( MOD_SLOWRES, 100 );
+   mob:addMod( MOD_ELEGYRES, 100 );
+   mob:setDelay(3000);
 end;
 
 function onAdditionalEffect(mob, target, damage)

@@ -88,6 +88,8 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
                              { 41, 0, 1  },
                              { 772, 2, 3 } };
 
+aug_chances = { 100, 60, 40, 20 };
+
 -- Skahnowa || Eraser --
 
 general_pool = { { 768, 0, 4 }, -- resistances
@@ -191,6 +193,21 @@ item_pool[3] = { { 746, 0, 3 }, -- DMG+ ranged
 
 
 function onAugmentID(player, trade)
+   local item = trade:getItemObj();
+   local aug1, aug1val = item:getAugment(0);
+   local aug2, aug2val = item:getAugment(1);
+   local aug3, aug3val = item:getAugment(2);
+   local aug4, aug4val = item:getAugment(3);
+
+   if( aug4 ~= 0 ) then
+      player:PrintToPlayer( string.format( "%d %d, %d %d, %d %d, %d %d", aug1, aug1val, aug2, aug2val, aug3, aug3val, aug4, aug4val ), 0xE);
+   elseif( aug3 ~= 0 ) then
+      player:PrintToPlayer( string.format( "%d %d, %d %d, %d %d", aug1, aug1val, aug2, aug2val, aug3, aug3val ), 0xE);
+   elseif( aug2 ~= 0 ) then
+      player:PrintToPlayer( string.format( "%d %d, %d %d", aug1, aug1val, aug2, aug2val ), 0xE );
+   elseif( aug1 ~= 0 ) then
+      player:PrintToPlayer( string.format( "%d %d", aug1, aug1val ), 0xE);
+   end   
 end;
 
 function onAugmentTrade(player, trade)
@@ -351,7 +368,6 @@ function onFieldParchmentTrigger(npc, player)
       return;
    end
 
-   local chance = 100;
    local generalPool = {};
    local itemPool = item_pool[player:getVar( string.format( "%dItemType", npc:getID() ) )];
    local mobSpecificPool = mob_specific_pool[npc:getID()];
@@ -377,28 +393,30 @@ function onFieldParchmentTrigger(npc, player)
    table.insert( augPool[4], 1, mobSpecificPool );
 
    -- loop "NumAugs" times for the augs
-   printf( "%d numaugs", player:getVar( string.format( "%dNumAugs", npc:getID() ) ) );
    for i=1, player:getVar( string.format( "%dNumAugs", npc:getID() ) ), 1 do
       local augGroup;
-      if( math.random(1,100) <= chance ) then
-         printf( "aug %d success", i );
+      if( math.random(1,100) <= aug_chances[i] ) then
          augGroup = augPool[i][math.random(1,#augPool[i])];
-         printf( "auggroup size = %d", #augGroup );
          aug = augGroup[math.random(1,#augGroup)]
-         if( selectedAugs[aug[1]] ~= nil ) then
-            selectedAugs[aug[1]] = selectedAugs[aug[1]] + math.random(aug[2], aug[3] ); 
+         local augval;
+         if( aug[2] == aug[3] ) then
+            augval = aug[2];
          else
-            selectedAugs[aug[1]] = math.random(aug[2], aug[3]);
+            augval = math.random(aug[2], aug[3]);
+         end
+         if( selectedAugs[aug[1]] ~= nil ) then
+            selectedAugs[aug[1]] = selectedAugs[aug[1]] + augval; 
+         else
+            selectedAugs[aug[1]] = augval;
          end
       end
-      chance = chance - 25;
    end
    local augID = {};
    local augVal = {};
    for i,v in pairs( selectedAugs ) do
-      printf( "\n%d and %d\n", i, v );
-      augID[#augID+1] = i;
-      augVal[#augID+1] = v;
+      local position = #augID;
+      augID[position+1] = i;
+      augVal[position+1] = v;
    end
    player:PrintToPlayer( "Good luck!", 0xE );
    player:addItem( player:getVar( string.format( "%dItemTraded", npc:getID() ) ), 1, augID[1], augVal[1], augID[2], augVal[2], augID[3], augVal[3], augID[4], augVal[4] );

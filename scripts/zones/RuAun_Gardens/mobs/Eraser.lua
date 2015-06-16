@@ -13,7 +13,6 @@ local enspells = { EFFECT_ENFIRE, EFFECT_ENAERO, EFFECT_ENSTONE, EFFECT_ENTHUNDE
 local enspikes = { EFFECT_BLAZE_SPIKES, EFFECT_ICE_SPIKES, EFFECT_SHOCK_SPIKES };
 
 local absorb = { MOD_FIRE_ABSORB, MOD_EARTH_ABSORB, MOD_WATER_ABSORB, MOD_WIND_ABSORB, MOD_ICE_ABSORB, MOD_LTNG_ABSORB, MOD_LIGHT_ABSORB, MOD_DARK_ABSORB };
-};
 
 -----------------------------------
 -- onMobSpawn
@@ -23,8 +22,12 @@ function onMobSpawn(mob)
 
    -- general mods
    mob:setMod( MOD_DOUBLE_ATTACK, 20 );
-   mob:addMod( MOD_ACC, 100 );
-   mob:setMobMod( MOBMOD_MAGIC_COOL, 15 );
+   mob:addMod( MOD_ACC, 300 );
+   mob:addMod( MOD_MDEF, 50 );
+   mob:addMod( MOD_BINDRES, 100 );
+   mob:addMod( MOD_INT, 10 );
+   mob:addMod( MOD_MND, 5 );
+   mob:setMobMod( MOBMOD_MAGIC_COOL, 10 );
 
 
    -- job specific mods
@@ -33,6 +36,9 @@ function onMobSpawn(mob)
    elseif( job == JOB_MNK ) then
       mob:addMod( MOD_DOUBLE_ATTACK, 30 );
       mob:addMod( MOD_QUAD_ATTACK, 50 );
+   else
+      mob:addMod( MOD_REGAIN, 50 );
+      mob:addMod( MOD_DEF, 100 );
    end
 
    if( math.random((1),(3)) == 2 ) then
@@ -49,9 +55,9 @@ function onMobSpawn(mob)
 
    local random = math.random(1,5);
 
-   if( local == 1 ) then
+   if( random == 1 ) then
       mob:addMod( MOD_REGEN, 50 );
-   elseif( local == 2 ) then
+   elseif( random == 2 ) then
       mob:addStatusEffect(EFFECT_BLINK, 9, 0, 0 );
    end
    
@@ -75,5 +81,3 @@ function onMobDespawn(mob,killer)
    GetNPCByID(17310106):setStatus(0);
 end;
 
-function onMobFight( mob, target )
-end;
