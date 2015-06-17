@@ -88,7 +88,7 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
                              { 41, 0, 1  },
                              { 772, 2, 3 } };
 
-aug_chances = { 100, 60, 40, 20 };
+aug_chances = { 100, 75, 50, 25 };
 
 -- Skahnowa || Eraser --
 
@@ -151,9 +151,9 @@ mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 335, 0, 4 }, -- magic crit dmg
                                 { 343, 0, 4 }, -- Drain + Aspir potency
                                 { 556, 0, 0 }, -- +1int +1mnd +1 chr
-                                { 543, 0, 2 }, -- +1 int -mnd -chr
-                                { 546, 0, 2 }, -- +mnd -chr -int
-                                { 549, 0, 2 }, -- +chr, -int,-mnd
+                                { 543, 0, 1 }, -- +1 int -mnd -chr
+                                { 546, 0, 1 }, -- +mnd -chr -int
+                                { 549, 0, 1 }, -- +chr, -int,-mnd
                                 { 141, 0, 1 }, -- conserve mp
                                 { 40, 0, 2  }, -- -enmity
                                 { 140, 0, 0 }} -- fast cast
@@ -173,9 +173,9 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 550, 0, 0 }, -- +1 str +1 dex
                                 { 551, 0, 0 }, -- +1 str +1 vit
                                 { 552, 0, 0 }, -- +1 str +1 agi
-                                { 526, 0, 2 }, -- +str -vit -dex
-                                { 532, 0, 2 }, -- +vit - -
-                                { 529, 0, 2 }, -- +dex - -
+                                { 526, 0, 1 }, -- +str -vit -dex
+                                { 532, 0, 1 }, -- +vit - -
+                                { 529, 0, 1 }, -- +dex - -
                                 { 39, 0, 2  }, -- +enmity
                                 { 535, 0, 2 }} -- +agi
 item_pool = {};

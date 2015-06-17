@@ -16,6 +16,7 @@ function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 200 );
    mob:addMod( MOD_SLOWRES, 100 );
    mob:addMod( MOD_ELEGYRES, 100 );
+   mob:addMod( MOD_BINDRES, 100 );
    mob:setDelay(3000);
 end;
 

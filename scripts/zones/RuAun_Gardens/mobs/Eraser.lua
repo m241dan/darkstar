@@ -25,6 +25,7 @@ function onMobSpawn(mob)
    mob:addMod( MOD_ACC, 300 );
    mob:addMod( MOD_MDEF, 50 );
    mob:addMod( MOD_BINDRES, 100 );
+   mob:addMod( MOD_SILENCERES, 100 );
    mob:addMod( MOD_INT, 10 );
    mob:addMod( MOD_MND, 5 );
    mob:setMobMod( MOBMOD_MAGIC_COOL, 10 );
