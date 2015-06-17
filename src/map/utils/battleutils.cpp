@@ -4362,6 +4362,11 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
 
         float reductionPercent = 0.f;
 
+        JOBTYPE job = PEntity->GetMJob();
+
+        if( job == JOB_PLD || job == JOB_NIN )
+           return 0;
+
         if (PEntity->objtype == TYPE_PC && charutils::hasTrait((CCharEntity*)PEntity, TRAIT_TRANQUIL_HEART))
         {
             int16 healingSkill = PEntity->GetSkill(SKILL_HEA);
