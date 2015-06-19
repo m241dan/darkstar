@@ -54,6 +54,8 @@ require("scripts/globals/utils")
 	defenseMod = {MOD_FIREDEF, MOD_EARTHDEF, MOD_WATERDEF, MOD_WINDDEF, MOD_ICEDEF, MOD_THUNDERDEF, MOD_LIGHTDEF, MOD_DARKDEF};
     absorbMod = {MOD_FIRE_ABSORB, MOD_EARTH_ABSORB, MOD_WATER_ABSORB, MOD_WIND_ABSORB, MOD_ICE_ABSORB, MOD_LTNG_ABSORB, MOD_LIGHT_ABSORB, MOD_DARK_ABSORB};
     nullMod = {MOD_FIRE_NULL, MOD_EARTH_NULL, MOD_WATER_NULL, MOD_WIND_NULL, MOD_ICE_NULL, MOD_LTNG_NULL, MOD_LIGHT_NULL, MOD_DARK_NULL};
+
+    helixspells = { [278] = true, [279] = true, [280] = true, [281] = true, [282] = true, [283] = true, [284] = true, [285] = true };
     
 -- USED FOR DAMAGING MAGICAL SPELLS (Stages 1 and 2 in Calculating Magic Damage on wiki)
 --Calculates magic damage using the standard magic damage calc.
@@ -371,6 +373,11 @@ function applyResistance(player,spell,target,diff,skill,bonus)
             magicaccbonus = magicaccbonus + player:getMerit(MERIT_LIGHTNING_MAGIC_ACCURACY);
         end
     end
+
+    if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+       magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
+    end;
+
     local skillchainTier, skillchainCount = FormMagicBurst(element, target);
     --add acc for skillchains
     if(skillchainTier > 0) then
@@ -1193,14 +1200,18 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
            end
         end
 
-        blm_potency_merit = blm_potency_merit; -- 2 matk per level invested
+        local helix_mab_merits = 0;
+        if(caster:getMainJob() == JOB_SCH and caster:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+           helix_mab_merits = helix_mab_merits + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 2);
+        end;
+
 
 	if(spell:getID() >= 245 and spell:getID() <= 248) then
 		mab = 1
 	elseif (bonusmab ~= nil) then
-		mab = (100 + caster:getMod(MOD_MATT) + bonusmab + blm_potency_merit) / (100 + target:getMod(MOD_MDEF));
+		mab = (100 + caster:getMod(MOD_MATT) + bonusmab + blm_potency_merit + helix_mab_merits) / (100 + target:getMod(MOD_MDEF));
 	else
-		mab = (100 + caster:getMod(MOD_MATT) + blm_potency_merit) / (100 + target:getMod(MOD_MDEF));
+		mab = (100 + caster:getMod(MOD_MATT) + blm_potency_merit + helix_mab_merits) / (100 + target:getMod(MOD_MDEF));
 	end
 
     if(mab < 0) then

@@ -7,6 +7,7 @@
 package.loaded["scripts/zones/Qufim_Island/TextIDs"] = nil;
 -----------------------------------
 
+package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/keyitems");
 require("scripts/globals/dynamis");

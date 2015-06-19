@@ -27,7 +27,11 @@ function onMobSpawn(mob)
    end
    mob:addMod( MOD_SLEEPRES, 20 );
    mob:addMod( MOD_MDEF, 20 );
-   mob:addMod( MOD_ELEGYRES, -20 );
+   mob:addMod( MOD_ELEGYRES, -100 );
+end;
+
+function onMobFight( mob, target )
+   mob:setMod( MOD_ELEGYRES, -100 );
 end;
 
 -----------------------------------
