@@ -377,6 +377,7 @@ function applyResistance(player,spell,target,diff,skill,bonus)
         end
     end
 
+    -- helix merits for scholar
     if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
        magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
     end;
