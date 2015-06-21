@@ -25,11 +25,7 @@ augmentable_items[13450] = { { 769, 0, 4 }, -- diamond ring, wiki order
 augmentable_items[13087] = { { 516, 0, 3 }, -- jeweled collar, wiki order
                              { 518, 0, 3 },
                              { 517, 0, 3 },
-                             { 1, 0, 14  },
-                             { 9, 0, 14  },
                              { 140, 0, 2 },
-                             { 51, 0, 1  },
-                             { 52, 0, 1  },
                              { 141, 0, 1 } };
 
 augmentable_items[13925] = { { 182, 0, 4 }, -- rasetsu jinpachi, wiki order
