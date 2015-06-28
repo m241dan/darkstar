@@ -1,5 +1,5 @@
 -----------------------------------
--- Area: Temple of Uggalephi (159)
+-- Area: Temple of Uggalepih (159)
 -- Mob: Habetrot
 -----------------------------------
 
