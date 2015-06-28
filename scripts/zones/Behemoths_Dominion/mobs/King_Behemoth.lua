@@ -23,6 +23,7 @@ function onMobEngaged(mob,target)
    mob:addMod(MOD_BINDRES,50);
    mob:setMobMod(MOBMOD_DRAW_IN,100);
    mob:setMod( MOD_REGAIN, 10 );
+   mob:speed( 38 );
 end;
 
 function onMobFight(mob, target)

@@ -27,6 +27,7 @@ function onMobSpawn(mob)
     mob:setMod( MOD_MDEF, -35 );
     mob:addMod( MOD_INT, -10 );
     mob:addMod( MOD_DEF, 200 );
+    mob:speed( 38 );
 end
 
 -----------------------------------
