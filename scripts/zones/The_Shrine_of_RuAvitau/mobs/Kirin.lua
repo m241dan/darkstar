@@ -24,7 +24,7 @@ function onMobSpawn(mob)
     mob:setMod( MOD_WINDRES, -70 );
     mob:setMod( MOD_REGEN, 55 );
     mob:setMod( MOD_STUNRES, 20 );
-    mob:setMod( MOD_MDEF, -35 );
+    mob:setMod( MOD_MDEF, -25 );
     mob:addMod( MOD_INT, -10 );
     mob:addMod( MOD_DEF, 200 );
     mob:speed( 38 );
@@ -93,13 +93,14 @@ function onMobDeath( mob, killer )
     -- Award title and cleanup..
     killer:addTitle( KIRIN_CAPTIVATOR );
     killer:showText( mob, KIRIN_OFFSET + 1 );
-    GetNPCByID( 17506693 ):hideNPC( 900 );
+    GetNPCByID( 17506693 ):hideNPC( 15 );
     
     -- Despawn pets..
     DespawnMob( 17506671 );
     DespawnMob( 17506672 );
     DespawnMob( 17506673 );
     DespawnMob( 17506674 );
+    DeterMob( mob:getID(), true );
 end
 
 -----------------------------------

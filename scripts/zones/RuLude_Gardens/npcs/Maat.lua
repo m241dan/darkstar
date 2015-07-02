@@ -92,7 +92,7 @@ function onTrigger(player,npc)
 
 			player:startEvent(0x0059,rand1,rand2,rand4,rand3,180); -- During Quest "Riding on the Clouds"
 		end
-	elseif(shatteringStars == QUEST_AVAILABLE and LvL >= 66 and mJob <= 15 and player:levelCap() == 70 and MAX_LEVEL >= 75) then
+	elseif(shatteringStars == QUEST_AVAILABLE and LvL >= 66 and mJob <= 15 and player:levelCap() == 75 and MAX_LEVEL >= 75) then
 		player:startEvent(0x005c,player:getMainJob()); -- Start Quest "Shattering Stars"
 	elseif(shatteringStars == QUEST_ACCEPTED and LvL >= 66 and mJob <= 15 and player:getVar("maatDefeated") == 0) then
 		player:startEvent(0x005b,player:getMainJob()); -- During Quest "Shattering Stars"

@@ -1940,10 +1940,7 @@ namespace battleutils
             if (giveTPtoAttacker)
             {
                if( isZanshin )
-               {
-                  ShowDebug(CL_CYAN"Ikishoten bonus from merits = %u\n" CL_RESET, getIkishotenTPbonusFromMerit(PAttacker) );
-                  baseTp += getIkishotenTPbonusFromMerit(PAttacker);
-               }
+                  baseTp += (int16)getIkishotenTPbonusFromMerit(PAttacker);
 
                PAttacker->addTP(tpMultiplier * (baseTp * (1.0f + 0.01f * (float)((PAttacker->getMod(MOD_STORETP) + getStoreTPbonusFromMerit(PAttacker))))));
                if (PAttacker->objtype == TYPE_PC)
@@ -3661,7 +3658,7 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
    if( PEntity->objtype == TYPE_PC )
    {
       if( ((CCharEntity *)PEntity)->GetMJob() == JOB_SAM )
-         return (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity ));
+         return ( (((CCharEntity *)PEntity)->PMeritPoints->GetMeritValue(MERIT_IKISHOTEN, (CCharEntity *)PEntity )) * 10 );
    }
    return 0;
 }

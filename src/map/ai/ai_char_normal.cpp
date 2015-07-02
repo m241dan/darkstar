@@ -3116,6 +3116,9 @@ void CAICharNormal::DoAttack()
     // Create a new attack round.
     CAttackRound attackRound(m_PChar);
 
+    // Reference to the current swing.
+    CAttack attack = attackRound.GetCurrentAttack();
+
     /////////////////////////////////////////////////////////////////////////
     //	Start of the attack loop.
     /////////////////////////////////////////////////////////////////////////
@@ -3125,8 +3128,6 @@ void CAICharNormal::DoAttack()
         Action.ActionTarget = m_PBattleTarget;
         Action.knockback = 0;
 
-        // Reference to the current swing.
-        CAttack attack = attackRound.GetCurrentAttack();
 
         // Set the swing animation.
         Action.animation = attack.GetAnimationID();
@@ -3190,7 +3191,7 @@ void CAICharNormal::DoAttack()
                     Action.reaction = REACTION_BLOCK;
                 }
 
-                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, false, attack.GetAttackType() == ZANSHIN_ATTACK ? true : false );
+                Action.param = battleutils::TakePhysicalDamage(m_PChar, m_PBattleTarget, attack.GetDamage(), attack.IsBlocked(), attack.GetWeaponSlot(), 1, attackRound.GetTAEntity(), true, true, false, ( attack.GetAttackType() == ZANSHIN_ATTACK ? true : false ) );
                 if (Action.param < 0)
                 {
                     Action.param = -(Action.param);
@@ -3244,10 +3245,16 @@ void CAICharNormal::DoAttack()
                 attack.SetAsFirstSwing(false);
             }
             else
+            {
                 attackRound.DeleteAttackSwing();
+                attack = attackRound.GetCurrentAttack();
+            }
         }
         else
+        {
             attackRound.DeleteAttackSwing();
+            attack = attackRound.GetCurrentAttack();
+        }
 
         if (m_PChar->m_ActionList.size() == 8)
         {
