@@ -22,6 +22,8 @@ function onMobSpawn(mob)
    local ToD   = GetServerVariable("[POP]Nidhogg");
    local kills = GetServerVariable("[PH]Nidhogg");
 
+
+   DeterMob( 17408019, true );
    if( ToD <= os.time(t) ) then
       SetServerVariable( "[PH]Nidhogg", kills + 1 );
    end

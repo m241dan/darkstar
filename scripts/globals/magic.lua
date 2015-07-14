@@ -54,6 +54,8 @@ require("scripts/globals/utils")
 	defenseMod = {MOD_FIREDEF, MOD_EARTHDEF, MOD_WATERDEF, MOD_WINDDEF, MOD_ICEDEF, MOD_THUNDERDEF, MOD_LIGHTDEF, MOD_DARKDEF};
     absorbMod = {MOD_FIRE_ABSORB, MOD_EARTH_ABSORB, MOD_WATER_ABSORB, MOD_WIND_ABSORB, MOD_ICE_ABSORB, MOD_LTNG_ABSORB, MOD_LIGHT_ABSORB, MOD_DARK_ABSORB};
     nullMod = {MOD_FIRE_NULL, MOD_EARTH_NULL, MOD_WATER_NULL, MOD_WIND_NULL, MOD_ICE_NULL, MOD_LTNG_NULL, MOD_LIGHT_NULL, MOD_DARK_NULL};
+    blmMerit = {MERIT_FIRE_MAGIC_POTENCY, MERIT_EARTH_MAGIC_POTENCY, MERIT_WATER_MAGIC_POTENCY, MERIT_WIND_MAGIC_POTENCY, MERIT_ICE_MAGIC_POTENCY, MERIT_LIGHTNING_MAGIC_POTENCY};
+    rdmMerit = {MERIT_FIRE_MAGIC_ACCURACY, MERIT_EARTH_MAGIC_ACCURACY, MERIT_WATER_MAGIC_ACCURACY, MERIT_WIND_MAGIC_ACCURACY, MERIT_ICE_MAGIC_ACCURACY, MERIT_LIGHTNING_MAGIC_ACCURACY};
 
     helixspells = { [278] = true, [279] = true, [280] = true, [281] = true, [282] = true, [283] = true, [284] = true, [285] = true };
 -- USED FOR DAMAGING MAGICAL SPELLS (Stages 1 and 2 in Calculating Magic Damage on wiki)
@@ -361,20 +363,8 @@ function applyResistance(player,spell,target,diff,skill,bonus)
     end
 
     --add acc for RDM group 1 merits
-    if(player:getMainJob() == JOB_RDM and player:getMainLvl() >= 75) then
-        if(element == ELE_FIRE) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_FIRE_MAGIC_ACCURACY);
-        elseif(element == ELE_EARTH) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_EARTH_MAGIC_ACCURACY);
-        elseif(element == ELE_WATER) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_WATER_MAGIC_ACCURACY);
-        elseif(element == ELE_WIND) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_WIND_MAGIC_ACCURACY);
-        elseif(element == ELE_ICE) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_ICE_MAGIC_ACCURACY);
-        elseif(element == ELE_LIGHTNING) then
-            magicaccbonus = magicaccbonus + player:getMerit(MERIT_LIGHTNING_MAGIC_ACCURACY);
-        end
+    if (spell:getElement() > 0 and spell:getElement() <= 6) then
+        magicaccbonus = magicaccbonus + player:getMerit(rdmMerit[spell:getElement()]);
     end
 
     -- helix merits for scholar
@@ -1117,10 +1107,14 @@ end;
 
 function addBonuses(caster, spell, target, dmg, bonusmab)
 	local ele = spell:getElement();
-
+	
 	local affinityBonus = AffinityBonus(caster, spell:getElement());
 	dmg = math.floor(dmg * affinityBonus);
-
+	
+	if (bonusmab == nil) then
+		bonusmab = 0;
+	end
+	
 	local speciesReduction = target:getMod(defenseMod[ele]);
 	speciesReduction = 1.00 - (speciesReduction/1000);
 	dmg = math.floor(dmg * speciesReduction);
@@ -1188,6 +1182,7 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
 	end
 
 	dmg = math.floor(dmg * burst);
+
 	local mab = 0;
         local element = spell:getElement()
         local blm_potency_merit = 0;
@@ -1210,7 +1205,7 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
         local helix_mab_merits = 0;
         if(caster:getMainJob() == JOB_SCH and caster:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
            helix_mab_merits = helix_mab_merits + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 2);
-        end;
+        end
 
 
 	if(spell:getID() >= 245 and spell:getID() <= 248) then

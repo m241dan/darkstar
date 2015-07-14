@@ -333,8 +333,7 @@ void CParty::DelMember(CBattleEntity* PEntity)
 					}
 					if (m_PSyncTarget != nullptr && m_PSyncTarget != PChar)
 					{
-						if (PChar->status != STATUS_DISAPPEAR &&
-							PChar->getZone() == m_PSyncTarget->getZone())
+						if (PChar->status != STATUS_DISAPPEAR)
 						{
 							CStatusEffect* sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
 							if (sync && sync->GetDuration() == 0)
@@ -961,7 +960,7 @@ void CParty::SetSyncTarget(int8* MemberName, uint16 message)
             {
                 for (uint8 i = 0; i < members.size(); ++i)
                 {
-                    if(members.at(i)->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_RESTRICTION))
+                    if (members.at(i)->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_RESTRICTION) || members.at(i)->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC))
                     {
                         ((CCharEntity*)GetLeader())->pushPacket(new CMessageBasicPacket((CCharEntity*)GetLeader(), (CCharEntity*)GetLeader(), 0, 0, 543));
                         return;
@@ -992,28 +991,27 @@ void CParty::SetSyncTarget(int8* MemberName, uint16 message)
         }
         else
         {
-           if (m_PSyncTarget != nullptr)
-           {
-              //disable level sync
-              for (uint8 i = 0; i < members.size(); ++i)
-	      {
-	         if(members.at(i)->objtype != TYPE_PC)
-                    continue;
+            if (m_PSyncTarget != nullptr)
+            {
+                //disable level sync
+                for (uint8 i = 0; i < members.size(); ++i)
+	            {
+		            if(members.at(i)->objtype != TYPE_PC) continue;
 
-                 CCharEntity* member = (CCharEntity*)members.at(i);
-                 if (member->status != STATUS_DISAPPEAR && member->getZone() == m_PSyncTarget->getZone() )
-                 {
+		            CCharEntity* member = (CCharEntity*)members.at(i);
 
-                    CStatusEffect* sync = member->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
-                    if (sync && sync->GetDuration() == 0)
-                    {
-                       member->pushPacket(new CMessageBasicPacket(member, member, 10, 30, message));
-                       sync->SetStartTime(gettick());
-                       sync->SetDuration(30000);
-                    }
-	         }
-	      }
-           }
+                    if (member->status != STATUS_DISAPPEAR)
+		            {
+                        CStatusEffect* sync = member->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
+                        if (sync && sync->GetDuration() == 0)
+                        {
+			                member->pushPacket(new CMessageBasicPacket(member, member, 10, 30, message));
+                            sync->SetStartTime(gettick());
+                            sync->SetDuration(30000);
+                        }
+		            }
+	            }
+            }
         }
     }
 }

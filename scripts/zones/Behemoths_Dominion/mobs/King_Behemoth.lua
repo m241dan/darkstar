@@ -29,6 +29,10 @@ end;
 function onMobFight(mob, target)
 end;
 
+function onMobSpawn( mob )
+   DeterMob( 17297440, true );
+end;
+
 -----------------------------------
 -- onMobDeath
 -----------------------------------

@@ -23,6 +23,7 @@ function onMobSpawn(mob)
    local ToD   = GetServerVariable("[POP]Aspidochelone");
    local kills = GetServerVariable("[PH]Aspidochelone");
 
+   DeterMob( 17301538, true );
    if( ToD <= os.time(t) ) then
       SetServerVariable( "[PH]Aspidochelone", kills + 1 );
    end

@@ -15,6 +15,7 @@ function onMobInitialize(mob)
 end;
 
 function onMobSpawn(mob)
+   DeterMob( 17408018, true )
    mob:addMod( MOD_MDEF, 25 );
    mob:addMod( MOD_ELEGYRES, -60 );
 end;

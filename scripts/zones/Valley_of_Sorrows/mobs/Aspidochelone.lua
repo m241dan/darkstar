@@ -15,6 +15,10 @@ require("scripts/globals/melfnm");
 function onMobInitialize(mob)
 end;
 
+function onMobSpawn(mob)
+   DeterMob(17301537,true);   
+end;
+
 -----------------------------------
 -- onMobDeath
 -----------------------------------
