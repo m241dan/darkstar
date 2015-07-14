@@ -84,7 +84,7 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
                              { 41, 0, 1  },
                              { 772, 2, 3 } };
 
-aug_chances = { 100, 75, 50, 25 };
+aug_chances = { 100, 75, 55, 30 };
 
 -- Skahnowa || Eraser --
 
