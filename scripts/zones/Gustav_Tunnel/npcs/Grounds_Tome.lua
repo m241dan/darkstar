@@ -11,6 +11,7 @@ require("scripts/globals/groundsofvalor");
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   onGroundsTombTrade( player, trade );
 end;
 
 -----------------------------------

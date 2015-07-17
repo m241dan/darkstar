@@ -465,3 +465,60 @@ function checkRegime(killer,mob,rid,index)
 		end
 	end
 end
+
+function onFieldManualTrade( player, trade )
+   if( trade:getItemCount() ~= 1 or trade:getGil() ~= 1000 ) then
+      player:PrintToPlayer( "Trade 1000 gil only for all non-preferential buffs.", 0xE );
+      return;
+   end
+
+   local tabs = player:getCurrency("valor_point");
+   if (tabs >= 20) then
+      player:delCurrency("valor_point", 20);
+      player:delStatusEffect(EFFECT_REGEN);
+      player:addStatusEffect(EFFECT_REGEN,1,3,3600);
+   end
+   if (tabs >= 20) then
+      player:delCurrency("valor_point", 20);
+      player:delStatusEffect(EFFECT_REFRESH);
+      player:delStatusEffect(EFFECT_SUBLIMATION_COMPLETE);
+      player:delStatusEffect(EFFECT_SUBLIMATION_ACTIVATED);
+      player:addStatusEffect(EFFECT_REFRESH,1,3,3600, 0, 3);
+   end
+   if (tabs >= 15) then
+      player:delCurrency("valor_point", 15);
+      player:delStatusEffect(EFFECT_PROTECT);
+      local def = 0;
+      if (player:getMainLvl()<27) then --before protect 2, give protect 1
+         def=15;
+      elseif (player:getMainLvl()<47) then --after p2, before p3
+         def=40;
+      elseif (player:getMainLvl()<63) then --after p3, before p4
+         def=75;
+      else --after p4
+         def=120;
+      end
+      player:addStatusEffect(EFFECT_PROTECT,def,0,1800);
+   end
+   if (tabs >= 15) then
+      player:delCurrency("valor_point", 15);
+      player:delStatusEffect(EFFECT_SHELL);
+      local def = 0;
+      if (player:getMainLvl()<37) then --before shell 2, give shell 1
+         def=24;
+      elseif (player:getMainLvl()<57) then --after s2, before s3
+         def=36;
+      elseif (player:getMainLvl()<68) then --after s3, before s4
+         def=48;
+      else --after s4
+         def=56;
+      end
+      player:addStatusEffect(EFFECT_SHELL,def,0,1800);
+   end
+   if (tabs >= 10) then
+      player:delCurrency("valor_point", 10);
+      player:delStatusEffect(EFFECT_RERAISE);
+      player:addStatusEffect(EFFECT_RERAISE,1,0,7200);
+   end
+   player:tradeComplete();
+end;

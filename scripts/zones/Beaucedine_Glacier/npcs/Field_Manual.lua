@@ -4,6 +4,7 @@
 -----------------------------------	
 	
 require("scripts/globals/settings");	
+package.loaded["scripts/globals/fieldsofvalor"] = nil;
 require("scripts/globals/fieldsofvalor");	
 	
 -----------------------------------	
@@ -14,12 +15,13 @@ function onTrigger(player,npc)
 	startFov(FOV_EVENT_BEAUCEDINE,player);
 end;	
 	
------------------------------------	
--- onTrade Action	
------------------------------------	
-	
-function onTrade(player,npc,trade)	
-end;	
+-----------------------------------
+-- onTrade Action
+-----------------------------------
+
+function onTrade(player,npc,trade)
+   onFieldManualTrade( player, trade );
+end;
 	
 -----------------------------------	
 -- onEventSelection	

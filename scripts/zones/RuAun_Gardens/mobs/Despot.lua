@@ -9,6 +9,8 @@ require("scripts/globals/fieldsofvalor");
 -- onMobDeath
 -----------------------------------
 function onMobDeath(mob,killer)
+    checkRegime(killer,mob,143,2);
+    checkRegime(killer,mob,144,1);
 
     -- Set Despot ToD
     SetServerVariable("[POP]Despot", os.time(t) + 7200); -- 2 hour

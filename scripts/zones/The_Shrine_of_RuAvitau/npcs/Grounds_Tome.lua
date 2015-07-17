@@ -4,6 +4,7 @@
 -----------------------------------
 
 require("scripts/globals/settings");
+package.loaded["scripts/globals/groundsofvalor"] = nil;
 require("scripts/globals/groundsofvalor");
 
 -----------------------------------
@@ -11,6 +12,7 @@ require("scripts/globals/groundsofvalor");
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   onGroundsTombTrade( player, trade );
 end;
 
 -----------------------------------
