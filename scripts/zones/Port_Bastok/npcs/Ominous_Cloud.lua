@@ -125,27 +125,87 @@ function onTrade(player,npc,trade)
 			end
 		end
 	end
--- 951 	Wijinruit		
--- 1161	Uchitake		5308
--- 1164	Tsurara			5309
--- 1167	Kawahori-ogi	5310
--- 1170	Makibishi		5311
--- 1173	Hiraishin		5312
--- 1176	Mizu-deppo		5313
--- 1179	Shihei			5314
--- 1182	Jusatsu			5315
--- 1185	Kaginawa		5316
--- 1188	Sairui-ran		5317
--- 1191	Kodoku			5318
--- 1194	Shinobi-tabi	5319
--- 2553	Sanjaku-tengui	5417
--- 2555 Soshi			5734
--- 2642 Kabenro			5863
--- 2643	Jinko			5864
--- 2970	Mokujin			5866
--- 2971 Inoshishinofuda	5867
--- 2972 Shikanofuda		5868
--- 2973	Chonofuda		5869
+	-- 951 	Wijinruit		
+	-- 1161	Uchitake		5308
+	-- 1164	Tsurara			5309
+	-- 1167	Kawahori-ogi	5310
+	-- 1170	Makibishi		5311
+	-- 1173	Hiraishin		5312
+	-- 1176	Mizu-deppo		5313
+	-- 1179	Shihei			5314
+	-- 1182	Jusatsu			5315
+	-- 1185	Kaginawa		5316
+	-- 1188	Sairui-ran		5317
+	-- 1191	Kodoku			5318
+	-- 1194	Shinobi-tabi	5319
+	-- 2553	Sanjaku-tengui	5417
+	-- 2555 Soshi			5734
+	-- 2642 Kabenro			5863
+	-- 2643	Jinko			5864
+	-- 2970	Mokujin			5866
+	-- 2971 Inoshishinofuda	5867
+	-- 2972 Shikanofuda		5868
+	-- 2973	Chonofuda		5869
+
+	-- CrystalID	Element		ClusterID
+	-- 4096			Fire		4104
+	-- 4097			Ice			4105
+	-- 4098			Wind		4106
+	-- 4099			Earth		4107
+	-- 4100			Lightning	4108
+	-- 4101			Water		4109
+	-- 4102			Light		4110
+	-- 4103			Dark		4111
+	-- 941 	Red Rose
+		
+	local roses = trade:getItemQty(941);
+	local fire = (trade:getItemQty(4096)/99);
+	local ice = (trade:getItemQty(4097)/99);
+	local wind = (trade:getItemQty(4098)/99);
+	local earth = (trade:getItemQty(4099)/99);
+	local lightn = (trade:getItemQty(4100)/99);
+	local water = (trade:getItemQty(4101)/99);
+	local light = (trade:getItemQty(4102)/99);
+	local dark = (trade:getItemQty(4103)/99);
+	
+	local clusters = (fire + ice + wind + earth + water + lightn + light + dark);
+	if (((clusters*99) + roses) == trade:getItemCount()) then
+		if((clusters == math.floor(clusters)) and (clusters == roses) and player:getFreeSlotsCount() >= roses) then
+			player:tradeComplete();
+			if(fire > 0) then
+				player:addItem(4104,fire);
+				player:messageSpecial(ITEM_OBTAINED,4104);
+			end
+			if(ice > 0) then
+				player:addItem(4105,ice);
+				player:messageSpecial(ITEM_OBTAINED,4105);
+			end
+			if(wind > 0) then
+				player:addItem(4106,wind);
+				player:messageSpecial(ITEM_OBTAINED,4106);
+			end
+			if(earth > 0) then
+				player:addItem(4107,earth);
+				player:messageSpecial(ITEM_OBTAINED,4107);
+			end
+			if(lightn > 0) then
+				player:addItem(4108,lightn);
+				player:messageSpecial(ITEM_OBTAINED,4108);
+			end
+			if(water > 0) then
+				player:addItem(4109,water);
+				player:messageSpecial(ITEM_OBTAINED,4109);
+			end
+			if(light > 0) then
+				player:addItem(4110,light);
+				player:messageSpecial(ITEM_OBTAINED,4110);
+			end
+			if(dark > 0) then
+				player:addItem(4111,dark);
+				player:messageSpecial(ITEM_OBTAINED,4111);
+			end
+		end
+	end
 end;
 
 -----------------------------------
