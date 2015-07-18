@@ -156,17 +156,17 @@ function onTrade(player,npc,trade)
 	-- 941 	Red Rose
 		
 	local roses = trade:getItemQty(941);
-	local fire = (trade:getItemQty(4096)/99);
-	local ice = (trade:getItemQty(4097)/99);
-	local wind = (trade:getItemQty(4098)/99);
-	local earth = (trade:getItemQty(4099)/99);
-	local lightn = (trade:getItemQty(4100)/99);
-	local water = (trade:getItemQty(4101)/99);
-	local light = (trade:getItemQty(4102)/99);
-	local dark = (trade:getItemQty(4103)/99);
+	local fire = (trade:getItemQty(4096)/12);
+	local ice = (trade:getItemQty(4097)/12);
+	local wind = (trade:getItemQty(4098)/12);
+	local earth = (trade:getItemQty(4099)/12);
+	local lightn = (trade:getItemQty(4100)/12);
+	local water = (trade:getItemQty(4101)/12);
+	local light = (trade:getItemQty(4102)/12);
+	local dark = (trade:getItemQty(4103)/12);
 	
 	local clusters = (fire + ice + wind + earth + water + lightn + light + dark);
-	if (((clusters*99) + roses) == trade:getItemCount()) then
+	if (((clusters*12) + roses) == trade:getItemCount()) then
 		if((clusters == math.floor(clusters)) and (clusters == roses) and player:getFreeSlotsCount() >= roses) then
 			player:tradeComplete();
 			if(fire > 0) then
