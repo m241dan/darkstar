@@ -31,3 +31,6 @@ UPDATE mob_family_system SET mob_family_system.INT=4, VIT=2, MND=4 WHERE family=
 UPDATE mob_pools SET immunity=17 WHERE name='Kirin' OR name='Byakko' OR name='Suzaku' OR name='Genbu'; -- immunity to sleep and silence
 UPDATE mob_family_system SET DEF=2, EVA=2 WHERE family='Seiryu' or family='Byakko' or family='Suzaku'; -- buffing gods
 
+-- angel skin on Chary
+INSERT INTO `mob_droplist` VALUES (512,0,,1000);
+

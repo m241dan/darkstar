@@ -25,7 +25,7 @@ UPDATE mob_spawn_points SET pos_x=-60, pos_y=-8, pos_z=58, pos_rot=220, groupid=
 UPDATE mob_spawn_points SET pos_x=-60, pos_y=-8, pos_z=58, pos_rot=220 WHERE mobname="Habetrot";
 
 -- Wild Onion drops rates are inaccurate
-UPDATE mob_drops SET rate=350 WHERE dropID=1476 AND itemId=4387;
+UPDATE mob_droplist SET rate=350 WHERE dropID=1476 AND itemId=4387;
 
 -- Added Dragon Meat and Blood to Dahaks in Mt Z. (5% drop rate)
 INSERT INTO mob_droplist VALUES (4524,0,1133,10);	--  Dragon Blood: 1%
