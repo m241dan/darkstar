@@ -22,7 +22,9 @@ end;
 function onMobSpawn(mob)
    mob:addMod( MOD_BINDRES, 5 );
    mob:addMod( MOD_GRAVITYRES, -10 );
-   mob:addMod( MOD_STUNRES, -20 );
+   mob:addMod( MOD_STUNRES, -150 );
+   mob:addMod( MOD_INT, -10 ):
+   mob:setMod( MOD_MDEF, 0 );
 end;
 
 -----------------------------------
@@ -31,7 +33,7 @@ end;
 
 function onMobDeath(mob, killer)
     killer:showText(mob,SKY_GOD_OFFSET + 8);
-    GetNPCByID(17310050):hideNPC(120);
+    GetNPCByID(17310050):hideNPC(60);
 end;
 
 -- Return the selected spell ID.
