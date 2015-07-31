@@ -288,11 +288,11 @@ void CAIGeneral::SetCurrentSpell(uint16 SpellID)
         {
             if (spell->getSpellGroup() == SPELLGROUP_BLUE)
             {
-                m_PSpell = std::make_unique<CBlueSpell>(*static_cast<CBlueSpell*>(spell));
+                m_PSpell = std::unique_ptr<CSpell>(new CBlueSpell(*(CBlueSpell*)spell));
             }
             else
             {
-                m_PSpell = std::make_unique<CSpell>(*spell);
+                m_PSpell = std::unique_ptr<CSpell>(new CSpell(*spell));
             }
         }
         else
