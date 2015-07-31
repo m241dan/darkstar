@@ -1,8 +1,8 @@
 -----------------------------------
 -- Area: Rabao
 -- NPC: Alfesar
--- Starts Quest: The Missing Piece (finished by Charlaimagnat - Northern San d'Oria)
--- @pos 129 -6 96 231
+-- Standard Info NPC
+--Starts The Missing Piece
 -----------------------------------
 package.loaded["scripts/zones/Rabao/TextIDs"] = nil;
 -----------------------------------
@@ -13,6 +13,11 @@ require("scripts/globals/keyitems");
 require("scripts/globals/quests");
 require("scripts/zones/Rabao/TextIDs");
 
+require("scripts/globals/settings");
+require("scripts/globals/keyitems");
+require("scripts/globals/shop");
+require("scripts/globals/quests");
+require("scripts/zones/Rabao/TextIDs");
 -----------------------------------
 -- onTrade Action
 -----------------------------------
