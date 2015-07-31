@@ -2624,7 +2624,6 @@ INSERT INTO `item_latents` VALUES(17814, 23, 10, 52, 6); -- Attack +10 in Thunde
 -- -------------------------------------------------------
 -- Desert Boots
 -- -------------------------------------------------------
-INSERT INTO `item_latents` VALUES (14166, 169, 12, 52, 2); -- movement speed +12% in Earth weather
 INSERT INTO `item_latents` VALUES (14167, 169, 12, 52, 2); -- Desert Boots +1
 
 -- -------------------------------------------------------

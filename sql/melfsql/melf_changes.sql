@@ -32,5 +32,5 @@ UPDATE mob_pools SET immunity=17 WHERE name='Kirin' OR name='Byakko' OR name='Su
 UPDATE mob_family_system SET DEF=2, EVA=2 WHERE family='Seiryu' or family='Byakko' or family='Suzaku'; -- buffing gods
 
 -- angel skin on Chary
-INSERT INTO `mob_droplist` VALUES (512,0,,1000);
+INSERT INTO `mob_droplist` VALUES (512,0,1312,1000);
 

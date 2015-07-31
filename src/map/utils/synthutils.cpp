@@ -391,7 +391,7 @@ uint8 calcSynthResult(CCharEntity* PChar)
 				{
 					if(mainID != skillID)
 					    break;
-			                    random = WELL512::GetRandomNumber(1.);
+			                    random = dsprand::GetRandomNumber(1.);
 
 					switch(hqtier)
 					{
