@@ -26,7 +26,6 @@ CREATE TABLE `merits` (
 -- ----------------------------
 -- Records 
 -- ----------------------------
-<<<<<<< HEAD
 INSERT INTO `merits` VALUES ('64', 'max_hp', '8', '10', '1048575', '0', '0');
 INSERT INTO `merits` VALUES ('66', 'max_mp', '8', '10', '1048575', '0', '0');
 INSERT INTO `merits` VALUES ('128', 'str', '5', '1', '1048575', '1', '1');
