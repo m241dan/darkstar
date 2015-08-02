@@ -42,7 +42,10 @@ function onTrigger(player,npc)
 			stock = {0x0454,703,    -- Sulfur
 							 0x026b,43,             -- Popoto
 							 0x0263,36,             -- Rye Flour
-							 0x1124,40}             -- Eggplant
+							 0x1124,40,             -- Eggplant
+                                                         0x0365,100000		-- Lizard  Molt
+                        }
+            
 							 
 			showShop(player, STATIC, stock);
 

@@ -340,6 +340,15 @@ function applyResistance(player,spell,target,diff,skill,bonus)
     --get the base acc (just skill plus magic acc mod)
     local magicacc = player:getSkillLevel(skill) + player:getMod(79 + skill) + player:getMod(MOD_MACC) + player:getILvlMacc();
 
+    --add bonus skill from singing wind/string
+    if( skill == SINGING_SKILL ) then
+       if( player:getWeaponSkillType(SLOT_RANGED) == SKILL_WND ) then
+          magicacc = magicacc + ( player:getSkillLevel(SKILL_WND) * .33 );
+       elseif( player:getWeaponSkillType(SLOT_RANGED) == SKILL_STR ) then
+          magicacc = magicacc + ( player:getSkillLevel(SKILL_STR) * .25 );
+       end
+    end    
+
     if player:hasStatusEffect(EFFECT_ALTRUISM) and spell:getSpellGroup() == SPELLGROUP_WHITE then
         magicacc = magicacc + player:getStatusEffect(EFFECT_ALTRUISM):getPower();
     end

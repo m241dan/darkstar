@@ -29,6 +29,8 @@ function onTrade(player,npc,trade)
 	 0x111F,1200, -- Gold Lobster
 	 0x111B,350,  -- Cheval Salmon
 	 0x1102,355,  -- Shining Trout
+         0x10DC,1100, -- Armored Pisces
+         0x117D, 900, -- Gavial Fish
       };
       showShop( player, STATIC, stock );
       return;
