@@ -1308,7 +1308,6 @@ namespace petutils
                 }
             }
 
-            
             if (PMaster->objtype == TYPE_PC)
             {
                 CCharEntity* PChar = (CCharEntity*)PMaster;
