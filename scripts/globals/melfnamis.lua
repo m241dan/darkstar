@@ -93,8 +93,8 @@ function onDynaDrop( zone, itemID )
       end
    elseif( roll >= 56 and roll <= 70 ) then
       for _, player in pairs(players) do
-         player:PrintToPlayer( "Melfnamus Tier 3 Reward: 1 Aug Buy", 0xE );
-         player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 1 ) );
+         player:PrintToPlayer( "Melfnamus Tier 3 Reward: 8 Aug Buys", 0xE );
+         player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 8 ) );
       end
    elseif( roll >= 71 and roll <= 85 ) then
       for _, player in pairs(players) do

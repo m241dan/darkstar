@@ -992,6 +992,8 @@ void CBattleEntity::delEquipModifiers(std::vector<CModifier*> *modList, uint8 it
 
 int16 CBattleEntity::getMod(uint16 modID)
 {
+    if( objtype == TYPE_PET && PMaster && PMaster->objtype == TYPE_PC )
+       return m_petMod[modID] + m_modStat[modID];
     return m_modStat[modID];
 }
 
