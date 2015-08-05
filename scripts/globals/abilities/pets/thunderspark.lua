@@ -23,11 +23,11 @@ function onPetAbility(target, pet, skill)
 	local totaldamage = 0;
 	local damage = AvatarPhysicalMove(pet,target,skill,numhits,accmod,dmgmod,dmgmodsubsequent,TP_NO_EFFECT,1,2,3);
 	--get resist multiplier (1x if no resist)
-	local resist = applyPlayerResistance(pet,-1,target,pet:getStat(MOD_INT)-target:getStat(MOD_INT),ELEMENTAL_MAGIC_SKILL, ELE_THUNDER);
+	local resist = applyPlayerResistance(pet,-1,target,pet:getStat(MOD_INT)-target:getStat(MOD_INT),ELEMENTAL_MAGIC_SKILL, ELE_LIGHTNING);
 	--get the resisted damage
 	damage.dmg = damage.dmg*resist;
 	--add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-	damage.dmg = mobAddBonuses(pet,spell,target,damage.dmg,1);
+	damage.dmg = mobAddBonuses(pet,spell,target,damage.dmg,ELE_LIGHTNING);
 	local tp = skill:getTP();
 	if tp < 100 then
 		tp = 100;

@@ -18,11 +18,11 @@ function onPetAbility(target, pet, skill)
 	--calculate raw damage
 	local dmg = calculateMagicDamage(381,2,pet,spell,target,ELEMENTAL_MAGIC_SKILL,MOD_INT,false);
 	--get resist multiplier (1x if no resist)
-	local resist = applyPlayerResistance(pet,-1,target,pet:getStat(MOD_INT)-target:getStat(MOD_INT),ELEMENTAL_MAGIC_SKILL, 2);
+	local resist = applyPlayerResistance(pet,-1,target,pet:getStat(MOD_INT)-target:getStat(MOD_INT),ELEMENTAL_MAGIC_SKILL, ELE_EARTH);
 	--get the resisted damage
 	dmg = dmg*resist;
 	--add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-	dmg = mobAddBonuses(pet,spell,target,dmg, 2);
+	dmg = mobAddBonuses(pet,spell,target,dmg, ELE_EARTH);
 	--add on TP bonuses
 	local tp = skill:getTP();
 	if tp < 100 then

@@ -22,7 +22,7 @@ function onPetAbility(target, pet, skill)
 	--get the resisted damage
 	dmg = dmg*resist;
 	--add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-	dmg = mobAddBonuses(pet,spell,target,dmg, 4);
+	dmg = mobAddBonuses(pet,spell,target,dmg, ELE_WIND);
 	--add on TP bonuses
 	local tp = skill:getTP();
 	if tp < 100 then

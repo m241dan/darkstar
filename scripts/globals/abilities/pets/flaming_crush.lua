@@ -27,7 +27,7 @@ function onPetAbility(target, pet, skill)
 	--get the resisted damage
 	damage.dmg = damage.dmg*resist;
 	--add on bonuses (staff/day/weather/jas/mab/etc all go in this function)
-	damage.dmg = mobAddBonuses(pet,spell,target,damage.dmg,1);
+	damage.dmg = mobAddBonuses(pet,spell,target,damage.dmg,ELE_FIRE);
 	totaldamage = AvatarFinalAdjustments(damage.dmg,pet,skill,target,MOBSKILL_PHYSICAL,MOBPARAM_BLUNT,numhits);
 	target:delHP(totaldamage);
 	target:updateEnmityFromDamage(pet,totaldamage);

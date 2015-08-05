@@ -22,8 +22,17 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
 	acc = avatar:getACC();
 	eva = target:getEVA();
 
+        local equippedFeet = caster:getEquipID(SLOT_FEET);
+        local bonusAtk = 1;
+
+        if( equippedFeet == 15146 ) then -- summoner's pigaches
+           bonusAtk = bonusAtk + .1;
+        elseif( equippedFeet == 15679 ) then -- summoner's pigaches +1
+           bonusAtk = bonusAtk +.12;
+        end
+
 	local base = avatar:getWeaponDmg() + fstr;
-	local ratio = (avatar:getStat(MOD_ATT)/target:getStat(MOD_DEF);
+	local ratio = ( ( avatar:getStat(MOD_ATT) * bonusAtk )/target:getStat(MOD_DEF);
 
 	lvldiff = lvluser - lvltarget;
 
