@@ -41,6 +41,7 @@ require("scripts/globals/utils")
 
     dayStrong = {FIRESDAY, EARTHSDAY, WATERSDAY, WINDSDAY, ICEDAY, LIGHTNINGDAY, LIGHTSDAY, DARKSDAY};
     dayWeak = {WATERSDAY, WINDSDAY, LIGHTNINGDAY, ICEDAY, FIRESDAY, EARTHSDAY, DARKSDAY, LIGHTSDAY};
+    klimaformElements = { EFFECT_FIRESTORM, EFFECT_SANDSTORM, EFFECT_RAINSTORM, EFFECT_WINDSTORM, EFFECT_HAILSTORM, EFFECT_THUNDERSTORM, EFFECT_AURORASTORM, EFFECT_VOIDSTORM };
     singleWeatherStrong = {WEATHER_HOT_SPELL, WEATHER_DUST_STORM, WEATHER_RAIN, WEATHER_WIND, WEATHER_SNOW, WEATHER_THUNDER, WEATHER_AURORAS, WEATHER_GLOOM};
     doubleWeatherStrong = {WEATHER_HEAT_WAVE, WEATHER_SAND_STORM, WEATHER_SQUALL, WEATHER_GALES, WEATHER_BLIZZARDS, WEATHER_THUNDERSTORMS, WEATHER_STELLAR_GLARE, WEATHER_DARKNESS};
     singleWeatherWeak = {WEATHER_RAIN, WEATHER_WIND, WEATHER_THUNDER, WEATHER_SNOW, WEATHER_HOT_SPELL, WEATHER_DUST_STORM, WEATHER_GLOOM, WEATHER_AURORAS};
@@ -372,6 +373,18 @@ function applyResistance(player,spell,target,diff,skill,bonus)
         magicaccbonus = magicaccbonus + (affinityBonus-1) * 200;
     end
 
+    local castersWeather = player:getWeather();
+
+    if( player:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
+       if(castersWeather == singleWeatherStrong[element]) then
+          printf( "Weather 1.\r\n" );
+          magicaccbonus = magicaccbonus + 20;
+       elseif(castersWeather == doubleWeatherStrong[element]) then
+          printf( "Weather 2.\r\n" );
+          magicaccbonus = magicaccbonus + 30;
+       end
+    end
+
     --add acc for RDM group 1 merits
     if (spell:getElement() > 0 and spell:getElement() <= 6) then
         magicaccbonus = magicaccbonus + player:getMerit(rdmMerit[spell:getElement()]);
@@ -381,6 +394,7 @@ function applyResistance(player,spell,target,diff,skill,bonus)
     if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
        magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
     end;
+
     -- BLU mag acc merits - nuke acc is handled in bluemagic.lua. For the handful of BLU enfeebles that don't check a status resist (ie. dispel spells)
     if (skill == BLUE_SKILL) then
         magicaccbonus = magicaccbonus + player:getMerit(MERIT_MAGICAL_ACCURACY);
