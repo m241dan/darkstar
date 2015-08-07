@@ -4,6 +4,7 @@
 -----------------------------------------
 
 require("scripts/globals/pets");
+package.loaded["scripts/globals/summon"] = nil;
 require("scripts/globals/summon");
 
 -----------------------------------------

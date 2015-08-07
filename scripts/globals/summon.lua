@@ -32,7 +32,7 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
         end
 
 	local base = avatar:getWeaponDmg() + fstr;
-	local ratio = ( ( avatar:getStat(MOD_ATT) * bonusAtk )/target:getStat(MOD_DEF);
+	local ratio = ( avatar:getStat(MOD_ATT) * bonusAtk )/target:getStat(MOD_DEF);
 
 	lvldiff = lvluser - lvltarget;
 
@@ -294,9 +294,15 @@ function AvatarFinalAdjustments(dmg,mob,skill,target,skilltype,skillparam,shadow
 		else --absorbs some damage then wear
 			target:delMod(MOD_STONESKIN,skin);
 			target:delStatusEffect(EFFECT_STONESKIN);
+                        if( target:isNM() == true and target:hasStatusEffect( EFFECT_BIND) and math.rand(1,100) < 65 ) then
+                           target:delStatusEffect( EFFECT_BIND );
+                        end
 			return dmg - skin;
 		end
 	end
+        if( target:hasStatusEffect( EFFECT_BIND ) and dmg > 0 and target:isNM() == true and math.rand(1,100) < 65 ) then
+           target:delStatusEffect( EFFECT_BIND );
+        end
 
 	return dmg;
 end;

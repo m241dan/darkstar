@@ -5,12 +5,19 @@
 -----------------------------------
 package.loaded["scripts/zones/Port_Jeuno/TextIDs"] = nil;
 require("scripts/zones/Port_Jeuno/TextIDs");
+package.loaded["scripts/globals/oldNMaugs"] = nil;
+require("scripts/globals/oldNMaugs");
 
 -----------------------------------
 -- onTrade Action
 -----------------------------------
 
 function onTrade(player,npc,trade)
+   if( trade:getItemCount() ~= 1 ) then return; end
+   local itemID = trade:getItem(0);
+   if( oldNMaugtable[itemID] == nil ) then return; end
+
+   onGuideStoneTrade(player,itemID,trade);
 end;
 
 -----------------------------------

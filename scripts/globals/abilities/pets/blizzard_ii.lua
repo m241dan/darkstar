@@ -31,5 +31,8 @@ function onPetAbility(target, pet, skill)
 	dmg = dmg * tp / 100;
 	--add in final adjustments
 	dmg = finalMagicAdjustments(pet,target,spell,dmg);
+        if( target:hasStatusEffect( EFFECT_BIND ) and dmg > 0 and target:isNM() and math.rand(1,100) < 65 ) then
+           target:delStatusEffect( EFFECT_BIND );
+        end
 	return dmg;
 end

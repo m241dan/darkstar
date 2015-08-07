@@ -14,19 +14,16 @@ require("scripts/globals/keyitems");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-    local DMfirst = player:getQuestStatus(OUTLANDS,DIVINE_MIGHT);
-    local DMRepeat = player:getQuestStatus(OUTLANDS,DIVINE_MIGHT_REPEAT);
-    local Hour = VanadielHour();
+   local DMfirst = player:getQuestStatus(OUTLANDS,DIVINE_MIGHT);
+   local DMRepeat = player:getQuestStatus(OUTLANDS,DIVINE_MIGHT_REPEAT);
 
-    if (player:getWeather() == 0 and Hour >= 0 and Hour <= 3 and IsMoonFull() == true) then
-        if (DMfirst == QUEST_ACCEPTED or DMRepeat == QUEST_ACCEPTED) then -- allow for Ark Pentasphere on both first and repeat quests
-            if (trade:hasItemQty(1408,1) and trade:hasItemQty(917,1) and trade:getItemCount() == 2) then
-                player:startEvent(7,917,1408); -- Ark Pentasphere Trade
-            end
-        elseif (DMRepeat == QUEST_ACCEPTED and trade:hasItemQty(1261,1) and trade:getItemCount() == 1 and player:hasKeyItem(MOONLIGHT_ORE) == false) then
-            player:startEvent(8); -- Moonlight Ore trade
-       end
-    end
+   if (DMfirst == QUEST_ACCEPTED or DMRepeat == QUEST_ACCEPTED) then -- allow for Ark Pentasphere on both first and repeat quests
+      if (trade:hasItemQty(1408,1) and trade:hasItemQty(917,1) and trade:getItemCount() == 2) then
+         player:startEvent(7,917,1408); -- Ark Pentasphere Trade
+      end
+   elseif (DMRepeat == QUEST_ACCEPTED and trade:hasItemQty(1261,1) and trade:getItemCount() == 1 and player:hasKeyItem(MOONLIGHT_ORE) == false) then
+      player:startEvent(8); -- Moonlight Ore trade
+   end
 end;
 
 -----------------------------------
