@@ -1,7 +1,7 @@
---------------------------------------
--- 	Spell: Windstorm
--- 	Changes the weather around target party member to "windy."
---------------------------------------
+-----------------------------------------
+-- Spell: Klimaform
+-- Increases magic accuracy for spells of the same element as current weather
+-----------------------------------------
  
 require("scripts/globals/settings");
 require("scripts/globals/status");
@@ -16,6 +16,6 @@ function onMagicCastingCheck(caster,target,spell)
 end;
 
 function onSpellCast(caster,target,spell)
-   target:addStatusEffect(EFFECT_KLIMAFORM,0,0,180);
+   target:addStatusEffect(EFFECT_KLIMAFORM,1,0,180);
    return EFFECT_KLIMAFORM;
 end;

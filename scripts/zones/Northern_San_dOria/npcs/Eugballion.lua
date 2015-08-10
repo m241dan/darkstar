@@ -18,8 +18,8 @@ require("scripts/zones/Northern_San_dOria/TextIDs");
 function onTrade(player,npc,trade)
 
 	-- "Flyers for Regine" conditional script
-	if(player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED) then
-		if(trade:hasItemQty(532,1) and trade:getItemCount() == 1) then
+	if (player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED) then
+		if (trade:hasItemQty(532,1) and trade:getItemCount() == 1) then
 			player:messageSpecial(FLYER_REFUSED);
 		end
 	end
@@ -32,7 +32,6 @@ end;
 
 function onTrigger(player,npc)
 	
-
 		player:showText(npc,EUGBALLION_OPEN_DIALOG);
 		
 		stock = {0x03ba,4121,		-- Magic Pot Shard

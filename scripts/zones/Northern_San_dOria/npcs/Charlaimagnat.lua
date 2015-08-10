@@ -34,22 +34,18 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
+	local realday = tonumber(tostring(os.date("%Y")) .. os.date("%m") .. os.date("%d"));
+	local TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
 	
-	realday = tonumber(os.date("%j")); -- %M for next minute, %j for next day
-	starttime = player:getVar("TheMissingPiece_date");
-	TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
-	TheMissingPieceVar = player:getVar("TheMissingPieceVar");
-	
-	if(TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(TABLET_OF_ANCIENT_MAGIC) 
-		and player:hasKeyItem(LETTER_FROM_ALFESAR)) then
-		player:startEvent(0x02bf); -- Delivering the KeyItems from Alfesar
-	elseif(TheMissingPiece == QUEST_ACCEPTED and (starttime == realday or player:needToZone() == true) and TheMissingPieceVar == 3) then 
-		player:startEvent(0x02c0); -- Waiting for JP Midnight
-	elseif(TheMissingPiece == QUEST_ACCEPTED and starttime ~= realday and player:needToZone() == false) then 
-		player:startEvent(0x02c1); -- Tablet Deciphered; Quest Complete
+	if (TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(TABLET_OF_ANCIENT_MAGIC) and player:hasKeyItem(LETTER_FROM_ALFESAR)) then
+		player:startEvent(0x02bf); -- Continuing the Quest
+	elseif (TheMissingPiece == QUEST_ACCEPTED and realday < player:getVar("TheMissingPiece_date")) then
+		player:startEvent(0x02c0); -- didn't wait a day yet
+	elseif (TheMissingPiece == QUEST_ACCEPTED and realday >= player:getVar("TheMissingPiece_date")) then
+		player:startEvent(0x02c1); -- Quest Completed
 	else
-		player:startEvent(0x02be); -- Standard dialog before "The Missing Piece"
-	end
+		player:startEvent(0x02be); -- standard dialogue
+	end;	
 end; 
 
 -----------------------------------
@@ -68,6 +64,7 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
+<<<<<<< HEAD
 
 	if(csid == 0x02bf) then
 		player:delKeyItem(TABLET_OF_ANCIENT_MAGIC);
@@ -77,6 +74,16 @@ function onEventFinish(player,csid,option)
 		player:needToZone(true);
 	elseif(csid == 0x02c1) then
 		if (player:getFreeSlotsCount() == 0) then 
+=======
+	
+	if (csid == 0x02bf) then
+		player:setVar("TheMissingPiece_date", tostring(os.date("%Y")) .. os.date("%m") .. os.date("%d") + 1);
+		player:addTitle(ACQUIRER_OF_ANCIENT_ARCANUM);
+		player:delKeyItem(TABLET_OF_ANCIENT_MAGIC);
+		player:delKeyItem(LETTER_FROM_ALFESAR);
+	elseif (csid == 0x02c1) then
+		if (player:getFreeSlotsCount() == 0) then -- does the player have space
+>>>>>>> master
 			player:messageSpecial(ITEM_CANNOT_BE_OBTAINED,4729);
 		else
 			player:addItem(4729);

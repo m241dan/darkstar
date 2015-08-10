@@ -25,7 +25,6 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-   
         player:showText(npc,MILLEROVIEUNET_OPEN_DIALOG);
 
         stock = {

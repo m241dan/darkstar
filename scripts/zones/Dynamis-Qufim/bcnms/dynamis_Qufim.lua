@@ -46,7 +46,6 @@ end;
 -- 4=Finish he dynamis
 
 function onBcnmLeave(player,instance,leavecode)
---print("leave code "..leavecode);
 	if(leavecode == 4) then
 		SetServerVariable("[DynaQufim]UniqueID",0);
 	end

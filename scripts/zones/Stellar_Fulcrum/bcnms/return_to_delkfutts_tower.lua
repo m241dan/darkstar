@@ -31,15 +31,15 @@ end;
 function onBcnmLeave(player,instance,leavecode)
 -- print("leave code "..leavecode);
 	
-	if(leavecode == 2) then -- play end CS. Need time and battle id for record keeping + storage
-		if(player:hasCompletedMission(ZILART,RETURN_TO_DELKFUTTS_TOWER)) then
+	if (leavecode == 2) then -- play end CS. Need time and battle id for record keeping + storage
+		if (player:hasCompletedMission(ZILART,RETURN_TO_DELKFUTTS_TOWER)) then
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,1);
                         player:PrintToPlayer( "You have gained four Augment Buy for assisting others.", 0xE );
                         player:setVar( "AugBuys", ( player:getVar( "AugBuys" ) + 4 ) );
 		else
 			player:startEvent(0x7d01,1,1,1,instance:getTimeInside(),1,0,0);
 		end
-	elseif(leavecode == 4) then
+	elseif (leavecode == 4) then
 		player:startEvent(0x7d02);
 	end
 	
@@ -52,8 +52,8 @@ end;
 function onEventFinish(player,csid,option)
 -- print("bc finish csid "..csid.." and option "..option);
 	
-	if(csid == 0x7d01) then
-		if(player:getCurrentMission(ZILART) == RETURN_TO_DELKFUTTS_TOWER) then
+	if (csid == 0x7d01) then
+		if (player:getCurrentMission(ZILART) == RETURN_TO_DELKFUTTS_TOWER) then
 			player:completeMission(ZILART,RETURN_TO_DELKFUTTS_TOWER);
 			player:addMission(ZILART,ROMAEVE);
 			player:setVar("ZilartStatus",0);

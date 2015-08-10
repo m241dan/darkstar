@@ -1,7 +1,7 @@
 -----------------------------------
---	Area: Port San d'Oria
---	NPC:  Regine
---	Standard Merchant NPC
+-- Area: Port San d'Oria
+--  NPC: Regine
+-- Standard Merchant NPC
 -----------------------------------
 package.loaded["scripts/zones/Port_San_dOria/TextIDs"] = nil;
 -----------------------------------
@@ -16,27 +16,27 @@ require("scripts/zones/Port_San_dOria/TextIDs");
 
 function onTrade(player,npc,trade)
 -- "Flyers for Regine" conditional script
-	local count = trade:getItemCount();
+    local count = trade:getItemCount();
 
-	if(player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED and trade:getGil() == 10 and trade:getItemCount() == 1)then
-		if(player:getFreeSlotsCount() > 0) then
-			player:addItem(532,1);
-			player:tradeComplete();
-			player:messageSpecial(ITEM_OBTAINED,532);
-		else
-			player:messageSpecial(ITEM_CANNOT_BE_OBTAINED_2, 532); -- CANNOT_OBTAIN_ITEM
-		end
-	elseif (trade:hasItemQty(532,1) == true and count == 1) then
-		if (player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED) then
-			player:messageSpecial(FLYER_REFUSED);
-		end
-	elseif (trade:hasItemQty(593,1) == true and count == 1) then
-		if (player:getQuestStatus(SANDORIA,THE_BRUGAIRE_CONSORTIUM) == QUEST_ACCEPTED) then
-			player:tradeComplete();
-			player:startEvent(0x0217);
-			player:setVar("TheBrugaireConsortium-Parcels", 11);
-		end
-	end
+    if (player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED and trade:getGil() == 10 and trade:getItemCount() == 1) then
+        if (player:getFreeSlotsCount() > 0) then
+            player:addItem(532,1);
+            player:tradeComplete();
+            player:messageSpecial(ITEM_OBTAINED,532);
+        else
+            player:messageSpecial(ITEM_CANNOT_BE_OBTAINED_2, 532); -- CANNOT_OBTAIN_ITEM
+        end
+    elseif (trade:hasItemQty(532,1) == true and count == 1) then
+        if (player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_ACCEPTED) then
+            player:messageSpecial(FLYER_REFUSED);
+        end
+    elseif (trade:hasItemQty(593,1) == true and count == 1) then
+        if (player:getQuestStatus(SANDORIA,THE_BRUGAIRE_CONSORTIUM) == QUEST_ACCEPTED) then
+            player:tradeComplete();
+            player:startEvent(0x0217);
+            player:setVar("TheBrugaireConsortium-Parcels", 11);
+        end
+    end
 
 end;
 
@@ -45,17 +45,17 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	if(player:getVar("FFR") ==1)then
-		player:startEvent(0x1fe,2);
-	elseif(player:getVar("FFR") ==2)then
-		player:startEvent(0x025b);
-	elseif(player:getVar("FFR") >2 and not(player:hasItem(532)))then
-		player:startEvent(0x1fe,3);
-	elseif(player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_AVAILABLE and player:getVar("FFR") == 0)then
-		player:startEvent(0x0259);
-	else
-		player:startEvent(0x1fe);
-	end
+    if (player:getVar("FFR") == 1) then
+        player:startEvent(510,2);
+    elseif (player:getVar("FFR") == 2) then
+        player:startEvent(603);
+    elseif (player:getVar("FFR") > 2 and (not(player:hasItem(532)))) then
+        player:startEvent(510,3);
+    elseif (player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE) == QUEST_AVAILABLE and player:getVar("FFR") == 0) then
+        player:startEvent(601);
+    else
+        player:startEvent(510);
+    end
 end;
 
 -----------------------------------
@@ -63,8 +63,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
---printf("CSID: %u",csid);
---printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -150,7 +150,3 @@ function onEventFinish(player,csid,option)
 	end
 end
 end;
-
-
-
-

@@ -38,7 +38,7 @@ end;
 
 function onTrigger(player,npc)
 	
-	if(guardnation == player:getNation()) then
+	if (guardnation == player:getNation()) then
 		player:startEvent(csid,0,0,0,0,0,0,player:getMainLvl(),1073741823 - player:getNationTeleport(guardnation));
 	else
 		player:startEvent(csid,0,0,0,0,0,512,0,0);
@@ -67,7 +67,7 @@ function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
 	
-	if(option >= 5 and option <= 23) then
+	if (option >= 5 and option <= 23) then
 		if (player:delGil(OP_TeleFee(player,option-5))) then
 	            toOutpost(player,option);
                 end

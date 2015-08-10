@@ -43,7 +43,7 @@ function onTrigger(player,npc)
 			[4] = function (x) npc:setPos(428,-17,-739); end,  
 			[5] = function (x) npc:setPos(784,-16,-826); end, 
 		} 
-	else
+   else
        player:messageSpecial(NOTHING_OUT_OF_ORDINARY);
     end
 end;
