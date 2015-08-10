@@ -294,13 +294,13 @@ function AvatarFinalAdjustments(dmg,mob,skill,target,skilltype,skillparam,shadow
 		else --absorbs some damage then wear
 			target:delMod(MOD_STONESKIN,skin);
 			target:delStatusEffect(EFFECT_STONESKIN);
-                        if( target:isNM() == true and target:hasStatusEffect( EFFECT_BIND) and math.rand(1,100) < 65 ) then
+                        if( target:isNM() == true and target:hasStatusEffect( EFFECT_BIND) and math.random(1,100) < 65 ) then
                            target:delStatusEffect( EFFECT_BIND );
                         end
 			return dmg - skin;
 		end
 	end
-        if( target:hasStatusEffect( EFFECT_BIND ) and dmg > 0 and target:isNM() == true and math.rand(1,100) < 65 ) then
+        if( target:hasStatusEffect( EFFECT_BIND ) and dmg > 0 and target:isNM() == true and math.random(1,100) < 65 ) then
            target:delStatusEffect( EFFECT_BIND );
         end
 

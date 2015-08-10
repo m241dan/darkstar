@@ -31,6 +31,7 @@ function onTrade(player,npc,trade)
 	 0x1102,355,  -- Shining Trout
          0x10DC,1100, -- Armored Pisces
          0x117D, 900, -- Gavial Fish
+         0x140F,1000, -- Rhinochimera
       };
       showShop( player, STATIC, stock );
       return;

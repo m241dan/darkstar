@@ -47,7 +47,7 @@ function onSpellCast(caster,target,spell)
     end
     caster:delStatusEffect(EFFECT_SABOTEUR);
 
-        potency = potency + merits; --similar to Slow II, merit potency bonus is added after the cap
+        potency = potency + ( merits * 3 ); --similar to Slow II, merit potency bonus is added after the cap
 
         --printf("Duration : %u",duration);
         --printf("Potency : %u",potency);

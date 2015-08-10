@@ -1521,7 +1521,7 @@ function doElementalNuke(caster, spell, target, spellParams)
     --add in final adjustments
     DMG = finalMagicAdjustments(caster, target, spell, DMG);
 
-    if( target:hasStatusEffect( EFFECT_BIND ) and target:isNM() == true and and DMG > 0 and math.rand(1,100) < 65 ) then
+    if( target:hasStatusEffect( EFFECT_BIND ) and target:isNM() == true and DMG > 0 and math.random(1,100) < 65 ) then
        target:delStatusEffect( EFFECT_BIND );
     end
 

@@ -38,3 +38,60 @@ INSERT INTO `mob_droplist` VALUES (512,0,1312,1000);
 INSERT INTO `mob_droplist` VALUES (5500,0,2518,35);
 INSERT INTO `mob_droplist` VALUES (5500,0,5668,70);
 
+-- sky elements
+UPDATE `mob_groups` SET dropid=5505 WHERE groupid=6941; -- lightning elemental
+UPDATE `mob_groups` SET dropid=5502 WHERE groupid=6932; -- ice elemental
+UPDATE `mob_groups` SET dropid=5508 WHERE groupid=6924; -- dark elemental
+UPDATE `mob_groups` SET dropid=5507 WHERE groupid=6935; -- light elemental
+UPDATE `mob_groups` SET dropid=5504 WHERE groupid=6926; -- earth elemental
+UPDATE `mob_groups` SET dropid=5503 WHERE groupid=6922; -- air elemental
+UPDATE `mob_groups` SET dropid=5506 WHERE groupid=6942; -- water elemental
+UPDATE `mob_groups` SET dropid=5501 WHERE groupid=6928; -- fire elemental
+
+-- fire elemental droplist
+INSERT INTO `mob_droplist` VALUES (5501,0,4104,1000);
+INSERT INTO `mob_droplist` VALUES (5501,0,4104,400);
+INSERT INTO `mob_droplist` VALUES (5501,0,4104,150);
+INSERT INTO `mob_droplist` VALUES (5501,0,786,150); -- ruby
+
+-- ice elemental droplist
+INSERT INTO `mob_droplist` VALUES (5502,0,4105,1000);
+INSERT INTO `mob_droplist` VALUES (5502,0,4105,400);
+INSERT INTO `mob_droplist` VALUES (5502,0,4105,150);
+INSERT INTO `mob_droplist` VALUES (5502,0,787,150); -- diamond
+
+-- air elemental droplist
+INSERT INTO `mob_droplist` VALUES (5503,0,4106,1000);
+INSERT INTO `mob_droplist` VALUES (5503,0,4106,400);
+INSERT INTO `mob_droplist` VALUES (5503,0,4106,150);
+INSERT INTO `mob_droplist` VALUES (5503,0,785,150); -- emerald
+
+-- earth elemental droplist
+INSERT INTO `mob_droplist` VALUES (5504,0,4107,1000);
+INSERT INTO `mob_droplist` VALUES (5504,0,4107,400);
+INSERT INTO `mob_droplist` VALUES (5504,0,4107,150);
+INSERT INTO `mob_droplist` VALUES (5504,0,789,150); -- topaz
+
+-- lightning elemental droplist
+INSERT INTO `mob_droplist` VALUES (5505,0,4108,1000);
+INSERT INTO `mob_droplist` VALUES (5505,0,4108,400);
+INSERT INTO `mob_droplist` VALUES (5505,0,4108,150);
+INSERT INTO `mob_droplist` VALUES (5505,0,804,150); -- spinel
+
+-- water elemental droplist
+INSERT INTO `mob_droplist` VALUES (5506,0,4109,1000);
+INSERT INTO `mob_droplist` VALUES (5506,0,4109,400);
+INSERT INTO `mob_droplist` VALUES (5506,0,4109,150);
+INSERT INTO `mob_droplist` VALUES (5506,0,794,150); -- sapphire
+
+-- light elemental droplist
+INSERT INTO `mob_droplist` VALUES (5507,0,4110,1000);
+INSERT INTO `mob_droplist` VALUES (5507,0,4110,400);
+INSERT INTO `mob_droplist` VALUES (5507,0,4110,150);
+INSERT INTO `mob_droplist` VALUES (5507,0,813,150); -- angelstone
+
+-- dark elemental droplist
+INSERT INTO `mob_droplist` VALUES (5508,0,4111,1000);
+INSERT INTO `mob_droplist` VALUES (5508,0,4111,400);
+INSERT INTO `mob_droplist` VALUES (5508,0,4111,150);
+INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
