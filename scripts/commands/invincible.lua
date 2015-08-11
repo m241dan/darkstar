@@ -21,10 +21,11 @@ function onTrigger(player)
         player:addStatusEffect(EFFECT_MANAFONT,1,0,0);
         player:addStatusEffect(EFFECT_RAMPART,1,0,0);
         player:addStatusEffect(EFFECT_FEALTY,5,0,0);
+        player:addStatusEffect(EFFECT_REGAIN,150,1,0);
 
     else
         -- Toggle GodMode off..
-        player:setVar("InvisibleMode", 0);
+        player:setVar("InvincibleMode", 0);
 
         -- Remove bonus effects..
         player:delStatusEffect(EFFECT_SENTINEL);
@@ -32,5 +33,6 @@ function onTrigger(player)
         player:delStatusEffect(EFFECT_INVINCIBLE);
         player:delStatusEffect(EFFECT_MANAFONT);
         player:delStatusEffect(EFFECT_FEALTY);
+        player:delStatusEffect(EFFECT_REGAIN);
     end
 end
