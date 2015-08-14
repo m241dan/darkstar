@@ -22,7 +22,7 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
 	acc = avatar:getACC();
 	eva = target:getEVA();
 
-        local equippedFeet = caster:getEquipID(SLOT_FEET);
+        local equippedFeet = avatar:getMaster():getEquipID(SLOT_FEET);
         local bonusAtk = 1;
 
         if( equippedFeet == 15146 ) then -- summoner's pigaches

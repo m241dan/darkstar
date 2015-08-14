@@ -4,6 +4,7 @@
 
 require("scripts/globals/settings");
 require("scripts/globals/status");
+package.loaded["scripts/globals/summon"] = nil;
 require("scripts/globals/summon");
 
 ---------------------------------------------------
