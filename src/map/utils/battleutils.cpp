@@ -4526,22 +4526,18 @@ uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
 {
 	CCharEntity* PChar = (CCharEntity*)PCaster;
 
-	if (PSpell->getAOE() == SPELLAOE_DIVINE_VEIL)	
-		// Divine Veil spells are also Accession spells
-        if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_ACCESSION)
-			|| (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_DIVINE_SEAL) 
-			&& charutils::hasTrait(PChar, TRAIT_DIVINE_VEIL)))
-            return SPELLAOE_RADIAL;
-        else
-            return SPELLAOE_NONE;
-        if (PSpell->getAOE() == SPELLAOE_RADIAL_ACCE)
-            if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_ACCESSION))
-            return SPELLAOE_RADIAL;
+    uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
+    {
+        if (PSpell->getAOE() == SPELLAOE_RADIAL_ACCE) // Divine Veil goes here because -na spells have AoE w/ Accession
+            if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_ACCESSION) || (PCaster->objtype == TYPE_PC && 
+            charutils::hasTrait((CCharEntity*)PCaster, TRAIT_DIVINE_VEIL) && PSpell->isNa() && 
+            (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_DIVINE_SEAL) || PCaster->getMod(MOD_AOE_NA) == 1)))
+                return SPELLAOE_RADIAL;
             else
                 return SPELLAOE_NONE;
         if (PSpell->getAOE() == SPELLAOE_RADIAL_MANI)
             if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_MANIFESTATION))
-            return SPELLAOE_RADIAL;
+                return SPELLAOE_RADIAL;
             else
                 return SPELLAOE_NONE;
         if (PSpell->getAOE() == SPELLAOE_PIANISSIMO)
@@ -4554,20 +4550,10 @@ uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
                 return SPELLAOE_RADIAL;
         if (PSpell->getAOE() == SPELLAOE_DIFFUSION)
             if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_DIFFUSION))
-            return SPELLAOE_RADIAL;
-            else
-                return SPELLAOE_NONE;
-        if (PSpell->isNa())
-        {
-            if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_DIVINE_SEAL)
-                && (PCaster->objtype == TYPE_PC)
-                && charutils::hasTrait((CCharEntity*)PCaster, TRAIT_DIVINE_VEIL))
-            {
                 return SPELLAOE_RADIAL;
-            }
             else
                 return SPELLAOE_NONE;
-        }
+
         return PSpell->getAOE();
     }
 
