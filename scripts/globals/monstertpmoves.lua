@@ -522,7 +522,7 @@ function mobAddBonuses(caster, spell, target, dmg, ele)
            bonusAtk = bonusAtk +.10;
         end
 
-        mab = (100 + ( caster:getMod(MOD_MATT) * bonusAtk ) ) / (100 + target:getMod(MOD_MDEF)) ;
+    mab = (100 + ( caster:getMod(MOD_MATT) * bonusAtk ) ) / (100 + target:getMod(MOD_MDEF)) ;
 
     dmg = math.floor(dmg * mab);
 

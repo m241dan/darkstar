@@ -4526,8 +4526,6 @@ uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
 {
 	CCharEntity* PChar = (CCharEntity*)PCaster;
 
-    uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
-    {
         if (PSpell->getAOE() == SPELLAOE_RADIAL_ACCE) // Divine Veil goes here because -na spells have AoE w/ Accession
             if (PCaster->StatusEffectContainer->HasStatusEffect(EFFECT_ACCESSION) || (PCaster->objtype == TYPE_PC && 
             charutils::hasTrait((CCharEntity*)PCaster, TRAIT_DIVINE_VEIL) && PSpell->isNa() && 
