@@ -167,7 +167,10 @@ CZone::~CZone()
 
 ZONEID CZone::GetID()
 {
-    return m_zoneID;
+    if( this )
+       return m_zoneID;
+    else
+       return ZONE_PORT_WINDURST;
 }
 
 ZONETYPE CZone::GetType()

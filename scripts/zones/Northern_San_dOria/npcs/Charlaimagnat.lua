@@ -64,17 +64,6 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
-<<<<<<< HEAD
-
-	if(csid == 0x02bf) then
-		player:delKeyItem(TABLET_OF_ANCIENT_MAGIC);
-		player:delKeyItem(LETTER_FROM_ALFESAR);
-		player:setVar("TheMissingPieceVar",3);
-		player:setVar("TheMissingPiece_date", os.date("%j"));
-		player:needToZone(true);
-	elseif(csid == 0x02c1) then
-		if (player:getFreeSlotsCount() == 0) then 
-=======
 	
 	if (csid == 0x02bf) then
 		player:setVar("TheMissingPiece_date", tostring(os.date("%Y")) .. os.date("%m") .. os.date("%d") + 1);
@@ -83,7 +72,6 @@ function onEventFinish(player,csid,option)
 		player:delKeyItem(LETTER_FROM_ALFESAR);
 	elseif (csid == 0x02c1) then
 		if (player:getFreeSlotsCount() == 0) then -- does the player have space
->>>>>>> master
 			player:messageSpecial(ITEM_CANNOT_BE_OBTAINED,4729);
 		else
 			player:addItem(4729);

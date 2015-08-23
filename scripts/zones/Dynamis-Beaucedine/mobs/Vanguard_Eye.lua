@@ -26,13 +26,7 @@ function onMobEngaged(mob,target)
 	local Y = mob:getYPos();
 	local Z = mob:getZPos();
 	local spawnList = beaucedineHydraList;
-<<<<<<< HEAD
-
-
-	if(mob:getStatPoppedMobs() == false) then
-=======
 	if (mob:getStatPoppedMobs() == false) then
->>>>>>> master
 		mob:setStatPoppedMobs(true);
         for nb = 1, table.getn(spawnList), 2 do
 				if (mob:getID() == spawnList[nb]) then
