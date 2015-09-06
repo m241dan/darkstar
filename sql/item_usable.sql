@@ -623,6 +623,7 @@ INSERT INTO `item_usable` VALUES (4688,'scroll_of_recall-pashh',1,1,11,5,0,0,0,0
 INSERT INTO `item_usable` VALUES (4689,'scroll_of_recall-meriph',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4690,'scroll_of_baramnesia',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4691,'scroll_of_baramnesra',1,1,11,5,0,0,0,0);
+INSERT INTO `item_usable` VALUES (4692,'scroll_of_haste_ii',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4694,'scroll_of_barsleepra',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4695,'scroll_of_barpoisonra',1,1,11,5,0,0,0,0);
 INSERT INTO `item_usable` VALUES (4696,'scroll_of_barparalyzra',1,1,11,5,0,0,0,0);
@@ -2061,6 +2062,7 @@ INSERT INTO `item_usable` VALUES (18945,'jet_sickle',1,3,0,0,100,30,600,0);
 INSERT INTO `item_usable` VALUES (19181,'moogles_largesse',1,12,0,0,9,10,259200,0);
 INSERT INTO `item_usable` VALUES (19204,'fiendtrapper',20,0,0,0,12,10,30,0);
 INSERT INTO `item_usable` VALUES (19246,'moggiebag',1,3,0,0,8,10,259200,0);
+INSERT INTO `item_usable` VALUES (26720,'sheep_cap_+1',1,2,55,0,1,30,86400,0);
 INSERT INTO `item_usable` VALUES (28540,'warp_ring',1,8,80,3,1,8,600,0);
 /*!40000 ALTER TABLE `item_usable` ENABLE KEYS */;
 UNLOCK TABLES;

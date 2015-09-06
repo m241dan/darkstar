@@ -9986,6 +9986,8 @@ INSERT INTO `item_armor` VALUES (26663,'pedagogy_mortarboard_+1',99,119,524288,1
 INSERT INTO `item_armor` VALUES (26702,'gavialis_helm',99,119,14785,375,0,0,16,0);
 INSERT INTO `item_armor` VALUES (26710,'imperial_wing_hairpin_+1',99,119,4194303,0,0,0,16,0);
 INSERT INTO `item_armor` VALUES (26715,'adorned_helm_+1',99,119,2106341,55,0,0,16,0);
+INSERT INTO `item_armor` VALUES (26719,'sheep_cap',1,0,4194303,383,0,0,16,0);
+INSERT INTO `item_armor` VALUES (26720,'sheep_cap_+1',1,0,4194303,383,0,0,16,0);
 INSERT INTO `item_armor` VALUES (26721,'rabid_visor',99,119,2141649,336,0,0,16,0);
 INSERT INTO `item_armor` VALUES (26732,'stinger_helm_+1',99,119,10368,114,0,0,16,0);
 INSERT INTO `item_armor` VALUES (26740,'boii_mask',99,109,1,282,0,0,16,0);
@@ -10825,6 +10827,7 @@ INSERT INTO `item_armor` VALUES (28405,'ej_necklace_+1',99,0,5188164,0,0,0,512,0
 INSERT INTO `item_armor` VALUES (28406,'nuna_gorget',99,0,1758748,0,0,0,512,0);
 INSERT INTO `item_armor` VALUES (28407,'nuna_gorget_+1',99,0,1758748,0,0,0,512,0);
 INSERT INTO `item_armor` VALUES (28418,'incarnation_sash',99,0,153204,0,0,0,1024,0);
+INSERT INTO `item_armor` VALUES (28419,'hachirin-no-obi',71,0,4194303,0,0,0,1024,0);
 INSERT INTO `item_armor` VALUES (28440,'windbuffet_belt_+1',99,0,4194303,0,0,0,1024,0);
 INSERT INTO `item_armor` VALUES (28442,'olseni_belt',99,0,4194303,0,0,0,1024,0);
 INSERT INTO `item_armor` VALUES (28443,'yamabuki-no-obi',99,0,3851870,0,0,0,1024,0);

@@ -1,7 +1,6 @@
 -----------------------------------
 -- Area: Ru'Aun Gardens
--- NPC:  Suzaku
--- ID: 17309983
+--  NPC: Suzaku
 -----------------------------------
 
 require("scripts/zones/RuAun_Gardens/TextIDs");
@@ -77,5 +76,5 @@ function onAdditionalEffect(mob, target, damage)
     dmg = adjustForTarget(target,dmg,ELE_FIRE);
     dmg = finalMagicNonSpellAdjustments(mob,target,ELE_FIRE,dmg);
 
-    return SUBEFFECT_FIRE_DAMAGE,163,dmg;
+    return SUBEFFECT_FIRE_DAMAGE,MSGBASIC_ADD_EFFECT_DMG,dmg;
 end;

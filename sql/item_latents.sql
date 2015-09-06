@@ -24,6 +24,11 @@ CREATE TABLE IF NOT EXISTS `item_latents` (
 -- INSERT INTO `item_latents` VALUES(itemID, modId, modValue, latentId, latentParam);
 
 INSERT INTO `item_latents` VALUES(14166, 169, 12, 52, 2); -- desert boots
+-- -------------------------------------------------------
+-- Oneiros Ring
+-- -------------------------------------------------------
+INSERT INTO `item_latents` VALUES(11671, 302, 2, 55, 100); -- Triple Attack +2% when mp is greater than or equal to 100
+
 INSERT INTO `item_latents` VALUES(13178, 8, 4, 25, 0); -- Auditory Torque, STR+4 song/roll active
 INSERT INTO `item_latents` VALUES(13178, 10, 4, 25, 0); -- Auditory Torque, VIT+4 song/roll active
 INSERT INTO `item_latents` VALUES(17365, 8, 4, 25, 0); -- Frenzy Fife, STR+4 song/roll active
