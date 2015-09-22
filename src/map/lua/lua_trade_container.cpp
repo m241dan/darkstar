@@ -83,6 +83,7 @@ inline int32 CLuaTradeContainer::getItem(lua_State *L)
 }
 
 //======================================================//
+
 inline int32 CLuaTradeContainer::getItemObj( lua_State *L )
 {
    if( m_pMyTradeContainer != nullptr )
@@ -239,20 +240,6 @@ inline int32 CLuaTradeContainer::confirmItem(lua_State *L)
 const int8 CLuaTradeContainer::className[] = "TradeContainer";
 Lunar<CLuaTradeContainer>::Register_t CLuaTradeContainer::methods[] =
 {
-<<<<<<< HEAD
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getGil),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItem),
-        LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemObj),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemSubId),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemCount),
-    LUNAR_DECLARE_METHOD(CLuaTradeContainer,getSlotCount),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemQty),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,getSlotQty),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,hasItemQty),
-	LUNAR_DECLARE_METHOD(CLuaTradeContainer,confirmItem),
-	{nullptr,nullptr}
-}; 
-=======
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getGil),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItem),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemSubId),
@@ -264,4 +251,3 @@ Lunar<CLuaTradeContainer>::Register_t CLuaTradeContainer::methods[] =
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,confirmItem),
     {nullptr,nullptr}
 };
->>>>>>> master

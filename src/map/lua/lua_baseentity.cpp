@@ -2391,17 +2391,6 @@ inline int32 CLuaBaseEntity::getTrueLvl( lua_State *L )
 
 //==========================================================//
 
-inline int32 CLuaBaseEntity::getMainJob(lua_State *L)
-{
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
-
-    lua_pushinteger( L, ((CBattleEntity*)m_PBaseEntity)->GetMJob() );
-    return 1;
-}
-
-//==========================================================//
-
 inline int32 CLuaBaseEntity::getMainLvl(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);

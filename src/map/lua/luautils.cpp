@@ -567,43 +567,8 @@ namespace luautils
         int32 day;
         int32 month;
 
-<<<<<<< HEAD
-int32 OnZoneOut(CCharEntity* PChar)
-{
-    lua_prepscript("scripts/zones/%s/Zone.lua", PChar->m_moghouseID ? "Residential_Area" : zoneutils::GetZone(PChar->loc.destination)->GetName());
-
-    if (prepFile(File, "onZoneOut"))
-    {
-        return -1;
-    }
-
-    CLuaBaseEntity LuaBaseEntity(PChar);
-    Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaBaseEntity);
-
-    lua_pushinteger(LuaHandle,PChar->loc.prevzone);
-
-    if( lua_pcall(LuaHandle,2,LUA_MULTRET,0) )
-    {
-        ShowError("luautils::onZoneOut: %s\n",lua_tostring(LuaHandle,-1));
-        lua_pop(LuaHandle, 1);
-        return -1;
-    }
-    int32 returns = lua_gettop(LuaHandle) - oldtop;
-    if (returns > 0)
-    {
-        ShowError("luautils::onZoneOut (%s): 0 return expected, got %d\n", File, returns);
-        return 0;
-    }
-    return 0;
-}
-
-int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask)
-{
-    CCharEntity* PChar = zoneutils::GetChar((uintptr)PTask->m_data);
-=======
         day = CVanaTime::getInstance()->getDayOfTheMonth();
         month = CVanaTime::getInstance()->getMonth();
->>>>>>> master
 
         lua_pushinteger(L, (month * 30 - 30) + day);
         return 1;
@@ -1227,6 +1192,35 @@ int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask)
         }
         return retVal;
     }
+
+int32 OnZoneOut(CCharEntity* PChar)
+{
+       lua_prepscript("scripts/zones/%s/Zone.lua", PChar->m_moghouseID ? "Residential_Area" : zoneutils::GetZone(PChar->loc.destination)->GetName());
+
+    if (prepFile(File, "onZoneOut"))
+    {
+        return -1;
+    }
+
+    CLuaBaseEntity LuaBaseEntity(PChar);
+    Lunar<CLuaBaseEntity>::push(LuaHandle,&LuaBaseEntity);
+
+    lua_pushinteger(LuaHandle,PChar->loc.prevzone);
+
+    if( lua_pcall(LuaHandle,2,LUA_MULTRET,0) )
+    {
+        ShowError("luautils::onZoneOut: %s\n",lua_tostring(LuaHandle,-1));
+        lua_pop(LuaHandle, 1);
+        return -1;
+    }
+    int32 returns = lua_gettop(LuaHandle) - oldtop;
+    if (returns > 0)
+    {
+        ShowError("luautils::onZoneOut (%s): 0 return expected, got %d\n", File, returns);
+        return 0;
+    }
+    return 0;
+}
 
     int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask)
     {
@@ -4184,7 +4178,6 @@ int32 AfterZoneIn(uint32 tick, CTaskMgr::CTask *PTask)
         return 1;
     }
 
-<<<<<<< HEAD
 int32 OnDynaDrop(CZone *PZone, uint16 itemID )
 {
    lua_prepscript( "scripts/globals/melfnamis.lua" );
@@ -4222,18 +4215,12 @@ int32 OnDynaDrop(CZone *PZone, uint16 itemID )
    return 0;
 }
 
-/********************************************************************
-	onBcnmEnter - callback when you enter a BCNM via a lua call to bcnmEnter(bcnmid)
-*********************************************************************/
-int32 OnBcnmEnter(CCharEntity* PChar, CBattlefield* PBattlefield){
-=======
     /************************************************************************
     *	Change drop rate of a mob											*
     *  	1st number: dropid in mob_droplist.sql								*
     *	2nd number: itemid in mob_droplist.sql								*
     *	3rd number: new rate												*
     ************************************************************************/
->>>>>>> master
 
     int32 SetDropRate(lua_State *L)
     {
