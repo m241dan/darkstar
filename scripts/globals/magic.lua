@@ -368,17 +368,6 @@ function applyResistance(player,spell,target,diff,skill,bonus)
     end
 	
     --Add acc for klimaform
-    if (player:hasStatusEffect(EFFECT_KLIMAFORM) and (castersWeather == singleWeatherStrong[element] or castersWeather == doubleWeatherStrong[element])) then
-        magicaccbonus = magicaccbonus + 15;
-    end
-
-<<<<<<< HEAD
-    if (element > ELE_NONE) then
-        -- Add acc for staves
-        local affinityBonus = AffinityBonus(player, element);
-        magicaccbonus = magicaccbonus + (affinityBonus-1) * 200;
-    end
-
     local castersWeather = player:getWeather();
 
     if( player:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
@@ -391,24 +380,11 @@ function applyResistance(player,spell,target,diff,skill,bonus)
        end
     end
 
-    --add acc for RDM group 1 merits
-    if (spell:getElement() > 0 and spell:getElement() <= 6) then
-        magicaccbonus = magicaccbonus + player:getMerit(rdmMerit[spell:getElement()]);
-    end
-
     -- helix merits for scholar
     if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
        magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
     end;
 
-    -- BLU mag acc merits - nuke acc is handled in bluemagic.lua. For the handful of BLU enfeebles that don't check a status resist (ie. dispel spells)
-    if (skill == BLUE_SKILL) then
-        magicaccbonus = magicaccbonus + player:getMerit(MERIT_MAGICAL_ACCURACY);
-        -- print(player:getMerit(MERIT_MAGICAL_ACCURACY))
-    end
-
-=======
->>>>>>> master
     local skillchainTier, skillchainCount = FormMagicBurst(element, target);
 
     --add acc for BLM AMII spells
@@ -577,7 +553,7 @@ function getMagicHitRate(caster, target, skillType, element, fullBonus, minorBon
     end
 
     --add acc for RDM group 1 merits
-    if (element > 0 and element <= 6) then
+    if ( element > 0 and element <= 6) then
         minorBonus = minorBonus + caster:getMerit(rdmMerit[element]);
     end
 
