@@ -16,7 +16,7 @@ require("scripts/globals/melfnm");
 -----------------------------------
 
 function onInitialize(zone)
-    local manuals = {17297487};
+    local manuals = {17297490};
     
     SetFieldManual(manuals);
     
