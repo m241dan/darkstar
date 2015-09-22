@@ -1,8 +1,9 @@
 -- fafnir + nidhogg 
-UPDATE mob_family_system SET Lightning=1.15, Water=1.15 WHERE familyid=260 or familyid=263; -- fix faf and nid elemental reses
+UPDATE mob_family_system SET CHR=6, Lightning=1.15, Water=1.15 WHERE familyid=260 or familyid=263; -- fix faf and nid elemental reses
 UPDATE mob_family_system SET Fire=.875, Ice=.875 WHERE familyid=260 or familyid=263; -- ibid
 UPDATE mob_pool_mods SET value=30 WHERE poolid=1280; -- nerf fafnir regain
 UPDATE mob_pool_mods SET value=50 WHERE poolid=2840; -- nerf nidhogg regain
+
 -- INSERT INTO `mob_pool_mods` VALUES (1280,1,100,0); -- fafnir needs like 100 more defense (leave commented due to being inserts that are already inserted)
 -- INSERT INTO `mob_pool_mods` VALUES (2840,1,100,0); -- nidhogg needs the same (ibid)
 UPDATE mob_family_system SET ATT=2, DEF=2, ACC=2, EVA=2 WHERE familyid=263; -- buff nidhogg att, def, eva and acc

@@ -31,6 +31,7 @@ function onMobFight(mob, target)
         --(since I have no inclination to spend millions on a PI to cap one name you never see)
         mob:setLocalVar("twohourTime",battletime + math.random(60,120));
     end
+
 end;
 
 -----------------------------------
