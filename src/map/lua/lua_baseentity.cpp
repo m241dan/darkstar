@@ -10121,6 +10121,62 @@ inline int32 CLuaBaseEntity::copyConfrontationEffect(lua_State* L)
 }
 //==========================================================//
 
+//=========================================================//
+inline int32 CLuaBaseEntity::isSynced(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+
+   if( pChar->PParty != nullptr && pChar->PParty->GetSyncTarget() != nullptr )
+      lua_pushboolean( L, 1 );
+   else
+      lua_pushboolean( L, 0 );
+
+   return 1;
+}
+
+//=========================================================//
+inline int32 CLuaBaseEntity::isSyncInRange(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+   CBaseEntity *pMob = zoneutils::GetEntity(lua_tointeger(L, -1 ), TYPE_MOB | TYPE_PET);
+
+   if( distance( pMob->loc.p, pChar->PParty->GetSyncTarget()->loc.p ) > 100 || pChar->PParty->GetSyncTarget()->health.hp == 0 )
+      lua_pushboolean( L, 0 );
+   else
+      lua_pushboolean( L, 1 );
+   return 1;
+}
+
+
+inline int32 CLuaBaseEntity::getSync(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC );
+
+   CCharEntity *pChar = (CCharEntity *)m_PBaseEntity;
+
+   if( pChar->PParty == nullptr || pChar->PParty->GetSyncTarget() == nullptr )
+      lua_pushnil( L );
+   else
+   {
+       lua_getglobal(L, CLuaBaseEntity::className);
+                        lua_pushstring(L,"new");
+                        lua_gettable(L,-2);
+                        lua_insert(L,-2);
+                        lua_pushlightuserdata(L,(void*)pChar->PParty->GetSyncTarget());
+                        lua_pcall(L,2,1,0);
+                        return 1;
+   }
+   return 1;
+}
+
+
 const int8 CLuaBaseEntity::className[] = "CBaseEntity";
 
 Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
@@ -10556,5 +10612,8 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addPetMod),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delPetMod),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setPetMod),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSynced),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSync),
     {nullptr,nullptr}
 };
