@@ -10273,6 +10273,8 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,canLearnAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delLearnedAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainJob),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTotalLvls),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTrueLvl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainLvl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSubJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSubLvl),
