@@ -23,7 +23,7 @@ function onPetAbility(target, pet, skill)
 		merits = master:getMerit(MERIT_WIND_BLADE);
 	end
     	
-	tp = tp + (merits - 40);
+	tp = tp + merits;
 	if (tp > 300) then
 		tp = 300;
 	end
