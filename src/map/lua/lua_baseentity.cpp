@@ -10420,6 +10420,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setsLevel),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,changeJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,changesJob),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,changeMobJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setMerits),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMerit),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMeritCount),
