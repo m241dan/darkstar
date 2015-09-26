@@ -476,16 +476,16 @@ namespace charutils
             Sql_NumRows(SqlHandle) != 0 &&
             Sql_NextRow(SqlHandle) == SQL_SUCCESS)
         {
-            PChar->getStorage(LOC_INVENTORY)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 0));
-            PChar->getStorage(LOC_MOGSAFE)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 1));
-            PChar->getStorage(LOC_MOGSAFE2)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 1));
+            PChar->getStorage(LOC_INVENTORY)->AddBuff(80);
+            PChar->getStorage(LOC_MOGSAFE)->AddBuff(80);
+            PChar->getStorage(LOC_MOGSAFE2)->AddBuff(80);
             PChar->getStorage(LOC_TEMPITEMS)->AddBuff(50);
-            PChar->getStorage(LOC_MOGLOCKER)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 2));
-            PChar->getStorage(LOC_MOGSATCHEL)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 3));
-            PChar->getStorage(LOC_MOGSACK)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 4));
-            PChar->getStorage(LOC_MOGCASE)->AddBuff((uint8)Sql_GetIntData(SqlHandle, 5));
+            PChar->getStorage(LOC_MOGLOCKER)->AddBuff(80);
+            PChar->getStorage(LOC_MOGSATCHEL)->AddBuff(80);
+            PChar->getStorage(LOC_MOGSACK)->AddBuff(80);
+            PChar->getStorage(LOC_MOGCASE)->AddBuff(80);
 
-            PChar->getStorage(LOC_WARDROBE)->AddBuff(80); // Always 80..
+            PChar->getStorage(LOC_WARDROBE)->AddBuff(255); // Always 80..
         }
 
         fmtQuery = "SELECT face, race, size, head, body, hands, legs, feet, main, sub, ranged "

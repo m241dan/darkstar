@@ -23,13 +23,11 @@ function onPetAbility(target, pet, skill)
 		merits = master:getMerit(MERIT_THUNDERSTORM);
 	end
 	
-        print( "Tp = " .. tp );
 	tp = tp + merits;
 	if (tp > 300) then
 		tp = 300;
 	end
-        print( "Tp After Merits = " .. tp );
-	
+
 	--note: this formula is only accurate for level 75 - 76+ may have a different intercept and/or slope
 	local damage = math.floor(512 + 1.72*(tp+1));
 	damage = damage + (dINT * 1.5);
