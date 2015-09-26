@@ -245,6 +245,7 @@ Lunar<CLuaTradeContainer>::Register_t CLuaTradeContainer::methods[] =
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemSubId),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemCount),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getSlotCount),
+    LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemObj),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemQty),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getSlotQty),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,hasItemQty),

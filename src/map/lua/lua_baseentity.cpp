@@ -10181,6 +10181,7 @@ const int8 CLuaBaseEntity::className[] = "CBaseEntity";
 
 Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
 {
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,AddLinkPearl),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,ChangeMusic),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,warp),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,leavegame),
