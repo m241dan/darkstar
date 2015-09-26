@@ -53,7 +53,7 @@ STATESTATUS CMagicState::CastSpell(CSpell* PSpell, CBattleEntity* PTarget, uint8
 	m_PSpell = PSpell;
 	m_PTarget = PTarget;
 	m_flags = flags;
-    m_startPosition = m_PEntity->loc.p;
+        m_startPosition = m_PEntity->loc.p;
 
 	m_castTime = CalculateCastTime(PSpell);
 
@@ -671,7 +671,13 @@ void CMagicState::FinishSpell()
                 PTarget->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DAMAGE);
 
                 // Check for bind breaking
-                battleutils::BindBreakCheck(m_PEntity, PTarget);
+                uint16 spellID = m_PSpell->getID();
+                if( ( spellID >= 23 && spellID <= 27 ) || ( spellID >=230 && spellID <= 234 ) || ( spellID >= 278 && spellID <= 285 ) )
+                {
+                   spellID = 0; //there's gotta be a better way to do this LOL
+                }
+                else
+                   battleutils::BindBreakCheck(m_PEntity, PTarget);
             }
 
             if(msg == 0)
