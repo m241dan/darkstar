@@ -513,14 +513,18 @@ function mobAddBonuses(caster, spell, target, dmg, ele)
 
     dmg = math.floor(dmg * burst);
 
-        local equippedFeet = caster:getEquipID(SLOT_FEET);
-        local bonusAtk = 1;
+    local master = caster:getMaster();
+    local bonusAtk = 1;
+
+    if( master ~= nil ) then
+        local equippedFeet = master:getEquipID(SLOT_FEET);
   
         if( equippedFeet == 15146 ) then -- summoner's pigaches
-           bonusAtk = bonusAtk + .8;
+            bonusAtk = bonusAtk + .8;
         elseif( equippedFeet == 15679 ) then -- summoner's pigaches +1
-           bonusAtk = bonusAtk +.10;
+            bonusAtk = bonusAtk +.10;
         end
+    end
 
     mab = (100 + ( caster:getMod(MOD_MATT) * bonusAtk ) ) / (100 + target:getMod(MOD_MDEF)) ;
 

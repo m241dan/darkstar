@@ -6,11 +6,19 @@
 require("scripts/globals/titles");
 require("scripts/globals/status");
 
+
 -----------------------------------
 -- onMobInitialize Action
 -----------------------------------
-
 function onMobInitialize(mob)
+end;
+
+
+-----------------------------------
+-- onMobSpawn Action
+-----------------------------------
+
+function onMobSpawn(mob)
 end;
 
 -----------------------------------

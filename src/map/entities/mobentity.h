@@ -104,12 +104,12 @@ enum AGGRO : uint16
 
 enum BEHAVIOUR : uint16
 {
-	BEHAVIOUR_NONE				= 0x000,
-	BEHAVIOUR_NO_DESPAWN		= 0x001, // mob does not despawn on death
-	BEHAVIOUR_STANDBACK			= 0x002, // mob will standback forever
-	BEHAVIOUR_RAISABLE			= 0x004, // mob can be raised via Raise spells
-    BEHAVIOUR_NOHELP            = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
-	BEHAVIOUR_AGGRO_AMBUSH		= 0x200, // mob aggroes by ambush
+	BEHAVIOUR_NONE		    = 0x000,
+	BEHAVIOUR_NO_DESPAWN	    = 0x001, // mob does not despawn on death
+	BEHAVIOUR_STANDBACK	    = 0x002, // mob will standback forever
+	BEHAVIOUR_RAISABLE	    = 0x004, // mob can be raised via Raise spells
+        BEHAVIOUR_NOHELP            = 0x008, // mob can not be targeted by helpful magic from players (cure, protect, etc)
+	BEHAVIOUR_AGGRO_AMBUSH	    = 0x200, // mob aggroes by ambush
 	BEHAVIOUR_NO_TURN           = 0x400  // mob does not turn to face target
 };
 
@@ -142,7 +142,7 @@ public:
   uint8     m_specialFlags;             // flags for special skill
 
   bool      m_StatPoppedMobs;           // true if dyna statue has popped mobs
-  
+
   // stat ranks
   uint8     strRank;
   uint8     dexRank;
@@ -164,7 +164,7 @@ public:
   float     m_roamDistance;          // distance allowed to roam from spawn
 
   uint8     m_Type;                     // mob type
-  uint16	m_Aggro;					// mob aggro type
+  uint16    m_Aggro;					// mob aggro type
   uint8     m_Link;                     // link with mobs of it's family
   uint16    m_Behaviour;                // mob behaviour
   SPAWNTYPE m_SpawnType;                // condition for mob to spawn
@@ -174,7 +174,7 @@ public:
   bool      m_giveExp;                  // prevent exp gain
   bool      m_neutral;                  // stop linking / aggroing
 
-  position_t    m_SpawnPoint;           // spawn point of mob
+  position_t m_SpawnPoint;           // spawn point of mob
 
   uint8     m_Element;
   uint8     m_HiPCLvl;                  // Highest Level of Player Character that hit the Monster

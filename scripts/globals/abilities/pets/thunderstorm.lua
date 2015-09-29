@@ -4,6 +4,7 @@
 
 require("scripts/globals/settings");
 require("scripts/globals/status");
+package.loaded["scripts/globals/monstertpmoves"] = nil;
 require("scripts/globals/monstertpmoves");
 require("scripts/globals/magic");
 
