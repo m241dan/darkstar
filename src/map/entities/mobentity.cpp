@@ -303,7 +303,6 @@ bool CMobEntity::CanBeNeutral()
     return !(m_Type & MOBTYPE_NOTORIOUS);
 }
 
-<<<<<<< HEAD
 void CMobEntity::ChangeMJob(uint16 job)
 {
     this->SetMJob(job);
@@ -346,8 +345,6 @@ void CMobEntity::ChangeMJob(uint16 job)
     mobutils::CalculateStats(this);
 }
 
-=======
->>>>>>> 000280396270dc1e1753a9e9c3f4fbac5caf5ac0
 uint8 CMobEntity::TPUseChance()
 {
     auto& MobSkillList = battleutils::GetMobSkillList(getMobMod(MOBMOD_SKILL_LIST));

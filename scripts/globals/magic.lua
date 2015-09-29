@@ -321,92 +321,7 @@ end;
 -- The factor to multiply down damage (1/2 1/4 1/8 1/16) - In this format so this func can be used for enfeebs on duration.
 
 function applyResistance(player,spell,target,diff,skill,bonus)
-<<<<<<< HEAD
-
-    local magicaccbonus = 0;
-    local element = spell:getElement();
-    local castersWeather = player:getWeather();
-
-    if (bonus ~= nil) then
-        magicaccbonus = magicaccbonus + bonus;
-    end
-
-    if (skill == SINGING_SKILL and player:hasStatusEffect(EFFECT_TROUBADOUR)) then
-        if (math.random(0,99) < player:getMerit(MERIT_TROUBADOUR)-25) then
-            return 1.0;
-        end
-    end
-
-    local magicacc = 0;
-
-    --add bonus skill from singing wind/string
-    if( skill == SINGING_SKILL ) then
-       if( player:getWeaponSkillType(SLOT_RANGED) == SKILL_WND ) then
-          magicacc = magicacc + ( player:getSkillLevel(SKILL_WND) * .33 );
-       elseif( player:getWeaponSkillType(SLOT_RANGED) == SKILL_STR ) then
-          magicacc = magicacc + ( player:getSkillLevel(SKILL_STR) * .25 );
-       end
-    end    
-
-    if player:hasStatusEffect(EFFECT_ALTRUISM) and spell:getSpellGroup() == SPELLGROUP_WHITE then
-        magicacc = magicacc + player:getStatusEffect(EFFECT_ALTRUISM):getPower();
-    end
-	
-    if player:hasStatusEffect(EFFECT_FOCALIZATION) and spell:getSpellGroup() == SPELLGROUP_BLACK then
-        magicacc = magicacc + player:getStatusEffect(EFFECT_FOCALIZATION):getPower();
-    end
-    --difference in int/mnd
-	
-    if (diff > 10) then
-        magicacc = magicacc + 10 + (diff - 10)/2;
-    else
-        magicacc = magicacc + diff;
-    end
-
-    --Add acc for dark seal
-    if (player:getStatusEffect(EFFECT_DARK_SEAL) ~= nil and skill == DARK_MAGIC_SKILL) then
-        magicaccbonus = magicaccbonus + 256;
-    end
-	
-    --Add acc for klimaform
-    local castersWeather = player:getWeather();
-
-    if( player:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
-       if(castersWeather == singleWeatherStrong[element]) then
-          printf( "Weather 1.\r\n" );
-          magicaccbonus = magicaccbonus + 20;
-       elseif(castersWeather == doubleWeatherStrong[element]) then
-          printf( "Weather 2.\r\n" );
-          magicaccbonus = magicaccbonus + 30;
-       end
-    end
-
-    -- helix merits for scholar
-    if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
-       magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
-    end;
-
-    local skillchainTier, skillchainCount = FormMagicBurst(element, target);
-
-    --add acc for BLM AMII spells
-    if (spell:getID() == 205 or spell:getID() == 207 or spell:getID() == 209 or spell:getID() == 211 or spell:getID() == 213 or spell:getID() == 215) then
-        if (player:getMerit(blmAMIIMerit[spell:getElement()]) ~= 0) then -- no bonus if the caster has zero merit investment - don't want to give them a negative bonus
-            magicaccbonus = magicaccbonus + (player:getMerit(blmAMIIMerit[spell:getElement()]) - 1) * 5; -- bonus value granted by merit is 1; subtract 1 since unlock doesn't give an accuracy bonus
-            -- print((player:getMerit(blmAMIIMerit[spell:getElement()]) - 1) * 5)
-        end
-    end
-    
-    --add acc for skillchains
-    if (skillchainTier > 0) then
-        magicaccbonus = magicaccbonus + 25;
-    end
-
-    local p = getMagicHitRate(player, target, skill, element, magicacc, magicaccbonus);
-
-    return getMagicResist(p);
-=======
     return applyResistanceEffect(player, spell, target, diff, skill, bonus, nil);
->>>>>>> 000280396270dc1e1753a9e9c3f4fbac5caf5ac0
 end;
 
 -- USED FOR Status Effect Enfeebs (blind, slow, para, etc.)
@@ -482,6 +397,13 @@ function getMagicHitRate(caster, target, skillType, element, percentBonus, bonus
 
     if (skillType ~= 0) then
         magicacc = magicacc + caster:getSkillLevel(skillType) + caster:getMod(79 + skillType);
+        if( skillType == SINGING_SKILL ) then
+            if( caster:getWeaponSkillType(SLOT_RANGED) == SKILL_WND ) then
+                magicacc = magicacc + ( ( caster:getSkillLevel(SKILL_WND) + caster:getMod(79 + SKILL_WND) ) * .33 );
+            elseif( caster:getWeaponSkillType(SLOT_RANGED) == SKILL_STR ) then
+                magicacc = magicacc + ( ( caster:getSkillLevel(SKILL_STR) + caster:getMod(79 + SKILL_STR) ) * .25 );
+            end
+        end    
     else
         -- for mob skills / additional effects which don't have a skill
         magicacc = magicacc + utils.getSkillLvl(1, caster:getMainLvl());
@@ -493,21 +415,7 @@ function getMagicHitRate(caster, target, skillType, element, percentBonus, bonus
 
         -- Add acc for staves
         local affinityBonus = AffinityBonus(caster, element);
-<<<<<<< HEAD
-        minorBonus = minorBonus + (affinityBonus-1) * 200;
-    end
-
-    --add acc for RDM group 1 merits
-    if ( element > 0 and element <= 6) then
-        minorBonus = minorBonus + caster:getMerit(rdmMerit[element]);
-    end
-
-    -- BLU mag acc merits - nuke acc is handled in bluemagic.lua
-    if (skill == BLUE_SKILL) then
-        minorBonus = minorBonus + caster:getMerit(MERIT_MAGICAL_ACCURACY);
-=======
         bonusAcc = bonusAcc + (affinityBonus-1) * 200;
->>>>>>> 000280396270dc1e1753a9e9c3f4fbac5caf5ac0
     end
 
     -- Base magic evasion (base magic evasion plus resistances(players), plus elemental defense(mobs)
@@ -646,9 +554,19 @@ function getSpellBonusAcc(caster, target, spell)
     end
 
     --Add acc for klimaform
-    if (caster:hasStatusEffect(EFFECT_KLIMAFORM) and (castersWeather == singleWeatherStrong[element] or castersWeather == doubleWeatherStrong[element])) then
-        magicAccBonus = magicAccBonus + 15;
+    local castersWeather = player:getWeather();
+
+    if( player:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
+       if(castersWeather == singleWeatherStrong[element]) then
+          magicaccbonus = magicaccbonus + 20;
+       elseif(castersWeather == doubleWeatherStrong[element]) then
+          magicaccbonus = magicaccbonus + 30;
+       end
     end
+    -- helix merits for scholar
+    if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+       magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
+    end;
 
     --Add acc for dark seal
     if (skill == DARK_MAGIC_SKILL and caster:hasStatusEffect(EFFECT_DARK_SEAL)) then
