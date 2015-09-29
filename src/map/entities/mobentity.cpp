@@ -89,7 +89,6 @@ CMobEntity::CMobEntity()
     m_bcnmID = 0;
 
     m_maxRoamDistance = 10.0f;
-    m_roamDistance = 5.0f;
     m_disableScent = false;
 
     setMobMod(MOBMOD_SIGHT_RANGE, MOB_SIGHT_RANGE);
@@ -304,6 +303,7 @@ bool CMobEntity::CanBeNeutral()
     return !(m_Type & MOBTYPE_NOTORIOUS);
 }
 
+<<<<<<< HEAD
 void CMobEntity::ChangeMJob(uint16 job)
 {
     this->SetMJob(job);
@@ -346,6 +346,8 @@ void CMobEntity::ChangeMJob(uint16 job)
     mobutils::CalculateStats(this);
 }
 
+=======
+>>>>>>> 000280396270dc1e1753a9e9c3f4fbac5caf5ac0
 uint8 CMobEntity::TPUseChance()
 {
     auto& MobSkillList = battleutils::GetMobSkillList(getMobMod(MOBMOD_SKILL_LIST));
@@ -523,4 +525,14 @@ void CMobEntity::UpdateEntity()
         loc.zone->PushPacket(this, CHAR_INRANGE, new CEntityUpdatePacket(this, ENTITY_UPDATE, updatemask));
         updatemask = 0;
     }
+}
+
+float CMobEntity::GetRoamDistance()
+{
+    return (float)getMobMod(MOBMOD_ROAM_DISTANCE) / 10.0f;
+}
+
+float CMobEntity::GetRoamRate()
+{
+    return (float)getMobMod(MOBMOD_ROAM_RATE) / 10.0f;
 }
