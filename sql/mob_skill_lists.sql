@@ -238,21 +238,21 @@ INSERT INTO `mob_skill_lists` VALUES ('',273,468);
 -- Aqrabuamelu
 INSERT INTO `mob_skill_lists` VALUES ('',402,93);
 
+-- DynamisStatue-Goblin
+INSERT INTO `mob_skill_lists` VALUES ('',92,858);
+INSERT INTO `mob_skill_lists` VALUES ('',92,859);
+
 -- DynamisStatue-Orc
 INSERT INTO `mob_skill_lists` VALUES ('',93,854);
 INSERT INTO `mob_skill_lists` VALUES ('',93,855);
 
--- DynamisStatue-Yagudo
-INSERT INTO `mob_skill_lists` VALUES ('',95,854);
-INSERT INTO `mob_skill_lists` VALUES ('',95,857);
-
--- DynamisStatue-Goblin
-INSERT INTO `mob_skill_lists` VALUES ('',92,854);
-INSERT INTO `mob_skill_lists` VALUES ('',92,859);
-
 -- DynamisStatue-Quadav
-INSERT INTO `mob_skill_lists` VALUES ('',94,854);
+INSERT INTO `mob_skill_lists` VALUES ('',94,860);
 INSERT INTO `mob_skill_lists` VALUES ('',94,861);
+
+-- DynamisStatue-Yagudo
+INSERT INTO `mob_skill_lists` VALUES ('',95,856);
+INSERT INTO `mob_skill_lists` VALUES ('',95,857);
 
 -- Dynamis Lord
 INSERT INTO `mob_skill_lists` VALUES ('',361,871);
@@ -836,6 +836,14 @@ INSERT INTO `mob_skill_lists` VALUES ('',334,479);
 -- right hand
 INSERT INTO `mob_skill_lists` VALUES ('',334,439);
 
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,808);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,377);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,353);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,352);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,351);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,349);
+INSERT INTO `mob_skill_lists` VALUES ('Orc DRG',713,350);
+
 -- INSERT INTO `mob_skill_lists` VALUES ('',810,?);
 -- INSERT INTO `mob_skill_lists` VALUES ('',2155,?,?);
 
@@ -921,8 +929,13 @@ INSERT INTO `mob_skill_lists` VALUES ('',360,362);
 INSERT INTO `mob_skill_lists` VALUES ('',360,363);
 INSERT INTO `mob_skill_lists` VALUES ('',360,364);
 
--- Yagudo (Dynamis)
--- INSERT INTO `mob_skill_lists` VALUES ('',?,?,?);
+-- Yagudo Dynamis NM
+INSERT INTO `mob_skill_lists` VALUES ('',710,361);
+INSERT INTO `mob_skill_lists` VALUES ('',710,377);
+INSERT INTO `mob_skill_lists` VALUES ('',710,362);
+INSERT INTO `mob_skill_lists` VALUES ('',710,363);
+INSERT INTO `mob_skill_lists` VALUES ('',710,364);
+INSERT INTO `mob_skill_lists` VALUES ('',710,811);
 
 -- Yagudo (WoTG)
 -- INSERT INTO `mob_skill_lists` VALUES ('',1949,?);
@@ -1092,6 +1105,12 @@ INSERT INTO `mob_skill_lists` VALUES ('',213,515);
 INSERT INTO `mob_skill_lists` VALUES ('',213,521);
 INSERT INTO `mob_skill_lists` VALUES ('',213,524);
 INSERT INTO `mob_skill_lists` VALUES ('',213,518);
+
+INSERT INTO `mob_skill_lists` VALUES ('Sahagin DRG',712,514);
+INSERT INTO `mob_skill_lists` VALUES ('Sahagin DRG',712,515);
+INSERT INTO `mob_skill_lists` VALUES ('Sahagin DRG',712,521);
+INSERT INTO `mob_skill_lists` VALUES ('Sahagin DRG',712,524);
+INSERT INTO `mob_skill_lists` VALUES ('Sahagin DRG',712,518);
 
 -- Tonberries
 INSERT INTO `mob_skill_lists` VALUES ('',243,527);
