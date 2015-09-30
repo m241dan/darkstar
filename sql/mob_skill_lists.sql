@@ -1158,7 +1158,6 @@ INSERT INTO `mob_skill_lists` VALUES ('',281,541);
 INSERT INTO `mob_skill_lists` VALUES ('',281,542);
 INSERT INTO `mob_skill_lists` VALUES ('',281,543);
 INSERT INTO `mob_skill_lists` VALUES ('',281,544);
-INSERT INTO `mob_skill_lists` VALUES ('',281,545);
 INSERT INTO `mob_skill_lists` VALUES ('',281,546);
 INSERT INTO `mob_skill_lists` VALUES ('',281,547);
 INSERT INTO `mob_skill_lists` VALUES ('',281,478);
