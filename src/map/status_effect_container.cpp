@@ -35,6 +35,7 @@ When a status effect is gained twice on a player. It can do one or more of the f
 #include "../common/timer.h"
 
 #include <string.h>
+#include <array>
 
 #include "lua/luautils.h"
 
@@ -96,7 +97,7 @@ namespace effects
         uint32    MinDuration;
     };
 
-    EffectParams_t EffectsParams[MAX_EFFECTID];
+    std::array<EffectParams_t, MAX_EFFECTID> EffectsParams;
 
     /************************************************************************
     *                                                                       *
@@ -1128,7 +1129,7 @@ void CStatusEffectContainer::SetEffectParams(CStatusEffect* StatusEffect)
 
 
     //todo: find a better place to put this?
-    if(m_POwner->PBattleAI->IsInSleepableAction())
+    if(m_POwner->PBattleAI != nullptr && m_POwner->PBattleAI->IsInSleepableAction())
     {
         // this should actually go into a char charm AI
         if(m_POwner->PPet != nullptr && m_POwner->objtype == TYPE_PC)
