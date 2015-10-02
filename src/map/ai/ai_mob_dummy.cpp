@@ -228,6 +228,11 @@ void CAIMobDummy::ActionRoaming()
             {
                 // I spawned a pet
             }
+            else if (m_PMob->GetMJob() == JOB_SMN && CanCastSpells() && m_PMob->SpellContainer->HasBuffSpells() && m_Tick >= m_LastMagicTime + m_PMob->getBigMobMod(MOBMOD_MAGIC_COOL))
+            {
+                // summon pet
+                CastSpell(m_PMob->SpellContainer->GetBuffSpell());
+            }
             else if (CanCastSpells() && dsprand::GetRandomNumber(10) < 3 && m_PMob->SpellContainer->HasBuffSpells())
             {
                 // cast buff
@@ -339,6 +344,11 @@ void CAIMobDummy::ActionEngage()
 void CAIMobDummy::ActionDisengage()
 {
     m_PPathFind->Clear();
+
+    if (m_PMob->getMobMod(MOBMOD_IDLE_DESPAWN))
+    {
+        m_PMob->SetDespawnTimer(m_PMob->getMobMod(MOBMOD_IDLE_DESPAWN));
+    }
 
     // this will let me decide to walk home or despawn
     m_LastActionTime = m_Tick - m_PMob->getBigMobMod(MOBMOD_ROAM_COOL) + MOB_NEUTRAL_TIME;
@@ -570,7 +580,16 @@ void CAIMobDummy::ActionFadeOut()
         if (m_PMob->PMaster != nullptr && m_PMob->PMaster->objtype == TYPE_MOB)
         {
             CAIMobDummy* PBattleAI = (CAIMobDummy*)m_PMob->PMaster->PBattleAI;
-            PBattleAI->m_LastSpecialTime = m_Tick - dsprand::GetRandomNumber(10000);
+
+            if (m_PMob->PMaster->GetMJob() == JOB_SMN)
+            {
+                PBattleAI->m_LastMagicTime = m_Tick - dsprand::GetRandomNumber(10000);
+            }
+            else
+            {
+                // Handle bst / pup / drg
+                PBattleAI->m_LastSpecialTime = m_Tick - dsprand::GetRandomNumber(10000);
+            }
         }
 
         m_LastActionTime = m_Tick;
@@ -608,9 +627,14 @@ void CAIMobDummy::ActionSpawn()
     {
         m_NeutralTime = m_Tick;
         m_PMob->m_neutral = true;
-        m_LastActionTime = m_Tick + dsprand::GetRandomNumber(2000,10000);
+
+        // Force mob to roam / cast spell right on spawn
+        m_LastActionTime = 0;
+        m_LastSpecialTime = 0;
+        m_LastMagicTime = 0;
+        m_LastMobSkillTime = 0;
         m_SpawnTime = m_Tick;
-        m_LastMobSkillTime = m_Tick;
+
         m_firstSpell = true;
         m_ActionType = ACTION_ROAMING;
         m_PBattleTarget = nullptr;
@@ -685,12 +709,6 @@ void CAIMobDummy::ActionSpawn()
             }
         }
 
-        // used for dynamis stat-spawned mobs
-        if (m_PMob->loc.zone->GetType() == ZONETYPE_DYNAMIS)
-        {
-            m_PMob->m_StatPoppedMobs = false;
-        }
-        
         luautils::OnMobSpawn( m_PMob );
     }
 }
@@ -2023,9 +2041,13 @@ bool CAIMobDummy::CanCastSpells()
     }
 
     // smn can only cast spells if it has an existing pet
-    if (m_PMob->GetMJob() == JOB_SMN && m_PMob->PPet == nullptr)
+    if (m_PMob->GetMJob() == JOB_SMN)
     {
-        return false;
+        if(m_PMob->PPet == nullptr ||
+                !m_PMob->PPet->isDead())
+        {
+            return false;
+        }
     }
 
     return true;

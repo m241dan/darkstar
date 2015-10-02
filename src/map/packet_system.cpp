@@ -257,10 +257,13 @@ void SmallPacket0x00A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
         const int8* fmtQuery = "UPDATE accounts_sessions SET targid = %u, session_key = x'%s', server_addr = %u, client_port = %u WHERE charid = %u";
 
+        // Current zone could either be current zone or destination
+        CZone* currentZone = zoneutils::GetZone(PChar->getZone());
+
         Sql_Query(SqlHandle, fmtQuery,
             PChar->targid,
             session_key,
-            PChar->loc.zone->GetIP(),
+            currentZone->GetIP(),
             session->client_port,
             PChar->id);
 
@@ -604,6 +607,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     {
     case 0x00: // trigger
     {
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         if (PChar->m_Costum != 0 || PChar->animation == ANIMATION_SYNTH)
         {
             PChar->pushPacket(new CReleasePacket(PChar, RELEASE_STANDARD));
@@ -631,6 +637,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     break;
     case 0x02: // attack
     {
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         if (PChar->isDead() == false)
         {
             PChar->PBattleAI->SetCurrentAction(ACTION_ENGAGE, TargID);
@@ -650,6 +659,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         uint16 SpellID = RBUFW(data, (0x0C));
         if (!charutils::hasSpell(PChar, SpellID))
             return;
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         PChar->PBattleAI->SetCurrentSpell(SpellID);
         PChar->PBattleAI->SetCurrentAction(ACTION_MAGIC_START, TargID);
     }
@@ -661,6 +673,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     break;
     case 0x05: // call for help
     {
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         for (SpawnIDList_t::iterator it = PChar->SpawnMOBList.begin(); it != PChar->SpawnMOBList.end(); ++it)
         {
             CMobEntity* MOB = (CMobEntity*)it->second;
@@ -682,6 +697,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         uint16 WSkillID = RBUFW(data, (0x0C));
         if (!charutils::hasWeaponSkill(PChar, WSkillID))
             return;
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         PChar->PBattleAI->SetCurrentWeaponSkill(WSkillID);
         PChar->PBattleAI->SetCurrentAction(ACTION_WEAPONSKILL_START, TargID);
     }
@@ -691,6 +709,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         uint16 JobAbilityID = RBUFW(data, (0x0C));
         if ((JobAbilityID < 496 && !charutils::hasAbility(PChar, JobAbilityID - 16)) || JobAbilityID >= 496 && !charutils::hasPetAbility(PChar, JobAbilityID - 512))
             return;
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         PChar->PBattleAI->SetCurrentJobAbility(JobAbilityID - 16);
         PChar->PBattleAI->SetCurrentAction(ACTION_JOBABILITY_START, TargID);
     }
@@ -752,6 +773,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     break;
     case 0x0E: // Fishing
     {
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         fishingutils::StartFishing(PChar);
     }
     break;
@@ -762,6 +786,9 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     break;
     case 0x10: // rangedattack
     {
+        if(PChar->StatusEffectContainer->HasPreventActionEffect())
+            return;
+
         PChar->PBattleAI->SetCurrentAction(ACTION_RANGED_START, TargID);
     }
     break;
@@ -4565,6 +4592,9 @@ void SmallPacket0x0E7(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     if (PChar->status != STATUS_NORMAL)
         return;
 
+    if(PChar->StatusEffectContainer->HasPreventActionEffect())
+        return;
+
     if (PChar->m_moghouseID ||
         PChar->nameflags.flags & FLAG_GM ||
         PChar->m_GMlevel > 0)
@@ -4610,16 +4640,13 @@ void SmallPacket0x0E8(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     if (PChar->status != STATUS_NORMAL)
         return;
 
+    if(PChar->StatusEffectContainer->HasPreventActionEffect())
+        return;
+
     switch (PChar->animation)
     {
     case ANIMATION_NONE:
     {
-        // cannot rest while stunned, slept etc
-        if (PChar->StatusEffectContainer->HasPreventActionEffect())
-        {
-            return;
-        }
-
         if (PChar->PPet == nullptr ||
             (PChar->PPet->m_EcoSystem != SYSTEM_AVATAR &&
             PChar->PPet->m_EcoSystem != SYSTEM_ELEMENTAL))
@@ -4659,6 +4686,9 @@ void SmallPacket0x0E8(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 void SmallPacket0x0EA(map_session_data_t* session, CCharEntity* PChar, CBasicPacket data)
 {
     if (PChar->status != STATUS_NORMAL)
+        return;
+
+    if(PChar->StatusEffectContainer->HasPreventActionEffect())
         return;
 
     PChar->animation = (PChar->animation == ANIMATION_SIT ? ANIMATION_NONE : ANIMATION_SIT);
