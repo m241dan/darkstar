@@ -17,5 +17,5 @@ function onTrigger(player)
     mob = GetMobByID(targ);
     if( mob == nil ) then return; end
 
-    player:PrintToPlayer( string.format( "%s's water def %d and water res %d", mob:getName(), mob:getMod( MOD_BINDRES ), mob:getMod( MOD_DARKRES ) ), 0xE);
+    player:PrintToPlayer( string.format( "Lightning Res = %d and Lightning Def = %d",  mob:getMod( MOD_THUNDERRES ), mob:getMod( MOD_THUNDERDEF ) ) );
 end;

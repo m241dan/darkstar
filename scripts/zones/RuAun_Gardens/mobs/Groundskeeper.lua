@@ -37,5 +37,4 @@ function onMobDeath(mob,killer)
             end
         end
     end
-
 end;

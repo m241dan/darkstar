@@ -108,6 +108,8 @@ UPDATE `mob_droplist` SET rate=11 WHERE itemid=1450 OR itemid=1453 or itemid=145
 
 -- eraser
 UPDATE `mob_groups` SET HP=4600, MP=2000, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6927;
+UPDATE `mob_pools` SET mobType=2 WHERE name='Eraser';
 
 -- skahnowa
 UPDATE `mob_groups` SET HP=4600, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6865;
+UPDATE `mob_pools` SET mobType=2 WHERE name='Skahnowa';
