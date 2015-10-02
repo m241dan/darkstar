@@ -102,3 +102,6 @@ INSERT INTO `mob_droplist` VALUES (5508,0,4111,1000);
 INSERT INTO `mob_droplist` VALUES (5508,0,4111,400);
 INSERT INTO `mob_droplist` VALUES (5508,0,4111,150);
 INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
+
+-- dynamis coin
+UPDATE `mob_droplist` SET rate=11 WHERE itemid=1450 OR itemid=1453 or itemid=1456;

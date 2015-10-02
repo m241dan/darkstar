@@ -554,18 +554,18 @@ function getSpellBonusAcc(caster, target, spell)
     end
 
     --Add acc for klimaform
-    local castersWeather = player:getWeather();
+    local castersWeather = caster:getWeather();
 
-    if( player:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
+    if( caster:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
        if(castersWeather == singleWeatherStrong[element]) then
-          magicaccbonus = magicaccbonus + 20;
+          magicAccBonus = magicAccBonus + 20;
        elseif(castersWeather == doubleWeatherStrong[element]) then
-          magicaccbonus = magicaccbonus + 30;
+          magicAccBonus = magicAccBonus + 30;
        end
     end
     -- helix merits for scholar
-    if(player:getMainJob() == JOB_SCH and player:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
-       magicaccbonus = magicaccbonus + (player:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
+    if(caster:getMainJob() == JOB_SCH and caster:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+       magicAccBonus = magicAccBonus + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
     end;
 
     --Add acc for dark seal
