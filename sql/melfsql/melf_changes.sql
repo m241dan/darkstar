@@ -105,3 +105,9 @@ INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
 
 -- dynamis coin
 UPDATE `mob_droplist` SET rate=11 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
+
+-- eraser
+UPDATE `mob_groups` SET HP=4600, MP=2000, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6927;
+
+-- skahnowa
+UPDATE `mob_groups` SET HP=4600, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6865;

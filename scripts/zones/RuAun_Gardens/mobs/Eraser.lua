@@ -28,7 +28,7 @@ function onMobSpawn(mob)
    mob:addMod( MOD_SILENCERES, 100 );
    mob:addMod( MOD_INT, 10 );
    mob:addMod( MOD_MND, 5 );
-   mob:setMobMod( MOBMOD_MAGIC_COOL, 10 );
+   mob:setMobMod( MOBMOD_MAGIC_COOL, 30 );
 
 
    -- job specific mods
