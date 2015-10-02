@@ -2,7 +2,7 @@
 -- Area: Ifrit's Cauldron
 -- NPC:  qm1 (???) 
 -- Notes: Used to spawn Tarasque
--- @pos 125.983 18 166.093 0
+-- @pos 126 18 166 0
 -----------------------------------
 package.loaded["scripts/zones/Ifrits_Cauldron/TextIDs"] = nil;
 -----------------------------------
@@ -27,7 +27,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	player:messageSpecial(NOTHING_OUT_OF_ORDINARY);
+	player:messageSpecial(EGGSHELLS_LIE_SCATTERED);
 end;
 
 -----------------------------------

@@ -420,7 +420,7 @@ namespace battleutils
                 case JOB_SAM: id = 764; break;
                 case JOB_NIN: id = 765; break;
                 case JOB_DRG: id = 766; break;
-                // case JOB_SMN: id = 767; break;
+                case JOB_SMN: id = 767; break;
             }
 
             return GetMobSkill(id);
@@ -444,6 +444,37 @@ namespace battleutils
                               // Yagudo has it's own version
                               id = 865;
                           }
+                          else if(familyId == 169 || familyId == 358)
+                          {
+                              // Kindred has it's own version
+                              id = 895;
+                          }
+                          else if (familyId == 133 || familyId == 327)
+                          {
+                              // Goblin
+                              id = 479;
+                          }
+                          else if (familyId == 25)
+                          {
+                              // Antica
+                              id = 480;
+                          }
+                          else if (familyId == 189 || familyId == 334)
+                          {
+                              // Orc
+                              id = 481;
+                          }
+                          else if (familyId == 115 || familyId == 359 || familyId == 221
+                                  || familyId == 222 || familyId == 223)
+                          {
+                              // Fomor / Shadow
+                              id = 482;
+                          }
+                          else if (familyId == 328 || familyId >= 126 && familyId <= 130)
+                          {
+                              // Giga
+                              id = 483;
+                          }
                           else if(familyId == 337 || familyId == 200 || familyId == 201
                                   || familyId == 202)
                           {
@@ -458,7 +489,7 @@ namespace battleutils
             case JOB_SAM: id = 474; break;
             case JOB_NIN: id = 475; break;
             case JOB_DRG: id = 476; break;
-                // case JOB_SMN: id = 478; break;  // alt 2000
+            case JOB_SMN: id = 2000; break;  // alt 2000
                 // case JOB_BLU: id = 1933; break; // alt 2001
                 // case JOB_COR: id = 1934; break; // alt 2002
                 // case JOB_PUP: id = 1935; break; // alt 2003
@@ -5010,6 +5041,34 @@ uint8 GetSpellAoEType(CBattleEntity* PCaster, CSpell* PSpell)
                 }
             }
         }
+    }
+
+    bool HasClaim(CBattleEntity* PEntity, CBattleEntity* PTarget)
+    {
+        DSP_DEBUG_BREAK_IF(PTarget == nullptr);
+        CBattleEntity* PMaster = PEntity;
+
+        if (PEntity->PMaster != nullptr)
+        {
+            PMaster = PEntity->PMaster;
+        }
+
+        if (PTarget->m_OwnerID.id == 0 || PTarget->m_OwnerID.id == PMaster->id || PTarget->objtype == TYPE_PC ||
+                PTarget->objtype == TYPE_PET)
+        {
+            return true;
+        }
+
+        bool found = false;
+
+        PMaster->ForAlliance([&PTarget, &found](CBattleEntity* PChar){
+                if (PChar->id == PTarget->m_OwnerID.id)
+                {
+                    found = true;
+                }
+                });
+
+        return found;
     }
 
 };

@@ -51,9 +51,10 @@ INSERT INTO `mob_family_mods` VALUES (193,3,40,1);
 INSERT INTO `mob_family_mods` VALUES (34,3,100,1);
 INSERT INTO `mob_family_mods` VALUES (267,4,20,1);
 INSERT INTO `mob_family_mods` VALUES (87,4,18,1);
+INSERT INTO `mob_family_mods` VALUES (87,5,10,1);
+INSERT INTO `mob_family_mods` VALUES (87,3,10,1);
 
 -- Define sublinks
-INSERT INTO `mob_family_mods` VALUES (87,5,10,1);
 INSERT INTO `mob_family_mods` VALUES (240,10,1,1);
 INSERT INTO `mob_family_mods` VALUES (169,10,1,1);
 INSERT INTO `mob_family_mods` VALUES (358,10,1,1);
@@ -125,11 +126,11 @@ INSERT INTO `mob_family_mods` VALUES (175,389,-128,0);
 INSERT INTO `mob_family_mods` VALUES (171,389,-32,0);
 
 -- Demons and fomors are highly resistant to lullaby
-INSERT INTO `mob_family_mods` VALUES (358,254,100,0);
-INSERT INTO `mob_family_mods` VALUES (169,254,100,0);
-INSERT INTO `mob_family_mods` VALUES (115,254,100,0);
-INSERT INTO `mob_family_mods` VALUES (359,254,100,0);
-INSERT INTO `mob_family_mods` VALUES (359,240,100,0);
+INSERT INTO `mob_family_mods` VALUES (358,254,25,0);
+INSERT INTO `mob_family_mods` VALUES (169,254,25,0);
+INSERT INTO `mob_family_mods` VALUES (115,254,25,0);
+INSERT INTO `mob_family_mods` VALUES (359,254,25,0);
+INSERT INTO `mob_family_mods` VALUES (359,240,25,0);
 
 -- Immunities
 INSERT INTO `mob_family_mods` VALUES (92,23,2047,1);
@@ -561,6 +562,52 @@ INSERT INTO `mob_family_mods` VALUES (190,@roam_rate,30,1);
 INSERT INTO `mob_family_mods` VALUES (59,@roam_cool,50,1);
 INSERT INTO `mob_family_mods` VALUES (59,@roam_rate,30,1);
 INSERT INTO `mob_family_mods` VALUES (59,@roam_turns,2,1);
+
+INSERT INTO `mob_family_mods` VALUES (126,54,18,1);
+INSERT INTO `mob_family_mods` VALUES (127,54,18,1);
+INSERT INTO `mob_family_mods` VALUES (128,54,18,1);
+INSERT INTO `mob_family_mods` VALUES (129,54,18,1);
+INSERT INTO `mob_family_mods` VALUES (130,54,18,1);
+INSERT INTO `mob_family_mods` VALUES (328,54,18,1);
+
+INSERT INTO `mob_family_mods` VALUES (169,54,12,1);
+INSERT INTO `mob_family_mods` VALUES (358,54,12,1);
+
+INSERT INTO `mob_family_mods` VALUES (87,54,100,1);
+INSERT INTO `mob_family_mods` VALUES (115,54,10,1);
+INSERT INTO `mob_family_mods` VALUES (359,54,10,1);
+
+-- All animated weapons have MP
+INSERT INTO `mob_family_mods` VALUES (7,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (8,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (9,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (11,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (12,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (13,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (14,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (15,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (16,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (17,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (18,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (19,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (20,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (21,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (23,3,50,1);
+INSERT INTO `mob_family_mods` VALUES (24,3,50,1);
+
+-- Family defense multiplier
+INSERT INTO `mob_family_mods` VALUES (26,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (357,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (58,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (57,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (208,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (2,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (180,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (245,63,20,0);
+INSERT INTO `mob_family_mods` VALUES (59,63,20,0);
+
+-- Sahagins have 50% dmg reduction to water
+INSERT INTO `mob_family_mods` VALUES (213,20,128,0);
 
 /*!40000 ALTER TABLE `mob_family_mods` ENABLE KEYS */;
 UNLOCK TABLES;
