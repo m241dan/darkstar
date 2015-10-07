@@ -89,7 +89,7 @@ aug_chances = { 100, 75, 55, 30 };
 -- Skahnowa || Eraser --
 
 general_pool = {
-                 { 512, 0, 1 }, -- +1 stats
+                 { 512, 0, 1 }, -- +2 stats
                  { 513, 0, 1 },
                  { 514, 0, 1 },
                  { 515, 0, 1 },
@@ -98,34 +98,39 @@ general_pool = {
                  { 518, 0, 1 },
                  { 1, 0, 14  }, -- HP 1-15
                  { 9, 0, 14  }, -- MP 1-15
+}
 
 one_time_pool = {
-                  { 512, 0, 2 }, -- stat +2
-                  { 513, 0, 2 },
-                  { 514, 0, 2 },
-                  { 515, 0, 2 },
-                  { 516, 0, 2 },
-                  { 517, 0, 2 },
-                  { 518, 0, 2 },
+                  { 512, 0, 1 }, -- stat +2
+                  { 513, 0, 1 },
+                  { 514, 0, 1 },
+                  { 515, 0, 1 },
+                  { 516, 0, 1 },
+                  { 517, 0, 1 },
+                  { 518, 0, 1 },
                   { 18,  0, 0 }, -- hp mp +33
                   { 134, 0, 2 }, -- magic defense
                   { 133, 0, 1 }, -- magic atk bonus
                   { 23,  0, 4 }, -- acc
                   { 25,  0, 4 }, -- attack
-                  { 31,  0, 9 }} -- evasion
+                  { 31,  0, 9 }, -- evasion
+}
  
-mob_specific_pool = {}
+mob_specific_pool = {};
 -- skahnowa
-mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
+mob_specific_pool[17301593] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 35, 0, 2  }, -- magic acc
                                 { 323, 0, 2 }, -- Cure Casting Time
                                 { 329, 0, 2 }, -- cure potency
                                 { 57, 0, 1  }, -- magic crit chance
                                 { 335, 0, 4 }, -- magic crit dmg
-                                { 343, 0, 4 }, -- Drain + Aspir potency
+                                { 343, 0, 9 }, -- Drain + Aspir potency
                                 { 141, 0, 1 }, -- conserve mp
                                 { 40, 0, 2  }, -- -enmity
-                                { 140, 0, 0 }} -- fast cast
+                                { 140, 0, 0 }, -- fast cast
+			        { 108, 0, 1 }, -- pet: magic acc +1 magic atk +1
+                                { 122, 0, 4 }, -- pet: tp bonus 20
+}
 
 -- eraser
 mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
@@ -139,7 +144,11 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 153, 0, 0 }, -- shield mastery
                                 { 211, 0, 0 }, -- snapshot
                                 { 39, 0, 2  }, -- +enmity
-                                { 330, 0, 2 }} -- waltz potency
+                                { 330, 0, 2 }, -- waltz potency
+                                { 109, 0, 1 }, -- pet: dbl atk +1 crit +1
+                                { 122, 0, 4 }, -- pet: tp bonus 20
+}
+
 item_pool = {};
 item_pool[1]  = { { 33, 0, 9  }, -- Def armor
                       { 31, 0, 9  }, -- Evasion
@@ -336,6 +345,7 @@ function onFieldParchmentTrigger(npc, player)
    local mobSpecificPool = mob_specific_pool[npc:getID()];
    local selectedAugs = {};
    local augPool = { [1] = {}, [2] = {}, [3] = {}, [4] = {} };
+   local itemObj = GetItemPtrByID( player:getVar( string.format( "%dItemTraded", npc:getID() ) ) );
    -- setup the general pool --
 
    for i,v in ipairs( general_pool ) do
@@ -366,6 +376,9 @@ function onFieldParchmentTrigger(npc, player)
             augval = aug[2];
          else
             augval = math.random(aug[2], aug[3]);
+         end
+         if( itemObj:getAHCat() == 24 or itemObj:getAHCat() == 25 or itemObj:getAHCat() == 15 ) then
+            augval = augval / 2
          end
          if( selectedAugs[aug[1]] ~= nil ) then
             selectedAugs[aug[1]] = selectedAugs[aug[1]] + augval; 
