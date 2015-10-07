@@ -88,68 +88,41 @@ aug_chances = { 100, 75, 55, 30 };
 
 -- Skahnowa || Eraser --
 
-general_pool = { { 768, 0, 4 }, -- resistances
-                 { 769, 0, 4 },
-                 { 770, 0, 4 },
-                 { 771, 0, 4 },
-                 { 772, 0, 4 },
-                 { 773, 0, 4 },
-                 { 774, 0, 4 },
-                 { 775, 0, 4 },
-                 { 512, 0, 0 }, -- +1 stats
-                 { 513, 0, 0 },
-                 { 514, 0, 0 },
-                 { 515, 0, 0 },
-                 { 516, 0, 0 },
-                 { 517, 0, 0 },
-                 { 518, 0, 0 },
+general_pool = {
+                 { 512, 0, 1 }, -- +1 stats
+                 { 513, 0, 1 },
+                 { 514, 0, 1 },
+                 { 515, 0, 1 },
+                 { 516, 0, 1 },
+                 { 517, 0, 1 },
+                 { 518, 0, 1 },
                  { 1, 0, 14  }, -- HP 1-15
                  { 9, 0, 14  }, -- MP 1-15
-                 { 21, 0, 29 }, -- -HP, +HP 
-                 { 19, 0, 9  }} -- +HP, - MP
 
-one_time_pool = { { 176, 0, 4 }, --resists
-                  { 177, 0, 4 },
-                  { 178, 0, 4 },
-                  { 179, 0, 4 },
-                  { 180, 0, 4 },
-                  { 181, 0, 4 },
-                  { 182, 0, 4 },
-                  { 183, 0, 4 },
-                  { 184, 0, 4 },
-                  { 185, 0, 4 },
-                  { 186, 0, 4 },
-                  { 187, 0, 4 },
-                  { 188, 0, 4 },
-                  { 512, 1, 1 }, -- stat +2
-                  { 513, 1, 1 },
-                  { 514, 1, 1 },
-                  { 515, 1, 1 },
-                  { 516, 1, 1 },
-                  { 517, 1, 1 },
-                  { 518, 1, 1 },
-                  { 796, 1, 4 }, -- all res
+one_time_pool = {
+                  { 512, 0, 2 }, -- stat +2
+                  { 513, 0, 2 },
+                  { 514, 0, 2 },
+                  { 515, 0, 2 },
+                  { 516, 0, 2 },
+                  { 517, 0, 2 },
+                  { 518, 0, 2 },
                   { 18,  0, 0 }, -- hp mp +33
-                  { 134, 0, 1 }, -- magic defense
-                  { 133, 0, 0 }, -- magic atk bonus
-                  { 23,  0, 2 }, -- acc
+                  { 134, 0, 2 }, -- magic defense
+                  { 133, 0, 1 }, -- magic atk bonus
+                  { 23,  0, 4 }, -- acc
                   { 25,  0, 4 }, -- attack
-                  { 31,  0, 7 }} -- evasion
+                  { 31,  0, 9 }} -- evasion
  
 mob_specific_pool = {}
 -- skahnowa
 mob_specific_pool[17301590] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 35, 0, 2  }, -- magic acc
                                 { 323, 0, 2 }, -- Cure Casting Time
-                                { 330, 0, 2 }, -- waltz potency
                                 { 329, 0, 2 }, -- cure potency
                                 { 57, 0, 1  }, -- magic crit chance
                                 { 335, 0, 4 }, -- magic crit dmg
                                 { 343, 0, 4 }, -- Drain + Aspir potency
-                                { 556, 0, 0 }, -- +1int +1mnd +1 chr
-                                { 543, 0, 1 }, -- +1 int -mnd -chr
-                                { 546, 0, 1 }, -- +mnd -chr -int
-                                { 549, 0, 1 }, -- +chr, -int,-mnd
                                 { 141, 0, 1 }, -- conserve mp
                                 { 40, 0, 2  }, -- -enmity
                                 { 140, 0, 0 }} -- fast cast
@@ -159,21 +132,14 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 23, 0, 4  }, -- acc
                                 { 41, 0, 0  }, -- crit chance
                                 { 328, 0, 2 }, -- crit hit dmg
-                                { 42,  0, 0 }, -- enemy crit -1
                                 { 143, 0, 0 }, -- double atk
                                 { 146, 0, 1 }, -- dual wield
                                 { 139, 0, 0 }, -- rapid shot
                                 { 145, 0, 0 }, -- coutner
                                 { 153, 0, 0 }, -- shield mastery
                                 { 211, 0, 0 }, -- snapshot
-                                { 550, 0, 0 }, -- +1 str +1 dex
-                                { 551, 0, 0 }, -- +1 str +1 vit
-                                { 552, 0, 0 }, -- +1 str +1 agi
-                                { 526, 0, 1 }, -- +str -vit -dex
-                                { 532, 0, 1 }, -- +vit - -
-                                { 529, 0, 1 }, -- +dex - -
                                 { 39, 0, 2  }, -- +enmity
-                                { 535, 0, 2 }} -- +agi
+                                { 330, 0, 2 }} -- waltz potency
 item_pool = {};
 item_pool[1]  = { { 33, 0, 9  }, -- Def armor
                       { 31, 0, 9  }, -- Evasion
@@ -350,11 +316,12 @@ function onFieldParchmentTrade(npc, player, trade)
    player:tradeComplete();
    player:setVar( string.format("%dlasttrade", npc:getID()), os.time(t) + ( 3600 * 3 ) );
    -- spawn proper mob
-   if( npc:getID() == 17301590 ) then
+   if( npc:getID() == 17301593 ) then
       SpawnMob(17301539):updateClaim(player)
    elseif( npc:getID() == 17310106 ) then
       SpawnMob(17309984):updateClaim(player)
    end
+
    npc:setStatus(2);
 end;
 

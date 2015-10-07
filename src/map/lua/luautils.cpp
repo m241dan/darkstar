@@ -68,6 +68,7 @@
 #include "../packets/entity_visual.h"
 #include "../items/item_puppet.h"
 #include "../entities/automatonentity.h"
+#include "../utils/itemutils.h"
 
 namespace luautils
 {
@@ -89,6 +90,7 @@ namespace luautils
         luaL_openlibs(LuaHandle);
 
         lua_register(LuaHandle, "print", luautils::print);
+        lua_register(LuaHandle, "GetItemPtrByID", luautils::GetItemPtrByID);
         lua_register(LuaHandle, "GetNPCByID", luautils::GetNPCByID);
         lua_register(LuaHandle, "GetMobByID", luautils::GetMobByID);
         lua_register(LuaHandle, "GetMobIDByJob", luautils::GetMobIDByJob);
@@ -256,11 +258,37 @@ namespace luautils
         return 1;
     }
 
+
     /************************************************************************
     *                                                                       *
     *                                                                       *
     *                                                                       *
     ************************************************************************/
+
+    int32 GetItemPtrByID(lua_State *L)
+    {
+        if( !lua_isnil( L, 1 ) && lua_isnumber(L, 1 ) )
+        {
+            CItem *pItem;
+
+            if( ( pItem = itemutils::GetItemPointer( lua_tonumber( L, 1 ) ) ) == nullptr )
+            {
+                lua_pushnil( L );
+            }
+            else
+            {
+                lua_getglobal(L, CLuaItem::className);
+                lua_pushstring(L,"new");
+                lua_gettable(L,-2);
+                lua_insert(L,-2);
+                lua_pushlightuserdata(L,(void*)pItem);
+                lua_pcall(L,2,1,0);
+            }
+            return 1;
+        }
+        lua_pushnil( L );
+        return 1;
+    }
 
     int32 GetNPCByID(lua_State* L)
     {

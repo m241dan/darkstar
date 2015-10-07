@@ -59,5 +59,5 @@ function onMobDeath(mob,killer)
 end;
 
 function onMobDespawn(mob, killer)
-   GetNPCByID(17301590):setStatus(0);
+   GetNPCByID(17301593):setStatus(0);
 end;
