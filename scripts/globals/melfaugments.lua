@@ -84,7 +84,7 @@ augmentable_items[16265] = { { 9, 1, 4   }, -- wivre gorget, wiki order
                              { 41, 0, 1  },
                              { 772, 2, 3 } };
 
-aug_chances = { 100, 75, 55, 30 };
+aug_chances = { 100, 70, 50, 20 };
 
 -- Skahnowa || Eraser --
 
@@ -129,7 +129,7 @@ mob_specific_pool[17301593] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 40, 0, 2  }, -- -enmity
                                 { 140, 0, 0 }, -- fast cast
 			        { 108, 0, 1 }, -- pet: magic acc +1 magic atk +1
-                                { 122, 0, 4 }, -- pet: tp bonus 20
+                                { 122, 0, 1 }, -- pet: tp bonus 20
 }
 
 -- eraser
@@ -146,7 +146,7 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 39, 0, 2  }, -- +enmity
                                 { 330, 0, 2 }, -- waltz potency
                                 { 109, 0, 1 }, -- pet: dbl atk +1 crit +1
-                                { 122, 0, 4 }, -- pet: tp bonus 20
+                                { 122, 0, 1 }, -- pet: tp bonus 20
 }
 
 item_pool = {};
