@@ -84,7 +84,11 @@ enum MOBMODIFIER : int
     MOBMOD_ROAM_RATE      = 52, // Roaming frequency. roam_cool - rand(roam_cool / (roam_rate / 10))
     MOBMOD_BEHAVIOR       = 53, // Add behaviors to mob
     MOBMOD_GIL_BONUS      = 54, // Multipler to gil dropped by mob divided by 10
-    MOBMOD_IDLE_DESPAWN   = 55  // Time (in seconds) to despawn after being idle
+    MOBMOD_IDLE_DESPAWN   = 55, // Time (in seconds) to despawn after being idle
+    MOBMOD_NO_STANDBACK   = 56, // Mob will never standback
+    MOBMOD_MAGIC_DELAY    = 57, // Amount of seconds mob waits before casting first spell
+    MOBMOD_SPECIAL_DELAY  = 58, // Amount of seconds mob waits before using first special
+    MOBMOD_WEAPON_BONUS   = 59  // Add a bonus percentage to mob weapon damage ( bonus / 100 )
 };
 
 #endif

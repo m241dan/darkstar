@@ -152,8 +152,7 @@ void CAIMobDummy::ActionRoaming()
     }
     else if (m_PMob->GetDespawnTimer() > 0 && m_PMob->GetDespawnTimer() < m_Tick)
     {
-        m_LastActionTime = m_Tick - 12000;
-        m_PMob->PBattleAI->SetCurrentAction(ACTION_DEATH);
+        Despawn();
         return;
     }
 
@@ -180,6 +179,11 @@ void CAIMobDummy::ActionRoaming()
     {
         // lets buff up or move around
 
+        if (m_PMob->CalledForHelp())
+        {
+            m_PMob->CallForHelp(false);
+        }
+
         // can't rest with poison or disease
         if (m_PMob->CanRest())
         {
@@ -189,7 +193,8 @@ void CAIMobDummy::ActionRoaming()
                 // health updated
                 m_PMob->updatemask |= UPDATE_HP;
             }
-            else
+
+            if(m_PMob->GetHPP() == 100)
             {
                 // at max health undirty exp
                 m_PMob->m_giveExp = true;
@@ -214,8 +219,7 @@ void CAIMobDummy::ActionRoaming()
             }
             else
             {
-                // despawn
-                m_ActionType = ACTION_DEATH;
+                Despawn();
                 return;
             }
         }
@@ -362,7 +366,6 @@ void CAIMobDummy::ActionDisengage()
     m_PMob->delRageMode();
     m_PMob->m_OwnerID.clean();
     m_PMob->updatemask |= (UPDATE_STATUS | UPDATE_HP);
-    m_PMob->CallForHelp(false);
     m_PMob->animation = ANIMATION_NONE;
 
     //if (m_PMob->animationsub == 2) m_PMob->animationsub = 3;
@@ -388,12 +391,14 @@ void CAIMobDummy::ActionFall()
     m_LastActionTime = m_Tick;
     m_PMob->animation = ANIMATION_DEATH;
 
-    // my pet should fall as well
-    if (m_PMob->PPet != nullptr && !m_PMob->PPet->isDead() && m_PMob->GetMJob() == JOB_SMN)
+    // pets always die with master
+    if (m_PMob->PPet != nullptr && m_PMob->PPet->isAlive() && m_PMob->GetMJob() == JOB_SMN)
     {
         m_PMob->PPet->health.hp = 0;
         m_PMob->PPet->PBattleAI->SetCurrentAction(ACTION_FALL);
+        m_PMob->PPet->updatemask |= (UPDATE_STATUS | UPDATE_HP);
     }
+
 }
 
 /************************************************************************
@@ -650,6 +655,7 @@ void CAIMobDummy::ActionSpawn()
         m_PMob->status = m_PMob->allegiance == ALLEGIANCE_MOB ? STATUS_MOB : STATUS_NORMAL;
         m_PMob->animation = ANIMATION_NONE;
         m_PMob->HideName(false);
+        m_PMob->CallForHelp(false);
         m_PMob->ResetLocalVars();
 
         m_PMob->PEnmityContainer->Clear();
@@ -1580,12 +1586,13 @@ void CAIMobDummy::ActionAttack()
                     return;
                 }
             }
-            else if (!(m_PMob->m_Behaviour & BEHAVIOUR_STANDBACK && currentDistance < 20) &&
-                    !(m_PMob->m_Behaviour & BEHAVIOUR_HP_STANDBACK && currentDistance < 20 && m_PMob->GetHPP() > 70) &&
-                !(m_PMob->getMobMod(MOBMOD_SPAWN_LEASH) > 0 && distance(m_PMob->loc.p, m_PMob->m_SpawnPoint) > m_PMob->getMobMod(MOBMOD_SPAWN_LEASH)))
+            else if (CanMoveForward(currentDistance))
             {
 
-                m_PPathFind->PathAround(m_PBattleTarget->loc.p, 2.0f, PATHFLAG_WALLHACK | PATHFLAG_RUN);
+                // stand around an enemy between 1-2 yalms away
+                float distanceFromTarget = dsp_cap(currentDistance, 1.0f, 2.0f);
+
+                m_PPathFind->PathAround(m_PBattleTarget->loc.p, distanceFromTarget, PATHFLAG_WALLHACK | PATHFLAG_RUN | PATHFLAG_SLIDE);
                 m_PPathFind->FollowPath();
 
                 // recalculate
@@ -1980,7 +1987,7 @@ void CAIMobDummy::TryLink()
     // Avatars defend masters by attacking mobs if the avatar isn't attacking anything currently (bodyguard behaviour)
     if (m_PBattleTarget->PPet != nullptr && m_PBattleTarget->PPet->PBattleAI->GetBattleTarget()==nullptr)
     {
-        if (((CPetEntity*)m_PBattleTarget->PPet)->getPetType()==PETTYPE_AVATAR)
+        if (m_PBattleTarget->PPet->objtype == TYPE_PET && ((CPetEntity*)m_PBattleTarget->PPet)->getPetType()==PETTYPE_AVATAR)
         {
             m_PBattleTarget->PPet->PBattleAI->SetBattleTarget(m_PMob);
         }
@@ -2040,7 +2047,7 @@ bool CAIMobDummy::CanCastSpells()
         return false;
     }
 
-    // smn can only cast spells if it has an existing pet
+    // smn can only cast spells if it has no pet
     if (m_PMob->GetMJob() == JOB_SMN)
     {
         if(m_PMob->PPet == nullptr ||
@@ -2423,6 +2430,20 @@ void CAIMobDummy::SetupEngage()
     m_StartBattle = m_Tick;
     m_DeaggroTime = m_Tick;
     m_LastActionTime = m_Tick - 1000; // Why do we subtract 1 sec?
+
+    JOBTYPE mJob = m_PMob->GetMJob();
+
+    // Don't cast magic or use special ability right away
+    if(m_PMob->getBigMobMod(MOBMOD_MAGIC_DELAY) != 0)
+    {
+        m_LastMagicTime = m_Tick - m_PMob->getBigMobMod(MOBMOD_MAGIC_COOL) + dsprand::GetRandomNumber(m_PMob->getBigMobMod(MOBMOD_MAGIC_DELAY));
+    }
+
+    if(m_PMob->getBigMobMod(MOBMOD_SPECIAL_DELAY) != 0)
+    {
+        m_LastSpecialTime = m_Tick - m_PMob->getBigMobMod(MOBMOD_SPECIAL_COOL) + dsprand::GetRandomNumber(m_PMob->getBigMobMod(MOBMOD_SPECIAL_DELAY));
+    }
+
     m_firstSpell = true;
     m_PPathFind->Clear();
 
@@ -2611,4 +2632,43 @@ void CAIMobDummy::OnTick()
     {
         luautils::OnMobFight(m_PMob, m_PBattleTarget);
     }
+}
+
+void CAIMobDummy::Despawn()
+{
+    // Despawn instantly
+    m_LastActionTime = m_Tick - 12000;
+    m_PMob->PBattleAI->SetCurrentAction(ACTION_DEATH);
+
+    if (m_PMob->PPet != nullptr && m_PMob->PPet->isAlive() && m_PMob->PPet->PBattleAI != nullptr && m_PMob->GetMJob() == JOB_SMN)
+    {
+        CAIMobDummy* ai = (CAIMobDummy*)m_PMob->PPet->PBattleAI;
+        ai->Despawn();
+    }
+}
+
+bool CAIMobDummy::CanMoveForward(float currentDistance)
+{
+    if(m_PMob->m_Behaviour & BEHAVIOUR_STANDBACK && currentDistance < 20)
+    {
+        return false;
+    }
+
+    if(m_PMob->m_Behaviour & BEHAVIOUR_HP_STANDBACK && currentDistance < 20 && m_PMob->GetHPP() > 70)
+    {
+        // Excluding Nins, mobs should not standback if can't cast magic
+        if (m_PMob->GetMJob() != JOB_NIN && m_PMob->SpellContainer->HasSpells() && !CanCastSpells())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    if(m_PMob->getMobMod(MOBMOD_SPAWN_LEASH) > 0 && distance(m_PMob->loc.p, m_PMob->m_SpawnPoint) > m_PMob->getMobMod(MOBMOD_SPAWN_LEASH))
+    {
+        return false;
+    }
+
+    return true;
 }

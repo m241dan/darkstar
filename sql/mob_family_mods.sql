@@ -167,7 +167,7 @@ INSERT INTO `mob_family_mods` VALUES (405,@roam_cool,35,1);
 INSERT INTO `mob_family_mods` VALUES (405,@roam_rate,30,1);
 
 -- Sheep
-INSERT INTO `mob_family_mods` VALUES (226,@roam_turns,4,1);
+INSERT INTO `mob_family_mods` VALUES (226,@roam_turns,5,1);
 INSERT INTO `mob_family_mods` VALUES (226,@roam_distance,15,1);
 INSERT INTO `mob_family_mods` VALUES (226,@roam_cool,60,1);
 INSERT INTO `mob_family_mods` VALUES (226,@roam_rate,30,1);
@@ -312,7 +312,8 @@ INSERT INTO `mob_family_mods` VALUES (479,@roam_cool,50,1);
 INSERT INTO `mob_family_mods` VALUES (51,@roam_cool,50,1);
 
 INSERT INTO `mob_family_mods` VALUES (57,@roam_cool,50,1);
-INSERT INTO `mob_family_mods` VALUES (57,@roam_turns,2,1);
+INSERT INTO `mob_family_mods` VALUES (57,@roam_turns,4,1);
+INSERT INTO `mob_family_mods` VALUES (57,@roam_rate,30,1);
 
 INSERT INTO `mob_family_mods` VALUES (62,@roam_cool,50,1);
 
@@ -330,8 +331,8 @@ INSERT INTO `mob_family_mods` VALUES (208,@roam_rate,30,1);
 INSERT INTO `mob_family_mods` VALUES (2,@roam_cool,50,1);
 INSERT INTO `mob_family_mods` VALUES (2,@roam_rate,30,1);
 
-INSERT INTO `mob_family_mods` VALUES (58,@roam_cool,30,1);
-INSERT INTO `mob_family_mods` VALUES (58,@roam_turns,2,1);
+INSERT INTO `mob_family_mods` VALUES (58,@roam_cool,45,1);
+INSERT INTO `mob_family_mods` VALUES (58,@roam_turns,3,1);
 INSERT INTO `mob_family_mods` VALUES (58,@roam_rate,30,1);
 
 INSERT INTO `mob_family_mods` VALUES (98,@roam_cool,50,1);
@@ -608,6 +609,57 @@ INSERT INTO `mob_family_mods` VALUES (59,63,20,0);
 
 -- Sahagins have 50% dmg reduction to water
 INSERT INTO `mob_family_mods` VALUES (213,20,128,0);
+
+-- Never standback
+INSERT INTO `mob_family_mods` VALUES (32,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (33,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (34,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (35,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (36,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (37,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (38,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (39,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (40,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (41,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (42,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (43,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (44,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (45,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (495,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (92,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (93,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (94,56,1,1);
+INSERT INTO `mob_family_mods` VALUES (95,56,1,1);
+
+-- Weapon bonus damage
+INSERT INTO `mob_family_mods` VALUES (57,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (58,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (59,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (79,59,110,1);
+INSERT INTO `mob_family_mods` VALUES (80,59,110,1);
+INSERT INTO `mob_family_mods` VALUES (81,59,115,1);
+INSERT INTO `mob_family_mods` VALUES (265,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (266,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (267,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (268,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (87,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (136,59,145,1);
+INSERT INTO `mob_family_mods` VALUES (179,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (217,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (208,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (210,59,110,1);
+INSERT INTO `mob_family_mods` VALUES (242,59,110,1);
+INSERT INTO `mob_family_mods` VALUES (240,59,120,1);
+
+INSERT INTO `mob_family_mods` VALUES (259,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (260,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (261,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (262,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (263,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (264,59,125,1);
+INSERT INTO `mob_family_mods` VALUES (169,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (358,59,120,1);
+INSERT INTO `mob_family_mods` VALUES (371,59,125,1);
 
 /*!40000 ALTER TABLE `mob_family_mods` ENABLE KEYS */;
 UNLOCK TABLES;
