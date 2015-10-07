@@ -52,10 +52,40 @@ namespace mobutils
 
 uint16 GetWeaponDamage(CMobEntity* PMob)
 {
-	float MainLevel = PMob->GetMLevel();
-    return (uint16)(MainLevel * ((float)PMob->m_dmgMult / 100.0f) * (MainLevel < 40 ? 1.4 - MainLevel / 100 : 1));
+    uint16 lvl = PMob->GetMLevel();
+    uint8 bonus = 0;
+
+    if (lvl >= 75)
+    {
+        bonus = 3;
+    }
+    else if (lvl >= 60)
+    {
+        bonus = 2;
+    }
+    else if (lvl >= 50)
+    {
+        bonus = 1;
+    }
+
+    uint16 damage = lvl + bonus;
+
+    damage *= (float)PMob->m_dmgMult / 100.0f;
+
+    if (PMob->getMobMod(MOBMOD_WEAPON_BONUS) != 0)
+    {
+        damage *= (float)PMob->getMobMod(MOBMOD_WEAPON_BONUS) / 100.0f;
+    }
+
+    return damage;
 }
 
+uint16 GetMagicEvasion(CMobEntity* PMob)
+{
+    uint8 mEvaRank = 3;
+
+    return GetBase(PMob, mEvaRank);
+}
 /************************************************************************
 *																		*
 *  Базовое значение для расчера характеристик							*
@@ -420,23 +450,8 @@ void CalculateStats(CMobEntity * PMob)
     PMob->addModifier(MOD_ATT, GetBase(PMob,PMob->attRank));
     PMob->addModifier(MOD_ACC, GetBase(PMob,PMob->accRank));
 
-    uint8 mEvaRank = 7;
-
-    if(mLvl > 50)
-    {
-        mEvaRank = 4;
-    }
-    else if(mLvl > 35)
-    {
-        mEvaRank = 5;
-    }
-    else if(mLvl > 25)
-    {
-        mEvaRank = 6;
-    }
-
     //natural magic evasion
-    PMob->addModifier(MOD_MEVA, GetBase(PMob, mEvaRank));
+    PMob->addModifier(MOD_MEVA, GetMagicEvasion(PMob));
 
     // add traits for sub and main
     battleutils::AddTraits(PMob, traits::GetTraits(mJob), mLvl);
@@ -444,6 +459,11 @@ void CalculateStats(CMobEntity * PMob)
 
     SetupJob(PMob);
     SetupRoaming(PMob);
+
+    if (PMob->PMaster != nullptr)
+    {
+        SetupPetSkills(PMob);
+    }
 
     PMob->m_Behaviour |= PMob->getMobMod(MOBMOD_BEHAVIOR);
 
@@ -517,7 +537,10 @@ void SetupJob(CMobEntity* PMob)
                 PMob->defaultMobMod(MOBMOD_STANDBACK_COOL, 8);
             }
 
-            PMob->m_Behaviour |= BEHAVIOUR_HP_STANDBACK;
+            if(PMob->getMobMod(MOBMOD_NO_STANDBACK) == 0)
+            {
+                PMob->m_Behaviour |= BEHAVIOUR_HP_STANDBACK;
+            }
 
             break;
         case JOB_NIN:
@@ -525,7 +548,12 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_SPECIAL_SKILL, 16);
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 20);
-            PMob->m_Behaviour |= BEHAVIOUR_HP_STANDBACK;
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
+
+            if(PMob->getMobMod(MOBMOD_NO_STANDBACK) == 0)
+            {
+                PMob->m_Behaviour |= BEHAVIOUR_HP_STANDBACK;
+            }
             break;
         case JOB_BST:
             PMob->defaultMobMod(MOBMOD_SPECIAL_COOL, 70);
@@ -541,24 +569,33 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_GA_CHANCE, 40);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 15);
 
-            if (PMob->m_EcoSystem != SYSTEM_AVATAR)
+            if(PMob->getMobMod(MOBMOD_NO_STANDBACK) == 0)
             {
                 PMob->m_Behaviour |= BEHAVIOUR_HP_STANDBACK;
             }
             break;
+        case JOB_PLD:
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
+            break;
+        case JOB_DRK:
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
+            break;
         case JOB_WHM:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
             break;
         case JOB_BRD:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_GA_CHANCE, 25);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 60);
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
         case JOB_BLU:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
         case JOB_RDM:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_GA_CHANCE, 15);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 40);
+            PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
         case JOB_SMN:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 70);
             // smn only has "buffs"
@@ -602,6 +639,42 @@ void SetupRoaming(CMobEntity* PMob)
 
 }
 
+void SetupPetSkills(CMobEntity* PMob)
+{
+    int16 skillListId = 0;
+    // same mob can spawn as different families
+    // can't set this from the database
+    switch(PMob->m_Family)
+    {
+        case 383: // ifrit
+            skillListId = 715;
+            break;
+        case 388: // titan
+            skillListId = 716;
+            break;
+        case 384: // levi
+            skillListId = 717;
+            break;
+        case 382: //garuda
+            skillListId = 718;
+            break;
+        case 387: // shiva
+            skillListId = 719;
+            break;
+        case 386: // ramuh
+            skillListId = 720;
+            break;
+        case 379: // carbuncle
+            skillListId = 721;
+            break;
+    }
+
+    if (skillListId != 0)
+    {
+        PMob->setMobMod(MOBMOD_SKILL_LIST, skillListId);
+    }
+}
+
 void SetupDynamisMob(CMobEntity* PMob)
 {
     JOBTYPE mJob = PMob->GetMJob();
@@ -632,6 +705,10 @@ void SetupDynamisMob(CMobEntity* PMob)
         PMob->setMobMod(MOBMOD_MAIN_2HOUR, 1);
     }
 
+    // boost dynamis mobs weapon damage
+    PMob->setMobMod(MOBMOD_WEAPON_BONUS, 135);
+    PMob->m_Weapons[SLOT_MAIN]->setDamage(GetWeaponDamage(PMob));
+
     // never despawn
     PMob->SetDespawnTimer(0);
     PMob->setMobMod(MOBMOD_NO_DESPAWN, 1);
@@ -660,6 +737,7 @@ void SetupBattlefieldMob(CMobEntity* PMob)
 
     // Battlefield mobs don't drop gil
     PMob->setMobMod(MOBMOD_GIL_MAX, -1);
+    PMob->setMobMod(MOBMOD_MUG_GIL, -1);
 
     // never despawn
     PMob->SetDespawnTimer(0);
@@ -734,6 +812,7 @@ void SetupNMMob(CMobEntity* PMob)
 
 void SetupMaat(CMobEntity* PMob)
 {
+    // Should swing normally when not a mnk
     PMob->m_Weapons[SLOT_MAIN]->setDelay((240*1000)/60);
 
     switch(PMob->GetMJob()){
@@ -747,6 +826,7 @@ void SetupMaat(CMobEntity* PMob)
             // Give shield bash
             PMob->setMobMod(MOBMOD_SPECIAL_SKILL, 780);
             PMob->setMobMod(MOBMOD_SPECIAL_COOL, 50);
+            PMob->setMobMod(MOBMOD_SPECIAL_DELAY, 40);
             break;
         case JOB_BST:
             // Call beast skill
@@ -786,7 +866,7 @@ void GetAvailableSpells(CMobEntity* PMob) {
 	PMob->defaultMobMod(MOBMOD_NA_CHANCE, 40);
 	PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 35);
 	PMob->defaultMobMod(MOBMOD_HEAL_CHANCE, 40);
-	PMob->defaultMobMod(MOBMOD_HP_HEAL_CHANCE, 25);
+	PMob->defaultMobMod(MOBMOD_HP_HEAL_CHANCE, 40);
 
 	RecalculateSpellContainer(PMob);
 
@@ -805,23 +885,20 @@ void SetSpellList(CMobEntity* PMob, uint16 spellList)
 
 void InitializeMob(CMobEntity* PMob, CZone* PZone)
 {
-	// add special mob mods
+    // add special mob mods
 
     // this only has to be added once
     AddCustomMods(PMob);
 
-	// do not despawn if I match this criteria
-	if(MOB_NO_DESPAWN)
-	{
-		PMob->setMobMod(MOBMOD_NO_DESPAWN, 1);
-	}
+    PMob->m_Immunity |= PMob->getMobMod(MOBMOD_IMMUNITY);
 
-	PMob->m_Immunity |= PMob->getMobMod(MOBMOD_IMMUNITY);
+    PMob->defaultMobMod(MOBMOD_SKILL_LIST, PMob->m_MobSkillList);
+    PMob->defaultMobMod(MOBMOD_LINK_RADIUS, 10);
+    PMob->defaultMobMod(MOBMOD_TP_USE_CHANCE, 30);
+    PMob->defaultMobMod(MOBMOD_2HOUR_PROC, 60);
+    PMob->defaultMobMod(MOBMOD_SIGHT_RANGE, MOB_SIGHT_RANGE);
+    PMob->defaultMobMod(MOBMOD_SOUND_RANGE, MOB_SOUND_RANGE);
 
-	PMob->defaultMobMod(MOBMOD_SKILL_LIST, PMob->m_MobSkillList);
-	PMob->defaultMobMod(MOBMOD_LINK_RADIUS, MOB_LINK_RADIUS);
-	PMob->defaultMobMod(MOBMOD_TP_USE_CHANCE, MOB_TP_USE_CHANCE);
-	PMob->defaultMobMod(MOBMOD_2HOUR_PROC, 60);
 
     // Killer Effect
     switch (PMob->m_EcoSystem)

@@ -139,7 +139,7 @@ void CAIPetDummy::ActionAbilityStart()
                 for (auto&& skillid : MobSkills)
                 {
                     auto PMobSkill = battleutils::GetMobSkill(skillid);
-                    if (PMobSkill && luautils::OnMobSkillCheck(m_PBattleTarget, m_PPet, PMobSkill) != 0)
+                    if (PMobSkill && luautils::OnMobSkillCheck(m_PBattleTarget, m_PPet, PMobSkill) == 0)
                     {
                         SetCurrentMobSkill(PMobSkill);
                         break;
@@ -497,18 +497,10 @@ void CAIPetDummy::ActionAbilityFinish() {
     m_PMobSkill->setTotalTargets(totalTargets);
     m_PMobSkill->setTP(m_skillTP);
 
-    uint16 animationId;
-    if (m_PPet->getPetType() == PETTYPE_AVATAR)
-    {
-        // TODO: this is totally a hack
-        // override mob animation ids with valid pet animation id
-        // pets need their own skills
-        animationId = m_PMobSkill->getAvatarAnimationID();
-    }
-    else
-    {
-        animationId = m_PMobSkill->getAnimationID();
-    }
+    // TODO: this is totally a hack
+    // override mob animation ids with valid pet animation id
+    // pets need their own skills
+    uint16 animationId = m_PMobSkill->getPetAnimationID();
 
     apAction_t Action;
     Action.ActionTarget = nullptr;

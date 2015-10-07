@@ -24,7 +24,7 @@
 #ifndef _MOBENTITY_H
 #define _MOBENTITY_H
 
-#include <map>
+#include <unordered_map>
 #include "battleentity.h"
 #include "../enmity_container.h"
 #include "../utils/mobutils.h"
@@ -36,12 +36,9 @@
 // forward declaration
 class CMobSpellContainer;
 
-// this will make mobs walk back to spawn point instead of despawning
-#define MOB_NO_DESPAWN false
+#define MOB_ROAM_HOME_DISTANCE 30
 #define MOB_SOUND_RANGE 8
 #define MOB_SIGHT_RANGE 15
-#define MOB_LINK_RADIUS 10
-#define MOB_TP_USE_CHANCE 30      // 30% chance to use tp if over 100
 
 enum SPAWNTYPE
 {
@@ -252,8 +249,8 @@ private:
 
   bool      m_RageMode;                              // Mode rage
   uint32    m_DespawnTimer;                          // Despawn Timer to despawn mob after set duration
-  std::map<int, int16>     m_mobModStat;
-  std::map<int, int16>     m_mobModStatSave;
+  std::unordered_map<int, int16>     m_mobModStat;
+  std::unordered_map<int, int16>     m_mobModStatSave;
 };
 
 #endif

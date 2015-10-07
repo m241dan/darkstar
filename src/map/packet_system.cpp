@@ -125,6 +125,7 @@ This file is part of DarkStar-server source code.
 #include "packets/server_message.h"
 #include "packets/shop_appraise.h"
 #include "packets/shop_buy.h"
+#include "packets/status_effects.h"
 #include "packets/stop_downloading.h"
 #include "packets/synth_suggestion.h"
 #include "packets/trade_action.h"
@@ -1601,7 +1602,7 @@ void SmallPacket0x04D(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         uint32 quantity = RBUFL(data, (0x08));
         CItem* PItem = PChar->getStorage(LOC_INVENTORY)->GetItem(invslot);
 
-        if (PItem && PItem->getQuantity() >= quantity && PChar->UContainer->IsSlotEmpty(slotID))
+        if (quantity > 0 && PItem && PItem->getQuantity() >= quantity && PChar->UContainer->IsSlotEmpty(slotID))
         {
             int32 ret = Sql_Query(SqlHandle, "SELECT charid, accid FROM chars WHERE charname = '%s' LIMIT 1;", data[0x10]);
             if (ret != SQL_ERROR && Sql_NumRows(SqlHandle) > 0 && Sql_NextRow(SqlHandle) == SQL_SUCCESS)
@@ -2818,6 +2819,7 @@ void SmallPacket0x061(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     PChar->pushPacket(new CMenuMeritPacket(PChar));
     PChar->pushPacket(new CCharJobExtraPacket(PChar, true));
     PChar->pushPacket(new CCharJobExtraPacket(PChar, false));
+    PChar->pushPacket(new CStatusEffectPacket(PChar));
 
     return;
 }

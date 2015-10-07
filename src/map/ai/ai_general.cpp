@@ -493,7 +493,6 @@ bool CAIGeneral::IsInSleepableAction()
     switch(GetCurrentAction())
     {
         case ACTION_FALL:
-        case ACTION_NONE:
         case ACTION_DROPITEMS:
         case ACTION_DEATH:
         case ACTION_FADE_OUT:
