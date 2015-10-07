@@ -12,7 +12,7 @@ UPDATE mob_pool_mods SET value=50 WHERE poolid=2840; -- nerf nidhogg regain
 UPDATE mob_family_system SET ATT=2, DEF=2, ACC=2, EVA=2 WHERE familyid=263; -- buff nidhogg att, def, eva and acc
 
 -- tiamat family
-UPDATE mob_family_system SET Lightning=1.25, CHR=7, mob_family_system.INT=4 WHERE familyid=393;
+UPDATE mob_family_system SET Lightning=1.20, CHR=7, mob_family_system.INT=4 WHERE familyid=393;
 
 -- adamantoise changes
 UPDATE mob_family_system SET DEF=1 WHERE family='Adamantoise'; -- buff ada's family def

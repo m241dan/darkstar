@@ -14,12 +14,12 @@ require("scripts/globals/missions");
 
 function onItemCheck(target)
    local leader = target:getPartyLeader();
-   local leaderZone = GetPlayerByName( leader ):getZoneID();
+   local leaderRegion = GetPlayerByName( leader ):getZone():getRegionID();
    local ZilartProgress = target:getCurrentMission(ZILART)
 
    -- sky check
-   if( leaderZone == 130 or ( leaderZone >= 177 and leaderZone <= 181 ) ) then
-      if( ZilartProgress < THE_GATE_OF_THE_GODS or ZilartProgress == 256 ) then
+   if( leaderRegion == 16 or leaderRegion == 23 ) then
+      if( ZilartProgress < THE_GATE_OF_THE_GODS or ZilartProgress == 255 ) then
          return 56;
       end
    end

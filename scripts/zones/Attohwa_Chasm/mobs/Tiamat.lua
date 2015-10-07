@@ -19,6 +19,11 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
+   mob:addMod( MOD_INT, 20 );
+   mob:addMod( MOD_SILENCERES, 50 );
+   mob:setLocalVar( "changetime", 0 );
+   mob:setLocalVar( "twohourTime", 0 );
+--   mob:setLocalVar( "changeHP", 0 ):
 end;
 
 -----------------------------------
