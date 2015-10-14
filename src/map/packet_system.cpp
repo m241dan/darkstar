@@ -1799,7 +1799,7 @@ void SmallPacket0x04D(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             return;
 
         uint8 received_items = 0;
-        int32 ret;
+        int32 ret = SQL_ERROR;
 
         if (boxtype == 0x01)
         {
@@ -1951,6 +1951,8 @@ void SmallPacket0x04D(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             bool commit = false; // When in doubt back it out.
 
             CItem* PItem = PChar->UContainer->GetItem(slotID);
+            auto item_id = PItem->getID();
+            auto quantity = PItem->getQuantity();
             uint32 senderID = 0;
             string_t senderName;
 
@@ -2005,7 +2007,7 @@ void SmallPacket0x04D(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 if (!commit || !Sql_TransactionCommit(SqlHandle))
                 {
                     Sql_TransactionRollback(SqlHandle);
-                    ShowError("Could not finalize delivery return transaction. PlayerID: %d SenderID :%d ItemID: %d Quantity: %d", PChar->id, senderID, PItem->getID(), PItem->getQuantity());
+                    ShowError("Could not finalize delivery return transaction. PlayerID: %d SenderID :%d ItemID: %d Quantity: %d", PChar->id, senderID, item_id, quantity);
                     PChar->pushPacket(new CDeliveryBoxPacket(action, boxtype, PItem, slotID, PChar->UContainer->GetItemsCount(), 0xEB));
                 }
 
@@ -2505,7 +2507,7 @@ void SmallPacket0x053(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             auto PItem = itemutils::GetItem(itemId);
             if (PItem == nullptr || !(PItem->isType(ITEM_WEAPON) || PItem->isType(ITEM_ARMOR)))
                 itemId = 0;
-            else if (!((CItemArmor*)PItem)->getEquipSlotId() & (1 << equipSlotId))
+            else if (!(((CItemArmor*)PItem)->getEquipSlotId() & (1 << equipSlotId)))
                 itemId = 0;
 
             PChar->styleItems[equipSlotId] = itemId;
@@ -2955,7 +2957,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 ShowDebug(CL_CYAN"Building invite packet to send to lobby server from %s to (%d)\n" CL_RESET, PChar->GetName(), charid);
                 //on another server (hopefully)
-                uint8 packetData[12];
+                uint8 packetData[12] {};
                 WBUFL(packetData, 0) = charid;
                 WBUFW(packetData, 4) = targid;
                 WBUFL(packetData, 6) = PChar->id;
@@ -3009,7 +3011,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 ShowDebug(CL_CYAN"(Alliance)Building invite packet to send to lobby server from %s to (%d)\n" CL_RESET, PChar->GetName(), charid);
                 //on another server (hopefully)
-                uint8 packetData[12];
+                uint8 packetData[12] {};
                 WBUFL(packetData, 0) = charid;
                 WBUFW(packetData, 4) = targid;
                 WBUFL(packetData, 6) = PChar->id;
@@ -3172,7 +3174,7 @@ void SmallPacket0x071(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         CItemLinkshell* PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK1);
         if (PChar->PLinkshell1 && PItemLinkshell)
         {
-            int8 packetData[29];
+            int8 packetData[29] {};
             WBUFL(packetData, 0) = PChar->id;
             memcpy(packetData + 0x04, data[0x0C], 20);
             WBUFL(packetData, 24) = PChar->PLinkshell1->getID();
@@ -3187,7 +3189,7 @@ void SmallPacket0x071(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         CItemLinkshell* PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK2);
         if (PChar->PLinkshell2 && PItemLinkshell)
         {
-            int8 packetData[29];
+            int8 packetData[29] {};
             WBUFL(packetData, 0) = PChar->id;
             memcpy(packetData + 0x04, data[0x0C], 20);
             WBUFL(packetData, 24) = PChar->PLinkshell2->getID();
@@ -3330,7 +3332,7 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     else
     {
 		ShowDebug(CL_CYAN"(Party)Building invite packet to send to lobby server for %s\n" CL_RESET, PChar->GetName());
-        uint8 packetData[13];
+        uint8 packetData[13] {};
         WBUFL(packetData, 0) = PChar->InvitePending.id;
         WBUFW(packetData, 4) = PChar->InvitePending.targid;
         WBUFL(packetData, 6) = PChar->id;
@@ -3388,7 +3390,7 @@ void SmallPacket0x077(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     {
         if (PChar->PLinkshell1 != nullptr)
         {
-            int8 packetData[29];
+            int8 packetData[29] {};
             WBUFL(packetData, 0) = PChar->id;
             memcpy(packetData + 0x04, data[0x04], 20);
             WBUFL(packetData, 24) = PChar->PLinkshell1->getID();
@@ -3401,7 +3403,7 @@ void SmallPacket0x077(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     {
         if (PChar->PLinkshell2 != nullptr)
         {
-            int8 packetData[29];
+            int8 packetData[29] {};
             WBUFL(packetData, 0) = PChar->id;
             memcpy(packetData + 0x04, data[0x04], 20);
             WBUFL(packetData, 24) = PChar->PLinkshell2->getID();
@@ -3418,7 +3420,7 @@ void SmallPacket0x077(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
 			ShowDebug(CL_CYAN"(Alliance)Changing leader to %s\n" CL_RESET, data[0x04]);
             PChar->PParty->m_PAlliance->assignAllianceLeader(data[0x04]);
-            uint8 data[4];
+            uint8 data[4] {};
             WBUFL(data, 0) = PChar->PParty->m_PAlliance->m_AllianceID;
             message::send(MSG_PT_RELOAD, data, sizeof data, nullptr);
         }
@@ -3804,7 +3806,7 @@ void SmallPacket0x0B5(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 if (PChar->PLinkshell1 != nullptr)
                 {
-                    int8 packetData[8];
+                    int8 packetData[8] {};
                     WBUFL(packetData, 0) = PChar->PLinkshell1->getID();
                     WBUFL(packetData, 4) = PChar->id;
                     message::send(MSG_CHAT_LINKSHELL, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_LINKSHELL, data[6]));
@@ -3826,7 +3828,7 @@ void SmallPacket0x0B5(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 if (PChar->PLinkshell2 != nullptr)
                 {
-                    int8 packetData[8];
+                    int8 packetData[8] {};
                     WBUFL(packetData, 0) = PChar->PLinkshell2->getID();
                     WBUFL(packetData, 4) = PChar->id;
                     message::send(MSG_CHAT_LINKSHELL, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_LINKSHELL, data[6]));
@@ -3848,7 +3850,7 @@ void SmallPacket0x0B5(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 if (PChar->PParty != nullptr)
                 {
-                    int8 packetData[8];
+                    int8 packetData[8] {};
                     WBUFL(packetData, 0) = PChar->PParty->GetPartyID();
                     WBUFL(packetData, 4) = PChar->id;
                     message::send(MSG_CHAT_PARTY, packetData, sizeof packetData, new CChatMessagePacket(PChar, MESSAGE_PARTY, data[6]));
@@ -4528,11 +4530,11 @@ void SmallPacket0x0E0(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 void SmallPacket0x0E1(map_session_data_t* session, CCharEntity* PChar, CBasicPacket data)
 {
     uint8 slot = data.ref<uint8>(0x07);
-    if (slot == PChar->equip[SLOT_LINK1])
+    if (slot == PChar->equip[SLOT_LINK1] && PChar->PLinkshell1)
     {
         PChar->PLinkshell1->PushLinkshellMessage(PChar, true);
     }
-    else if (slot == PChar->equip[SLOT_LINK2])
+    else if (slot == PChar->equip[SLOT_LINK2] && PChar->PLinkshell2)
     {
         PChar->PLinkshell2->PushLinkshellMessage(PChar, false);
     }
