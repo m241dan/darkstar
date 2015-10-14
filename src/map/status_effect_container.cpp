@@ -1097,8 +1097,7 @@ void CStatusEffectContainer::UpdateStatusIcons()
     PChar->pushPacket(new CStatusEffectPacket(PChar));
     if (PChar->PParty)
     {
-        PChar->pushPacket(new CPartyEffectsPacket(PChar->PParty));
-        PChar->PParty->PushPacket(PChar->id, PChar->getZone(), new CPartyEffectsPacket(PChar->PParty));
+        PChar->PParty->PushEffectsPacket();
     }
 }
 
