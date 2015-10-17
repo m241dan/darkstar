@@ -2109,7 +2109,7 @@ inline int32 CLuaBaseEntity::addSpell(lua_State *L)
         }
 
         if (save)
-            charutils::SaveSpells(PChar);
+            charutils::SaveSpell(PChar, SpellID);
     }
     return 0;
 }
@@ -2173,7 +2173,7 @@ inline int32 CLuaBaseEntity::delSpell(lua_State *L)
 
     if (charutils::delSpell(PChar, SpellID))
     {
-        charutils::SaveSpells(PChar);
+        charutils::DeleteSpell(PChar, SpellID);
         PChar->pushPacket(new CCharSpellsPacket(PChar));
     }
     return 0;
@@ -3538,7 +3538,7 @@ inline int32 CLuaBaseEntity::getGil(lua_State *L)
     if (m_PBaseEntity->objtype == TYPE_MOB)
     {
         CMobEntity * PMob = (CMobEntity*)m_PBaseEntity;
-        if (PMob->m_EcoSystem == SYSTEM_BEASTMEN || PMob->m_Type & MOBTYPE_NOTORIOUS)
+        if (PMob->CanStealGil())
         {
             lua_pushinteger(L, PMob->GetRandomGil());
             return 1;
@@ -6087,9 +6087,9 @@ inline int32 CLuaBaseEntity::isUndead(lua_State *L)
 inline int32 CLuaBaseEntity::getSystem(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
 
-    uint8 system = ((CMobEntity*)m_PBaseEntity)->m_EcoSystem;
+    uint8 system = ((CBattleEntity*)m_PBaseEntity)->m_EcoSystem;
 
     lua_pushinteger(L, system);
     return 1;

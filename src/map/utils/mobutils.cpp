@@ -505,6 +505,12 @@ void CalculateStats(CMobEntity * PMob)
     SetupJob(PMob);
     SetupRoaming(PMob);
 
+    // All beastmen drop gil
+    if (PMob->m_EcoSystem == SYSTEM_BEASTMEN)
+    {
+        PMob->defaultMobMod(MOBMOD_GIL_BONUS, 100);
+    }
+
     if (PMob->PMaster != nullptr)
     {
         SetupPetSkills(PMob);
@@ -539,6 +545,11 @@ void CalculateStats(CMobEntity * PMob)
     {
         SetupMaat(PMob);
     }
+
+    if (PMob->CanStealGil())
+    {
+        PMob->ResetGilPurse();
+    }
 }
 
 void SetupJob(CMobEntity* PMob)
@@ -549,7 +560,11 @@ void SetupJob(CMobEntity* PMob)
     {
         case JOB_THF:
             // thfs drop more gil
-            PMob->defaultMobMod(MOBMOD_GIL_BONUS, 15);
+            if (PMob->m_EcoSystem == SYSTEM_BEASTMEN)
+            {
+                // 50% bonus
+                PMob->defaultMobMod(MOBMOD_GIL_BONUS, 150);
+            }
             break;
         case JOB_DRG:
             // drg can use 2 hour multiple times
@@ -582,7 +597,7 @@ void SetupJob(CMobEntity* PMob)
                 PMob->defaultMobMod(MOBMOD_STANDBACK_COOL, 8);
             }
 
-            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 1);
+            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 70);
 
             break;
         case JOB_NIN:
@@ -592,7 +607,7 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 20);
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
 
-            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 1);
+            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 70);
             break;
         case JOB_BST:
             PMob->defaultMobMod(MOBMOD_SPECIAL_COOL, 70);
@@ -609,7 +624,7 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 15);
 
 
-            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 1);
+            PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 70);
             break;
         case JOB_PLD:
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
@@ -954,6 +969,15 @@ void InitializeMob(CMobEntity* PMob, CZone* PZone)
         case SYSTEM_UNDEAD:   PMob->addModifier(MOD_ARCANA_KILLER,   5); break;
         case SYSTEM_VERMIN:   PMob->addModifier(MOD_PLANTOID_KILLER, 5); break;
       }
+
+    if (PMob->m_maxLevel == 0 && PMob->m_minLevel == 0)
+    {
+        if (PMob->getZone() >= 1 && PMob->getZone() <= 252)
+        {
+            ShowError("Mob %s level is 0! zoneid %d, poolid %d\n", PMob->GetName(), PMob->getZone(), PMob->m_Pool);
+        }
+    }
+
 }
 
 /*
