@@ -196,6 +196,7 @@ public:
 
     bool      IsFarFromHome();                         // check if mob is too far from spawn
     bool      CanBeNeutral();                          // check if mob can have killing pause
+    void      ChangeMJob(uint16 job );
 
     uint8     TPUseChance();                           // return % chance to use TP move
 
