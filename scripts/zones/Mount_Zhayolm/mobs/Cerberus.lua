@@ -10,7 +10,9 @@ require("scripts/globals/titles");
 -----------------------------------
 
 function onMobSpawn(mob)
-   mob:setDelay(2500);
+   mob:setDelay(2000);
+   mob:addMod( MOD_DEF, 200 );
+   mob:addMod( MOD_INT, 20 );
 end;
 
 -----------------------------------
