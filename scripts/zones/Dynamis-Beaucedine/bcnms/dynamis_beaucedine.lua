@@ -5,10 +5,10 @@
 
 -- After registering the BCNM via bcnmRegister(bcnmid)
 function onBcnmRegister(player,instance)
-	
-	SetServerVariable("[DynaBeaucedine]UniqueID",player:getDynamisUniqueID(1284));
-	SetServerVariable("[DynaBeaucedine]Already_Received",0);
-	
+    
+    SetServerVariable("[DynaBeaucedine]UniqueID",player:getDynamisUniqueID(1284));
+    SetServerVariable("[DynaBeaucedine]Already_Received",0);
+    
 end;
 
 -- Physically entering the BCNM via bcnmEnter(bcnmid)
@@ -37,7 +37,6 @@ end;
 -- 4=Finish he dynamis
 
 function onBcnmLeave(player,instance,leavecode)
-print("leave code "..leavecode);
 	if(leavecode == 4) then
            if( player ~= nil ) then player:setPos(-284.751,-39.923,-422.948,235,0x6F); end
 	   SetServerVariable("[DynaBeaucedine]UniqueID",0);

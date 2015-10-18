@@ -5,11 +5,11 @@
 
 -- After registering the BCNM via bcnmRegister(bcnmid)
 function onBcnmRegister(player,instance)
-	
-	SetServerVariable("[DynaSandoria]UniqueID",player:getDynamisUniqueID(1281));
-	SetServerVariable("[DynaSandoria]Boss_Trigger",0);
-	SetServerVariable("[DynaSandoria]Already_Received",0);
-	
+    
+    SetServerVariable("[DynaSandoria]UniqueID",player:getDynamisUniqueID(1281));
+    SetServerVariable("[DynaSandoria]Boss_Trigger",0);
+    SetServerVariable("[DynaSandoria]Already_Received",0);
+    
 end;
 
 -- Physically entering the BCNM via bcnmEnter(bcnmid)
@@ -38,7 +38,6 @@ end;
 -- 4=Finish he dynamis
 
 function onBcnmLeave(player,instance,leavecode)
---print("leave code "..leavecode);
 	if(leavecode == 4) then
 		GetNPCByID(17535224):setStatus(2);
 		SetServerVariable("[DynaSandoria]UniqueID",0);

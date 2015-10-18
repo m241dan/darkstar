@@ -5,11 +5,11 @@
 
 -- After registering the BCNM via bcnmRegister(bcnmid)
 function onBcnmRegister(player,instance)
-	
-	SetServerVariable("[DynaXarcabard]UniqueID",player:getDynamisUniqueID(1285));
-	SetServerVariable("[DynaXarcabard]TE150_Trigger",0);
-	SetServerVariable("[DynaXarcabard]Boss_Trigger",0);
-	
+    
+    SetServerVariable("[DynaXarcabard]UniqueID",player:getDynamisUniqueID(1285));
+    SetServerVariable("[DynaXarcabard]TE150_Trigger",0);
+    SetServerVariable("[DynaXarcabard]Boss_Trigger",0);
+    
 end;
 
 -- Physically entering the BCNM via bcnmEnter(bcnmid)
