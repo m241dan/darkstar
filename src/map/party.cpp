@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -245,9 +245,10 @@ void CParty::RemoveMember(CBattleEntity* PEntity)
 			if (PEntity == members.at(i))
 			{
 				members.erase(members.begin()+i);
-                		if (m_PartyType == PARTY_PCS)
-		                {
-                		    CCharEntity* PChar = (CCharEntity*)PEntity;
+
+                if (m_PartyType == PARTY_PCS)
+                {
+                    CCharEntity* PChar = (CCharEntity*)PEntity;
 
 				    if (m_PQuaterMaster == PChar)
 				    {
@@ -256,18 +257,18 @@ void CParty::RemoveMember(CBattleEntity* PEntity)
 				    if (m_PSyncTarget == PChar)
 				    {
 					    SetSyncTarget(nullptr, 553);
-            			            CStatusEffect* sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
-		                            if (sync && sync->GetDuration() == 0)
-                    			    {
-		                	            PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 30, 553));
-		        	                    sync->SetStartTime(gettick());
-			                            sync->SetDuration(30000);
-			                    }
-                        		    DisableSync();
+                        CStatusEffect* sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
+                        if (sync && sync->GetDuration() == 0)
+                        {
+			                PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 30, 553));
+                            sync->SetStartTime(gettick());
+                            sync->SetDuration(30000);
+                        }
+                        DisableSync();
 				    }
-		                    if (m_PSyncTarget != nullptr && m_PSyncTarget != PChar)
-                		    {
-					if (PChar->status != STATUS_DISAPPEAR && PChar->getZone() == m_PSyncTarget->getZone() )
+                    if (m_PSyncTarget != nullptr && m_PSyncTarget != PChar)
+                    {
+                        if (PChar->status != STATUS_DISAPPEAR)
 		                {
                             CStatusEffect* sync = PChar->StatusEffectContainer->GetStatusEffect(EFFECT_LEVEL_SYNC);
                             if (sync && sync->GetDuration() == 0)
@@ -1001,11 +1002,11 @@ void CParty::SetSyncTarget(int8* MemberName, uint16 message)
                     if (member->status != STATUS_DISAPPEAR &&
                          member->getZone() == PChar->getZone() )
 		            {
-			            member->pushPacket(new CMessageStandardPacket(PChar->GetMTrueLevel(), 0, 0, 0, message));
+			            member->pushPacket(new CMessageStandardPacket(PChar->GetMLevel(), 0, 0, 0, message));
                         member->StatusEffectContainer->AddStatusEffect(new CStatusEffect(
                             EFFECT_LEVEL_SYNC,
                             EFFECT_LEVEL_SYNC,
-                            PChar->GetMTrueLevel(),
+                            PChar->GetMLevel(),
                             0,
                             0), true);
                         member->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DISPELABLE | EFFECTFLAG_ON_ZONE);
