@@ -115,7 +115,7 @@ INSERT INTO `abilities` VALUES ('64', 'spirit_link', '14', '25', '1', '90', '162
 INSERT INTO `abilities` VALUES ('66', 'chi_blast', '2', '41', '4', '180', '18', '110', '0', '92', '20.0', '0', '0', '0', '0', '0',null);
 INSERT INTO `abilities` VALUES ('67', 'convert', '5', '40', '1', '600', '49', '0', '0', '88', '20.0', '0', '1', '80', '640', '0',null);
 INSERT INTO `abilities` VALUES ('68', 'accomplice', '6', '65', '2', '300', '69', '526', '0', '185', '20.0', '0', '0', '0', '0', '0','WOTG');
-INSERT INTO `abilities` VALUES ('69', 'call_beast', '9', '23', '1', '300', '104', '0', '0', '83', '18.0', '0', '0', '0', '900', '0',null);
+INSERT INTO `abilities` VALUES ('69', 'call_beast', '9', '23', '1', '600', '104', '0', '0', '83', '18.0', '0', '0', '0', '900', '0',null);
 INSERT INTO `abilities` VALUES ('70', 'unlimited_shot', '11', '51', '1', '180', '126', '0', '0', '90', '20.0', '0', '1', '300', '1030', '0',null);
 INSERT INTO `abilities` VALUES ('71', 'dismiss', '14', '1', '1', '300', '161', '0', '0', '94', '20.0', '0', '0', '0', '0', '4',null); -- ROTZ
 INSERT INTO `abilities` VALUES ('72', 'assault', '15', '1', '4', '10', '170', '0', '0', '94', '20.0', '0', '0', '0', '0', '0',null); -- ROTZ

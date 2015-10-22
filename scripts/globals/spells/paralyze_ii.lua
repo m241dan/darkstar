@@ -39,15 +39,15 @@ function onSpellCast(caster,target,spell)
         -- Calculate potency.
         local potency = (pMND + dMND)/5; --simplified from (2 * (pMND + dMND)) / 10
 
-        if (potency > 30) then
-            potency = 30;
+        if (potency > 25) then
+            potency = 25;
         end
 		    if (caster:hasStatusEffect(EFFECT_SABOTEUR)) then
         potency = potency * 2;
     end
     caster:delStatusEffect(EFFECT_SABOTEUR);
 
-        potency = potency + ( merits * 3 ); --similar to Slow II, merit potency bonus is added after the cap
+        potency = potency + ( merits * 2 ); --similar to Slow II, merit potency bonus is added after the cap
 
         --printf("Duration : %u",duration);
         --printf("Potency : %u",potency);

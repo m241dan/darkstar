@@ -172,7 +172,7 @@ TIMEZONE_OFFSET = 9.0; -- Offset from UTC used to determine when "JP Midnight" i
 ALLOW_MULTIPLE_EXP_RINGS = 0; -- Set to 1 to remove ownership restrictions on the Chariot/Empress/Emperor Band trio.
 BYPASS_EXP_RING_ONE_PER_WEEK = 1; -- -- Set to 1 to bypass the limit of one ring per Conquest Tally Week.
 NUMBER_OF_DM_EARRINGS = 5; -- Number of earrings players can simultaneously own from Divine Might before scripts start blocking them (Default: 1)
-HOMEPOINT_TELEPORT = 0; -- Enables the homepoint teleport system
+HOMEPOINT_TELEPORT = 1; -- Enables the homepoint teleport system
 DIG_ABUNDANCE_BONUS = 0; -- Increase chance of digging up an item (450  = item digup chance +45)
 DIG_FATIGUE = 1; -- Set to 0 to disable Dig Fatigue
 MIASMA_FILTER_COOLDOWN = 5;  -- Number of days a player can obtain a Miasma Filter KI for any of the Boneyard Gully ENMs (Minimum:1)

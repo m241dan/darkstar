@@ -10,9 +10,6 @@ require("scripts/globals/titles");
 -----------------------------------
 
 function onMobSpawn(mob)
-   mob:setDelay(2000);
-   mob:addMod( MOD_DEF, 200 );
-   mob:addMod( MOD_INT, 20 );
 end;
 
 -----------------------------------
@@ -23,3 +20,6 @@ function onMobDeath(mob, killer)
 	killer:addTitle(CERBERUS_MUZZLER);
 	mob:setRespawnTime(math.random((172800),(259200))); -- 48-72 hours
 end;
+
+function onMobFight( mob, target )
+end
