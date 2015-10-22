@@ -4496,32 +4496,35 @@ uint8 getIkishotenTPbonusFromMerit(CBattleEntity *PEntity)
             // It might not even be in sync with the check values the entire way from lv 1 to lv 99 for all we know.
             if (LvDiffByExp >= 400) // IT
             {
-                BindBreakChance = 999;
+                BindBreakChance = 300;
             }
             else if (LvDiffByExp >= 240) // VT
             {
-                BindBreakChance = 990;
+                BindBreakChance = 250;
             }
             else if (LvDiffByExp >= 120) // T
             {
-                BindBreakChance = 750;
+                BindBreakChance = 200;
             }
             else if (LvDiffByExp == 100) // EM
             {
-                BindBreakChance = 300; // Should probably be higher.
+                BindBreakChance = 150; // Should probably be higher.
             }
             else if (LvDiffByExp >= 75) // DC
             {
-                BindBreakChance = 150; // Should probably be higher.
+                BindBreakChance = 100; // Should probably be higher.
             }
             else if (LvDiffByExp >= 15) // EP
             {
-                BindBreakChance = 150;
+                BindBreakChance = 50;
             }
             else if (LvDiffByExp < 15) // Everything weaker than EP, including both TW and that tier we don't have implimented.
             {
-                BindBreakChance = 10; // Should probably be higher than 1% and I know darn well it ain't zero.
+                BindBreakChance = 0; // Should probably be higher than 1% and I know darn well it ain't zero.
             }
+
+            if ( ((CBaseEntity*)PDefender)->objtype == TYPE_MOB && ((CMobEntity*)PDefender)->m_Type & MOBTYPE_NOTORIOUS)
+                BindBreakChance = 1000;
 
             if (BindBreakChance > dsprand::GetRandomNumber(1000))
             {
