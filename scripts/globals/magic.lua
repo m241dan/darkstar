@@ -559,7 +559,7 @@ function getSpellBonusAcc(caster, target, spell)
        end
     end
     -- helix merits for scholar
-    if(caster:getMainJob() == JOB_SCH and caster:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+    if(helixspells[spell:getID()] == true ) then
        magicAccBonus = magicAccBonus + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
     end;
 
@@ -833,7 +833,7 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
         if (spell:getElement() > 0 and spell:getElement() <= 6 ) then
             mab = mab + caster:getMerit(blmMerit[spell:getElement()]);
         end
-        if(caster:getMainJob() == JOB_SCH and caster:getMainLvl() >= 75 and helixspells[spell:getID()] == true ) then
+        if(helixspells[spell:getID()] == true ) then
             mab = mab + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 2);
         end
         mabbonus = (100 + mab) / (100 + target:getMod(MOD_MDEF));
