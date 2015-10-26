@@ -113,3 +113,46 @@ UPDATE `mob_pools` SET mobType=2 WHERE name='Eraser';
 -- skahnowa
 UPDATE `mob_groups` SET HP=4600, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6865;
 UPDATE `mob_pools` SET mobType=2, cmbDelay=200 WHERE name='Skahnowa';
+
+-- Weapon Skills
+
+-- ascetics fury 
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=11; 
+-- stringing pummel 
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=12;
+-- mandalic stab
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=27;
+-- mordent rhyme
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=28;
+-- pyrrhic kleos
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=29;
+-- death blossom
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=44;
+-- atonement
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=45;
+-- expiacion
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=46;
+-- primal rend
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=74;
+-- King's Justice
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=90;
+-- Insurgency
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=106;
+-- Drakesbane
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=122;
+-- Blade: Kamu
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=138;
+-- Tachi: Rana
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=154;
+-- Mystic boon
+UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=171;
+-- Vidohunir
+UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=186;
+-- Garland of Bliss
+UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=187;
+-- Omniscience
+UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=188;
+-- Trueflight
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=217;
+-- Leaden Salute
+UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=218;
