@@ -32,6 +32,8 @@ function onTrade(player,npc,trade)
          0x10DC,1100, -- Armored Pisces
          0x117D, 900, -- Gavial Fish
          0x140F,1000, -- Rhinochimera
+         0x1180,1000, -- Bastore Sardine
+         
       };
       showShop( player, STATIC, stock );
       return;
