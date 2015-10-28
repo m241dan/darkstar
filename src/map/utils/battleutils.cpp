@@ -481,8 +481,19 @@ namespace battleutils
                               // Quadav has it's own version
                               id = 866;
                           }
+                          else if(familyId == 171)
+                          {
+                              // Lamiae
+                              id = 1675;
+                          }
+                          else if(familyId == 246)
+                          {
+                              // Troll
+                              id = 1996;
+                          }
                           else
                           {
+                              // Defaulting to crappy goblin animation
                               id = 479;
                           }
                           break;
@@ -2030,14 +2041,14 @@ namespace battleutils
 
                 if (PAttacker->m_Weapons[SLOT_SUB]->getDmgType() > 0 &&
                     PAttacker->m_Weapons[SLOT_SUB]->getDmgType() < 4 &&
-                    PAttacker->m_Weapons[slot]->getDmgType() != DAMAGE_HTH)
+                    PAttacker->m_Weapons[slot]->getSkillType() != SKILL_H2H)
                 {
                     delay = delay / 2;
                 }
 
                 float ratio = 1.0f;
 
-                if (PAttacker->m_Weapons[slot]->getDmgType() == DAMAGE_HTH)
+                if (PAttacker->m_Weapons[slot]->getSkillType() == SKILL_H2H)
                     ratio = 2.0f;
                 baseTp = CalculateBaseTP((delay * 60) / 1000) / ratio;
             }
