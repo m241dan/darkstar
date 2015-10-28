@@ -4481,7 +4481,7 @@ INSERT INTO `item_armor` VALUES (14733,'singers_earring',30,0,4194303,0,0,0,6144
 INSERT INTO `item_armor` VALUES (14734,'beaters_earring',30,0,4194303,0,0,0,6144,0);
 INSERT INTO `item_armor` VALUES (14735,'ashigaru_earring',30,0,4194303,0,0,0,6144,0);
 INSERT INTO `item_armor` VALUES (14736,'genin_earring',30,0,4194303,0,0,0,6144,0);
-INSERT INTO `item_armor` VALUES (14737,'wyvern_earring',30,0,4194303,0,0,0,6144,0);
+INSERT INTO `item_armor` VALUES (14737,'wyvern_earring',30,0,4194303,0,0,3,6144,0);
 INSERT INTO `item_armor` VALUES (14738,'magicians_earring',30,0,4194303,0,0,0,6144,0);
 INSERT INTO `item_armor` VALUES (14739,'suppanomimi',72,0,4194303,0,0,0,6144,0);
 INSERT INTO `item_armor` VALUES (14740,'knights_earring',72,0,4194303,0,0,0,6144,0);
