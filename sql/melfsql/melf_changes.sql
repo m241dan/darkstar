@@ -12,7 +12,7 @@ UPDATE mob_pool_mods SET value=50 WHERE poolid=2840; -- nerf nidhogg regain
 UPDATE mob_family_system SET ATT=2, DEF=2, ACC=2, EVA=2 WHERE familyid=263; -- buff nidhogg att, def, eva and acc
 
 -- tiamat family
-UPDATE mob_family_system SET Lightning=1.20, CHR=7, mob_family_system.INT=4 WHERE familyid=393;
+UPDATE mob_family_system SET Lightning=1.20, CHR=7, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=393;
 
 -- adamantoise changes
 UPDATE mob_family_system SET DEF=1 WHERE family='Adamantoise'; -- buff ada's family def
@@ -104,7 +104,7 @@ INSERT INTO `mob_droplist` VALUES (5508,0,4111,150);
 INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
 
 -- dynamis coin
-UPDATE `mob_droplist` SET rate=14 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
+UPDATE `mob_droplist` SET rate=20 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
 
 -- eraser
 UPDATE `mob_groups` SET HP=4600, MP=2000, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6927;

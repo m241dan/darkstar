@@ -294,8 +294,8 @@ function MobMagicalMove(mob,target,skill,damage,element,dmgmod,tpeffect,tpvalue)
         mab = 1.3;
     end
 
-    if (mab < 0.7) then
-        mab = 0.7;
+    if (mab < 0.3) then
+        mab = 0.3;
     end
 
     if (tpeffect==TP_DMG_BONUS) then
@@ -541,9 +541,7 @@ function MobFinalAdjustments(dmg,mob,skill,target,skilltype,skillparam,shadowbeh
         dmg = target:physicalDmgTaken(dmg);
 
     elseif (skilltype == MOBSKILL_MAGICAL) then
-
         dmg = target:magicDmgTaken(dmg);
-
     elseif (skilltype == MOBSKILL_BREATH) then
 
         dmg = target:breathDmgTaken(dmg);

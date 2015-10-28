@@ -25,15 +25,6 @@ function onMobSpawn(mob)
 end;
 
 -----------------------------------
--- onMobDeath
------------------------------------
-
-function onMobDeath(mob, killer)
-    killer:showText(mob,SKY_GOD_OFFSET + 6);
-    GetNPCByID(17310098):hideNPC(120);
-end;
-
------------------------------------
 -- onAdditionalEffect
 -----------------------------------
 
@@ -59,3 +50,19 @@ function onMobFight( mob, target )
       end
    end
 end
+
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob, killer)
+    killer:showText(mob,SKY_GOD_OFFSET + 6);
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
+    GetNPCByID(17310099):updateNPCHideTime(FORCE_SPAWN_QM_RESET_TIME);
+end;

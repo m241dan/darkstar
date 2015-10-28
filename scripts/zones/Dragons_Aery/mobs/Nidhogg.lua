@@ -22,6 +22,7 @@ end;
 function onMobFight(mob, target)
     local battletime = mob:getBattleTime();
     local twohourTime = mob:getLocalVar("twohourTime");
+
     if (twohourTime == 0) then
         mob:setLocalVar("twohourTime",math.random(30,90));
     end

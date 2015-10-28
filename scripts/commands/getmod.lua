@@ -17,5 +17,8 @@ function onTrigger(player)
     mob = GetMobByID(targ);
     if( mob == nil ) then return; end
 
-    player:PrintToPlayer( string.format( "Lightning Res = %d and Lightning Def = %d",  mob:getMod( MOD_THUNDERRES ), mob:getMod( MOD_THUNDERDEF ) ) );
+    local angle = mob:getAngle( player );
+    angle = mob:getRotPos() - angle
+    player:PrintToPlayer( angle, 0xE);
+    player:PrintToPlayer( ((40-math.abs(angle))/40), 0xE );
 end;

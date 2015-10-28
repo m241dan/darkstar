@@ -12,7 +12,6 @@ require("scripts/globals/status");
 
 function onMobInitialize(mob)
    mob:setMobMod(MOBMOD_ADD_EFFECT,mob:getShortID());
-   mob:addMod( MOD_STUNRES, -20 );
 end;
 
 -----------------------------------
@@ -20,17 +19,6 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
-end;
-
------------------------------------
--- onMobDeath
------------------------------------
-
-function onMobDeath(mob, killer)
-    killer:showText(mob,SKY_GOD_OFFSET + 10);
-    GetNPCByID(17310052):hideNPC(120);
-    SetDropRate(3117,1312,150);
-    SetDropRate(3117,722,150);
 end;
 
 -----------------------------------
@@ -82,3 +70,19 @@ function onMobFight(mob, target)
       end
    end
 end
+
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob, killer)
+    killer:showText(mob,SKY_GOD_OFFSET + 10);
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
+    GetNPCByID(17310053):updateNPCHideTime(FORCE_SPAWN_QM_RESET_TIME);
+end;

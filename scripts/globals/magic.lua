@@ -959,6 +959,7 @@ end;
 -- get elemental damage reduction
 function getElementalDamageReduction(target, element)
     local defense = 1;
+
     if (element > 0) then
         defense = 1 - (target:getMod(defenseMod[element]) / 256);
 

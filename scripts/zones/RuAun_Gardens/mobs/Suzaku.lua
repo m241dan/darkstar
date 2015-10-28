@@ -19,21 +19,11 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
-   mob:addMod( MOD_BINDRES, 5 );
-   mob:addMod( MOD_GRAVITYRES, -10 );
-   mob:addMod( MOD_STUNRES, -150 );
-   mob:addMod( MOD_INT, -10 );
-   mob:setMod( MOD_MDEF, 0 );
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMonsterMagicPrepare Action
 -----------------------------------
-
-function onMobDeath(mob, killer)
-    killer:showText(mob,SKY_GOD_OFFSET + 8);
-    GetNPCByID(17310050):hideNPC(60);
-end;
 
 -- Return the selected spell ID.
 function onMonsterMagicPrepare(mob, target)
@@ -73,5 +63,21 @@ function onAdditionalEffect(mob, target, damage)
     dmg = adjustForTarget(target,dmg,ELE_FIRE);
     dmg = finalMagicNonSpellAdjustments(mob,target,ELE_FIRE,dmg);
 
-    return SUBEFFECT_FIRE_DAMAGE,MSGBASIC_ADD_EFFECT_DMG,dmg;
+    return SUBEFFECT_FIRE_DAMAGE, MSGBASIC_ADD_EFFECT_DMG, dmg;
+end;
+
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob, killer)
+    killer:showText(mob,SKY_GOD_OFFSET + 8);
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
+    GetNPCByID(17310051):updateNPCHideTime(FORCE_SPAWN_QM_RESET_TIME);
 end;

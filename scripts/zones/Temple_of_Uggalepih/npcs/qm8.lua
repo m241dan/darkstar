@@ -24,6 +24,7 @@ function onTrade(player,npc,trade)
         else
             SpawnMob(17428812,900):updateClaim(player); -- Spawn Rumble Crawler
         end
+        npc:setStatus(STATUS_DISAPPEAR);
     end
 end; 
 
@@ -32,7 +33,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	player:messageSpecial(BITS_OF_VEGETABLE);
+    player:messageSpecial(BITS_OF_VEGETABLE);
 end;
 
 -----------------------------------
