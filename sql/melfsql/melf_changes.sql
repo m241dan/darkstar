@@ -159,3 +159,43 @@ UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=218;
 
 -- RespawnTimer Adjustments
 UPDATE `mob_groups` SET respawnTime=300 WHERE respawnTime>300 AND respawnTime<=961;
+
+-- Tiamat new droppool
+DELETE FROM `mob_droplist` WHERE dropId=3522;
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 860, 150); -- behemoth hide
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 1703, 300 ); -- kunwu ores
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 1703, 250 );
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 1703, 200 );
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 1703, 150 );
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 1816, 300 ); -- wyrm bone
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 14869, 300 ); -- noritsune kote
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 15322, 200 ); -- herald's gaiters
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 11379, 200 ); -- hermes sandals
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 19213, 150 ); -- white tathhlum
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 14162, 100 ); -- agrona's leggings
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 15705, 100 ); -- ataractic solea
+
+-- Jormungand new droppool
+DELETE FROM `mob_droplist` WHERE dropId=1852;
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 860, 150 ); -- behemoth hide
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 647, 300 ); -- molybdenum ore
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 647, 250 );
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 647, 200 );
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 647, 150 );
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 1771, 300 ); -- Dragon Bone
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 17586, 300 ); -- mercurial pole
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 16158, 190 ); -- gnadbod's helm
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 16159, 190 ); -- zha'gos barbut
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 16160, 190 ); -- Ree's Headgear
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 19212, 150 ); -- black tathlum
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 11502, 150 ); -- acubens helm
+INSERT INTO `mob_droplist` VALUES( 1852, 0, 11483, 150 ); -- gnole crown
+
+
+
+
+
+
+
+
+
