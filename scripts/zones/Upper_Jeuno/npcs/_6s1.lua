@@ -41,7 +41,7 @@ function onTrigger(player,npc)
         player:startEvent(0x271C);
     elseif (player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus")== 4) then
         player:startEvent(0x0081);
-    elseif ((player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus")> 4) and player:hasCompletedMission(COP,DAWN)) then  	  
+    elseif ((player:getCurrentMission(COP) == DAWN and player:getVar("PromathiaStatus")> 4) or player:hasCompletedMission(COP,DAWN)) then  	  
         if (playerhaveCOPring == false  ) then
             if (ringtakeNbr==0) then
                 player:startEvent(0x0054,RajasRing,SattvaRing,TamasRing); 
