@@ -191,11 +191,14 @@ INSERT INTO `mob_droplist` VALUES( 1852, 0, 19212, 150 ); -- black tathlum
 INSERT INTO `mob_droplist` VALUES( 1852, 0, 11502, 150 ); -- acubens helm
 INSERT INTO `mob_droplist` VALUES( 1852, 0, 11483, 150 ); -- gnole crown
 
+-- changing chopsuey chuckys stuff droprates
+UPDATE `mob_droplist` SET rate=250 WHERE itemId=1118 or itemId=1121 or itemID=1980;
 
+-- cactuar root 100%
+UPDATE `mob_droplist` SET rate=1000 WHERE itemId=1592;
 
-
-
-
-
-
+-- nightmare vase
+DELETE FROM `mob_droplist` WHERE dropId=2458 AND itemId=942;
+INSERT INTO `mob_droplist` VALUES (2458,0,942,1000);
+INSERT INTO `mob_droplist` VALUES (2458,0,942,500);
 
