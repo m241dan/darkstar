@@ -27,16 +27,19 @@ local function remWyvernEarringEffect(target)
 end
 
 function onItemCheck(target)
+   printf( "calling script" )
    -- if sj is not drg, remove it, remWyvernEarringEffect()(this function selfchecks to make sure its not removing haste twice)
-   if( target:getSJob() ~= JOB_DRG ) then
+   if( target:getSubJob() ~= JOB_DRG ) then
       remWyvernEarringEffect( target );
       return;
    end
 
    -- if its equipped, add, if not remove
    if( target:getEquipID( SLOT_EAR1 ) or target:getEquipID( SLOT_EAR2 ) ) then
+      printf( "called add" )
       addWyvernEarringEffect( target );
    else
+      printf( "calluing remove" )
       remWyvernEarringEffect( target );
    end
 end
