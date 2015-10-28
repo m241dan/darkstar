@@ -35,7 +35,7 @@ function onItemCheck(target)
    end
 
    -- if its equipped, add, if not remove
-   if( target:getEquipID( SLOT_EAR1 ) or target:getEquipID( SLOT_EAR2 ) ) then
+   if( target:getEquipID( SLOT_EAR1 ) == wyvern_earring or target:getEquipID( SLOT_EAR2 ) == wyvern_earring ) then
       printf( "called add" )
       addWyvernEarringEffect( target );
    else
