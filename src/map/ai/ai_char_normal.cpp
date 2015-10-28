@@ -2280,7 +2280,7 @@ void CAICharNormal::ActionJobAbilityFinish()
 
         // TODO: все перенести в скрипты, т.к. система позволяет получать указатель на питомца
 
-        if ( m_PJobAbility->getID() == ABILITY_REWARD || m_PJobAbility->getID() == ABILITY_ANGON || m_PJobAbility->getID() == ABILITY_TOMAHAWK || m_PJobAbility->getID() == ABILITY_REPAIR )
+        if ( m_PJobAbility->getID() == ABILITY_CALL_BEAST || m_PJobAbility->getID() == ABILITY_REWARD || m_PJobAbility->getID() == ABILITY_ANGON || m_PJobAbility->getID() == ABILITY_TOMAHAWK || m_PJobAbility->getID() == ABILITY_REPAIR )
         {
             CItemArmor* PAmmo = m_PChar->getEquip(SLOT_AMMO);
             uint8 slot = m_PChar->equip[SLOT_AMMO];
