@@ -51,13 +51,14 @@ function onMobFight(mob,target)
                 mob:getBattleTime() - changeTime > 30) then
             mob:useMobAbility(1036);
             mob:setLocalVar("changeTime", mob:getBattleTime());
+
         -- subanimation 2 is grounded mode, so check if he should take off
-        elseif (mob:AnimationSub() == 2 and 
-                mob:getBattleTime() - changeTime > 60) then
-            mob:AnimationSub(1);
-            mob:addStatusEffectEx(EFFECT_ALL_MISS, 0, 1, 0, 0);
-            mob:SetMobSkillAttack(true);
-            mob:setLocalVar("changeTime", mob:getBattleTime());
+--        elseif (mob:AnimationSub() == 2 and 
+--                mob:getBattleTime() - changeTime > 60) then
+--            mob:AnimationSub(1);
+--            mob:addStatusEffectEx(EFFECT_ALL_MISS, 0, 1, 0, 0);
+--            mob:SetMobSkillAttack(true);
+--            mob:setLocalVar("changeTime", mob:getBattleTime());
         end
 	end
 end;

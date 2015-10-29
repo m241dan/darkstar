@@ -48,7 +48,7 @@ INSERT INTO `mob_pool_mods` VALUES (2647,160,-50,0);
 INSERT INTO `mob_pool_mods` VALUES (733,302,5,0);
 INSERT INTO `mob_pool_mods` VALUES (2677,288,55,0);
 INSERT INTO `mob_pool_mods` VALUES (21,29,100,0);
-INSERT INTO `mob_pool_mods` VALUES (2156,370,25,0);
+INSERT INTO `mob_pool_mods` VALUES (2156,370,30,0);
 INSERT INTO `mob_pool_mods` VALUES (2262,370,125,0);
 INSERT INTO `mob_pool_mods` VALUES (4261,370,25,0);
 INSERT INTO `mob_pool_mods` VALUES (4261,29,50,0);

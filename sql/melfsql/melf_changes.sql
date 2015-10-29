@@ -14,6 +14,25 @@ UPDATE mob_family_system SET ATT=2, DEF=2, ACC=2, EVA=2 WHERE familyid=263; -- b
 -- tiamat family
 UPDATE mob_family_system SET Lightning=1.20, CHR=7, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=393;
 
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 12, 0, 1 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 244, 80, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 254, 200, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 240, 50, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 31, 30, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 250, -50, 0 );
+
+
+-- jorm
+UPDATE mob_family_system SET Wind=.85, Ice=.75, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=392;
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 12, 0, 1 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 244, 80, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 254, 200, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 240, 50, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 31, 30, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 250, -50, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 257, 200, 0 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 247, 200, 0 );
+
 -- adamantoise changes
 UPDATE mob_family_system SET DEF=1 WHERE family='Adamantoise'; -- buff ada's family def
 
@@ -201,4 +220,5 @@ UPDATE `mob_droplist` SET rate=1000 WHERE itemId=1592;
 DELETE FROM `mob_droplist` WHERE dropId=2458 AND itemId=942;
 INSERT INTO `mob_droplist` VALUES (2458,0,942,1000);
 INSERT INTO `mob_droplist` VALUES (2458,0,942,500);
+
 

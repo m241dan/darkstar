@@ -19,13 +19,7 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
-   mob:setMobMod( MOBMOD_DRAW_IN, 0 );
    mob:speed( 60 );
-   mob:addMod( MOD_SILENCERES, 80 );
-   mob:addMod( MOD_LULLABYRES, 200 );
-   mob:addMod( MOD_SLEEPRES, 50 );
-   mob:addMod( MOD_MEVA, 25 );
-   mob:addMod( MOD_SLOWRES, -50 );
    mob:setLocalVar( "changetime", 0 );
    mob:setLocalVar( "twohourTime", 0 );
    mob:SetMobSkillAttack(false); -- resetting so it doesn't respawn in flight mode.
