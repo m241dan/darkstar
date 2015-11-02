@@ -130,10 +130,11 @@ bool CPathFind::PathAround(position_t point, float distanceFromPoint, uint8 path
     Clear();
     position_t* lastPoint = &point;
 
-    float randomRadian = dsprand::GetRandomNumber<float>(0, 2 * M_PI);
+//    float randomRadian = dsprand::GetRandomNumber<float>(0, 2 * M_PI);
 
-    lastPoint->x += cosf(randomRadian) * distanceFromPoint;
-    lastPoint->z += sinf(randomRadian) * distanceFromPoint;
+//    lastPoint->x += cosf(randomRadian) * distanceFromPoint;
+//    lastPoint->z += sinf(randomRadian) * distanceFromPoint;
+   StopWithin(2.0f);
 
     // save for sliding logic
     m_originalPoint = point;
