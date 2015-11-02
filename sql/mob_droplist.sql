@@ -32427,6 +32427,9 @@ INSERT INTO `mob_droplist` VALUES (4556,0,2522,488);
 INSERT INTO `mob_droplist` VALUES (4556,0,6019,34); -- end of foret mobs
 INSERT INTO `mob_droplist` VALUES (4557,0,18767,97);
 INSERT INTO `mob_droplist` VALUES (4558,0,15942,128);
+INSERT INTO `mob_droplist` VALUES (4559,0,1414,195); -- wisteria lumber | elder goobbue
+INSERT INTO `mob_droplist` VALUES (4559,0,1237,312); -- bag of tree cuttings | elder goobbue
+INSERT INTO `mob_droplist` VALUES (4559,0,919,238); -- boyahda moss | elder goobbue
 /*!40000 ALTER TABLE `mob_droplist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
