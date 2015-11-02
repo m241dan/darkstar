@@ -123,7 +123,7 @@ INSERT INTO `mob_droplist` VALUES (5508,0,4111,150);
 INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
 
 -- dynamis coin
-UPDATE `mob_droplist` SET rate=20 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
+UPDATE `mob_droplist` SET rate=25 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
 
 -- eraser
 UPDATE `mob_groups` SET HP=4600, MP=2000, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6927;
@@ -177,7 +177,7 @@ UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=217;
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=218;
 
 -- RespawnTimer Adjustments
-UPDATE `mob_groups` SET respawnTime=300 WHERE respawnTime>300 AND respawnTime<=961;
+UPDATE `mob_groups` SET respawnTime=300 WHERE respawnTime>300 AND respawnTime<=1201;
 
 -- Tiamat new droppool
 DELETE FROM `mob_droplist` WHERE dropId=3522;
