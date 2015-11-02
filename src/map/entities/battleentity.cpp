@@ -1120,6 +1120,7 @@ void CBattleEntity::ForAlliance(std::function<void(CBattleEntity*)> func)
         func(this);
     }
 }
+
 void CBattleEntity::addTrait(CTrait* PTrait)
 {
     TraitList.push_back(PTrait);
