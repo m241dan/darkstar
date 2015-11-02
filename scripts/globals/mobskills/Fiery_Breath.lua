@@ -30,7 +30,7 @@ function onMobWeaponSkill(target, mob, skill)
     local angle = mob:getAngle(target);
 
     angle = mob:getRotPos() - angle;
-    dmgmod = dmgmod * ((128-math.abs(angle))/128);
+    dmgmod = dmgmod * ((40-math.abs(angle))/40);
     dmgmod = utils.clamp(dmgmod, 50, 1600);
 
     local dmg = MobFinalAdjustments(dmgmod,mob,skill,target,MOBSKILL_BREATH,MOBPARAM_FIRE,MOBPARAM_IGNORE_SHADOWS);

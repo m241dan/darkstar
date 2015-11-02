@@ -12,9 +12,9 @@ UPDATE mob_pool_mods SET value=50 WHERE poolid=2840; -- nerf nidhogg regain
 UPDATE mob_family_system SET ATT=2, DEF=2, ACC=2, EVA=2 WHERE familyid=263; -- buff nidhogg att, def, eva and acc
 
 -- tiamat family
-UPDATE mob_family_system SET Lightning=1.20, CHR=7, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=393;
+UPDATE mob_family_system SET Ice=.75, Lightning=1.20, CHR=7, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=393;
 
-INSERT INTO `mob_pool_mods` VALUES ( 3916, 12, 0, 1 );
+INSERT INTO `mob_pool_mods` VALUES ( 3916, 12, 100, 1 );
 INSERT INTO `mob_pool_mods` VALUES ( 3916, 244, 80, 0 );
 INSERT INTO `mob_pool_mods` VALUES ( 3916, 254, 200, 0 );
 INSERT INTO `mob_pool_mods` VALUES ( 3916, 240, 50, 0 );

@@ -19,6 +19,7 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
+   mob:setMobMod( MOBMOD_DRAW_IN, 100 );
    mob:speed( 60 );
    mob:setLocalVar( "changetime", 0 );
    mob:setLocalVar( "twohourTime", 0 );
@@ -32,7 +33,6 @@ end;
 -----------------------------------
 
 function onMobFight(mob,target)
-
     -- Gains a large attack boost when health is under 25% which cannot be Dispelled. 
     if (mob:getHP() < ((mob:getMaxHP() / 10) * 2.5)) then
         if (mob:hasStatusEffect(EFFECT_ATTACK_BOOST) == false) then
@@ -40,10 +40,13 @@ function onMobFight(mob,target)
             mob:getStatusEffect(EFFECT_ATTACK_BOOST):setFlag(32);
         end;
     end;
+
+
     if (mob:hasStatusEffect(EFFECT_MIGHTY_STRIKES) == false and mob:actionQueueEmpty() == true) then
         local changeTime = mob:getLocalVar("changeTime")
         local twohourTime = mob:getLocalVar("twohourTime")
         local changeHP = mob:getLocalVar("changeHP")
+
         
         if (twohourTime == 0) then
             twohourTime = math.random(8, 14);

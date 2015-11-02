@@ -54,7 +54,7 @@ function onMobSpawn(mob)
       mob:addMod( absorb[math.random(1, #absorb)], 100 );
    end
 
-   local random = math.random(1,5);
+   local random = math.random((1),(5));
 
    if( random == 1 ) then
       mob:addMod( MOD_REGEN, 50 );
