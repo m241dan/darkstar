@@ -105,7 +105,7 @@ bool CPathFind::PathTo(position_t point, uint8 pathFlags, bool clear)
         {
             result = FindPath(&m_PTarget->loc.p, &point);
         }
-
+        StopWithin(3.0f);
         if (!result)
         {
             Clear();
@@ -134,7 +134,6 @@ bool CPathFind::PathAround(position_t point, float distanceFromPoint, uint8 path
 
 //    lastPoint->x += cosf(randomRadian) * distanceFromPoint;
 //    lastPoint->z += sinf(randomRadian) * distanceFromPoint;
-   StopWithin(2.0f);
 
     // save for sliding logic
     m_originalPoint = point;
