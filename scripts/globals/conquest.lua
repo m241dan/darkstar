@@ -188,7 +188,7 @@ function tradeConquestGuard(player,npc,trade,guardnation,guardtype)
 		end
 
 		if (item >= 15761 and item <= 15763) then -- All guard can recharge ring - I can't read number of charge atm
-			if (trade:hasItemQty(item,1) and trade:getItemCount() == 1 and player:getVar("CONQUEST_RING_RECHARGE") < os.time() and
+			if (trade:hasItemQty(item,1) and trade:getItemCount() == 1 and
             (ALLOW_MULTIPLE_EXP_RINGS == 1 or checkConquestRing(player) < 2)) then
 				if (myCP >= XpRing[item - 15760]) then
 
