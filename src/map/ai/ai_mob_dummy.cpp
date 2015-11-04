@@ -1634,7 +1634,7 @@ void CAIMobDummy::ActionAttack()
             {
 
                 // stand around an enemy between 1-2 yalms away
-                float distanceFromTarget = dsp_cap(currentDistance, 1.0f, 2.0f);
+                float distanceFromTarget = m_PMob->m_ModelSize * 1.25f;
 
                 m_PPathFind->PathAround(m_PBattleTarget->loc.p, distanceFromTarget, PATHFLAG_WALLHACK | PATHFLAG_RUN | PATHFLAG_SLIDE);
                 m_PPathFind->FollowPath();

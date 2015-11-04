@@ -403,9 +403,9 @@ function mobAddBonuses(caster, spell, target, dmg, ele)
         local equippedFeet = master:getEquipID(SLOT_FEET);
   
         if( equippedFeet == 15146 ) then -- summoner's pigaches
-            bonusAtk = bonusAtk + .8;
+            bonusAtk = bonusAtk + .08;
         elseif( equippedFeet == 15679 ) then -- summoner's pigaches +1
-            bonusAtk = bonusAtk +.10;
+            bonusAtk = bonusAtk + .1;
         end
     end
 

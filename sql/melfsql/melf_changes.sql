@@ -24,7 +24,8 @@ INSERT INTO `mob_pool_mods` VALUES ( 3916, 250, -50, 0 );
 
 -- jorm
 UPDATE mob_family_system SET Wind=.85, Ice=.75, mob_family_system.INT=4, EVA=4, AGI=5 WHERE familyid=392;
-INSERT INTO `mob_pool_mods` VALUES ( 2156, 12, 0, 1 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 12, 1, 1 );
+INSERT INTO `mob_pool_mods` VALUES ( 2156, 242, 200, 0 );
 INSERT INTO `mob_pool_mods` VALUES ( 2156, 244, 80, 0 );
 INSERT INTO `mob_pool_mods` VALUES ( 2156, 254, 200, 0 );
 INSERT INTO `mob_pool_mods` VALUES ( 2156, 240, 50, 0 );

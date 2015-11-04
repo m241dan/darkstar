@@ -81,7 +81,7 @@ uint16 CItemContainer::GetBuff()
 uint8 CItemContainer::AddBuff(int8 buff)
 {
     m_buff += buff;
-    return SetSize(dsp_min(m_buff, 80)); // ограничение в 80 ячеек для персонажа
+    return SetSize(dsp_min(m_buff, 250)); // ограничение в 80 ячеек для персонажа
 }
 
 /************************************************************************

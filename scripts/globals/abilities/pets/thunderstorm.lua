@@ -23,7 +23,7 @@ function onPetAbility(target, pet, skill)
 	if (master ~= nil and master:isPC()) then
 		merits = master:getMerit(MERIT_THUNDERSTORM);
 	end
-	
+
 	tp = tp + merits;
 	if (tp > 300) then
 		tp = 300;
