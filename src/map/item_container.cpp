@@ -193,7 +193,7 @@ void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
    CItem *ph;
    uint8 swapInc;
 
-   if( page != 1 || page != 2 )
+   if( page != 1 && page != 2 )
    {
       ShowDebug(CL_CYAN"Invalid Page: %u\n" CL_RESET, page );
       return;
