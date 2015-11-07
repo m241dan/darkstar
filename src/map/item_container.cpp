@@ -28,7 +28,8 @@
 
 #include "item_container.h"
 #include "utils/itemutils.h"
-
+#include "utils/charutils.h"
+#include "entities/charentity.h"
 
 CItemContainer::CItemContainer(uint16 LocationID)
 {
@@ -185,6 +186,42 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 
 	delete PItem;
 	return ERROR_SLOTID;
+}
+
+void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
+{
+   CItem *ph;
+   uint8 swapInc;
+
+   if( page != 1 || page != 2 )
+   {
+      ShowDebug(CL_CYAN"Invalid Page: %u\n" CL_RESET, page );
+      return;
+   }
+
+   swapInc = 80 * page;
+
+   for( int x = 1; x < 81; x++ )
+   {
+      ph = m_ItemList[x];
+      m_ItemList[x+swapInc] = m_ItemList[x];
+      m_ItemList[x+swapInc] = ph;
+      if( m_ItemList[x] != nullptr || m_ItemList[x+swapInc] != nullptr )
+      {
+         for( int y = 0; y < 16; y++ )
+         {
+            if( PChar->equipLoc[y] != m_id )
+               continue;
+            if( PChar->equip[y] == x )
+               PChar->equip[y] += swapInc;
+            else if( PChar->equip[y] == ( x + swapInc ) )
+               PChar->equip[y] = x;
+         }
+      }
+   }
+   charutils::SaveCharEquip(PChar);
+   charutils::SendInventory(PChar);
+   return;
 }
 
 /************************************************************************
