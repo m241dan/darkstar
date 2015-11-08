@@ -149,8 +149,7 @@ uint8 CItemContainer::InsertItem(CItem* PItem)
 	{
 		if (m_ItemList[SlotID] == nullptr) 
 		{
-            m_count++;
-
+            		m_count++;
 			PItem->setSlotID(SlotID);
 			PItem->setLocationID(m_id);
 
@@ -176,13 +175,14 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 	{
 		if (PItem != nullptr)
 		{
-			PItem->setSlotID(SlotID);
-			PItem->setLocationID(m_id);
+		    PItem->setSlotID(SlotID);
+ 		    PItem->setLocationID(m_id);
 
-            if (m_ItemList[SlotID] == nullptr && SlotID != 0) m_count++;
-		}
-        else if(m_ItemList[SlotID] != nullptr && SlotID != 0) m_count--;
-        
+                    if (m_ItemList[SlotID] == nullptr && SlotID != 0)
+                        m_count++;
+             	}
+                else if(m_ItemList[SlotID] != nullptr && SlotID != 0)
+                   m_count--;
 		m_ItemList[SlotID] = PItem;
 		return SlotID;
 	}
@@ -194,94 +194,57 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 
 void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
 {
-   const int8* Query =
-      "INSERT INTO char_inventory("
-      "charid,"
-      "location,"
-      "slot,"
-      "itemId,"
-      "quantity,"
-      "signature,"
-      "extra) "
-      "VALUES(%u,%u,%u,%u,%u,'%s','%s')"
-      "ON DUPLICATE KEY UPDATE slot = %u";
-
-   const int8* DQuery = "DELETE FROM char_inventory WHERE location = %u AND slot = %u and charid=%u";
-
+   const int8* Query = "UPDATE char_inventory SET slot = %u WHERE slot = %u AND location = %u AND charid = %u AND itemid = %u";
    int requip[16];
    CItem *ph, *ph_two;
-   uint8 swapInc;
 
    memset( &requip[0], 0, sizeof( requip ) );
-   swapInc = 80 * page;
 
    for( int y = 0; y < 16; y++ )
    {
       if( PChar->equipLoc[y] != m_id )
          continue;
-      if( PChar->equip[y] > 0 && PChar->equip[y] < 81 )
-      {
-         requip[y] = PChar->equip[y] + swapInc;
-         charutils::UnequipItem( PChar, y, true );
-      }
-      else if( PChar->equip[y] > swapInc && PChar->equip[y] < swapInc + 81 )
-      {
-         requip[y] = PChar->equip[y] - swapInc;
-         charutils::UnequipItem( PChar, y, true );
-      }
+      requip[y] = ( PChar->equip[y] + 80 ) % 160;
+      charutils::UnequipItem( PChar, y, true );
    }
 
+   //do the swap server side
    for( int x = 1; x < 81; x++ )
    {
       ph = m_ItemList[x];
-      ph_two = m_ItemList[x+swapInc];
+      ph_two = m_ItemList[x+80];
 
+      InsertItem( nullptr, x );
       InsertItem( ph_two, x );
-      InsertItem( ph, x+swapInc );
+      InsertItem( nullptr, x+80 );
+      InsertItem( ph, x+80 );
 
-      PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
-      PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x+swapInc], m_id, x+swapInc ) );
-   }
-
-   for( int x = 1; x < 81; x++ )
-   {
-      if( m_ItemList[x] == nullptr )
+      if( m_ItemList[x] != nullptr ) 								//if low end slot is empty, we don't need to do swap magic
       {
-         Sql_Query( SqlHandle, DQuery, m_id, x, PChar->id );
-         continue;
+         // swapped with a blank, so just do a straight move
+         if( m_ItemList[x+80] == nullptr )
+         {
+            Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+            continue;
+         }
+         //need to use a dummy because we are swappign two unqiue values and sql will complain
+         //let's dummy the low end, swap the high end down and then swap dummy to the high end
+         Sql_Query( SqlHandle, Query, 161, x, m_id, PChar->id, m_ItemList[x+80]->getID() );
+         Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+         Sql_Query( SqlHandle, Query, x+80, 161, m_id, PChar->id, m_ItemList[x+80]->getID() );
       }
-
-      int8 extra[sizeof(m_ItemList[x]->m_extra) * 2 + 1];
-      Sql_EscapeStringLen(SqlHandle, extra, (const int8*)m_ItemList[x]->m_extra, sizeof(m_ItemList[x]->m_extra));
-
-      int8 signature[21];
-      if (m_ItemList[x]->isType(ITEM_LINKSHELL))
-         DecodeStringLinkshell((int8*)m_ItemList[x]->getSignature(), signature);
-      else
-         DecodeStringSignature((int8*)m_ItemList[x]->getSignature(), signature);
-
-      Sql_Query( SqlHandle, Query, PChar->id, m_id, x, m_ItemList[x]->getID(), m_ItemList[x]->getQuantity(), signature, extra, x );
+      else if( m_ItemList[x+80] != nullptr ) 							//if high end slot is empty, do nothing, we don't need to swap blanks!
+         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x+80]->getID() ); 	//remember, this used to be at X we want it at X+80
    }
 
-   for( int x = swapInc; x < swapInc+81; x++ )
+   // now update the client and the database of the swap
+   for( int x = 1; x < 161; x++ )
    {
-      if( m_ItemList[x] == nullptr )
-      {
-         Sql_Query( SqlHandle, DQuery, m_id, x, PChar->id );
-         continue;
-      }
-
-      int8 extra[sizeof(m_ItemList[x]->m_extra) * 2 + 1];
-      Sql_EscapeStringLen(SqlHandle, extra, (const int8*)m_ItemList[x]->m_extra, sizeof(m_ItemList[x]->m_extra));
-
-      int8 signature[21];
-      if (m_ItemList[x]->isType(ITEM_LINKSHELL))
-         DecodeStringLinkshell((int8*)m_ItemList[x]->getSignature(), signature);
-      else
-         DecodeStringSignature((int8*)m_ItemList[x]->getSignature(), signature);
-
-      Sql_Query( SqlHandle, Query, PChar->id, m_id, x, m_ItemList[x]->getID(), m_ItemList[x]->getQuantity(), signature, extra, x );
+      PChar->pushPacket( new CInventoryItemPacket( nullptr, m_id, x ) );
+      if( m_ItemList[x] != nullptr )
+         PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
    }
+
 
    for( int y = 0; y < 16; y++ )
       if( requip[y] != 0 )
