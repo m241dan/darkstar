@@ -234,7 +234,7 @@ void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
          Sql_Query( SqlHandle, Query, x+80, 161, m_id, PChar->id, m_ItemList[x+80]->getID() );
       }
       else if( m_ItemList[x+80] != nullptr ) 							//if high end slot is empty, do nothing, we don't need to swap blanks!
-         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x]->getID() ); 	//remember, this used to be at X we want it at X+80
+         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x+80]->getID() ); 	//remember, this used to be at X we want it at X+80
    }
 
    // now update the client and the database of the swap
