@@ -238,7 +238,7 @@ function EventUpdateBCNM(player, csid, option, entrance)
 end;
 
 function EventFinishBCNM(player, csid, option)
-    print("FINISH csid "..csid.." option "..option);
+    printf("FINISH csid "..csid.." option "..option);
 
 
     if (player:hasStatusEffect(EFFECT_BATTLEFIELD) == false) then -- Temp condition for normal bcnm (started with onTrigger)
