@@ -478,7 +478,7 @@ namespace charutils
             PChar->getStorage(LOC_MOGSACK)->AddBuff(80);
             PChar->getStorage(LOC_MOGCASE)->AddBuff(80);
 
-            PChar->getStorage(LOC_WARDROBE)->AddBuff(250); // Always 80..
+            PChar->getStorage(LOC_WARDROBE)->AddBuff(240); // Always 80..
         }
 
         fmtQuery = "SELECT face, race, size, head, body, hands, legs, feet, main, sub, ranged "

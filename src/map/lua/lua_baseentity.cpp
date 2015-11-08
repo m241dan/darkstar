@@ -10161,6 +10161,23 @@ inline int32 CLuaBaseEntity::copyConfrontationEffect(lua_State* L)
     lua_pushinteger(L, power);
     return 1;
 }
+
+inline int32 CLuaBaseEntity::swapContainerPage(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity->objtype != TYPE_PC );
+   DSP_DEBUG_BREAK_IF( lua_isnil( L, 1 ) || !lua_isnumber( L, 1 ) );
+   DSP_DEBUG_BREAK_IF( lua_isnil( L, 2 ) || !lua_isnumber( L, 2 ) );
+
+   CCharEntity *PChar = (CCharEntity *)m_PBaseEntity;
+   uint8 loc = lua_tonumber( L, 1 );
+   uint8 page = lua_tonumber( L, 2 );
+
+   CItemContainer *iContainer = PChar->getStorage( loc);
+   iContainer->SwapPages( PChar, page );
+   return 0;
+}
+
 //==========================================================//
 
 //=========================================================//
@@ -10665,5 +10682,6 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSynced),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSync),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,swapContainerPage),
     {nullptr,nullptr}
 };

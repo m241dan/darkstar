@@ -54,10 +54,7 @@ CInventorySizePacket::CInventorySizePacket(CCharEntity* PChar)
     WBUFW(data, (0x16)) = 1 + PChar->getStorage(LOC_MOGSAFE)->GetBuff();
     WBUFW(data, (0x18)) = 1 + PChar->getStorage(LOC_STORAGE)->GetBuff();
     WBUFW(data, (0x1A)) = 1 + PChar->getStorage(LOC_TEMPITEMS)->GetBuff();
-    if (charutils::hasMogLockerAccess(PChar))
-        WBUFW(data, (0x1C)) = 1 + PChar->getStorage(LOC_MOGLOCKER)->GetBuff();
-    else
-        WBUFW(data, (0x1C)) = 0x00;
+    WBUFW(data, (0x1C)) = 1 + PChar->getStorage(LOC_MOGLOCKER)->GetBuff();
 
     WBUFW(data, (0x1E)) = 1 + PChar->getStorage(LOC_MOGSATCHEL)->GetBuff();
     WBUFW(data, (0x20)) = 1 + PChar->getStorage(LOC_MOGSACK)->GetBuff();

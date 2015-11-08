@@ -4417,7 +4417,6 @@ int32 OnDynaDrop(CZone *PZone, uint16 itemID )
         return 1;
     }
 
-
     int32 OnPlayerLevelUp(CCharEntity* PChar)
     {
         lua_prepscript("scripts/globals/player.lua");
