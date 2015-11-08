@@ -194,60 +194,100 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 
 void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
 {
-   const int8* Query = "UPDATE char_inventory SET slot = %u WHERE itemID = %u AND location = %u AND slot = %u";
-   int requip[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+   const int8* Query =
+      "INSERT INTO char_inventory("
+      "charid,"
+      "location,"
+      "slot,"
+      "itemId,"
+      "quantity,"
+      "signature,"
+      "extra) "
+      "VALUES(%u,%u,%u,%u,%u,'%s','%s')"
+      "ON DUPLICATE KEY UPDATE slot = %u";
+
+   const int8* DQuery = "DELETE FROM char_inventory WHERE location = %u AND slot = %u and charid=%u";
+
+   int requip[16];
    CItem *ph, *ph_two;
    uint8 swapInc;
 
-   if( page != 1 && page != 2 )
-   {
-      ShowDebug(CL_CYAN"Invalid Page: %u\n" CL_RESET, page );
-      return;
-   }
-
+   memset( &requip[0], 0, sizeof( requip ) );
    swapInc = 80 * page;
+
+   for( int y = 0; y < 16; y++ )
+   {
+      if( PChar->equipLoc[y] != m_id )
+         continue;
+      if( PChar->equip[y] > 0 && PChar->equip[y] < 81 )
+      {
+         requip[y] = PChar->equip[y] + swapInc;
+         charutils::UnequipItem( PChar, y, true );
+      }
+      else if( PChar->equip[y] > swapInc && PChar->equip[y] < swapInc + 81 )
+      {
+         requip[y] = PChar->equip[y] - swapInc;
+         charutils::UnequipItem( PChar, y, true );
+      }
+   }
 
    for( int x = 1; x < 81; x++ )
    {
       ph = m_ItemList[x];
       ph_two = m_ItemList[x+swapInc];
 
-      if( m_ItemList[x] != nullptr || m_ItemList[x+swapInc] != nullptr )
-      {
-         for( int y = 0; y < 16; y++ )
-         {
-            if( PChar->equipLoc[y] != m_id )
-               continue;
-            if( PChar->equip[y] == x )
-            {
-               charutils::UnequipItem( PChar, y, true );
-               requip[y] = x+swapInc;
-            }
-            else if( PChar->equip[y] == ( x + swapInc ) )
-            {
-               charutils::UnequipItem( PChar, y, true );
-               requip[y] = x;
-            }
-         }
-      }
       InsertItem( ph_two, x );
       InsertItem( ph, x+swapInc );
 
-      if( m_ItemList[x] != nullptr )
-         Sql_Query( SqlHandle, Query, x, m_ItemList[x]->getID(), m_id, x+swapInc );
-      if( m_ItemList[x+swapInc] != nullptr )
-         Sql_Query( SqlHandle, Query, x+swapInc, m_ItemList[x+swapInc]->getID(), m_id, x );
-
       PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
       PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x+swapInc], m_id, x+swapInc ) );
-
    }
+
+   for( int x = 1; x < 81; x++ )
+   {
+      if( m_ItemList[x] == nullptr )
+      {
+         Sql_Query( SqlHandle, DQuery, m_id, x, PChar->id );
+         continue;
+      }
+
+      int8 extra[sizeof(m_ItemList[x]->m_extra) * 2 + 1];
+      Sql_EscapeStringLen(SqlHandle, extra, (const int8*)m_ItemList[x]->m_extra, sizeof(m_ItemList[x]->m_extra));
+
+      int8 signature[21];
+      if (m_ItemList[x]->isType(ITEM_LINKSHELL))
+         DecodeStringLinkshell((int8*)m_ItemList[x]->getSignature(), signature);
+      else
+         DecodeStringSignature((int8*)m_ItemList[x]->getSignature(), signature);
+
+      Sql_Query( SqlHandle, Query, PChar->id, m_id, x, m_ItemList[x]->getID(), m_ItemList[x]->getQuantity(), signature, extra, x );
+   }
+
+   for( int x = swapInc; x < swapInc+81; x++ )
+   {
+      if( m_ItemList[x] == nullptr )
+      {
+         Sql_Query( SqlHandle, DQuery, m_id, x, PChar->id );
+         continue;
+      }
+
+      int8 extra[sizeof(m_ItemList[x]->m_extra) * 2 + 1];
+      Sql_EscapeStringLen(SqlHandle, extra, (const int8*)m_ItemList[x]->m_extra, sizeof(m_ItemList[x]->m_extra));
+
+      int8 signature[21];
+      if (m_ItemList[x]->isType(ITEM_LINKSHELL))
+         DecodeStringLinkshell((int8*)m_ItemList[x]->getSignature(), signature);
+      else
+         DecodeStringSignature((int8*)m_ItemList[x]->getSignature(), signature);
+
+      Sql_Query( SqlHandle, Query, PChar->id, m_id, x, m_ItemList[x]->getID(), m_ItemList[x]->getQuantity(), signature, extra, x );
+   }
+
    for( int y = 0; y < 16; y++ )
       if( requip[y] != 0 )
          charutils::EquipItem( PChar, requip[y], y, m_id );
    charutils::SaveCharEquip(PChar);
    PChar->pushPacket( new CInventoryFinishPacket() );
-   charutils::SendInventory(PChar);
    return;
 }
 
