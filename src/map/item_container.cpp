@@ -149,8 +149,7 @@ uint8 CItemContainer::InsertItem(CItem* PItem)
 	{
 		if (m_ItemList[SlotID] == nullptr) 
 		{
-            m_count++;
-
+            		m_count++;
 			PItem->setSlotID(SlotID);
 			PItem->setLocationID(m_id);
 
@@ -176,11 +175,14 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 	{
 		if (PItem != nullptr)
 		{
-			PItem->setSlotID(SlotID);
- 			PItem->setLocationID(m_id);
-                        if (m_ItemList[SlotID] == nullptr && SlotID != 0) m_count++;
+		    PItem->setSlotID(SlotID);
+ 		    PItem->setLocationID(m_id);
+
+                    if (m_ItemList[SlotID] == nullptr && SlotID != 0)
+                        m_count++;
              	}
-                else if(m_ItemList[SlotID] != nullptr && SlotID != 0) m_count--;
+                else if(m_ItemList[SlotID] != nullptr && SlotID != 0)
+                   m_count--;
 		m_ItemList[SlotID] = PItem;
 		return SlotID;
 	}
@@ -216,6 +218,23 @@ void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
       InsertItem( ph_two, x );
       InsertItem( nullptr, x+80 );
       InsertItem( ph, x+80 );
+
+      if( m_ItemList[x] != nullptr ) 								//if low end slot is empty, we don't need to do swap magic
+      {
+         // swapped with a blank, so just do a straight move
+         if( m_ItemList[x+80] == nullptr )
+         {
+            Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+            continue;
+         }
+         //need to use a dummy because we are swappign two unqiue values and sql will complain
+         //let's dummy the low end, swap the high end down and then swap dummy to the high end
+         Sql_Query( SqlHandle, Query, 161, x, m_id, PChar->id, m_ItemList[x+80]->getID() );
+         Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+         Sql_Query( SqlHandle, Query, x+80, 161, m_id, PChar->id, m_ItemList[x+80]->getID() );
+      }
+      else if( m_ItemList[x+80] != nullptr ) 							//if high end slot is empty, do nothing, we don't need to swap blanks!
+         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x]->getID() ); 	//remember, this used to be at X we want it at X+80
    }
 
    // now update the client and the database of the swap
@@ -224,9 +243,6 @@ void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
       PChar->pushPacket( new CInventoryItemPacket( nullptr, m_id, x ) );
       if( m_ItemList[x] != nullptr )
          PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
-
-      if( m_ItemList[x] != nullptr )
-         Sql_Query( SqlHandle, Query, x, (x+80)%160, m_id, PChar->id, m_ItemList[x]->getID() );
    }
 
 
