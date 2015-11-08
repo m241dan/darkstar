@@ -42,7 +42,7 @@ enum CONTAINER_ID
 };
 
 #define MAX_CONTAINER_ID	 10
-#define MAX_CONTAINER_SIZE	240
+#define MAX_CONTAINER_SIZE	254
 #define ERROR_SLOTID		255
 
 /************************************************************************
