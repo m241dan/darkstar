@@ -19,10 +19,12 @@ function onMobSkillCheck(target,mob,skill)
 end;
 
 function onMobWeaponSkill(target, mob, skill)
+    local numhits = math.random((1),(3));
 
-    local dmgmod = MobBreathMove(mob, target, 0.2, 0.75, ELE_FIRE, 700);
+    local dmgmod = MobPhysicalMove(mob,target,skill,numhits,1,10,TP_NO_EFFECT,1,2,3);
+    dmgmod.dmg = mobAddBonuses(mob,spell,target,dmgmod.dmg,ELE_FIRE);
+    local dmg = MobFinalAdjustments(dmgmod,mob,skill,target,MOBSKILL_PHYSICAL,MOBPARAM_FIRE,numhits);
 
-    local dmg = MobFinalAdjustments(dmgmod,mob,skill,target,MOBSKILL_BREATH,MOBPARAM_FIRE,MOBPARAM_IGNORE_SHADOWS);
     target:delHP(dmg);
     return dmg;
 end
