@@ -12,6 +12,10 @@ require("scripts/globals/titles");
 function onMobSpawn(mob)
 end;
 
+function onMobEngaged(mob)
+   mob:addMod( MOD_MDEF, 20 );
+end;
+
 -----------------------------------
 -- onMobDeath
 -----------------------------------
