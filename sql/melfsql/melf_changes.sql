@@ -143,11 +143,11 @@ UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=12;
 -- mandalic stab
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=27;
 -- mordent rhyme
-UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=28;
+UPDATE `weapon_skills` SET skilllevel=250 WHERE weaponskillID=28;
 -- pyrrhic kleos
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=29;
 -- death blossom
-UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=44;
+UPDATE `weapon_skills` SET skilllevel=260 WHERE weaponskillID=44;
 -- atonement
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=45;
 -- expiacion
@@ -165,17 +165,17 @@ UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=138;
 -- Tachi: Rana
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=154;
 -- Mystic boon
-UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=171;
+UPDATE `weapon_skills` SET skilllevel=266 WHERE weaponskillID=171;
 -- Vidohunir
-UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=186;
+UPDATE `weapon_skills` SET skilllevel=250 WHERE weaponskillID=186;
 -- Garland of Bliss
-UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=187;
+UPDATE `weapon_skills` SET skilllevel=260 WHERE weaponskillID=187;
 -- Omniscience
-UPDATE `weapon_skills` SET skilllevel=275 WHERE weaponskillID=188;
+UPDATE `weapon_skills` SET skilllevel=240 WHERE weaponskillID=188;
 -- Trueflight
 UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=217;
 -- Leaden Salute
-UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=218;
+UPDATE `weapon_skills` SET skilllevel=260 WHERE weaponskillID=218;
 
 -- RespawnTimer Adjustments
 UPDATE `mob_groups` SET respawnTime=300 WHERE respawnTime>300 AND respawnTime<=1201;

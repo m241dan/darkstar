@@ -129,7 +129,7 @@ void TryLearningSpells(CCharEntity* PChar, CMobEntity* PMob) {
 
 			uint8 learnableLevel = PSpell->getJob(JOB_BLU);
 			if (learnableLevel > 0 && learnableLevel < PBlueMage->GetMLevel()+7) { // TODO: Use blue magic skill check rather than level
-                if (dsprand::GetRandomNumber(100) < 45) {
+                if (dsprand::GetRandomNumber(100) < 55) {
 					if (charutils::addSpell(PBlueMage, PSpell->getID())) {
 						PBlueMage->pushPacket(new CMessageBasicPacket(PBlueMage, PBlueMage, PSpell->getID(), 0, MSGBASIC_LEARNS_SPELL));
 						charutils::SaveSpell(PBlueMage, PSpell->getID());
