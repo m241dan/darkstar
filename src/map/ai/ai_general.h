@@ -158,6 +158,10 @@ public:
     CMagicState*     m_PMagicState;
     ActionQueue_t    m_actionQueue;
 
+    void AddLastMeleeTime(uint32 time);
+    void SetLastMeleeTime(uint32 time);
+    uint32 GetLastMeleeTime();
+
 
 private:
 

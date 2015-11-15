@@ -574,6 +574,9 @@ public:
     int32 copyConfrontationEffect(lua_State* L);    // copy confrontation effect, param = targetEntity:getShortID()
 
     int32 swapContainerPage(lua_State *L);
+
+    int32 addDelay( lua_State *L );
+    int32 delay( lua_State *L );
 };
 
 #endif

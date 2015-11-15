@@ -10178,6 +10178,34 @@ inline int32 CLuaBaseEntity::swapContainerPage(lua_State *L)
    return 0;
 }
 
+inline int32 CLuaBaseEntity::addDelay(lua_State *L )
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+
+   CBaseEntity *PEntity = (CBaseEntity *)m_PBaseEntity;
+   CAIGeneral *AIGen = (CAIGeneral *)PEntity->PBattleAI;
+
+   AIGen->AddLastMeleeTime( lua_tonumber( L, 1 ) );
+   return 0;
+}
+
+inline int32 CLuaBaseEntity::delay(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
+
+   CBaseEntity *PEntity = (CBaseEntity *)m_PBaseEntity;
+   CAIGeneral *AIGen = (CAIGeneral *)PEntity->PBattleAI;
+
+   if( lua_isnil( L, 1 ) || !lua_isnumber(L , 1) )
+   {
+      lua_pushinteger( L, AIGen->GetLastMeleeTime() );
+      return 1;
+   }
+
+   AIGen->SetLastMeleeTime( lua_tonumber( L, 1 ) );
+   return 0;
+}
+
 //==========================================================//
 
 //=========================================================//
@@ -10683,5 +10711,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSync),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,swapContainerPage),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,addDelay),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delay),
     {nullptr,nullptr}
 };

@@ -23,4 +23,7 @@ end;
 
 function onUseAbility(player,target,ability)
    player:addStatusEffect(EFFECT_TRICK_ATTACK,1,0,60);
+   if( player:delay() < 1500 ) then
+      player:delay(1500);
+   end
 end;

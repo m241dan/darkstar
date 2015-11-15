@@ -377,6 +377,21 @@ CAbility* CAIGeneral::GetCurrentJobAbility()
 	return m_PJobAbility.get();
 }
 
+uint32 CAIGeneral::GetLastMeleeTime()
+{
+   return m_LastMeleeTime;
+}
+
+void CAIGeneral::SetLastMeleeTime(uint32 time)
+{
+   m_LastMeleeTime = time;
+}
+
+void CAIGeneral::AddLastMeleeTime(uint32 time)
+{
+    m_LastMeleeTime += time;
+}
+
 /************************************************************************
 *																		*
 *  Получаем текущую цель физической атаки								*
