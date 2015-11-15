@@ -1,12 +1,10 @@
 -------------------------------------------------
 
-package.loaded["scripts/globals/settings"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/conquest");
 -- require("scripts/globals/teleports");
 require("scripts/globals/status");
 require("scripts/globals/regimereward");
-package.loaded["scripts/globals/regimeinfo"] = nil;
 require("scripts/globals/regimeinfo");
 require("scripts/globals/common");
 

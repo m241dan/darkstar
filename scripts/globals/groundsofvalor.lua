@@ -12,6 +12,7 @@ require("scripts/globals/conquest");
 require("scripts/globals/teleports");
 require("scripts/globals/status");
 require("scripts/globals/regimereward");
+package.loaded["scripts/globals/regimeinfo"] = nil;
 require("scripts/globals/regimeinfo");
 require("scripts/globals/common");
 
@@ -155,7 +156,7 @@ function startGov(eventid,player)
        local hasRegime = player:getVar("fov_regimeid");
        local tabs = player:getCurrency("valor_point");
        player:startEvent(eventid,0,0,0,0,0,0,tabs,hasRegime);
-	end;
+    end;
 end
 
 ----------------------------------
@@ -463,6 +464,7 @@ function writeRegime(player,rid,msg_accept,msg_jobs,regrepeat)
     player:setVar("fov_numkilled3",0);
     player:setVar("fov_numkilled4",0);
     local info = getRegimeInfo(rid);
+    printf( "rid = " .. rid );
     player:setVar("fov_numneeded1",info.n1);
     player:setVar("fov_numneeded2",info.n2);
     player:setVar("fov_numneeded3",info.n3);

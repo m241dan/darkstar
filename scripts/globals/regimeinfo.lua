@@ -547,6 +547,7 @@ function getRegimeInfo(regimeid)
                 elseif (regimeid == 686) then
                     a = {2,5,0,0,85,89};
                 elseif (regimeid == 687) then
+                    printf( "setting the table" )
                     a = {3,3,0,0,40,44};
                 elseif (regimeid == 688) then
                     a = {3,3,0,0,45,49};
@@ -838,5 +839,6 @@ function getRegimeInfo(regimeid)
         a = {0,0,0,0,0,0};
         return a;
     end
+    printf( "returning A " .. table.concat( a, " " ) )
     return a;
 end

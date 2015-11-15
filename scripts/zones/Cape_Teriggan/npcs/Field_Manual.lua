@@ -4,7 +4,6 @@
 -----------------------------------	
 	
 require("scripts/globals/settings");	
-package.loaded["scripts/globals/fieldsofvalor"] = nil;
 require("scripts/globals/fieldsofvalor");	
 	
 -----------------------------------	
