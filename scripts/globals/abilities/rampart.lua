@@ -22,5 +22,10 @@ end;
 -----------------------------------
 
 function onUseAbility(player,target,ability)
-    target:addStatusEffect(EFFECT_MAGIC_SHIELD,1,0,30);
+    local iHead = player:getEquipID(SLOT_HEAD);
+    local duration = 30;
+    if (iHead == 15078 or iHeadt == 15251 ) then
+       duration = 45;
+    end
+    target:addStatusEffect(EFFECT_MAGIC_SHIELD,1,0,45);
 end;
