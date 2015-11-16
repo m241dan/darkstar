@@ -565,7 +565,7 @@ uint16 CBattleEntity::ATT()
 
 uint16 CBattleEntity::RATT(uint8 skill, uint16 bonusSkill)
 {
-    int32 ATT = 8 + GetSkill(skill) + bonusSkill + m_modStat[MOD_RATT] + battleutils::GetRangedAttackBonuses(this) + STR() / 2;
+    int32 ATT = 8 + GetSkill(skill) + bonusSkill + m_modStat[MOD_RATT] + battleutils::GetRangedAttackBonuses(this) + ( ( 3 * STR() ) / 4 );
 
     if (this->objtype == TYPE_PET && ((CPetEntity*)this)->getPetType() == PETTYPE_AUTOMATON)
     {
