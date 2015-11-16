@@ -12,7 +12,6 @@ require("scripts/globals/conquest");
 require("scripts/globals/teleports");
 require("scripts/globals/status");
 require("scripts/globals/regimereward");
-package.loaded["scripts/globals/regimeinfo"] = nil;
 require("scripts/globals/regimeinfo");
 require("scripts/globals/common");
 
@@ -407,6 +406,7 @@ function finishGov(player,csid,option,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,msg_offset)
         player:setVar("fov_numkilled4",0);
         player:showText(player,msg_cancel);
     elseif (option == GOV_MENU_PAGE_1) then -- Page 1
+        printf( "regimeid = " .. r1 );
         writeRegime(player,r1,msg_accept,msg_jobs,0);
     elseif (option == GOV_MENU_PAGE_2) then -- Page 2
         writeRegime(player,r2,msg_accept,msg_jobs,0);
