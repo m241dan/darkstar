@@ -28,6 +28,13 @@ function onMobSpawn(mob)
 --   mob:setLocalVar( "changeHP", 0 ):
 end;
 
+function onMobEngaged(mob)
+   mob:setLocalVar( "changetime", 0 );
+   mob:setLocalVar( "twohourTime", 0 );
+   mob:SetMobSkillAttack(false); -- resetting so it doesn't respawn in flight mode.
+   mob:AnimationSub(0); -- subanim 0 is only used when it spawns until first flight.
+end;
+
 -----------------------------------
 -- onMobFight Action
 -----------------------------------
@@ -40,7 +47,6 @@ function onMobFight(mob,target)
             mob:getStatusEffect(EFFECT_ATTACK_BOOST):setFlag(32);
         end;
     end;
-
 
     if (mob:hasStatusEffect(EFFECT_MIGHTY_STRIKES) == false and mob:actionQueueEmpty() == true) then
         local changeTime = mob:getLocalVar("changeTime")

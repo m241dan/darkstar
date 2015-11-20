@@ -62,7 +62,7 @@ UPDATE mob_family_system SET DEF=2, EVA=2 WHERE family='Seiryu' or family='Byakk
 INSERT INTO `mob_droplist` VALUES (512,0,1312,1000);
 
 -- updated drop pools for Machai tigers in Kuftal Tunnels
-INSERT INTO `mob_droplist` VALUES (5500,0,2518,35);
+INSERT INTO `mob_droplist` VALUES (5500,0,2518,150);
 INSERT INTO `mob_droplist` VALUES (5500,0,5668,70);
 
 -- sky elements
