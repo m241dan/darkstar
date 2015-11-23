@@ -15,8 +15,32 @@ require("scripts/zones/Northern_San_dOria/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-	
-	if (trade:getItemCount() == 2) then
+
+   -- augment cleanser
+   if( trade:getItemCount() == 1 ) then
+      local item = trade:getItemObj();
+
+      if( item:isSubType(4) == false ) then
+         return;
+      end
+
+      local cleanseCount = player:getVar( "CleanseCount" );
+      local CPCost = 20000 + ( cleanseCount * 2000 );
+      local currentCP = player:getCP();
+
+      if( currentCP < CPCost ) then
+         player:PrintToPlayer( string.format( "You require %d Conquest Points and only have %d.", CPCost, currentCP ), 0xE );
+         return;
+      end
+
+      local itemID = item:getID();
+      player:tradeComplete();
+      player:addItem( itemID );
+      player:PrintToPlayer( "Item has been cleansed.", 0xE );
+      player:setVar( "CleanseCount", cleanseCount + 1 );      
+      player:delCP( CPCost );
+
+   elseif (trade:getItemCount() == 2) then
 		
 		-- abjuration, item, item -1, reward, reward +1
 		abjuList = {1314,1344,1345,13934,13935, 1315,1346,1347,14387,14388, 1316,1348,1349,14821,14822, 1317,1350,1351,14303,14304, 1318,1352,1353,14184,14185,
