@@ -257,6 +257,9 @@ function BlueGetWsc(attacker, params)
          attacker:getStat(MOD_VIT) * params.vit_wsc + attacker:getStat(MOD_AGI) * params.agi_wsc +
          attacker:getStat(MOD_INT) * params.int_wsc + attacker:getStat(MOD_MND) * params.mnd_wsc +
          attacker:getStat(MOD_CHR) * params.chr_wsc) * BlueGetAlpha(attacker:getMainLvl());
+    if( attacker:hasStatusEffect(EFFECT_CHAIN_AFFINITY) ) then
+       return wsc * 2;
+    end
     return wsc;
 end;
 
