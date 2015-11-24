@@ -8436,6 +8436,33 @@ inline int32 CLuaBaseEntity::isTrickAttackAvailable(lua_State *L)
     return 0;
 }
 
+inline int32 CLuaBaseEntity::getTrickTarget(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
+
+    CLuaBaseEntity* PLuaBaseEntity = Lunar<CLuaBaseEntity>::check(L, 1);
+    CBattleEntity* PMob = (CBattleEntity*)PLuaBaseEntity->GetBaseEntity();
+    if (PMob != nullptr)
+    {
+        CBattleEntity* taTarget = battleutils::getAvailableTrickAttackChar((CBattleEntity*)m_PBaseEntity, PMob);
+        if( taTarget != nullptr )
+        {
+           lua_getglobal(L, CLuaBaseEntity::className);
+           lua_pushstring(L, "new");
+           lua_gettable(L, -2);
+           lua_insert(L, -2);
+           lua_pushlightuserdata(L, (void*)taTarget);
+           lua_pcall(L, 2, 1, 0);
+           return 1;
+        }
+        return 0;
+    }
+    return 0;
+}
+
 
 inline int32 CLuaBaseEntity::setDelay(lua_State* L)
 {
@@ -10607,6 +10634,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setMobFlags),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasTrait),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isTrickAttackAvailable),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTrickTarget),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setDelay),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setDamage),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,castSpell),
