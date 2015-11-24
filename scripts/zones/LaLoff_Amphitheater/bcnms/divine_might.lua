@@ -83,7 +83,7 @@ function onEventFinish(player,csid,option)
             player:addMission(ZILART,THE_SEALED_SHRINE);
             player:setVar("ZilartStatus",0);
          end
-      elseif (player:getQuestStatus(OUTLANDS,DIVINE_MIGHT_REPEAT) == QUEST_ACCEPTED and player:hasKeyItem(MOONLIGHT_ORE) == true) then
+      elseif (player:getQuestStatus(OUTLANDS,DIVINE_MIGHT_REPEAT) == QUEST_ACCEPTED ) then
          player:setVar("DivineMight",2);
       end
    end

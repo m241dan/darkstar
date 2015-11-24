@@ -63,7 +63,7 @@ function onTrigger(player,npc)
       else
          player:startEvent(56,917,1408,1550); -- Reminder for Ark Pentasphere
       end
-   elseif (DMRepeat == QUEST_ACCEPTED and DivineStatus == 2 and MoonOre == true) then -- Repeat turn in
+   elseif (DMRepeat == QUEST_ACCEPTED and DivineStatus == 2) then -- Repeat turn in
       player:startEvent(59);
    else
       player:messageSpecial(NOTHING_OUT_OF_ORDINARY); -- Need some kind of feedback
