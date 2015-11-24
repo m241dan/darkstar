@@ -65,8 +65,11 @@ function onTrigger(player,npc)
       player:completeMission( COP, CALM_BEFORE_THE_STORM );
       player:completeMission(COP,THE_WARRIOR_S_PATH);
       player:addMission(COP,GARDEN_OF_ANTIQUITY);
-      player:setVar("PromathiaStatus",0);
       player:setVar( "CoPSkip", 1 );
+      player:setVar("PromathiaStatus",1);
+      player:addKeyItem(LIGHT_OF_ALTAIEU);
+      player:messageSpecial(KEYITEM_OBTAINED,LIGHT_OF_ALTAIEU);
+      player:addTitle(SEEKER_OF_THE_LIGHT);
       player:PrintToPlayer( "You have gained Sea access.", 0xE );
    end
 

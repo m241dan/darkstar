@@ -23,6 +23,10 @@ function onItemCheck(target)
          return 56;
       end
    end
+
+   if( leaderRegion >= 24 and leaderRegion <= 27 ) then
+      return 56;
+   end
    
    if (leader == nil) then
       return 56; -- Not in a party, fail.

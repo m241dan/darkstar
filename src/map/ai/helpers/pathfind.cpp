@@ -284,6 +284,9 @@ void CPathFind::StepTo(position_t* pos, bool run)
     float stepDistance = ((float)speed / 10) / 2;
     float distanceTo = distance(m_PTarget->loc.p, *pos);
 
+    // face point mob is moving towards
+    LookAt(*pos);
+
     if (distanceTo <= stepDistance ||
         (m_pathFlags & PATHFLAG_SLIDE) && distance(m_originalPoint, m_PTarget->loc.p) < m_distanceFromPoint)
     {
@@ -307,9 +310,6 @@ void CPathFind::StepTo(position_t* pos, bool run)
         m_PTarget->loc.p.z += sinf(radians) * stepDistance;
 
     }
-
-    // face point mob is moving towards
-    LookAt(*pos);
 
     m_PTarget->loc.p.moving += ((0x36 * ((float)m_PTarget->speed / 0x28)) - (0x14 * (mode - 1)));
 
