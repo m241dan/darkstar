@@ -3,7 +3,7 @@ UPDATE mob_spawn_points SET pos_x=124, pos_y=19, pos_z=163, pos_rot=100 WHERE mo
 
 -- Updates spell_list.sql so that "Divine Veil"  works (added AOE = 7 for Divine Veil)
 -- (These spells also work with SCH's Accession, so SCH needs to check for both AOE=4 and AOE=7)
-UPDATE spell_list SET AOE=7 WHERE name="poisona" OR name="paralyna" OR name="silena" OR name="blindna" OR name="cursna" OR name="stona" OR name="erase";
+-- UPDATE spell_list SET AOE=4 WHERE name="poisona" OR name="paralyna" OR name="silena" OR name="blindna" OR name="cursna" OR name="stona" OR name="erase";
 
 -- Correct droplist for Thread Leeches (in Pashhow Marshlands, zoneID = 109)
 -- (poolid = 5133; vial of beastman's blood = 930; dropid = 3472; vial of fiend blood = 924)
