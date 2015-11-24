@@ -37,11 +37,15 @@ end;
 function onMobWeaponSkill(target, mob, skill)
 
 -- TODO: Hits all players near Khimaira, not just alliance.
+    if( math.abs( mob:getPos().y ) - math.abs( target:getPos().y ) >= 4 ) then
+       skill:setMsg(MSG_NONE);
+       return 0;
+    end
 
-    local dmgmod = 3;
+    local dmgmod = 2.4;
     local info = MobMagicalMove(mob,target,skill,mob:getWeaponDmg() * 4,ELE_LIGHTNING,dmgmod,TP_MAB_BONUS,1);
     local dmg = MobFinalAdjustments(info.dmg,mob,skill,target,MOBSKILL_MAGICAL,MOBPARAM_THUNDER,MOBPARAM_WIPE_SHADOWS);
-    MobStatusEffectMove(mob,target,EFFECT_PARALYSIS, 40, 0, 60);
+    MobStatusEffectMove(mob,target,EFFECT_PARALYSIS, 80, 0, 60);
     MobStatusEffectMove(mob,target,EFFECT_STUN, 1, 0, 4);
 
     target:delHP(dmg);

@@ -286,6 +286,12 @@ INSERT INTO `mob_pool_mods` VALUES (680,1,322,0); -- 650 defense total
 INSERT INTO `mob_pool_mods` VALUES (680,31,220,0); -- 120 magic evasion boost recommended but 200 felt more retail
 INSERT INTO `mob_pool_mods` VALUES (680,251,-50,0); -- he shouldn't be so resistant to stun, tho this is a systemic stun problem, this is a hack
 
+-- Khimaira
+INSERT INTO `mob_pool_mods` VALUES (2220,31,200,0); -- 200 magic evasion boost
+INSERT INTO `mob_pool_mods` VALUES (2220,251,-50,0); -- stunres ibid(cerberus) reasoning ^
+INSERT INTO `mob_pool_mods` VALUES (2220,242,100,0); -- parares 100
+INSERT INTO `mob_pool_mods` VALUES (2220,247,100,0); -- bindres 100
+
 /*!40000 ALTER TABLE `mob_pool_mods` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

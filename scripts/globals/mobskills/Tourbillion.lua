@@ -21,9 +21,10 @@ function onMobSkillCheck(target,mob,skill)
         return 1;
     end
   end
-   --[[TODO: Khimaira should only use this when its wings are up, which is animationsub() == 0.
-   There's no system to put them "down" yet, so it's not really fair to leave it active.
-   Tyger's fair game, though. :)]]
+   -- don't use if wings are down
+   if( mob:AnimationSub() == 1 ) then
+      return 1;
+   end
     return 0;
 end;
 
