@@ -23,6 +23,8 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
+   local ZilartProgress = player:getCurrentMission(ZILART);
+   local ZVar = player:getVar("ZilartStatus");
 
    if( ZilartProgress >= THE_GATE_OF_THE_GODS and ZilartProgress ~= 255 and player:getVar( "CoPSkip" ) == 0 ) then
       player:completeMission( COP, ANCIENT_FLAMES_BECKON );
@@ -65,6 +67,7 @@ function onTrigger(player,npc)
       player:addMission(COP,GARDEN_OF_ANTIQUITY);
       player:setVar("PromathiaStatus",0);
       player:setVar( "CoPSkip", 1 );
+      player:PrintToPlayer( "You have gained Sea access.", 0xE );
    end
 
 	
