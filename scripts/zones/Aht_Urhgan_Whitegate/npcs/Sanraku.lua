@@ -5,7 +5,9 @@
 -- @pos -125.724 0.999 22.136 50
 -----------------------------------
 package.loaded["scripts/zones/Aht_Urhgan_Whitegate/TextIDs"] = nil;
+package.loaded["scripts/globals/besieged"] = nil;
 -----------------------------------
+
 require("scripts/globals/keyitems");
 require("scripts/globals/besieged");
 require("scripts/zones/Aht_Urhgan_Whitegate/TextIDs");
@@ -14,15 +16,44 @@ require("scripts/zones/Aht_Urhgan_Whitegate/TextIDs");
 -- onTrade Action
 -----------------------------------
 
+--    ADDED THIS SECTION
+item_table = {
+        [2175] = { 1, 50 }, --flan meat
+        [5569] = { 1, 50 }, --puk egg
+        [2148] = { 1, 50 }, --puk wing
+        [2171] = { 1, 50 }, --colibri beak
+        [2150] = { 1, 50 }, --colibri feather
+        [2149] = { 1, 50 }, --apkallu feather
+        [5568] = { 1, 50 }, --apkallu egg
+        [2163] = { 50, 150 }, --imp wing
+        [2157] = { 50, 150 }, --imp horn
+        [2153] = { 50, 150 }, --Qiqirn Sandbag
+        [1196] = { 50, 150 }, --Qiqirn Cape
+        [2166] = { 50, 150 }, --Marid Hair
+        [2151] = { 50, 150 }, --marid hide
+        [2426] = { 50, 150 }, --wivre horn
+        [2428] = { 50, 150 }, --wivre hide
+        [2165] = { 150, 250 },--qutrub gorget
+        [2159] = { 150, 250 }, --qutrub bandage
+        [2334] = { 150, 250 }, --poroggo hat
+        [1869] = { 250, 350 }, --lamia skin
+        [2167] = { 250, 350 }, --lamia armlet
+        [2335] = { 250, 350 }, --soulflayer tentacle
+        [1724] = { 250, 350 }, --soulflayer robe
+        [2162] = { 250, 350 }, --mamool ja helmet
+        [2227] = { 250, 350 }, --mamool ja collar
+        [2160] = { 250, 350 }, --troll pauldron
+        [2161] = { 250, 350 }, --troll vambrace
+        };
 function onTrade(player,npc,trade)
-    --[[
+    
     local trophies =
     {
         2616, 2617, 2618, 2613, 2614, 2615, 2610, 2611, 2612,
         2609, 2626, 2627, 2628, 2623, 2624, 2625, 2620, 2621,
         2622, 2619, 2636, 2637, 2638, 2633, 2634, 2635, 2630,
         2631, 2632, 2629
-    }
+    };
 
     local seals =
     {
@@ -38,37 +69,70 @@ function onTrade(player,npc,trade)
         AMBER_COLORED_SEAL,AMBER_COLORED_SEAL,AMBER_COLORED_SEAL,
         FALLOW_COLORED_SEAL,TAUPE_COLORED_SEAL,SIENNA_COLORED_SEAL,
         LAVENDER_COLORED_SEAL
-    }
+    };
 
+	-- CHANGED THIS SECTION
+	--put this inside the "function onTrade"
     if (trade:getItemCount() == 1) then
-        if (trade:hasItemQty(2477,1)) then -- Trade Soul Plate
-            zeni = math.random(1,200); -- random value since soul plates aren't implemented yet.
-            player:tradeComplete();
-            player:addCurrency("zeni_point", zeni);
-            player:startEvent(0x038E,zeni);
-        else
-            znm = -1;
-            found = false;
-
-            while (znm <= 30) and not(found) do
-                znm = znm + 1;
-                found = trade:hasItemQty(trophies[znm + 1],1);
-            end;
-
-            if (found) then
-                znm = znm + 1;
-
-                if (player:hasKeyItem(seals[znm]) == false) then
-                    player:tradeComplete();
-                    player:addKeyItem(seals[znm]);
-                    player:startEvent(0x0390,0,0,0,seals[znm]);
-                else
-                    player:messageSpecial(SANCTION + 8,seals[znm]); -- You already possess .. (not sure this is authentic)
-                end
-            end
+        local itemid = trade:getItem();
+		
+        if( not item_table[itemid] ) then
+			player:PrintToPlayer( "Not a valid Zeni Reward Item.", 0xE )
+			goto sealsection;
         end
+
+        local zeni = math.random( (item_table[itemid][1]), (item_table[itemid][2]) );
+        player:tradeComplete();
+        player:addCurrency("zeni_point", zeni);
+        player:startEvent(0x038E,zeni);
+        
+		return
+		
+	else
+		local zeni = 0;
+		local slot_count = trade:getSlotCount();
+		
+		for i=0,slot_count-1 do
+			local itemid = trade:getItem(i);
+			local slotQty = trade:getSlotQty(i);
+			
+			if(not item_table[itemid]) then
+				player:PrintToPlayer( string.format( "%s is not a valid zeni item.", itemid ), 0xE );
+			else
+				for i=1, slotQty do
+					zeni = zeni + math.random( (item_table[itemid][1]), (item_table[itemid][2]) );
+				end
+			end
+		end
+		
+		player:tradeComplete();
+        player:addCurrency("zeni_point", zeni);
+        player:startEvent(0x038E,zeni);
+        
+		return
     end
-    ]]
+	
+	::sealsection::
+		znm = -1;
+		found = false;
+
+		while (znm <= 30) and not(found) do
+			znm = znm + 1;
+			found = trade:hasItemQty(trophies[znm + 1],1);
+		end;
+
+		if (found) then
+			znm = znm + 1;
+
+			if (player:hasKeyItem(seals[znm]) == false) then
+				player:tradeComplete();
+				player:addKeyItem(seals[znm]);
+				player:startEvent(0x0390,0,0,0,seals[znm]);
+			else
+				player:messageSpecial(SANCTION + 8,seals[znm]); -- You already possess .. (not sure this is authentic)
+			end
+		end   
+	
 end;
 
 -----------------------------------
@@ -76,7 +140,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-    --[[
+    
     if (player:getVar("ZeniStatus") == 0) then
         player:startEvent(0x038c);
     else
@@ -121,7 +185,7 @@ function onTrigger(player,npc)
 
         player:startEvent(0x038D,param);
     end
-    ]]
+    
 end;
 
 -----------------------------------
@@ -131,7 +195,7 @@ end;
 function onEventUpdate(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("updateRESULT: %u",option);
-    --[[
+    
     local lures =
     {
         2580, 2581, 2582, 2577, 2578, 2579, 2574, 2575, 2576,
@@ -241,7 +305,7 @@ function onEventUpdate(player,csid,option)
             end
         end
     end
-    ]]
+    
 end;
 
 -----------------------------------
@@ -251,10 +315,10 @@ end;
 function onEventFinish(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("finishRESULT: %u",option);
-    --[[
+    
     if (csid == 0x038c) then
         player:setVar("ZeniStatus",1);
         player:addCurrency("zeni_point", 2000);
     end
-    ]]
+    
 end;
