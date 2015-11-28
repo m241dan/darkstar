@@ -29,7 +29,7 @@ function onGameIn(player, firstlogin, zoning)
     if (zoning) then -- Things checked ONLY during zone in go here.
         -- Nothing here yet :P
        local z = player:getZoneID();
-       if( ( z >= 230 and z <= 250 ) or z == 50 or z == 53 or z == 48 ) then
+       if( ( z >= 230 and z <= 250 ) or z == 50 or z == 53 or z == 48 or z == 26 ) then
           player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
        else
           player:delStatusEffect(EFFECT_TOWNMOVE);
