@@ -1,5 +1,26 @@
+require("scripts/globals/settings")
 require("scripts/globals/status")
 require("scripts/globals/magic")
+
+local BCTable = {
+    [SYSTEM_AMORPH]   = { [SYSTEM_BIRD]     = 1.25, [SYSTEM_AQUAN]    = .75 },
+    [SYSTEM_AQUAN]    = { [SYSTEM_AMORPH]   = 1.25, [SYSTEM_BIRD]     = .75 },
+    [SYSTEM_BIRD]     = { [SYSTEM_AQUAN]    = 1.25, [SYSTEM_AMORPH]   = .75 },
+
+    [SYSTEM_ARCANA]   = { [SYSTEM_UNDEAD]   = 1.25 },
+    [SYSTEM_UNDEAD]   = { [SYSTEM_ARCANA]   = 1.25 },
+
+    [SYSTEM_DEMON]    = { [SYSTEM_DRAGON]   = 1.25 },
+    [SYSTEM_DRAGON]   = { [SYSTEM_DEMON]    = 1.25 },
+
+    [SYSTEM_LUMORIAN] = { [SYSTEM_LUMINION] = 1.25 },
+    [SYSTEM_LUMINION] = { [SYSTEM_LUMORIAN] = 1.25 },
+
+    [SYSTEM_BEAST]    = { [SYSTEM_LIZARD]   = 1.25, [SYSTEM_PLANTOID] = .75 },
+    [SYSTEM_LIZARD]   = { [SYSTEM_VERMIN]   = 1.25, [SYSTEM_BEAST]     = .75 },
+    [SYSTEM_PLANTOID] = { [SYSTEM_BEAST]    = 1.25, [SYSTEM_VERMIN]   = .75 },
+    [SYSTEM_VERMIN]   = { [SYSTEM_PLANTOID] = 1.25, [SYSTEM_LIZARD]   = .75 },
+};
 
 BLUE_SKILL = 43;
 
@@ -69,69 +90,154 @@ MND_BASED = 3;
 --      .chr_wsc - Same as above.
 --      .agi_wsc - Same as above.
 function BluePhysicalSpell(caster, target, spell, params)
-    -- store related values
-    local magicskill = caster:getSkillLevel(BLUE_SKILL) + caster:getMod(79 + BLUE_SKILL); -- Base skill + equip mods
-    -- TODO: Under Chain affinity?
     -- TODO: Under Efflux?
     -- TODO: Merits.
     -- TODO: Under Azure Lore.
+    -- TODO: TP mods for Attack? Accuracy? Crit Hit Rate? No numbers available Q_Q
 
     ---------------------------------
     -- Calculate the final D value  -
     ---------------------------------
     -- worked out from http://wiki.ffxiclopedia.org/wiki/Calculating_Blue_Magic_Damage
     -- Final D value ??= floor(D+fSTR+WSC) * Multiplier
-
+    local magicskill = caster:getSkillLevel(BLUE_SKILL) + caster:getMod(79 + BLUE_SKILL); -- Base skill + equip mods
     local D =  math.floor((magicskill * 0.11)) * 2 + 3;
-    -- cap D
+    -- each spell has its inddividual D Upper Cap
     if (D > params.duppercap) then
         D = params.duppercap;
     end
-
     --print("D val is ".. D);
 
+
+    ---------------------------------
+    -- Get the fStr                --
+    ---------------------------------
     local fStr = BluefSTR(caster:getStat(MOD_STR) - target:getStat(MOD_VIT));
     if (fStr > 22) then
         fStr = 22; -- TODO: Smite of Rage doesn't have this cap applied.
     end
-
     --print("fStr val is ".. fStr);
 
-    local WSC = BlueGetWsc(caster, params);
 
+    ---------------------------------
+    -- Get the WSC                 --
+    ---------------------------------
+    local WSC = BlueGetWsc(caster, params);
     --print("wsc val is ".. WSC);
 
-    local multiplier = params.multiplier;
-    
-    -- If under CA, replace multiplier with fTP(multiplier, tp150, tp300)
-    local chainAffinity = caster:getStatusEffect(EFFECT_CHAIN_AFFINITY);
-    if chainAffinity ~= nil then
+
+
+    ---------------------------------
+    -- Get the fTP                 --
+    ---------------------------------
+    local fTP = params.multiplier;
+    --print( "fTP is " .. fTP );
+
+
+    ---------------------------------
+    -- Handle Chain Affinity       --
+    ---------------------------------
+    -- If under CA, double WSC and apply enchainment merits
+    local critchance = 0;
+    local atkmod = params.atkmod or 1.0;
+    local accmod = params.accmod or 1.0;
+    local tp = caster:getTP() + caster:getMerit(MERIT_ENCHAINMENT);
+    if( caster:hasStatusEffect(EFFECT_CHAIN_AFFINITY) ) then
         -- Calculate the total TP available for the fTP multiplier.
-        local tp = caster:getTP() + caster:getMerit(MERIT_ENCHAINMENT);
         if tp > 300 then
             tp = 300;
         end;
-        
-        multiplier = BluefTP(tp, multiplier, params.tp150, params.tp300);
+        WSC = WSC * 2; -- wsc doubled under chain affinity on physical spells, maybe magic, too? notes don't say so just putting it here
+
+       -- gets a bit messy here...
+       if( params.tpmod == TPMOD_DAMAGE ) then
+          fTP = BluefTP(tp, fTP, params.tp150, params.tp300);
+       elseif( params.tpmod == TPMOD_CRITICAL ) then
+          if( tp >= 150 and tp < 300 ) then
+             critchance = params.tp150 or 0;
+          elseif( tp == 300 ) then
+             critchance = params.tp300 or 0;             
+          end
+          critchance = critchance + caster:getMod(MOD_CRITHITRATE);
+       elseif( params.tpmod == TPMOD_ATTACK ) then
+          if( tp >= 150 and tp < 300 ) then
+             atkmod = params.tp150 or 1;
+          elseif( tp == 300 ) then
+             atkmod = params.tp300 or 1;
+          end
+       elseif( params.tpmod == TPMOD_ACC ) then
+          if( tp >= 150 and tp < 300 ) then
+             accmod = params.tp150;
+          elseif( tp == 300 ) then
+             accmod = params.tp300;
+          end
+       end
     end;
-    
-    -- TODO: Modify multiplier to account for family bonus/penalty
-    local finalD = math.floor(D + fStr + WSC) * multiplier;
+     --print( "tp is " .. tp .. " and wsc is " .. WSC );
+     --print( "ftp is " .. fTP );
 
-    --print("Final D is ".. finalD);
 
-    ----------------------------------------------
-    -- Get the possible pDIF range and hit rate --
-    ----------------------------------------------
-    if (params.offcratiomod == nil) then -- default to attack. Pretty much every physical spell will use this, Cannonball being the exception.
-        params.offcratiomod = caster:getStat(MOD_ATT)
+    ---------------------------------
+    --  Calc pDif / cpDif          --
+    ---------------------------------
+    -- Blue Mage has its own attack unless its cannonball
+    if (params.offcratiomod == nil) then
+        if( SEEKERS_BLUE_MAGE ) then
+           params.offcratiomod = caster:getStat(MOD_ATT);
+        else
+           params.offcratiomod = caster:getSkillLevel(BLUE_SKILL) + caster:getMod(79 + BLUE_SKILL) + ( caster:getMod( MOD_STR ) / 2 );
+        end
     end;
-    -- print(params.offcratiomod)
-    local cratio = BluecRatio(params.offcratiomod / target:getStat(MOD_DEF), caster:getMainLvl(), target:getMainLvl());
-    local hitrate = BlueGetHitRate(caster,target,true);
+    params.offcratiomod = params.offcratiomod * atkmod;
+     --print(params.offcratiomod)
+    local cratio, ccratio = BluecRatio(caster,params.offcratiomod / target:getStat(MOD_DEF), caster:getMainLvl(), target:getMainLvl());
+    --print( string.format( "pDifMin is %d and pDifMax is %d", cratio[1], cratio[2] ) );
+    --print( string.format( "cpDifMin is %d and cpDifMax is %d", ccratio[1], ccratio[2] ) );
 
-    --print("Hit rate "..hitrate);
-    --print("pdifmin "..cratio[1].." pdifmax "..cratio[2]);
+
+    ---------------------------------
+    -- Handle Azure Lore           --
+    ---------------------------------
+    if( caster:hasStatusEffect(EFFECT_AZURE_LORE) ) then
+       if( params.tpmod == TPMOD_DAMAGE and params.azuretp ) then
+          fTP = params.azuretp;
+       end
+    end
+
+
+    ---------------------------------
+    -- Calculate the Base Hit Dmg  --
+    ---------------------------------
+    local baseHit = math.floor(D + fStr + WSC);
+    --print( "baseHit is " .. baseHit );
+
+
+    ---------------------------------
+    -- Beast Correlation Multi     --
+    ---------------------------------
+    local BC = 1;
+    if( BCTable[params.system] ) then
+        BC = BCTable[params.system][target:getSystem()] or 1;
+        if( BC > 1 ) then
+           local head = caster:getEquipID(SLOT_HEAD);
+           local BCMerit = caster:getMerit(MERIT_MONSTER_CORRELATION);
+           if( head == 15265 or head == 11464 ) then
+              BC = BC + .02;
+           end
+           if( BCMerit > 0 ) then
+              BC = BC + ( BCMerit / 100 );
+           end
+        end
+    end
+
+
+    ---------------------------------
+    -- Get the hirate              --
+    ---------------------------------
+    local hitrate = BlueGetHitRate(caster,target,true,accmod);
+    --print( "Hit rate " .. hitrate );
+
+
 
     -------------------------
     -- Perform the attacks --
@@ -142,18 +248,23 @@ function BluePhysicalSpell(caster, target, spell, params)
 
     while (hitsdone < params.numhits) do
         local chance = math.random();
-        if (chance <= hitrate) then -- it hit
+        if (chance <= hitrate and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then -- it hit
             -- TODO: Check for shadow absorbs.
 
             -- Generate a random pDIF between min and max
-            local pdif = math.random((cratio[1]*1000),(cratio[2]*1000));
-            pdif = pdif/1000;
-
+            local pdif;
+            if( hitsdone == 0 and ( ( caster:hasStatusEffect(EFFECT_SNEAK_ATTACK) and caster:isBehind(target) ) or critchance > math.random((1),(100)) ) ) then
+                pdif = math.random((ccratio[1]*1000),(ccratio[2]*1000));
+                pdif = pdif/1000;
+            else
+                pdif = math.random((cratio[1]*1000),(cratio[2]*1000));
+                pdif = pdif/1000;
+            end
             -- Apply it to our final D
             if (hitsdone == 0) then -- only the first hit benefits from multiplier
-                finaldmg = finaldmg + (finalD * pdif);
+                finaldmg = baseHit * ( fTP + ( BC - 1 ) ) * pdif; -- ftp only used on the first hit
             else
-                finaldmg = finaldmg + ((math.floor(D + fStr + WSC)) * pdif); -- same as finalD but without multiplier (it should be 1.0)
+                finaldmg = finaldmg + ( baseHit * BC * pdif );
             end
 
             hitslanded = hitslanded + 1;
@@ -165,8 +276,26 @@ function BluePhysicalSpell(caster, target, spell, params)
         hitsdone = hitsdone + 1;
     end
 
-    --print("Hits landed "..hitslanded.."/"..hitsdone.." for total damage: "..finaldmg);
+    if( params.dmgtype == DMGTYPE_H2H ) then
+        finaldmg = finaldmg * target:getMod(MOD_HTHRES) / 1000;
+    elseif( params.dmgtype == DMGTYPE_PIERCE ) then
+        finaldmg = finaldmg * target:getMod(MOD_PIERCERES) / 1000;
+    elseif( params.dmgtype == DMGTYPE_BLUNT ) then
+        finaldmg = finaldmg * target:getMod(MOD_IMPACTRES) / 1000;
+    else
+        finaldmg = finaldmg * target:getMod(MOD_SLASHRES) / 1000;
+    end
 
+    finaldmg = target:physicalDmgTaken(finaldmg);
+
+    --print("Hits landed "..hitslanded.."/"..hitsdone.." for total damage: "..finaldmg);
+    if( caster:hasStatusEffect(EFFECT_TRICK_ATTACK) and caster:isTrickAttackAvailable(target) ) then
+       params.enmTarget = caster:getTrickTarget();       
+    else
+       params.enmTarget = caster;
+    end
+    caster:delStatusEffect(EFFECT_SNEAK_ATTACK);
+    caster:delStatusEffect(EFFECT_TRICK_ATTACK);	
     return finaldmg;
 end;
 
@@ -223,9 +352,9 @@ function BlueMagicalSpell(caster, target, spell, params, statMod)
     magicAttack = math.floor(D * multTargetReduction);
     magicAttack = math.floor(magicAttack * applyResistance(caster,spell,target,dStat,BLUE_SKILL,magAccMerit));
     dmg = math.floor(addBonuses(caster, spell, target, magicAttack));
-
+    dmg = target:magicDmgTaken(dmg);
     caster:delStatusEffectSilent(EFFECT_BURST_AFFINITY);
-
+    params.enmTarget = caster;
     return dmg;
 end;
 
@@ -243,7 +372,8 @@ function BlueFinalAdjustments(caster, target, spell, dmg, params)
     dmg = utils.stoneskin(target, dmg);
 
     target:delHP(dmg);
-    target:updateEnmityFromDamage(caster,dmg);
+    target:updateEnmityFromDamage(params.enmTarget,dmg);
+
     -- TP has already been dealt with.
     return dmg;
 end;
@@ -264,7 +394,7 @@ function BlueGetWsc(attacker, params)
 end;
 
 --Given the raw ratio value (atk/def) and levels, returns the cRatio (min then max)
-function BluecRatio(ratio,atk_lvl,def_lvl)
+function BluecRatio(attacker,ratio,atk_lvl,def_lvl)
     --Level penalty...
     local levelcor = 0;
     if (atk_lvl < def_lvl) then
@@ -273,11 +403,7 @@ function BluecRatio(ratio,atk_lvl,def_lvl)
     ratio = ratio - levelcor;
 
     --apply caps
-    if (ratio<0) then
-        ratio = 0;
-    elseif (ratio>2) then
-        ratio = 2;
-    end
+    ratio = utils.clamp( ratio, 0, 2 );
 
     --Obtaining cRatio_MIN
     local cratiomin = 0;
@@ -298,13 +424,56 @@ function BluecRatio(ratio,atk_lvl,def_lvl)
     elseif (ratio<=2 and ratio>0.833) then
         cratiomax = 1.2 * ratio;
     end
-    cratio = {};
     if (cratiomin < 0) then
         cratiomin = 0;
     end
-    cratio[1] = cratiomin;
-    cratio[2] = cratiomax;
-    return cratio;
+
+    -- stolen and adjusted a bit from weaponskills.lua
+
+    local pdif = {}
+    pdif[1] = cratiomin;
+    pdif[2] = cratiomax;
+
+    local pdifcrit = {};
+    ratio = ratio + 1;
+    ratio = utils.clamp(ratio, 0, 3);
+
+    --printf("ratio: %f min: %f max %f\n", cratio, pdifmin, pdifmax);
+
+    --max
+    if (ratio < 0.5) then
+        pdifmax = ratio + 0.5;
+    elseif (ratio < 0.7) then
+        pdifmax = 1;
+    elseif (ratio < 1.2) then
+        pdifmax = ratio + 0.3;
+    elseif (ratio < 1.5) then
+        pdifmax = (ratio * 0.25) + ratio;
+    elseif (ratio < 1.5) then
+        pdifmax = ratio + 0.375;
+    else
+        pdifmax = 3;
+    end
+
+    --min
+    if (ratio < 0.38) then
+        pdifmin = 0;
+    elseif (ratio < 1.25) then
+        pdifmin = ratio * (1176/1024) - (448/1024);
+    elseif (ratio < 1.51) then
+        pdifmin = 1;
+    elseif (ratio < 2.44) then
+        pdifmin = ratio * (1176/1024) - (775/1024);
+    else
+        pdifmin = ratio - 0.375;
+    end
+
+    local critbonus = attacker:getMod(MOD_CRIT_DMG_INCREASE)
+    critbonus = utils.clamp(critbonus, 0, 100);
+    pdifcrit[1] = pdifmin * ((100 + critbonus)/100);
+    pdifcrit[2] = pdifmax * ((100 + critbonus)/100);
+
+    return pdif, pdifcrit;
 end;
 
 -- Gets the fTP multiplier by applying 2 straight lines between ftp1-ftp2 and ftp2-ftp3
@@ -346,8 +515,8 @@ function BluefSTR(dSTR)
     return fSTR2;
 end;
 
-function BlueGetHitRate(attacker,target,capHitRate)
-    local acc = attacker:getACC();
+function BlueGetHitRate(attacker,target,capHitRate,bonusMulti)
+    local acc = attacker:getACC() * bonusMulti;
     local eva = target:getEVA();
 
     if (attacker:getMainLvl() > target:getMainLvl()) then --acc bonus!

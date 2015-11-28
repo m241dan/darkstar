@@ -44,6 +44,7 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.0;
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.2;
+        params.system = SYSTEM_ARCANA;
     damage = BlueMagicalSpell(caster, target, spell, params, CHR_BASED);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
 

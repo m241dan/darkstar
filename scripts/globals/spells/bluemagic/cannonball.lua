@@ -15,6 +15,7 @@
 
 require("scripts/globals/magic");
 require("scripts/globals/status");
+package.loaded["scripts/globals/bluemagic"] = nil;
 require("scripts/globals/bluemagic");
 
 -----------------------------------------
@@ -50,6 +51,7 @@ function onSpellCast(caster,target,spell)
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.0;
         params.offcratiomod = caster:getStat(MOD_DEF);
+        params.system = SYSTEM_VERMIN;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
    

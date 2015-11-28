@@ -185,3 +185,6 @@ DIMENSIONAL_PORTAL_UNLOCK = false; -- Set true to bypass requirements for using 
 
 -- ABYSSEA
 VISITANT_BONUS = 1.00; -- Default: 1.00 - (retail) - Multiplies the base time value of each Traverser Stone.
+
+-- SEEKERS OF ADOULIN
+SEEKERS_BLUE_MAGE = true; -- Blue Attack rolls from Skill, not main hand weapon attack(blue mage more powerful if true and should use attack food to increase dmg!)

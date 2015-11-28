@@ -43,6 +43,7 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.3;
         params.mnd_wsc = 0.1;
         params.chr_wsc = 0.0;
+        params.system = SYSTEM_AQUAN;
     damage = BlueMagicalSpell(caster, target, spell, params, INT_BASED);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
     

@@ -49,6 +49,7 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 2.0;
         params.mnd_wsc = 1.0;
         params.chr_wsc = 1.0;
+        params.system = SYSTEM_PLANTOID;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
    
