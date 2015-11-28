@@ -38,8 +38,8 @@ function onSpellCast(caster,target,spell)
         params.scattr = SC_DETONATION;
         params.numhits = 1;
         params.multiplier = 1.0;
-        params.tp150 = 1.0;
-        params.tp300 = 1.0;
+        params.tp150 = 20;
+        params.tp300 = 45;
         params.azuretp = 1.0;
         params.duppercap = 9;
         params.str_wsc = 0.1;

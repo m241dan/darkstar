@@ -38,8 +38,8 @@ function onSpellCast(caster,target,spell)
         params.scattr = SC_COMPRESSION;
         params.numhits = 1;
         params.multiplier = 1.5;
-        params.tp150 = 1.5;
-        params.tp300 = 1.5;
+        params.tp150 = 20;
+        params.tp300 = 45;
         params.azuretp = 1.5;
         params.duppercap = 49;
         params.str_wsc = 0.0;

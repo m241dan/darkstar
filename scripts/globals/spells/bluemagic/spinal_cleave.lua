@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr2 = SC_DETONATION;
         params.numhits = 1;
         params.multiplier = 3.0;
-        params.tp150 = 3.0;
-        params.tp300 = 3.0;
+        params.tp150 = 1.4;
+        params.tp300 = 1.6;
         params.azuretp = 3.0;
         params.duppercap = 75;
         params.str_wsc = 0.3;

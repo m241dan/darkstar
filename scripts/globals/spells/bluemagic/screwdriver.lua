@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr2 = SC_SCISSION;
         params.numhits = 1;
         params.multiplier = 1.375;
-        params.tp150 = 1.375;
-        params.tp300 = 1.375;
+        params.tp150 = 20;
+        params.tp300 = 45;
         params.azuretp = 1.375;
         params.duppercap = 27;
         params.str_wsc = 0.2;
