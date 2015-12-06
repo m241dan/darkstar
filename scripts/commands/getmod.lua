@@ -11,5 +11,5 @@ cmdprops =
 };
 
 function onTrigger(player)
-   player:PrintToPlayer( "Crit Dmg is " .. player:getMod(MOD_CRIT_DMG_INCREASE), 0xE );
+   player:PrintToPlayer( "Spell interrupt" .. player:getMod(MOD_SPELLINTERRUPT), 0xE );
 end;

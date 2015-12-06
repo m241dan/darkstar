@@ -180,7 +180,7 @@ MIASMA_FILTER_COOLDOWN = 5;  -- Number of days a player can obtain a Miasma Filt
 FORCE_SPAWN_QM_RESET_TIME = 5; -- Number of seconds the ??? remains hidden for after the despawning of the mob it force spawns.
 
 -- LIMBUS
-BETWEEN_2COSMOCLEANSE_WAIT_TIME = 3; -- day between 2 limbus keyitem  (default 3 days)
+BETWEEN_2COSMOCLEANSE_WAIT_TIME = 1; -- day between 2 limbus keyitem  (default 3 days)
 DIMENSIONAL_PORTAL_UNLOCK = false; -- Set true to bypass requirements for using dimensional portals to reach sea for Limbus
 
 -- ABYSSEA

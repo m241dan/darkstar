@@ -85,7 +85,7 @@ INSERT INTO `augments` VALUES ('49', '0', '384', '1', '0'); -- Haste+1
 INSERT INTO `augments` VALUES ('50', '0', '384', '-1', '0'); -- Slow+1
 INSERT INTO `augments` VALUES ('51', '0', '72', '1', '0'); -- HP recovered while healing+1
 INSERT INTO `augments` VALUES ('52', '0', '71', '1', '0'); -- MP recovered while healing+1
-INSERT INTO `augments` VALUES ('53', '0', '168', '-1', '0'); -- Spell interruption rate down 1%
+INSERT INTO `augments` VALUES ('53', '0', '168', '1', '0'); -- Spell interruption rate down 1%
 INSERT INTO `augments` VALUES ('54', '0', '161', '-1', '0'); -- Phys. dmg. taken -1%
 INSERT INTO `augments` VALUES ('55', '0', '163', '-1', '0'); -- Magic dmg. taken -1%
 INSERT INTO `augments` VALUES ('56', '0', '162', '-1', '0'); -- Breath dmg. taken -1%

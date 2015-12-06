@@ -57,7 +57,7 @@ function onSpellCast(caster,target,spell)
     if (target:hasStatusEffect(EFFECT_ATTACK_DOWN)) then
         spell:setMsg(75); -- no effect
     else    
-        target:addStatusEffect(EFFECT_ATTACK_DOWN,15,0,20);
+        target:addStatusEffect(EFFECT_ATTACK_DOWN,15,0,120);
     end
 
     return damage;

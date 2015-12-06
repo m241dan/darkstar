@@ -32,7 +32,7 @@ function onSpellCast(caster,target,spell)
 
     local typeEffect = EFFECT_BLINK;
     local power = 4;
-    local duration = 300;
+    local duration = 900;
     
     if (caster:hasStatusEffect(EFFECT_DIFFUSION)) then
         local diffMerit = caster:getMerit(MERIT_DIFFUSION);

@@ -440,7 +440,6 @@ function checkRegime(killer,mob,rid,index)
                         local tabs = (math.floor(reward/10)*TABS_RATE);
                         local VanadielEpoch = vanaDay();
 
-                        -- Award gil and tabs once per day. -- edited out by Davenge
                            killer:messageBasic(FOV_MSG_GET_GIL,reward);
                            killer:addGil(reward+1);
                            killer:addCurrency("valor_point", tabs);

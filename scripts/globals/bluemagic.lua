@@ -230,7 +230,6 @@ function BluePhysicalSpell(caster, target, spell, params)
         end
     end
 
-
     ---------------------------------
     -- Get the hirate              --
     ---------------------------------

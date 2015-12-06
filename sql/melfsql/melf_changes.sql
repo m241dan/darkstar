@@ -194,6 +194,7 @@ INSERT INTO `mob_droplist` VALUES( 3522, 0, 11379, 200 ); -- hermes sandals
 INSERT INTO `mob_droplist` VALUES( 3522, 0, 19213, 150 ); -- white tathhlum
 INSERT INTO `mob_droplist` VALUES( 3522, 0, 14162, 100 ); -- agrona's leggings
 INSERT INTO `mob_droplist` VALUES( 3522, 0, 15705, 100 ); -- ataractic solea
+INSERT INTO `mob_droplist` VALUES( 3522, 0, 11365, 100 ); -- karasutengu
 
 -- Jormungand new droppool
 DELETE FROM `mob_droplist` WHERE dropId=1852;

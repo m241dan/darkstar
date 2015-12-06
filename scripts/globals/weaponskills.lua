@@ -343,7 +343,7 @@ function getHitRate(attacker,target,capHitRate,bonus)
 	if flourisheffect ~= nil and flourisheffect:getPower() > 1 then
 		attacker:addMod(MOD_ACC, 20 + flourisheffect:getSubPower())
 	end
-	local acc = attacker:getACC();
+	local acc = attacker:getACC() + attacker:getMod(MOD_WSACC);
 	local eva = target:getEVA();
 	if flourisheffect ~= nil and flourisheffect:getPower() > 1 then
 		attacker:delMod(MOD_ACC, 20 + flourisheffect:getSubPower())

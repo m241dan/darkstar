@@ -1142,26 +1142,58 @@ namespace battleutils
                 uint16 power = 0;
                 if (PAttacker->PParty != nullptr && PAttacker->objtype == TYPE_PC)
                 {
-                    for (uint8 i = 0; i < PAttacker->PParty->members.size(); i++)
+                    if( !PAttacker->PParty->m_PAlliance )
                     {
-                        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id))
-                        {
-                            daze = EFFECT_DRAIN_DAZE;
-                            power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
-                            break;
-                        }
-                        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id))
-                        {
-                            daze = EFFECT_HASTE_DAZE;
-                            power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
-                            break;
-                        }
-                        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id))
-                        {
-                            daze = EFFECT_ASPIR_DAZE;
-                            power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
-                            break;
-                        }
+                       for (uint8 i = 0; i < PAttacker->PParty->members.size(); i++)
+                       {
+                           if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id))
+                           {
+                               daze = EFFECT_DRAIN_DAZE;
+                               power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                               break;
+                           }
+                           if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id))
+                           {
+                               daze = EFFECT_HASTE_DAZE;
+                               power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                               break;
+                           }
+                           if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id))
+                           {
+                               daze = EFFECT_ASPIR_DAZE;
+                               power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                               break;
+                           }
+                       }
+                    }
+                    else
+                    {
+                       for( std::vector<CParty*>::iterator it = PAttacker->PParty->m_PAlliance.begin(); it != PAttacker->PParty->m_PAlliance.end(); ++it )
+                       {
+                          for (uint8 i = 0; i < PAttacker->PParty->members.size(); i++)
+                          {
+                              if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id))
+                              {
+                                  daze = EFFECT_DRAIN_DAZE;
+                                  power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_DRAIN_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                                  break;
+                              }
+                              if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id))
+                              {
+                                  daze = EFFECT_HASTE_DAZE;
+                                  power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_HASTE_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                                  break;
+                              }
+                              if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id))
+                              {
+                                  daze = EFFECT_ASPIR_DAZE;
+                                  power = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_ASPIR_DAZE, PAttacker->PParty->members[i]->id)->GetPower();
+                                  break;
+                              }
+                          }
+                          if( power != 0 )
+                             break;
+                       }
                     }
                 }
                 else

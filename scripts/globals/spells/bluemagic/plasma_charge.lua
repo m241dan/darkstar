@@ -34,7 +34,7 @@ function onSpellCast(caster,target,spell)
 
     local typeEffect = EFFECT_SHOCK_SPIKES;
     local power = 5;
-    local duration = 60;
+    local duration = 720;
 
     if (caster:hasStatusEffect(EFFECT_DIFFUSION)) then
         local diffMerit = caster:getMerit(MERIT_DIFFUSION);
