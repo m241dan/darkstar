@@ -130,23 +130,19 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
-
-
-	 if (csid == 0x7d00) then
-	   if (player:hasStatusEffect(EFFECT_BATTLEFIELD) == false) then 
-	       ResetPlayerLimbusVariable(player);
-		   player:setVar("characterLimbusKey",0);  
-	   else 
-	   	    local status = player:getStatusEffect(EFFECT_BATTLEFIELD);	        
-	        player:setVar("LimbusID",status:getPower());
-	 	    player:setVar("characterLimbusKey",GetLimbusKeyFromInstance(status:getPower()));     
-	   end	   
-     player:updateEvent(2,player:getVar("limbusbitmap"),0,1,1,0);
-	 player:setVar("limbusbitmap",0);
-	 
-	 
-	 end
+   if (csid == 0x7d00) then
+      if (player:hasStatusEffect(EFFECT_BATTLEFIELD) == false) then 
+         ResetPlayerLimbusVariable(player);
+         player:setVar("characterLimbusKey",0);  
+      else 
+         local status = player:getStatusEffect(EFFECT_BATTLEFIELD);	        
+         player:setVar("LimbusID",status:getPower());
+         player:setVar("characterLimbusKey",GetLimbusKeyFromInstance(status:getPower()));     
+      end	   
    
+      player:updateEvent(2,player:getVar("limbusbitmap"),0,1,1,0);
+      player:setVar("limbusbitmap",0);
+   end   
 end;
 
 -----------------------------------

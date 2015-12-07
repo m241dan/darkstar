@@ -20,6 +20,7 @@ function onBcnmEnter(player,instance)
 	player:setVar("LimbusID",1291);	
 	player:delKeyItem(COSMOCLEANSE);
 	player:delKeyItem(RED_CARD);
+printf( "Supposedly clearing CosmoCleanse of " .. player:getName() );
 end;
 
 -- Leaving  by every mean possible, given by the LeaveCode

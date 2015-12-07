@@ -377,8 +377,8 @@ function onFieldParchmentTrigger(npc, player)
    for i=1, player:getVar( string.format( "%dNumAugs", npc:getID() ) ), 1 do
       local augGroup;
       if( math.random(1,100) <= aug_chances[i] ) then
-         augGroup = augPool[i][math.random(1,#augPool[i])];
-         aug = augGroup[math.random(1,#augGroup)]
+         augGroup = augPool[i][math.random(1,tagle.getn( augPool[i]))];
+         aug = augGroup[math.random(1,table.getn(augGroup))]
          local augval;
          if( aug[2] == aug[3] ) then
             augval = aug[2];
@@ -398,7 +398,7 @@ function onFieldParchmentTrigger(npc, player)
    local augID = {};
    local augVal = {};
    for i,v in pairs( selectedAugs ) do
-      local position = #augID;
+      local position = table.getn(augID);
       augID[position+1] = i;
       augVal[position+1] = v;
    end

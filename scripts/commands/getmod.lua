@@ -11,5 +11,6 @@ cmdprops =
 };
 
 function onTrigger(player)
+printf( "PLayer name " .. player:getName() );
    player:PrintToPlayer( "Spell interrupt" .. player:getMod(MOD_SPELLINTERRUPT), 0xE );
 end;

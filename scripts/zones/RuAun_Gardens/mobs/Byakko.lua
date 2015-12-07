@@ -20,7 +20,6 @@ end;
 
 function onMobSpawn(mob)
    mob:addMod( MOD_BINDRES, 20 );
-   mob:addMod( MOD_STUNRES, -20 );
 end;
 
 -----------------------------------
