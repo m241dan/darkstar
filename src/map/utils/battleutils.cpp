@@ -1168,7 +1168,7 @@ namespace battleutils
                     }
                     else
                     {
-                       for( std::vector<CParty*>::iterator it = PAttacker->PParty->m_PAlliance.begin(); it != PAttacker->PParty->m_PAlliance.end(); ++it )
+                       for( std::vector<CParty*>::iterator it = PAttacker->PParty->m_PAlliance->partyList.begin(); it != PAttacker->PParty->m_PAlliance->partyList.end(); ++it )
                        {
                           for (uint8 i = 0; i < PAttacker->PParty->members.size(); i++)
                           {
