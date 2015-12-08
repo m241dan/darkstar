@@ -827,7 +827,6 @@ void SmallPacket0x01A(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         PChar->animation = ANIMATION_NONE;
         PChar->updatemask |= UPDATE_HP;
         PChar->StatusEffectContainer->DelStatusEffectSilent(EFFECT_CHOCOBO);
-        PChar->pushPacket(new CCharUpdatePacket(PChar));
     }
     break;
     case 0x13: // tractor menu
@@ -2928,7 +2927,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 //make sure invitee isn't dead or in jail, they aren't a party member and don't already have an invite pending, and your party is not full
                 if (PInvitee->isDead() || jailutils::InPrison(PInvitee) || PInvitee->InvitePending.id != 0 || PInvitee->PParty != nullptr)
                 {
-					ShowDebug(CL_CYAN"%s is dead, in prision, has a pending invite, or is already in a party\n" CL_RESET, PInvitee->GetName());
+					ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 23));
                     break;
                 }
@@ -2984,7 +2983,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 if (PInvitee->isDead() || jailutils::InPrison(PInvitee) || PInvitee->InvitePending.id != 0 ||
                     PInvitee->PParty == nullptr || PInvitee->PParty->GetLeader() != PInvitee || PInvitee->PParty->m_PAlliance)
                 {
-					ShowDebug(CL_CYAN"%s is dead, in prision, has a pending invite, or is already in a party/alliance\n" CL_RESET, PInvitee->GetName());
+					ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party/alliance\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 23));
                     break;
                 }
@@ -4273,7 +4272,6 @@ void SmallPacket0x0DC(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     PChar->updatemask |= UPDATE_HP;
     PChar->pushPacket(new CMenuConfigPacket(PChar));
-    PChar->pushPacket(new CCharUpdatePacket(PChar));
     return;
 }
 
@@ -4686,7 +4684,6 @@ void SmallPacket0x0EA(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     PChar->animation = (PChar->animation == ANIMATION_SIT ? ANIMATION_NONE : ANIMATION_SIT);
     PChar->updatemask |= UPDATE_HP;
-    PChar->pushPacket(new CCharUpdatePacket(PChar));
     return;
 }
 
@@ -5438,7 +5435,6 @@ void SmallPacket0x106(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
             PTarget->updatemask |= UPDATE_HP;
             PTarget->nameflags.flags &= ~FLAG_BAZAAR;
-            PTarget->pushPacket(new CCharUpdatePacket(PTarget));
         }
         return;
     }
@@ -5464,7 +5460,6 @@ void SmallPacket0x109(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
             PChar->nameflags.flags |= FLAG_BAZAAR;
             PChar->updatemask |= UPDATE_HP;
-            PChar->pushPacket(new CCharUpdatePacket(PChar));
             return;
         }
     }
@@ -5518,7 +5513,6 @@ void SmallPacket0x10B(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     PChar->nameflags.flags &= ~FLAG_BAZAAR;
     PChar->updatemask |= UPDATE_HP;
-    PChar->pushPacket(new CCharUpdatePacket(PChar));
     return;
 }
 
