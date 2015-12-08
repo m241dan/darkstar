@@ -4186,11 +4186,6 @@ inline int32 CLuaBaseEntity::setAnimation(lua_State *L)
     if (m_PBaseEntity->animation != animation)
     {
         m_PBaseEntity->animation = animation;
-
-        if (m_PBaseEntity->objtype == TYPE_PC)
-        {
-            ((CCharEntity*)m_PBaseEntity)->pushPacket(new CCharUpdatePacket((CCharEntity*)m_PBaseEntity));
-        }
         m_PBaseEntity->updatemask |= UPDATE_HP;
     }
     return 0;
@@ -4285,7 +4280,6 @@ inline int32 CLuaBaseEntity::costume(lua_State *L)
         {
             PChar->m_Costum = costum;
             PChar->updatemask |= UPDATE_HP;
-            PChar->pushPacket(new CCharUpdatePacket(PChar));
         }
         return 0;
     }
@@ -5672,7 +5666,6 @@ inline int32 CLuaBaseEntity::setFlag(lua_State *L)
     DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
 
     ((CCharEntity*)m_PBaseEntity)->nameflags.flags ^= (uint32)lua_tointeger(L, 1);
-    ((CCharEntity*)m_PBaseEntity)->pushPacket(new CCharUpdatePacket((CCharEntity*)m_PBaseEntity));
     m_PBaseEntity->updatemask |= UPDATE_HP;
     return 0;
 }
@@ -9313,7 +9306,6 @@ inline int32 CLuaBaseEntity::setMentor(lua_State* L)
     CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
     PChar->m_mentor = (uint8)lua_tonumber(L, 1);
     charutils::mentorMode(PChar);
-    PChar->pushPacket(new CCharUpdatePacket(PChar));
     PChar->updatemask |= UPDATE_HP;
     return 0;
 }

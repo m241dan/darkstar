@@ -3361,7 +3361,6 @@ namespace battleutils
                 {
                     PDefender->animation = ANIMATION_NONE;
                     PDefender->updatemask |= UPDATE_HP;
-                    ((CCharEntity*)PDefender)->pushPacket(new CCharUpdatePacket((CCharEntity*)PDefender));
                 }
 
                 charutils::UpdateHealth((CCharEntity*)PDefender);
