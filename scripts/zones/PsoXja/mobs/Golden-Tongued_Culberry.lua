@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Pso'xja
--- NPC:  Golden-Tongued Culberry 
+--  MOB: Golden-Tongued Culberry
 -----------------------------------
 
 
@@ -18,7 +18,7 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
+function onMobDeath(mob, killer, ally)
 end;
 
 -----------------------------------
@@ -28,4 +28,3 @@ end;
 function onMobDespawn(mob)
     GetNPCByID(16814434):updateNPCHideTime(FORCE_SPAWN_QM_RESET_TIME);
 end;
-

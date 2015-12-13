@@ -38,8 +38,8 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-    killer:addTitle(FAFNIR_SLAYER);
+function onMobDeath(mob, killer, ally)
+    ally:addTitle(FAFNIR_SLAYER);
 end;
 
 -----------------------------------

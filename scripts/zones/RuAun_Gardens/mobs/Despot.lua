@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: RuAun Gardens
--- MOB:  Despot
+--  NM:  Despot
 -----------------------------------
 
 require("scripts/globals/fieldsofvalor");
@@ -8,14 +8,13 @@ require("scripts/globals/fieldsofvalor");
 -----------------------------------
 -- onMobDeath
 -----------------------------------
-function onMobDeath(mob,killer)
-    checkRegime(killer,mob,143,2);
-    checkRegime(killer,mob,144,1);
+function onMobDeath(mob,killer,ally)
+    checkRegime(ally,mob,143,2);
+    checkRegime(ally,mob,144,1);
 
     -- Set Despot ToD
     SetServerVariable("[POP]Despot", os.time(t) + 7200); -- 2 hour
     DeterMob(mob:getID(), true);
-
 end;
 
 function onMobFight(mob,target)

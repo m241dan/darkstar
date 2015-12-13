@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Uleguaerand Range
--- NPC:  Jormungand
+--  HNM: Jormungand
 -----------------------------------
 
 require("scripts/globals/status");
@@ -22,8 +22,8 @@ function onMobSpawn(mob)
     mob:AnimationSub(0); -- subanim 0 is only used when it spawns until first flight.
     mob:setMod( MOD_PARALYZERES, 200 );
     mob:setMod( MOD_ICEDEF, 300 );
-    mob:setMod( MOD_MDEF, 15 );
-    mob:setMod( MOD_MEVA, 450 );
+    mob:setMod( MOD_MDEF, 20 );
+    mob:setMod( MOD_MEVA, 400 );
 end;
 
 -----------------------------------
@@ -35,14 +35,11 @@ function onMobFight(mob,target)
         local changeTime = mob:getLocalVar("changeTime");
         local twohourTime = mob:getLocalVar("twohourTime");
 
---        printf( "gettinghere" );
---        changeTime = mob:getBattleTime() - 70;
-
         if (twohourTime == 0) then
             twohourTime = math.random(8, 14);
             mob:setLocalVar("twohourTime", twohourTime);
         end
-        
+
         if (mob:AnimationSub() == 2 and mob:getBattleTime()/15 > twohourTime) then
             mob:useMobAbility(439);
             mob:setLocalVar("twohourTime", (mob:getBattleTime()/15)+20);
@@ -50,31 +47,28 @@ function onMobFight(mob,target)
             mob:AnimationSub(1);
             mob:addStatusEffectEx(EFFECT_ALL_MISS, 0, 1, 0, 0);
             mob:SetMobSkillAttack(true);
-            --and record the time this phase was started
+            -- and record the time this phase was started
             mob:setLocalVar("changeTime", mob:getBattleTime());
         -- subanimation 1 is flight, so check if he should land
-        elseif (mob:AnimationSub() == 1 and 
+        elseif (mob:AnimationSub() == 1 and
                 mob:getBattleTime() - changeTime > 30) then
-              printf( "not landing..." );
             mob:useMobAbility(1036);
             mob:setLocalVar("changeTime", mob:getBattleTime());
-
         -- subanimation 2 is grounded mode, so check if he should take off
-        elseif (mob:AnimationSub() == 2 and 
-                mob:getBattleTime() - changeTime > 60) then
+        elseif (mob:AnimationSub() == 2 and mob:getBattleTime() - changeTime > 60) then
             mob:AnimationSub(1);
             mob:addStatusEffectEx(EFFECT_ALL_MISS, 0, 1, 0, 0);
             mob:SetMobSkillAttack(true);
             mob:setLocalVar("changeTime", mob:getBattleTime());
         end
-   end
+    end
 end;
 
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-	killer:addTitle(WORLD_SERPENT_SLAYER);
-    mob:setRespawnTime(math.random((259200),(432000)));	-- 3 to 5 days
+function onMobDeath(mob, killer, ally)
+    ally:addTitle(WORLD_SERPENT_SLAYER);
+    mob:setRespawnTime(math.random(259200,432000)); -- 3 to 5 days
 end;

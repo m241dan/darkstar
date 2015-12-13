@@ -23,8 +23,8 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-   killer:addTitle(ASPIDOCHELONE_SINKER);
+function onMobDeath(mob, killer, ally)
+    ally:addTitle(ASPIDOCHELONE_SINKER);
 
    -- Set Aspidochelone's Window Open Time
    local wait = 72 * 3600

@@ -1,8 +1,9 @@
 -----------------------------------
 -- Area: Ru'Aun Gardens
---  NPC: Seiryu
+--  NM:  Seiryu
 -----------------------------------
-
+package.loaded["scripts/zones/RuAun_Gardens/TextIDs"] = nil;
+-----------------------------------
 require("scripts/zones/RuAun_Gardens/TextIDs");
 require("scripts/globals/status");
 
@@ -11,7 +12,7 @@ require("scripts/globals/status");
 -----------------------------------
 
 function onMobInitialize(mob)
-   mob:setMobMod(MOBMOD_ADD_EFFECT,mob:getShortID());
+    mob:setMobMod(MOBMOD_ADD_EFFECT,mob:getShortID());
 end;
 
 -----------------------------------
@@ -41,7 +42,6 @@ function onMonsterMagicPrepare(mob,target)
             return 237; -- choke
         end
     end
-    return -1;
 end;
 
 -----------------------------------
@@ -53,24 +53,21 @@ function onAdditionalEffect(mob, target, damage)
     local params = {};
     params.bonusmab = 0;
     params.includemab = false;
-    
+
     dmg = addBonusesAbility(mob, ELE_WIND, target, dmg, params);
     dmg = dmg * applyResistanceAddEffect(mob,target,ELE_WIND,0);
     dmg = adjustForTarget(target,dmg,ELE_WIND);
     dmg = finalMagicNonSpellAdjustments(mob,target,ELE_WIND,dmg);
 
-    return SUBEFFECT_WIND_DAMAGE,MSGBASIC_ADD_EFFECT_DMG,dmg;
+    return SUBEFFECT_WIND_DAMAGE, MSGBASIC_ADD_EFFECT_DMG, dmg;
 end;
-
-function onMobFight(mob, target)
-end
 
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-    killer:showText(mob,SKY_GOD_OFFSET + 10);
+function onMobDeath(mob, killer, ally)
+    ally:showText(mob,SKY_GOD_OFFSET + 10);
 end;
 
 -----------------------------------

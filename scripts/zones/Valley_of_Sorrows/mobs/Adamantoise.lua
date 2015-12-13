@@ -27,14 +27,13 @@ function onMobSpawn(mob)
    if( ToD <= os.time(t) ) then
       SetServerVariable( "[PH]Aspidochelone", kills + 1 );
    end
-
 end;
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-   killer:addTitle(TORTOISE_TORTURER);
+function onMobDeath(mob, killer, ally)
+    ally:addTitle(TORTOISE_TORTURER);
 end;
 
 function onMobDespawn(mob)

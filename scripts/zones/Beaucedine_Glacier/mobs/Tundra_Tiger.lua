@@ -1,19 +1,19 @@
------------------------------------	
--- Area: Beaucedine Glacier	
--- MOB:  Tundra Tiger	
+-----------------------------------
+-- Area: Beaucedine Glacier
+--  MOB: Tundra Tiger
 -- Note: PH for Nue, Kirata
------------------------------------	
-	
-require("scripts/globals/fieldsofvalor");	
+-----------------------------------
+
+require("scripts/globals/fieldsofvalor");
 require("scripts/zones/Beaucedine_Glacier/MobIDs");
-	
------------------------------------	
--- onMobDeath	
------------------------------------	
-	
-function onMobDeath(mob,killer)	
-    checkRegime(killer,mob,46,1);
-    checkRegime(killer,mob,47,1);
+
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDeath(mob,killer,ally)
+    checkRegime(ally,mob,46,1);
+    checkRegime(ally,mob,47,1);
 
     -- Kirata
     mob = mob:getID();
@@ -29,13 +29,13 @@ function onMobDeath(mob,killer)
             end
         end
     end
-    
+
     -- Nue
     if (Nue_PH[mob] ~= nil) then
 
         ToD = GetServerVariable("[POP]Nue");
         if (ToD <= os.time(t) and GetMobAction(Nue) == 0) then
-            if (math.random((1),(5)) == 5) then
+            if (math.random((1),(15)) == 5) then
                 UpdateNMSpawnPoint(Nue);
                 GetMobByID(Nue):setRespawnTime(GetMobRespawnTime(mob));
                 SetServerVariable("[PH]Nue", mob);
@@ -43,4 +43,4 @@ function onMobDeath(mob,killer)
             end
         end
     end
-end;	
+end;

@@ -39,9 +39,9 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
+function onMobDeath(mob, killer, ally)
 
-    killer:addTitle(NIDHOGG_SLAYER);
+    ally:addTitle(NIDHOGG_SLAYER);
 
     -- Set Nidhogg's Window Open Time
     local wait = 72 * 3600

@@ -1,6 +1,6 @@
 -----------------------------------
 -- Area: Attohwa Chasm
--- NPC:  Tiamat
+--  MOB: Tiamat
 -----------------------------------
 
 require("scripts/globals/titles");
@@ -91,7 +91,7 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-    killer:addTitle(TIAMAT_TROUNCER);
-    mob:setRespawnTime(math.random((259200),(432000)));	-- 3 to 5 days	
+function onMobDeath(mob, killer, ally)
+    ally:addTitle(TIAMAT_TROUNCER);
+    mob:setRespawnTime(math.random(259200,432000)); -- 3 to 5 days
 end;

@@ -1,8 +1,9 @@
 -----------------------------------
 -- Area: Ru'Aun Gardens
---  NPC: Genbu
+--  NM:  Genbu
 -----------------------------------
-
+package.loaded["scripts/zones/RuAun_Gardens/TextIDs"] = nil;
+-----------------------------------
 require("scripts/zones/RuAun_Gardens/TextIDs");
 require("scripts/globals/status");
 
@@ -33,24 +34,21 @@ function onAdditionalEffect(mob, target, damage)
     local params = {};
     params.bonusmab = 0;
     params.includemab = false;
-    
+
     dmg = addBonusesAbility(mob, ELE_WATER, target, dmg, params);
     dmg = dmg * applyResistanceAddEffect(mob,target,ELE_WATER,0);
     dmg = adjustForTarget(target,dmg,ELE_WATER);
     dmg = finalMagicNonSpellAdjustments(mob,target,ELE_WATER,dmg);
 
-    return SUBEFFECT_WATER_DAMAGE,MSGBASIC_ADD_EFFECT_DMG,dmg;
+    return SUBEFFECT_WATER_DAMAGE, MSGBASIC_ADD_EFFECT_DMG, dmg;
 end;
-
-function onMobFight( mob, target )
-end
 
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer)
-    killer:showText(mob,SKY_GOD_OFFSET + 6);
+function onMobDeath(mob, killer, ally)
+    ally:showText(mob,SKY_GOD_OFFSET + 6);
 end;
 
 -----------------------------------

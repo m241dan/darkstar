@@ -35,7 +35,7 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer)
+function onMobDeath(mob,killer,ally)
     local mobID = mob:getID();
     
     -- 035 039: spawn 043 when defeated
