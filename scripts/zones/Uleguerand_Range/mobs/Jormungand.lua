@@ -20,6 +20,10 @@ end;
 function onMobSpawn(mob)
     mob:SetMobSkillAttack(false); -- resetting so it doesn't respawn in flight mode.
     mob:AnimationSub(0); -- subanim 0 is only used when it spawns until first flight.
+    mob:setMod( MOD_PARALYZERES, 200 );
+    mob:setMod( MOD_ICEDEF, 300 );
+    mob:setMod( MOD_MDEF, 15 );
+    mob:setMod( MOD_MEVA, 450 );
 end;
 
 -----------------------------------
@@ -27,11 +31,12 @@ end;
 -----------------------------------
 
 function onMobFight(mob,target)
-   mob:setMod( MOD_PARALYZERES, 200 );
-	
     if (mob:hasStatusEffect(EFFECT_BLOOD_WEAPON) == false and mob:actionQueueEmpty() == true) then
         local changeTime = mob:getLocalVar("changeTime");
         local twohourTime = mob:getLocalVar("twohourTime");
+
+--        printf( "gettinghere" );
+--        changeTime = mob:getBattleTime() - 70;
 
         if (twohourTime == 0) then
             twohourTime = math.random(8, 14);
@@ -49,7 +54,8 @@ function onMobFight(mob,target)
             mob:setLocalVar("changeTime", mob:getBattleTime());
         -- subanimation 1 is flight, so check if he should land
         elseif (mob:AnimationSub() == 1 and 
-                mob:getBattleTime() - changeTime > 60) then
+                mob:getBattleTime() - changeTime > 30) then
+              printf( "not landing..." );
             mob:useMobAbility(1036);
             mob:setLocalVar("changeTime", mob:getBattleTime());
 

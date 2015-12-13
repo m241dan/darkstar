@@ -1579,7 +1579,7 @@ INSERT INTO `mob_skills` VALUES (1530,1224,'Sulfurous_Breath',0,7.0,2000,1500,4,
 INSERT INTO `mob_skills` VALUES (1531,1225,'Scorching_Lash',1,20.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skills` VALUES (1532,1226,'Ululation',1,20.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skills` VALUES (1533,1227,'Magma_Hoplon',0,7.0,2000,1500,1,0,0,0);
-INSERT INTO `mob_skills` VALUES (1534,1228,'Gates_of_Hades',1,20.0,2000,1500,4,0,0,0);
+INSERT INTO `mob_skills` VALUES (1534,1228,'Gates_of_Hades',1,20.0,2500,1500,4,0,0,0);
 INSERT INTO `mob_skills` VALUES (1535,1217,'Incinerate',4,12.0,2000,1500,4,0,0,0);
 -- INSERT INTO `mob_skills` VALUES (1536,1536,'Nullsong',0,7.0,2000,1500,4,0,0,0);
 INSERT INTO `mob_skills` VALUES (1537,62,'Vampiric_Root',0,7.0,2000,1500,4,0,0,0);

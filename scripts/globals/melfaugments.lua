@@ -377,7 +377,7 @@ function onFieldParchmentTrigger(npc, player)
    for i=1, player:getVar( string.format( "%dNumAugs", npc:getID() ) ), 1 do
       local augGroup;
       if( math.random(1,100) <= aug_chances[i] ) then
-         augGroup = augPool[i][math.random(1,tagle.getn( augPool[i]))];
+         augGroup = augPool[i][math.random(1,table.getn( augPool[i]))];
          aug = augGroup[math.random(1,table.getn(augGroup))]
          local augval;
          if( aug[2] == aug[3] ) then
