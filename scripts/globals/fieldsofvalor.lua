@@ -438,18 +438,13 @@ function checkRegime(player,mob,rid,index)
                         local VanadielEpoch = vanaDay();
 
                         --  Award gil and tabs once per day.
-                        if (player:getVar("fov_LastReward") < VanadielEpoch) then
                             player:messageBasic(FOV_MSG_GET_GIL,reward);
                             player:addGil(reward);
                             player:addCurrency("valor_point", tabs);
                             player:messageBasic(FOV_MSG_GET_TABS,tabs,player:getCurrency("valor_point")); --  Careful about order.
-                            if (REGIME_WAIT == 1) then
-                                player:setVar("fov_LastReward",VanadielEpoch);
-                            end
-                        end
 
                         -- TODO: display msgs (based on zone annoyingly, so will need player:getZoneID() then a lookup)
-                        player:addExp(reward);
+                        player:addExp((reward*EXP_RATE));
                         if (k1 ~= 0) then player:setVar("fov_numkilled1",0); end
                         if (k2 ~= 0) then player:setVar("fov_numkilled2",0); end
                         if (k3 ~= 0) then player:setVar("fov_numkilled3",0); end
