@@ -593,8 +593,8 @@ function checkGoVregime(player,mob,rid,index)
 
                         -- Give player the candy and inform which Prowess they got.
 	                reward = reward / 2;
-                        killer:addExp( ( ( ( 75 - killer:getTrueLvl(killer:getMainJob()) ) * .03 ) + 1.75 ) * reward );
-                        killer:messageBasic(ProwessMessage);
+                        player:addExp( ( ( ( 75 - player:getTrueLvl(player:getMainJob()) ) * .03 ) + 1.75 ) * reward );
+                        player:messageBasic(ProwessMessage);
 
                         -- Debugging crap.
                         -- player:PrintToPlayer( string.format( "ProwessID: '%u' ", RandomProwess ) );
