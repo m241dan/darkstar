@@ -183,8 +183,8 @@ INSERT INTO `mob_pool_mods` VALUES (4005,16,1,1);
 INSERT INTO `mob_pool_mods` VALUES (559,16,1,1);
 INSERT INTO `mob_pool_mods` VALUES (2916,16,1,1);
 INSERT INTO `mob_pool_mods` VALUES (242,40,30,1);
-INSERT INTO `mob_pool_mods` VALUES (242,41,680,1);
-INSERT INTO `mob_pool_mods` VALUES (242,42,706,1);
+INSERT INTO `mob_pool_mods` VALUES (242,41,936,1);
+INSERT INTO `mob_pool_mods` VALUES (242,42,962,1);
 INSERT INTO `mob_pool_mods` VALUES (242,43,1,1);
 INSERT INTO `mob_pool_mods` VALUES (242,47,22,1);
 INSERT INTO `mob_pool_mods` VALUES (3124,48,434,1);
@@ -199,10 +199,10 @@ INSERT INTO `mob_pool_mods` VALUES (1249,3,4000,1);
 -- -------------------------
 --  Antlion MOBMOD_SPECIAL_SKILL Pit_Ambush 
 -- -------------------------
-INSERT INTO `mob_pool_mods` VALUES (586,30,22,1); -- Burrow Antlion 
-INSERT INTO `mob_pool_mods` VALUES (3141,30,22,1); -- Pit Antlion 
-INSERT INTO `mob_pool_mods` VALUES (3996,30,22,1); -- Trench Antlion 
-INSERT INTO `mob_pool_mods` VALUES (662,30,22,1); -- Cave Antlion 
+INSERT INTO `mob_pool_mods` VALUES (586,30,278,1); -- Burrow Antlion 
+INSERT INTO `mob_pool_mods` VALUES (3141,30,278,1); -- Pit Antlion 
+INSERT INTO `mob_pool_mods` VALUES (3996,30,278,1); -- Trench Antlion 
+INSERT INTO `mob_pool_mods` VALUES (662,30,278,1); -- Cave Antlion 
 
 -- -------------------------
 --  Race Runner
@@ -263,7 +263,7 @@ INSERT INTO `mob_pool_mods` VALUES (2032,34,20,1);
 INSERT INTO `mob_pool_mods` VALUES (2032,35,0,1);
 INSERT INTO `mob_pool_mods` VALUES (2032,244,15,0);
 
-INSERT INTO `mob_pool_mods` VALUES (236,30,476,1);
+INSERT INTO `mob_pool_mods` VALUES (236,30,732,1);
 INSERT INTO `mob_pool_mods` VALUES (236,33,60,1);
 
 -- Scale Maat's pets HP down

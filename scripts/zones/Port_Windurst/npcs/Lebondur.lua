@@ -32,7 +32,7 @@ function onTrigger(player,npc)
             0x03a8,    14,   --Rock Salt
             0x0582,  1656    --Sweet William
         }
-        showShop(player,WINDURST,stock);	
+        showShop(player,WINDURST,stock);    
 
    
 

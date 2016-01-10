@@ -14,7 +14,7 @@ require("scripts/globals/status");
 -----------------------------------
 
 function onAbilityCheck(player,target,ability)
-	return 0,0;
+    return 0,0;
 end;
 
 -----------------------------------
@@ -23,7 +23,4 @@ end;
 
 function onUseAbility(player,target,ability)
    player:addStatusEffect(EFFECT_SNEAK_ATTACK,1,0,60);
-   if( player:delay() < 2000 ) then
-      player:delay(2000);
-   end
 end;

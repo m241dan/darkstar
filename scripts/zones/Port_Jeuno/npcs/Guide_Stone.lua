@@ -26,7 +26,7 @@ end;
 
 function onTrigger(player,npc)
 
-	player:messageSpecial(GUIDE_STONE);
+    player:messageSpecial(GUIDE_STONE);
 end;
 
 -----------------------------------

@@ -24,7 +24,6 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
 	if (player:getVar("Dynamis_Status") == 1) then
 		player:startEvent(0x01c7); -- cs with Cornelia
 	elseif (player:getVar("DynaWindurst_Win") == 1) then
@@ -51,7 +50,6 @@ function onTrigger(player,npc)
 	else
 		player:messageSpecial(STRANDS_OF_GRASS_HERE);
 	end
-	
 end;
 
 -----------------------------------
@@ -70,19 +68,18 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 -- printf("finishRESULT: %u",option);
-	
-	if (csid == 0x01c7) then
-		player:addKeyItem(VIAL_OF_SHROUDED_SAND);
-		player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
-		player:setVar("Dynamis_Status",0);
-	elseif (csid == 0x01d1) then
-		player:setVar("DynaWindurst_Win",0);
-	elseif (csid == 0x01c4 and option == 0) then
-		if (checkFirstDyna(player,3)) then
-			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 8);
-		end
-	
-		player:setPos(-221.988,1.000,-120.184,0,0xbb);
-	end
-	
+    if (csid == 0x01c7) then
+        player:addKeyItem(VIAL_OF_SHROUDED_SAND);
+        player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
+        player:setVar("Dynamis_Status",0);
+    elseif (csid == 0x01d1) then
+        player:setVar("DynaWindurst_Win",0);
+    elseif (csid == 0x01c4 and option == 0) then
+        if (checkFirstDyna(player,3)) then
+            player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 8);
+        end
+        
+        player:setPos(-221.988,1.000,-120.184,0,0xbb);
+    end
+    
 end;

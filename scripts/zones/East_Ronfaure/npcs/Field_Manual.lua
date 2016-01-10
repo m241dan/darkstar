@@ -11,7 +11,7 @@ require("scripts/globals/fieldsofvalor");
 -----------------------------------	
 	
 function onTrigger(player,npc)	
-	startFov(FOV_EVENT_EAST_RONFAURE,player);
+    startFov(FOV_EVENT_EAST_RONFAURE,player);
 end;	
 	
 -----------------------------------	
@@ -19,7 +19,7 @@ end;
 -----------------------------------	
 	
 function onTrade(player,npc,trade)	
-   onFieldManualTrade( player, trade );
+    onFieldManualTrade( player, trade );
 end;	
 	
 -----------------------------------	
@@ -27,7 +27,7 @@ end;
 -----------------------------------	
 	
 function onEventUpdate(player,csid,menuchoice)	
-	updateFov(player,csid,menuchoice,64,65,66,67,68);
+    updateFov(player,csid,menuchoice,64,65,66,67,68);
 end;	
 	
 -----------------------------------	
@@ -35,5 +35,5 @@ end;
 -----------------------------------	
 	
 function onEventFinish(player,csid,option)	
-	finishFov(player,csid,option,64,65,66,67,68,FOV_MSG_EAST_RONFAURE);
+    finishFov(player,csid,option,64,65,66,67,68,FOV_MSG_EAST_RONFAURE);
 end;	

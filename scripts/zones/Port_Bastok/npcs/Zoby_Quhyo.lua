@@ -24,7 +24,7 @@ end;
 function onTrigger(player,npc)
    
         player:showText(npc,ZOBYQUHYO_OPEN_DIALOG);
-	
+    
         stock = {
             0x0272,   234,   --Black Pepper
             0x0264,    55,   --Kazham Peppers

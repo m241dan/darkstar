@@ -24,7 +24,6 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
 	if (player:getVar("DynaXarcabard_Win") == 1) then
 		player:startEvent(0x0020,HYDRA_CORPS_BATTLE_STANDARD); -- Win CS
         elseif(player:hasKeyItem(VIAL_OF_SHROUDED_SAND)) then
@@ -50,7 +49,6 @@ function onTrigger(player,npc)
 	else
 		player:messageSpecial(UNUSUAL_ARRANGEMENT_OF_PEBBLES);
 	end
-	
 end;
 
 -----------------------------------
@@ -69,15 +67,14 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("finishRESULT: %u",option);
-	
-	if (csid == 0x0020) then
-		player:setVar("DynaXarcabard_Win",0);
-	elseif (csid == 0x0010 and option == 0) then
-		if (checkFirstDyna(player,6)) then
-			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 64);
-		end
-		
-		player:setPos(569.312,-0.098,-270.158,90,0x87);
-	end
-	
+    if (csid == 0x0020) then
+        player:setVar("DynaXarcabard_Win",0);
+    elseif (csid == 0x0010 and option == 0) then
+        if (checkFirstDyna(player,6)) then
+            player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 64);
+        end
+        
+        player:setPos(569.312,-0.098,-270.158,90,0x87);
+    end
+    
 end;

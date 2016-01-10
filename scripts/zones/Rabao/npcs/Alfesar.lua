@@ -30,31 +30,20 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
-	TheMissingPieceVar = player:getVar("TheMissingPieceVar");
-	
-	if(TheMissingPiece == QUEST_AVAILABLE and player:getFameLevel(4) >= 4 and player:getMainLvl() >= 10) then
-		-- Start quest "The Missing Piece"
-		player:startEvent(0x0006,ANCIENT_TABLET_FRAGMENT,ANCIENT_TABLET_FRAGMENT);
-	elseif(TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(ANCIENT_TABLET_FRAGMENT)) then
-		-- Obtain KIs to give to Charlaimagnat
-		player:startEvent(0x0008,ANCIENT_TABLET_FRAGMENT,TABLET_OF_ANCIENT_MAGIC);
-	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 1) then
-		-- Haven't been to Quicksand Caves
-		player:startEvent(0x0007,ANCIENT_TABLET_FRAGMENT);  
-	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 2) then
-		-- Haven't spoken to Charlaimagnat
-		player:startEvent(0x0009,0,TABLET_OF_ANCIENT_MAGIC); 
-	elseif(TheMissingPiece == QUEST_ACCEPTED and TheMissingPieceVar == 3) then
-		-- Spoke to Charlaimagnat, waiting for JP Midnight
-		player:startEvent(0x000A,0,TABLET_OF_ANCIENT_MAGIC); 
-	elseif(TheMissingPiece == QUEST_COMPLETED) then
-		-- Standard dialog after completing "The Missing Piece"
-		player:startEvent(0x000B); 
-	else
-		-- Standard dialog before "The Missing Piece"
-		player:startEvent(0x0034); 
-	end
+    local TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
+    local Fame = player:getFameLevel(RABAO);
+
+    if (TheMissingPiece == QUEST_AVAILABLE and Fame >= 4) then -- start quest
+        player:startEvent(0x0006); 
+    elseif (TheMissingPiece == QUEST_ACCEPTED and not(player:hasKeyItem(ANCIENT_TABLET_FRAGMENT))) then -- talk to again with quest activated
+        player:startEvent(0x0007); 
+    elseif (TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(ANCIENT_TABLET_FRAGMENT)) then -- successfully retrieve key item
+        player:startEvent(0x0008); 
+    elseif (TheMissingPiece == QUEST_ACCEPTED and player:hasKeyItem(TABLET_OF_ANCIENT_MAGIC)) then -- They got their Key items. tell them to goto sandy
+        player:startEvent(0x0009); 
+    else
+        player:startEvent(0x0034); -- standard dialogue
+    end;
 end; 
 
 -----------------------------------
@@ -73,18 +62,15 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
-	
-	if(csid == 0x0006) then
-		player:addQuest(OUTLANDS,THE_MISSING_PIECE);
-		player:setVar("TheMissingPieceVar",1);
-	elseif(csid == 0x0008)	then
-		player:setVar("TheMissingPieceVar",2);
-		player:delKeyItem(ANCIENT_TABLET_FRAGMENT);
-		player:addKeyItem(TABLET_OF_ANCIENT_MAGIC);
-		player:addKeyItem(LETTER_FROM_ALFESAR);
-		player:messageSpecial(KEYITEM_OBTAINED,TABLET_OF_ANCIENT_MAGIC);
-		player:messageSpecial(KEYITEM_OBTAINED,LETTER_FROM_ALFESAR);
-	end
+    if (csid == 0x0006) then
+        player:addQuest(OUTLANDS,THE_MISSING_PIECE);
+    elseif (csid == 0x0008) then -- give the player the key items he needs to complete the quest
+        player:addKeyItem(TABLET_OF_ANCIENT_MAGIC);
+        player:addKeyItem(LETTER_FROM_ALFESAR);
+        player:delKeyItem(ANCIENT_TABLET_FRAGMENT); 
+        player:messageSpecial(KEYITEM_OBTAINED,TABLET_OF_ANCIENT_MAGIC);
+        player:messageSpecial(KEYITEM_OBTAINED,LETTER_FROM_ALFESAR);
+    end;
 end;
 
 
