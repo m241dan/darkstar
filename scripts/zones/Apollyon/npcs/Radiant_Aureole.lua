@@ -41,10 +41,10 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-   local instancelist ={};
-   local limbusbitmap = 0 ;
-   local AllowLimbusToPlayer = true ;   
-   local currentlimbus= TryTobackOnCurrentLimbus(player); 
+ local instancelist ={};
+ local limbusbitmap = 0 ;
+ local AllowLimbusToPlayer = true ;   
+ local currentlimbus= TryTobackOnCurrentLimbus(player); 
 
   if ( npc:getID() == 16933242) then
          instancelist = APPOLLYON_SE_NE_BCNM_LIST;
@@ -103,50 +103,9 @@ printf("currentlimbus: %u",currentlimbus);
       
         
        end   
+ 
 
-         for nt = 1,table.getn (instancelist),2 do
-            --   printf("list d'instance: %u",instancelist[nt]);  	 
-            if (instancelist[nt+1][1]==true and player:hasKeyItem(WHITE_CARD)) then
-               --   print("player_have_white_card");
-	       limbusbitmap = limbusbitmap + instancelist[nt+1][4];
-	       --   printf("bitmapadd: %u",instancelist[nt+1][4]);
-	    end
-            if (instancelist[nt+1][2]==true and player:hasKeyItem(RED_CARD)) then
-	       --   print("player_have_red_card");
-	       limbusbitmap = limbusbitmap + instancelist[nt+1][4];
-	        --     printf("bitmapadd: %u",instancelist[nt+1][4]);
-	    end	  
-            if (instancelist[nt+1][3]==true and player:hasKeyItem(BLACK_CARD)) then
-	       --   print("player_have_black_card");
-	       limbusbitmap = limbusbitmap + instancelist[nt+1][4];
-	       --   printf("bitmapadd: %u",instancelist[nt+1][4]);
-	    end	  	  
-         end
 
-         limbusbitmap= limbusbitmap + LimbusTradeItem;
-         ----- /////////////////////////////////////////////on doit ajouter le mipmap pour l'item trade ici
-      else
-         local    status = player:getStatusEffect(EFFECT_BATTLEFIELD);
-	 local    playerbcnmid = status:getPower();
-	 -- check if the player has the key item for the current battlefield
-	 for nt = 1,table.getn (instancelist),2 do
-            --     printf("list d'instance: %u",instancelist[nt]);  	 
-            if (instancelist[nt] == playerbcnmid) then
-	       if (instancelist[nt+1][1]== true and player:hasKeyItem(WHITE_CARD) == false) then
-	          AllowLimbusToPlayer = false;
-	       end
-	       if (instancelist[nt+1][2]== true  and player:hasKeyItem(RED_CARD) == false ) then
-	          AllowLimbusToPlayer = false;
-	       end					
-	       if (instancelist[nt+1][3]== true and player:hasKeyItem(BLACK_CARD) == false ) then
-	          AllowLimbusToPlayer = false;
-	       end						
-	       if (AllowLimbusToPlayer == true) then --player have the correct key item for the current battflield
-	          limbusbitmap = instancelist[nt+1][4];
-	       end
-	    end
-         end
-      end   
  
        if (limbusbitmap~= 0 ) then
            player:startEvent(0x7d00,0,0,0,limbusbitmap,0,0,0,0);
@@ -170,6 +129,7 @@ printf("currentlimbus: %u",currentlimbus);
        player:messageSpecial(CONDITION_FOR_LIMBUS); 
     print("error player  don't have cosmo clean");
   end 
+    
 end;
 
 -----------------------------------
@@ -177,6 +137,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
+
+
      if (csid == 0x7d00) then
        if (player:hasStatusEffect(EFFECT_BATTLEFIELD) == false) then 
            ResetPlayerLimbusVariable(player);
@@ -192,9 +154,6 @@ function onEventUpdate(player,csid,option)
      
      end
    
-      player:updateEvent(2,player:getVar("limbusbitmap"),0,1,1,0);
-      player:setVar("limbusbitmap",0);
-   end   
 end;
 
 -----------------------------------
