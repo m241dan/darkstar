@@ -49,7 +49,7 @@ function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 300 );
    mob:addMod( MOD_MND, 10 );
    mob:addMod( MOD_INT, 10 );
-   mob:addMod( MOD_MDEF, 100 );
+   mob:addMod( MOD_MDEF, 20 );
    mob:addMod( MOD_MEVA, 150 );
 end
 

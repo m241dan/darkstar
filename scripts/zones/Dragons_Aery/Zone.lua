@@ -16,11 +16,6 @@ require("scripts/zones/Dragons_Aery/TextIDs");
 -----------------------------------
 
 function onInitialize(zone)
-
-   -- Fafnir
-   local Fafnir  = 17408018;
-   local Nidhogg = 17408019;
-   onHNMInit("Nidhogg", Fafnir, Nidhogg );
 end;
 
 -----------------------------------

@@ -27,7 +27,7 @@ function onMobEngaged(mob,target)
    mob:speed( 50 );
    mob:addMod( MOD_INT, 20 );
    mob:setMod( MOD_REGEN, 65 );
-   mob:addMod( MOD_MDEF, 100 );
+   mob:addMod( MOD_MDEF, 20 );
    mob:addMod( MOD_MEVA, 150 );
 end;
 

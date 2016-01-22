@@ -55,4 +55,5 @@ function onMobDespawn(mob)
             SetServerVariable("[PH]King_Behemoth", kills + 1);
         end
     end
+   mob:setRespawnTime( 3600 * 3 );
 end;

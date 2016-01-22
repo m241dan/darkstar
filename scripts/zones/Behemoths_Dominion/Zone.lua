@@ -20,10 +20,8 @@ function onInitialize(zone)
     
     SetFieldManual(manuals);
     
-   -- Behemoth
-   local Behemoth      = 17297440;
-   local King_Behemoth = 17297441;
-   onHNMInit( "King_Behemoth", Behemoth, King_Behemoth );
+    local Behemoth      = 17297440;
+    SetRespawnTime( Behemoth, 3600, 3600 );
 end;
 
 -----------------------------------		

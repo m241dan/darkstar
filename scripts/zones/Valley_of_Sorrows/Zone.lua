@@ -16,14 +16,8 @@ require("scripts/globals/melfnm");
 -----------------------------------
 
 function onInitialize(zone)
-    local manuals = {17301591,17301592};
-
     SetFieldManual(manuals);
-
-    -- Adamantoise
-    local Adamantoise = 17301537;
-    local Aspidochelone = 17301538;
-    onHNMInit( "Aspidochelone", Adamantoise, Aspidochelone );
+	
 end;
 
 -----------------------------------
