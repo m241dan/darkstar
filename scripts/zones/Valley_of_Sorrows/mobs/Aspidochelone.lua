@@ -15,10 +15,6 @@ require("scripts/globals/melfnm");
 function onMobInitialize(mob)
 end;
 
-function onMobSpawn(mob)
-   DeterMob(17301537,true);   
-end;
-
 -----------------------------------
 -- onMobDeath
 -----------------------------------
@@ -26,13 +22,23 @@ end;
 function onMobDeath(mob, killer, ally)
     ally:addTitle(ASPIDOCHELONE_SINKER);
 
-   -- Set Aspidochelone's Window Open Time
-   local wait = 72 * 3600
-   local Adamantoise = 17301537;
-   SetServerVariable("[POP]Aspidochelone", os.time(t) + wait); -- 3 days
-   SetServerVariable("[PH]Aspidochelone", 0);
-   SetServerVariable("[WindowOpen]Aspidochelone", os.time(t) + ( 21 * 3600 ) );
-   onHNMInit( "Aspidochelone", Adamantoise, mob:getID() );
+    -- Set Aspidochelone's Window Open Time
+    if (LandKingSystem_HQ ~= 1) then
+        local wait = 72 * 3600;
+        SetServerVariable("[POP]Aspidochelone", os.time(t) + wait); -- 3 days
+        if (LandKingSystem_HQ == 0) then -- Is time spawn only
+            DeterMob(mob:getID(), true);
+        end
+    end
+
+    -- Set Adamantoise's spawnpoint and respawn time (21-24 hours)
+    if (LandKingSystem_NQ ~= 1) then
+        Adamantoise = mob:getID()-1;
+        SetServerVariable("[PH]Aspidochelone", 0);
+        DeterMob(Adamantoise, false);
+        UpdateNMSpawnPoint(Adamantoise);
+        GetMobByID(Adamantoise):setRespawnTime(math.random(75600,86400));
+    end
 end;
 
 function onMobEngaged( mob, target )
@@ -43,6 +49,8 @@ function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 300 );
    mob:addMod( MOD_MND, 10 );
    mob:addMod( MOD_INT, 10 );
+   mob:addMod( MOD_MDEF, 100 );
+   mob:addMod( MOD_MEVA, 150 );
 end
 
 function onMobFight(mob, target)
@@ -73,7 +81,7 @@ function onMobFight(mob, target)
 end
 
 function enterShell( aspid )
-   aspid:addMod( MOD_REGEN, 200 );
+   aspid:addMod( MOD_REGEN, 300 );
    aspid:addMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(1);
    aspid:speed( 0 );
@@ -82,7 +90,7 @@ function enterShell( aspid )
 end
 
 function exitShell( aspid )
-   aspid:delMod( MOD_REGEN, 200 );
+   aspid:delMod( MOD_REGEN, 300 );
    aspid:delMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(2);
    if( aspid:hasStatusEffect( EFFECT_BIND ) ~= true ) then

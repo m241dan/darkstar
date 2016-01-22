@@ -19,15 +19,7 @@ end;
 -- onMobSpawn
 -----------------------------------
 function onMobSpawn(mob)
-   local ToD   = GetServerVariable("[POP]Nidhogg");
-   local kills = GetServerVariable("[PH]Nidhogg");
-
-
-   DeterMob( 17408019, true );
-   if( ToD <= os.time(t) ) then
-      SetServerVariable( "[PH]Nidhogg", kills + 1 );
-   end
-   mob:addMod( MOD_SLEEPRES, 20 );
+   mob:addMod( MOD_SLEEPRES, 100 );
    mob:addMod( MOD_MDEF, 20 );
 end;
 
@@ -47,9 +39,26 @@ end;
 -----------------------------------
 
 function onMobDespawn(mob)
-   local Fafnir  = mob:getID();
-   local Nidhogg = 17408019;
+    local Fafnir = mob:getID();
+    local Nidhogg = mob:getID()+1;
+    local ToD = GetServerVariable("[POP]Nidhogg");
+    local kills = GetServerVariable("[PH]Nidhogg");
+    local popNow = (math.random(1,5) == 3 or kills > 6);
 
-   SetServerVariable( "[WindowOpen]Nidhogg", os.time(t) + ( 21 * 3600 ) );
-   onHNMInit( "Nidhogg", Fafnir, Nidhogg );
+    if (LandKingSystem_HQ ~= 1 and ToD <= os.time(t) and popNow == true) then
+        -- 0 = timed spawn, 1 = force pop only, 2 = BOTH
+        if (LandKingSystem_NQ == 0) then
+            DeterMob(Fafnir, true);
+        end
+
+        DeterMob(Nidhogg, false);
+        UpdateNMSpawnPoint(Nidhogg);
+        GetMobByID(Nidhogg):setRespawnTime(math.random(75600,86400));
+    else
+        if (LandKingSystem_NQ ~= 1) then
+            UpdateNMSpawnPoint(Fafnir);
+            mob:setRespawnTime(math.random(75600,86400));
+            SetServerVariable("[PH]Nidhogg", kills + 1);
+        end
+    end
 end;

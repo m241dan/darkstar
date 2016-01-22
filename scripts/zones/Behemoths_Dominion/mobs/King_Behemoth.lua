@@ -18,13 +18,17 @@ end;
 
 
 function onMobEngaged(mob,target)
+   mob:addMod(MOD_SLEEPRES, 1000);
    mob:addMod(MOD_SILENCERES,100);
-   mob:addMod(MOD_STUNRES,10);
+   mob:addMod(MOD_STUNRES,100);
    mob:addMod(MOD_BINDRES,50);
    mob:setMobMod(MOBMOD_DRAW_IN,100);
-   mob:setMod( MOD_REGAIN, 20 );
-   mob:speed( 40 );
+   mob:setMod( MOD_REGAIN, 40 );
+   mob:speed( 50 );
+   mob:addMod( MOD_INT, 20 );
    mob:setMod( MOD_REGEN, 65 );
+   mob:addMod( MOD_MDEF, 100 );
+   mob:addMod( MOD_MEVA, 150 );
 end;
 
 function onMobFight(mob, target)
@@ -39,24 +43,25 @@ end;
 -----------------------------------
 
 function onMobDeath(mob, killer, ally)
-
     ally:addTitle(BEHEMOTH_DETHRONER);
 
-    if (math.random((1),(100)) <= 4) then -- Hardcoded "this or this item" drop rate until implemented.
-        SetDropRate(1936,13566,1000); -- Defending Ring
-        SetDropRate(1936,13415,0);
-    else
-        SetDropRate(1936,13566,0);
-        SetDropRate(1936,13415,1000); -- Pixie Earring
-    end
     -- Set King_Behemoth's Window Open Time
-    local wait = 72 * 3600
-    local Behemoth = 17297440;
-    SetServerVariable("[POP]King_Behemoth", os.time(t) + wait); -- 3 days
-    SetServerVariable("[PH]King_Behemoth", 0);
-    SetServerVariable("[WindowOpen]King_Behemoth", os.time(t) + ( 21 * 3600 ) );
-    onHNMInit( "King_Behemoth", Behemoth, mob:getID() );
-end;
+    if (LandKingSystem_HQ ~= 1) then
+        local wait = 72 * 3600;
+        SetServerVariable("[POP]King_Behemoth", os.time(t) + wait); -- 3 days
+        if (LandKingSystem_HQ == 0) then -- Is time spawn only
+            DeterMob(mob:getID(), true);
+        end
+    end
+
+    -- Set Behemoth's spawnpoint and respawn time (21-24 hours)
+    if (LandKingSystem_NQ ~= 1) then
+        SetServerVariable("[PH]King_Behemoth", 0);
+        local Behemoth = mob:getID()-1;
+        DeterMob(Behemoth, false);
+        UpdateNMSpawnPoint(Behemoth);
+        GetMobByID(Behemoth):setRespawnTime(math.random(75600,86400));
+    endend;
 
 function onSpellPrecast(mob, spell)
     if (spell:getID() == 218) then

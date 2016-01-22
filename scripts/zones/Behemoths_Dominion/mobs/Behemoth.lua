@@ -18,13 +18,6 @@ end;
 -- onMobSpawn
 -----------------------------------
 function onMobSpawn(mob)
-   local ToD   = GetServerVariable("[POP]King_Behemoth");
-   local kills = GetServerVariable("[PH]King_Behemoth");
-
-   DeterMob( 17297441, true );
-   if( ToD <= os.time(t) ) then
-      SetServerVariable( "[PH]King_Behemoth", kills + 1 );
-   end
 end;
 
 -----------------------------------
@@ -40,9 +33,26 @@ end;
 -----------------------------------
 
 function onMobDespawn(mob)
-   local Behemoth      = mob:getID();
-   local King_Behemoth = 17297441;
+    local Behemoth = mob:getID();
+    local King_Behemoth = mob:getID()+1;
+    local ToD = GetServerVariable("[POP]King_Behemoth");
+    local kills = GetServerVariable("[PH]King_Behemoth");
+    local popNow = (math.random(1,5) == 3 or kills > 6);
 
-   SetServerVariable( "[WindowOpen]King_Behemoth", os.time(t) + ( 21 * 3600 ) );
-   onHNMInit( "King_Behemoth", Behemoth, King_Behemoth );
+    if (LandKingSystem_HQ ~= 1 and ToD <= os.time(t) and popNow == true) then
+        -- 0 = timed spawn, 1 = force pop only, 2 = BOTH
+        if (LandKingSystem_NQ == 0) then
+            DeterMob(Behemoth, true);
+        end
+
+        DeterMob(King_Behemoth, false);
+        UpdateNMSpawnPoint(King_Behemoth);
+        GetMobByID(King_Behemoth):setRespawnTime(math.random(75600,86400));
+    else
+        if (LandKingSystem_NQ ~= 1) then
+            UpdateNMSpawnPoint(Behemoth);
+            mob:setRespawnTime(math.random(75600,86400));
+            SetServerVariable("[PH]King_Behemoth", kills + 1);
+        end
+    end
 end;

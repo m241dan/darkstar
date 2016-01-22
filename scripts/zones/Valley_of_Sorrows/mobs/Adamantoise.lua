@@ -20,13 +20,6 @@ end;
 -- onMobSpawn
 -----------------------------------
 function onMobSpawn(mob)
-   local ToD   = GetServerVariable("[POP]Aspidochelone");
-   local kills = GetServerVariable("[PH]Aspidochelone");
-
-   DeterMob( 17301538, true );
-   if( ToD <= os.time(t) ) then
-      SetServerVariable( "[PH]Aspidochelone", kills + 1 );
-   end
 end;
 -----------------------------------
 -- onMobDeath
@@ -37,9 +30,26 @@ function onMobDeath(mob, killer, ally)
 end;
 
 function onMobDespawn(mob)
-   local Adamantoise  = mob:getID();
-   local Aspidochelone = 17301538;
+    local Adamantoise = mob:getID();
+    local Aspidochelone = mob:getID()+1;
+    local ToD = GetServerVariable("[POP]Aspidochelone");
+    local kills = GetServerVariable("[PH]Aspidochelone");
+    local popNow = (math.random(1,5) == 3 or kills > 6);
 
-   SetServerVariable( "[WindowOpen]Aspidochelone", os.time(t) + ( 21 * 3600 ) );
-   onHNMInit( "Aspidochelone", Adamantoise, Aspidochelone );
+    if (LandKingSystem_HQ ~= 1 and ToD <= os.time(t) and popNow == true) then
+        -- 0 = timed spawn, 1 = force pop only, 2 = BOTH
+        if (LandKingSystem_NQ == 0) then
+            DeterMob(Adamantoise, true);
+        end
+
+        DeterMob(Aspidochelone, false);
+        UpdateNMSpawnPoint(Aspidochelone);
+        GetMobByID(Aspidochelone):setRespawnTime(math.random(75600,86400));
+    else
+        if (LandKingSystem_NQ ~= 1) then
+            UpdateNMSpawnPoint(Adamantoise);
+            mob:setRespawnTime(math.random(75600,86400));
+            SetServerVariable("[PH]Aspidochelone", kills + 1);
+        end
+    end
 end;
