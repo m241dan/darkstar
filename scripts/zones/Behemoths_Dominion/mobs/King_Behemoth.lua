@@ -16,8 +16,10 @@ function onMobInitialize(mob)
     mob:setMobMod(MOBMOD_MAGIC_COOL, 60);
 end;
 
+function onMobFight(mob, target)
+end;
 
-function onMobEngaged(mob,target)
+function onMobSpawn( mob )
    mob:addMod(MOD_SLEEPRES, 1000);
    mob:addMod(MOD_SILENCERES,100);
    mob:addMod(MOD_STUNRES,100);
@@ -29,13 +31,6 @@ function onMobEngaged(mob,target)
    mob:setMod( MOD_REGEN, 65 );
    mob:addMod( MOD_MDEF, 20 );
    mob:addMod( MOD_MEVA, 150 );
-end;
-
-function onMobFight(mob, target)
-end;
-
-function onMobSpawn( mob )
-   DeterMob( 17297440, true );
 end;
 
 -----------------------------------
@@ -61,7 +56,8 @@ function onMobDeath(mob, killer, ally)
         DeterMob(Behemoth, false);
         UpdateNMSpawnPoint(Behemoth);
         GetMobByID(Behemoth):setRespawnTime(math.random(75600,86400));
-    endend;
+    end
+end;
 
 function onSpellPrecast(mob, spell)
     if (spell:getID() == 218) then

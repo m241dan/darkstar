@@ -9,14 +9,14 @@ INSERT INTO `mob_droplist` VALUES (2764,0,3343,80);
 INSERT INTO `mob_droplist` VALUES (3679,0,3343,80);
 
 -- Red Pondweed from Adamantoise
-UPDATE `mob_droplist` SET rate=500 WHERE dropID=24 AND itemId=3344;
+UPDATE `mob_droplist` SET rate=250 WHERE dropID=24 AND itemId=3344;
 
 -- Savory Shank from Behemoth
-UPDATE `mob_droplist` SET rate=500 WHERE dropID=270 and itemId=3342;
+UPDATE `mob_droplist` SET rate=250 WHERE dropID=270 and itemId=3342;
 
 -- Honey Wine from Darters and Bark Tarantula
 INSERT INTO `mob_droplist` VALUES (645,0,3339,80);
 INSERT INTO `mob_droplist` VALUES (244,0,3339,80);
 
 -- Sweet Tea droprate for nidhogg
-UPDATE `mob_drop;ist` SET rate=500 WHERE dropID=918 and itemId=3340;
+UPDATE `mob_droplist` SET rate=250 WHERE dropID=918 and itemId=3340;

@@ -154,7 +154,7 @@ void CAlliance::delParty(CParty* party)
     }
 
     //delete the party from the alliance list
-    for (uint8 i = 0; i < party->m_PAlliance->partyList.size(); ++i)
+    for (uint8 i = 0; i < party->m_PAlliance->partyList.size(); i++)
     {
         if (party == party->m_PAlliance->partyList.at(i))
             party->m_PAlliance->partyList.erase(partyList.begin() + i);
@@ -164,7 +164,7 @@ void CAlliance::delParty(CParty* party)
     party->SetPartyNumber(0);
 
     //remove party members from the alliance treasure pool
-    for (uint8 i = 0; i < party->members.size(); ++i)
+    for (uint8 i = 0; i < party->members.size(); i++)
     {
         CCharEntity* PChar = (CCharEntity*)party->members.at(i);
 
@@ -189,7 +189,7 @@ void CAlliance::delParty(CParty* party)
     PChar->PTreasurePool->AddMember(PChar);
     PChar->PTreasurePool->UpdatePool(PChar);
 
-    for (uint8 i = 0; i < party->members.size(); ++i)
+    for (uint8 i = 0; i < party->members.size(); i++)
     {
         CCharEntity* PMember = (CCharEntity*)party->members.at(i);
         //party->ReloadPartyMembers((CCharEntity*)party->members.at(i));
