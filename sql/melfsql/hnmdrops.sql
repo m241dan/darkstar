@@ -1,7 +1,7 @@
 
 -- King Behe droprate adjustment
 UPDATE `mob_droplist` SET rate=1000 WHERE dropID=1936 AND itemId=13415; -- Pixie
-UPDATE `mob_droplist` SET rate=35 WHERE dropID=1936 AND itemId=13566; -- DRing
+UPDATE `mob_droplist` SET rate=25 WHERE dropID=1936 AND itemId=13566; -- DRing
 
 -- Blue Pondweed on Peryton, Valley Manticore and Raptors
 INSERT INTO `mob_droplist` VALUES (4002,0,3343,80);
