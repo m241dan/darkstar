@@ -24,6 +24,7 @@ function onMobSpawn(mob)
     mob:setMod( MOD_ICEDEF, 300 );
     mob:setMod( MOD_MDEF, 20 );
     mob:setMod( MOD_MEVA, 400 );
+    mob:setMod( MOD_SLEEPRES, 200 );
 end;
 
 -----------------------------------

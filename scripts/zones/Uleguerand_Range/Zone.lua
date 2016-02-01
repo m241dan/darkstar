@@ -17,7 +17,7 @@ require("scripts/globals/missions");
 function onInitialize(zone)
 
     -- Jormungand
-    SetRespawnTime(16797969, 86400, 259200);
+    SetRespawnTime(16797969, 60, 12 * 3600);
 
 end;
 
