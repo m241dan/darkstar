@@ -25,12 +25,14 @@ function onMobSpawn( mob )
    mob:addMod(MOD_STUNRES,100);
    mob:addMod(MOD_BINDRES,50);
    mob:setMobMod(MOBMOD_DRAW_IN,100);
-   mob:setMod( MOD_REGAIN, 40 );
+   mob:setMod( MOD_REGAIN, 50 );
    mob:speed( 50 );
    mob:addMod( MOD_INT, 20 );
    mob:setMod( MOD_REGEN, 65 );
    mob:addMod( MOD_MDEF, 20 );
-   mob:addMod( MOD_MEVA, 110 );
+   mob:addMod( MOD_MEVA, 95 );
+   mob:addMod( MOD_DEF, 200 );
+   mob:addMod( MOD_EVA, 100 );
 end;
 
 -----------------------------------

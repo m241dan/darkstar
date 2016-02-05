@@ -50,7 +50,7 @@ function onMobSpawn( mob )
    mob:addMod( MOD_MND, 10 );
    mob:addMod( MOD_INT, 10 );
    mob:addMod( MOD_MDEF, 20 );
-   mob:addMod( MOD_MEVA, 150 );
+   mob:addMod( MOD_MEVA, 130 );
 end
 
 function onMobFight(mob, target)
@@ -81,7 +81,7 @@ function onMobFight(mob, target)
 end
 
 function enterShell( aspid )
-   aspid:addMod( MOD_REGEN, 300 );
+   aspid:addMod( MOD_REGEN, 200 );
    aspid:addMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(1);
    aspid:speed( 0 );
@@ -90,7 +90,7 @@ function enterShell( aspid )
 end
 
 function exitShell( aspid )
-   aspid:delMod( MOD_REGEN, 300 );
+   aspid:delMod( MOD_REGEN, 200 );
    aspid:delMod( MOD_DEFP, 1000 );
    aspid:AnimationSub(2);
    if( aspid:hasStatusEffect( EFFECT_BIND ) ~= true ) then

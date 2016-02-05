@@ -19,7 +19,7 @@ end;
 -- onMobSpawn
 -----------------------------------
 function onMobSpawn(mob)
-   mob:addMod( MOD_SLEEPRES, 100 );
+   mob:addMod( MOD_SLEEPRES, 80 );
    mob:addMod( MOD_MDEF, 20 );
 end;
 
