@@ -18,13 +18,13 @@ function onTrade(player,npc,trade)
 -- "Flyers for Regine" conditional script
 FlyerForRegine = player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE);
 
-	if (FlyerForRegine == 1) then
-		count = trade:getItemCount();
-		MagicFlyer = trade:hasItemQty(532,1);
-		if (MagicFlyer == true and count == 1) then
-			player:messageSpecial(FLYER_REFUSED);
-		end
-	end
+    if (FlyerForRegine == 1) then
+        count = trade:getItemCount();
+        MagicFlyer = trade:hasItemQty(532,1);
+        if (MagicFlyer == true and count == 1) then
+            player:messageSpecial(FLYER_REFUSED);
+        end
+    end
 end; 
 
 -----------------------------------
@@ -32,7 +32,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
+    
 player:showText(npc,CROUMANGUE_SHOP_DIALOG);
 
 stock = {0x1159,837,  --Grape Juice 
@@ -48,7 +48,6 @@ stock = {0x1159,837,  --Grape Juice
 		 0x11b7,360,  --Boiled Crayfish 
 		 0x119d,10,   --Distilled Water 
 		 0x1167,180}  --Pebble Soup
- 
 showShop(player, STATIC , stock);
 end; 
 

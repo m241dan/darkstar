@@ -48,6 +48,8 @@ local VIRTUE_STONE_POUCH=5410;
 -- onTrade Action
 -----------------------------------
 
+
+
 function onTrade(player,npc,trade)
     local reward = 0;
     local item = 0;

@@ -28,7 +28,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
+    
 player:showText(npc,DOHDJUMA_SHOP_DIALOG);
 
 stock = {0x0263,36,	--Rye Flour
@@ -44,7 +44,6 @@ stock = {0x0263,36,	--Rye Flour
 	 0x0b32,9200,	--Selbina Waystone
          
 	}
-
 showShop(player, STATIC, stock);
 end; 
 

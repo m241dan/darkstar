@@ -20,7 +20,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
+    
 player:showText(npc,CHAMPALPIEU_SHOP_DIALOG);
 
 stock = {

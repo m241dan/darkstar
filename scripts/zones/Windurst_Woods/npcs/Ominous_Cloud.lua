@@ -10,12 +10,13 @@
 package.loaded["scripts/zones/Windurst_Woods/TextIDs"] = nil;
 -----------------------------------
 
+require("scripts/zones/Windurst_Woods/TextIDs");
+
 -----------------------------------
 -- onTrade Action
 -----------------------------------
 
 function onTrade(player,npc,trade)
-
 	local wijinruit 	=	trade:getItemQty(951)
 	local uchitake 	= 	(trade:getItemQty(1161) / 99)
 	local tsurara 	= 	(trade:getItemQty(1164) / 99)
@@ -211,7 +212,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	player:startEvent(0x02ba,npc:getID());
+    player:startEvent(0x02ba,npc:getID());
 end;
 
 -----------------------------------
@@ -219,8 +220,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
-	-- printf("CSID: %u",csid);
-	-- printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -228,7 +229,7 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
-	-- printf("CSID: %u",csid);
-	-- printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 

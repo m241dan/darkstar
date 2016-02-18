@@ -124,7 +124,7 @@ INSERT INTO `mob_droplist` VALUES (5508,0,4111,150);
 INSERT INTO `mob_droplist` VALUES (5508,0,812,150); -- deathstone
 
 -- dynamis coin
-UPDATE `mob_droplist` SET rate=18 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
+UPDATE `mob_droplist` SET rate=12 WHERE itemid=1450 OR itemid=1453 or itemid=1456;
 
 -- eraser
 UPDATE `mob_groups` SET HP=4600, MP=2000, spawntype=128, respawntime=0, minLevel=81, maxLevel=83 WHERE groupid=6927;
@@ -222,5 +222,9 @@ UPDATE `mob_droplist` SET rate=1000 WHERE itemId=1592;
 DELETE FROM `mob_droplist` WHERE dropId=2458 AND itemId=942;
 INSERT INTO `mob_droplist` VALUES (2458,0,942,1000);
 INSERT INTO `mob_droplist` VALUES (2458,0,942,500);
+
+-- fotia gorget
+INSERT INTO `item_basic` VALUES (27510,0,'fotia_gorget','fotia_gorget',1,63568,0,1,0);
+INSERT INTO `item_armor` VALUES (27510,'fotia_gorget',72,0,4194303,0,0,0,512,0);
 
 

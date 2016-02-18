@@ -16203,7 +16203,6 @@ INSERT INTO `item_basic` VALUES (27447,0,'maculele_toeshoes','maculele_toeshoes'
 INSERT INTO `item_basic` VALUES (27448,0,'maculele_toeshoes_+1','maculele_toeshoes_+1',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27449,0,'arbatel_loafers','arbatel_loafers',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27450,0,'arbatel_loafers_+1','arbatel_loafers_+1',1,63552,0,1,0);
-
 INSERT INTO `item_basic` VALUES (27506,0,'defiant_collar','defiant_collar',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27507,0,'deviant_necklace','deviant_necklace',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27565,0,'ifrit_ring_+1','ifrit_ring_+1',1,2144,25,0,1);

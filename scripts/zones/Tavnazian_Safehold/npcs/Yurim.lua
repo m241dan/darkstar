@@ -60,6 +60,16 @@ local RAIRIN_OBI =15439; local THUNDER_GORGET= 15499;
 local KORIN_OBI =15441; local LIGHT_GORGET= 15501;
 local ANRIN_OBI =15442; local SHADOW_GORGET= 15502;
 
+local obi_table = {
+   KARIN_OBI, DORIN_OBI, SUIRIN_OBI, FURIN_OBI, HYORIN_OBI, RAIRIN_OBI, KORIN_OBI, ANRIN_OBI,
+}
+
+local gorget_table = {
+   FLAME_GORGET, SOIL_GORGET, AQUA_GORGET, BREEZE_GORGET, SNOW_GORGET, THUNDER_GORGET, LIGHT_GORGET, SHADOW_GORGET,
+}
+local FOTIA_GORGET = 27510;
+local HACHIRIN_NO_OBI = 28419;
+
 local APPLE_PIE = 4413;
 
 function getNOS(itemtarget,item)
@@ -111,7 +121,27 @@ function onTrade(player,npc,trade)
     local NameOfScience = player:getQuestStatus(OTHER_AREAS,IN_THE_NAME_OF_SCIENCE); 
     local count = trade:getItemCount(); --nombre d'objet total
     local itemtarget = player:getVar("NAME_OF_SCIENCE_target");
-    local reward = false;
+    local reward;
+
+    if( trade:getItemCount()==8) then
+       for _, obi in pairs( obi_table ) do
+          if( trade:hasItemQty( obi, 1 ) == false ) then
+             break;
+          end
+          reward = HACHIRIN_NO_OBI;
+       end
+       for _, gorget in pairs( gorget_table ) do
+          if( trade:hasItemQty( gorget, 1 ) == false ) then
+             player:PrintToPlayer( "Invalid trade...", 0xE );
+             return;
+          end
+          reward = FOTIA_GORGET;
+       end
+       player:tradeComplete();
+       player:addItem( reward );
+       player:messageSpecial(ITEM_OBTAINED,reward);
+    end
+
 -- printf("count: %u",count);
 -----------------------------------------trade the chip and the base item---------------------------------------------------------------------
     if ((NameOfScience == QUEST_ACCEPTED or NameOfScience == QUEST_COMPLETED) and count == 2 and itemtarget == 0) then  

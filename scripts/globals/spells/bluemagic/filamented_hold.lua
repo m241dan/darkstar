@@ -34,8 +34,8 @@ function onSpellCast(caster,target,spell)
     local typeEffect = EFFECT_SLOW
     local dINT = caster:getStat(MOD_MND) - target:getStat(MOD_MND);
     local resist = applyResistanceEffect(caster,spell,target,dINT,BLUE_SKILL,0,typeEffect);
-    local duration = 120 * resist;
-    local power = 25;
+    local duration = 90 * resist;
+    local power = 256;
     
     if (resist > 0.5) then -- Do it!
         if (target:addStatusEffect(typeEffect,power,0,duration)) then
@@ -45,7 +45,7 @@ function onSpellCast(caster,target,spell)
         end
     else
         spell:setMsg(85);
-    end;
+    end
 
     return typeEffect;
 end;

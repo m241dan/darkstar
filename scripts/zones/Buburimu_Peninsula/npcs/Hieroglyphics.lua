@@ -66,13 +66,13 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("finishRESULT: %u",option);
-	
-	if (csid == 0x0021) then
-	    if (checkFirstDyna(player,8)) then
-			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 256);
-		end
-	elseif (csid == 0x0016 and option == 0) then
-		player:setPos(155,-1,-169,170,0x28);
-	end
-	
+    
+    if (csid == 0x0021) then
+        if (checkFirstDyna(player,8)) then
+            player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 256);
+        end
+    elseif (csid == 0x0016 and option == 0) then
+        player:setPos(155,-1,-169,170,0x28);
+    end
+    
 end;

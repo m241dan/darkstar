@@ -24,7 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
+    
 player:showText(npc,DABIHJAJALIOH_SHOP_DIALOG);
 
 stock = {0x03b4,60,	--Carnation

@@ -22,10 +22,11 @@ end
 -----------------------------------
 
 function onMobSpawn(mob)
-    mob:setMod( MOD_REGEN, 50 );
+    mob:setMod( MOD_REGEN, 60 );
     mob:setMod( MOD_STUNRES, 200 );
-    mob:addMod( MOD_DEF, 200 );
     mob:setMod( MOD_WINDRES, -64 );
+    mob:addMod( MOD_INT, 10 );
+    mob:addMod( MOD_MEVA, 20 );
     mob:speed( 40 );
 end
 

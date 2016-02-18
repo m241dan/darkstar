@@ -49,8 +49,8 @@ function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 300 );
    mob:addMod( MOD_MND, 10 );
    mob:addMod( MOD_INT, 10 );
-   mob:addMod( MOD_MDEF, 20 );
-   mob:addMod( MOD_MEVA, 130 );
+   mob:addMod( MOD_MDEF, 25 );
+   mob:addMod( MOD_MEVA, 125 );
 end
 
 function onMobFight(mob, target)

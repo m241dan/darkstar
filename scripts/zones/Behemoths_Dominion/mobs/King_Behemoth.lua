@@ -30,9 +30,10 @@ function onMobSpawn( mob )
    mob:addMod( MOD_INT, 20 );
    mob:setMod( MOD_REGEN, 65 );
    mob:addMod( MOD_MDEF, 20 );
-   mob:addMod( MOD_MEVA, 95 );
-   mob:addMod( MOD_DEF, 200 );
-   mob:addMod( MOD_EVA, 100 );
+   mob:addMod( MOD_MEVA, 85 );
+   mob:addMod( MOD_DEF, 150 );
+   mob:addMod( MOD_EVA, 60 );
+   mob:addMod( MOD_MATT, 17 );
 end;
 
 -----------------------------------

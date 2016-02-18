@@ -21,13 +21,13 @@ function onTrade(player,npc,trade)
 -- "Flyers for Regine" conditional script
 FlyerForRegine = player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE);
 
-	if (FlyerForRegine == 1) then
-		count = trade:getItemCount();
-		MagicFlyer = trade:hasItemQty(532,1);
-		if (MagicFlyer == true and count == 1) then
-			player:messageSpecial(FLYER_REFUSED);
-		end
-	end
+    if (FlyerForRegine == 1) then
+        count = trade:getItemCount();
+        MagicFlyer = trade:hasItemQty(532,1);
+        if (MagicFlyer == true and count == 1) then
+            player:messageSpecial(FLYER_REFUSED);
+        end
+    end
 end; 
 
 -----------------------------------
@@ -36,7 +36,7 @@ end;
 
 function onTrigger(player,npc)
 
-	player:showText(npc,AVELINE_SHOP_DIALOG);
+    player:showText(npc,AVELINE_SHOP_DIALOG);
 
 	stock = {0x0271,79,	--Apple Vinegar
 			 0x026f,117,	--Bay Leaves
@@ -52,7 +52,6 @@ function onTrigger(player,npc)
 			 0x114f,68}	--San d'Orian Grape
 	 
 	showShop(player, STATIC, stock);
-
 end; 
 
 -----------------------------------

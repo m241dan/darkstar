@@ -71,19 +71,19 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("finishRESULT: %u",option);
-	
-	if (csid == 0x00CB) then
-		player:addKeyItem(VIAL_OF_SHROUDED_SAND);
-		player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
-		player:setVar("Dynamis_Status",0);
-	elseif (csid == 0x00d7) then
-		player:setVar("DynaBastok_Win",0);
-	elseif (csid == 0x00c9 and option == 0) then
-		if (checkFirstDyna(player,2)) then
-			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 4);
-		end
-		
-		player:setPos(116.482,0.994,-72.121,128,0xba);
-	end
-	
+    
+    if (csid == 0x00CB) then
+        player:addKeyItem(VIAL_OF_SHROUDED_SAND);
+        player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
+        player:setVar("Dynamis_Status",0);
+    elseif (csid == 0x00d7) then
+        player:setVar("DynaBastok_Win",0);
+    elseif (csid == 0x00c9 and option == 0) then
+        if (checkFirstDyna(player,2)) then
+            player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 4);
+        end
+        
+        player:setPos(116.482,0.994,-72.121,128,0xba);
+    end
+    
 end;

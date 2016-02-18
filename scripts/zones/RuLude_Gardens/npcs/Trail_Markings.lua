@@ -24,8 +24,8 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
-	if (player:getVar("Dynamis_Status") == 1) then
+   player:PrintToPlayer( "Dynamis Jeuno is disabled until further notice.", 0xE );
+--[[	if (player:getVar("Dynamis_Status") == 1) then
 		player:startEvent(0x2720); -- cs with Cornelia
 	elseif (player:getVar("DynaJeuno_Win") == 1) then
 		player:startEvent(0x272a,HYDRA_CORPS_TACTICAL_MAP); -- Win CS
@@ -52,7 +52,7 @@ function onTrigger(player,npc)
 	else
 		player:messageSpecial(UNUSUAL_ARRANGEMENT_LEAVES);
 	end
-	
+--]]	
 end;
 
 -----------------------------------
@@ -71,19 +71,19 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("finishRESULT: %u",option);
-	
-	if (csid == 0x2720) then
-		player:addKeyItem(VIAL_OF_SHROUDED_SAND);
-		player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
-		player:setVar("Dynamis_Status",0);
-	elseif (csid == 0x272a) then
-		player:setVar("DynaJeuno_Win",0);
-	elseif (csid == 0x271c and option == 0) then
-		if (checkFirstDyna(player,4)) then
-			player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 16);
-		end
-		
-		player:setPos(48.930,10.002,-71.032,195,0xBC);
-	end
-	
+    
+    if (csid == 0x2720) then
+        player:addKeyItem(VIAL_OF_SHROUDED_SAND);
+        player:messageSpecial(KEYITEM_OBTAINED,VIAL_OF_SHROUDED_SAND);
+        player:setVar("Dynamis_Status",0);
+    elseif (csid == 0x272a) then
+        player:setVar("DynaJeuno_Win",0);
+    elseif (csid == 0x271c and option == 0) then
+        if (checkFirstDyna(player,4)) then
+            player:setVar("Dynamis_Status",player:getVar("Dynamis_Status") + 16);
+        end
+        
+        player:setPos(48.930,10.002,-71.032,195,0xBC);
+    end
+    
 end;

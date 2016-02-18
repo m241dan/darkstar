@@ -21,13 +21,13 @@ function onTrade(player,npc,trade)
 -- "Flyers for Regine" conditional script
 FlyerForRegine = player:getQuestStatus(SANDORIA,FLYERS_FOR_REGINE);
 
-	if (FlyerForRegine == 1) then
-		count = trade:getItemCount();
-		MagicFlyer = trade:hasItemQty(532,1);
-		if (MagicFlyer == true and count == 1) then
-			player:messageSpecial(FLYER_REFUSED);
-		end
-	end
+    if (FlyerForRegine == 1) then
+        count = trade:getItemCount();
+        MagicFlyer = trade:hasItemQty(532,1);
+        if (MagicFlyer == true and count == 1) then
+            player:messageSpecial(FLYER_REFUSED);
+        end
+    end
 end; 
 
 -----------------------------------
@@ -35,8 +35,8 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-	
-	player:showText(npc,BENAIGE_SHOP_DIALOG);
+    
+    player:showText(npc,BENAIGE_SHOP_DIALOG);
 
 	stock = {0x0274,234,	--Cinnamon
 			 0x0275,43,	--Millioncorn
