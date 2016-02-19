@@ -4,6 +4,8 @@
 -- desc: Prints the ID of the currently selected target under the cursor
 ---------------------------------------------------------------------------------------------------
 
+sqlhandle = require( "mysql" )
+
 cmdprops =
 {
     permission = 0,

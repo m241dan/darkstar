@@ -888,6 +888,7 @@ MOD_KATANA            = 88
 MOD_GKATANA           = 89
 MOD_CLUB              = 90
 MOD_STAFF             = 91
+MOD_WSDMG             = 92
 MOD_AUTO_MELEE_SKILL  = 101
 MOD_AUTO_RANGED_SKILL = 102
 MOD_AUTO_MAGIC_SKILL  = 103

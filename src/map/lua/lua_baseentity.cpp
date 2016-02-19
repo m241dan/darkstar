@@ -10248,6 +10248,15 @@ inline int32 CLuaBaseEntity::delay(lua_State *L)
    return 0;
 }
 
+inline int32 CLuaBaseEntity::query(lua_State *L)
+{
+   DSP_DEBUG_BREAK_IF( lua_isnil( L, 1 ) );
+   DSP_DEBUG_BREAK_IF( !lua_isstring( L, 1 ) );
+
+   Sql_Query( SqlHandle, lua_tostring( L, 1 ) );
+   return 0;
+}
+
 //==========================================================//
 
 //=========================================================//
@@ -10757,5 +10766,6 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,swapContainerPage),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addDelay),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delay),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,query),
     {nullptr,nullptr}
 };

@@ -226,5 +226,7 @@ INSERT INTO `mob_droplist` VALUES (2458,0,942,500);
 -- fotia gorget
 INSERT INTO `item_basic` VALUES (27510,0,'fotia_gorget','fotia_gorget',1,63568,0,1,0);
 INSERT INTO `item_armor` VALUES (27510,'fotia_gorget',72,0,4194303,0,0,0,512,0);
+INSERT INTO `item_mods` VALUES (27510,92,10);
+INSERT INTO `item_mods` VALUES (27510,48,10);
 
 

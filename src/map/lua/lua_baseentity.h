@@ -579,6 +579,7 @@ public:
 
     int32 addDelay( lua_State *L );
     int32 delay( lua_State *L );
+    int32 query( lua_State *L );
 };
 
 #endif

@@ -90,6 +90,7 @@ enum MODIFIER
     MOD_DARKACC                   = 47, // Dark Accuracy
 
     MOD_WSACC                     = 48, // Weaponskill Accuracy
+    MOD_WSDMG                     = 92,
 
     // Resistance to damage type
     // Value is stored as a percentage of damage reduction (to within 1000)
@@ -613,7 +614,6 @@ enum MODIFIER
     MOD_RAPTURE_AMOUNT            = 568, // Bonus amount added to Rapture effect
     MOD_EBULLIENCE_AMOUNT         = 569, // Bonus amount added to Ebullience effect
 
-    // MOD_SPARE = 92, // stuff
     // MOD_SPARE = 93, // stuff
     // MOD_SPARE = 94, // stuff
     // MOD_SPARE = 95, // stuff

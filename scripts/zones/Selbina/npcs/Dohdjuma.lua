@@ -16,11 +16,7 @@ require("scripts/globals/melfaugments" );
 -----------------------------------
 
 function onTrade(player,npc,trade)
-   if( trade:getItemCount() == 1 ) then
-      onAugmentID( player, trade );
-   else
-      onAugmentTrade( player, trade );   
-   end
+   onAugmentTrade( player, trade );   
 end; 
 
 -----------------------------------

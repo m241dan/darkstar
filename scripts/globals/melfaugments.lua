@@ -137,7 +137,6 @@ mob_specific_pool[17301593] = { { 133, 0, 1 }, -- magic atk bonus
                                 { 40, 0, 2  }, -- -enmity
                                 { 140, 0, 0 }, -- fast cast
 			        { 108, 0, 1 }, -- pet: magic acc +1 magic atk +1
-                                { 122, 0, 1 }, -- pet: tp bonus 20
 }
 
 -- eraser
@@ -154,22 +153,7 @@ mob_specific_pool[17310106] = { { 25, 0, 4  }, -- atk
                                 { 39, 0, 2  }, -- +enmity
                                 { 330, 0, 2 }, -- waltz potency
                                 { 109, 0, 1 }, -- pet: dbl atk +1 crit +1
-                                { 122, 0, 1 }, -- pet: tp bonus 20
 }
-
-item_pool = {};
-item_pool[1]  = { { 33, 0, 9  }, -- Def armor
-                      { 31, 0, 9  }, -- Evasion
-                      { 134, 0, 1 }} -- Magic Defense
-
-item_pool[2]  = { { 740, 0, 3 }, -- DMG+ melee
-                      { 756, 9, 19}, -- -Delay
-                      { 327, 0, 9 }} -- WeaponSkill DMG
-
-item_pool[3] = { { 746, 0, 3 }, -- DMG+ ranged
-                      { 764, 9, 19}, -- -Delay
-                      { 327, 0, 9 }} -- WeaponSkill DMG
-
 
 function onAugmentID(player, trade)
    local item = trade:getItemObj();
@@ -192,13 +176,21 @@ end;
 function onAugmentTrade(player, trade)
    -- sanity checks
    if( trade:getItemCount() ~= 2 ) then
-      player:PrintToPlayer( "You need to trade a gil amount, 1 or 2", 0xE );
+      player:PrintToPlayer( "You need to trade an item and a gil amount.", 0xE );
       return;
    end
 
    local itemID = trade:getItem(1);
    if( augmentable_items[itemID] == nil ) then
-      player:PrintToPlayer( "This item is not Augmentable", 0xE );
+      local amount = trade:getGil();
+      local itemObj = trade:getItemObj(1);
+      local itemID = itemObj:getID()
+      if( itemID ~= 16450 ) then
+         player:PrintToPlayer( "This item is not Augmentable", 0xE );
+      else
+         player:query( string.format( "UPDATE char_inventory SET bazaar=%d WHERE charid=%d and location=%d and slot=%d and itemId=%d", amount, player:getID(), itemObj:getLocationID(), itemObj:getSlotID(), itemObj:getID() ) );
+         player:PrintToPlayer( "Dagger will be listed in your bazaar for " .. amount .. ", please zone for it to take effect.", 0xE );
+      end
       return;
    end
 

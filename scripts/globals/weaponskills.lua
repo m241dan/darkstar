@@ -49,6 +49,8 @@ function doPhysicalWeaponskill(attacker, target, params)
         --printf("bonusacc = %u bonusfTP = %f", bonusacc, bonusfTP);
     end
 
+
+    bonusacc = bonusacc + attacker:getMod( MOD_WSACC );
     --get fstr
     local fstr = fSTR(attacker:getStat(MOD_STR),target:getStat(MOD_VIT),attacker:getWeaponDmgRank());
 
@@ -234,7 +236,8 @@ function doPhysicalWeaponskill(attacker, target, params)
     else
         finaldmg = finaldmg * target:getMod(MOD_SLASHRES) / 1000;
     end
-    
+
+    finaldmg = finaldmg * ( 1 + ( attacker:getMod( MOD_WSDMG ) / 100 ) );
 
     attacker:delStatusEffectSilent(EFFECT_BUILDING_FLOURISH);
     return finaldmg, criticalHit, tpHitsLanded, extraHitsLanded;

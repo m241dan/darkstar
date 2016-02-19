@@ -396,7 +396,7 @@ INSERT INTO `augments` VALUES ('323', '0', '0', '0', '0'); -- Cure spellcasting 
 INSERT INTO `augments` VALUES ('324', '0', '0', '0', '0'); -- Call Beast ability delay -1
 INSERT INTO `augments` VALUES ('325', '0', '0', '0', '0'); -- Quick Draw ability delay -1
 INSERT INTO `augments` VALUES ('326', '0', '48', '1', '0'); -- Weapon Skill Acc.+1
-INSERT INTO `augments` VALUES ('327', '0', '0', '0', '0'); -- Weapon skill damage+1%
+INSERT INTO `augments` VALUES ('327', '0', '92', '1', '0'); -- Weapon skill damage+1%
 INSERT INTO `augments` VALUES ('328', '0', '421', '1', '0'); -- Crit. hit damage+1%
 INSERT INTO `augments` VALUES ('329', '0', '374', '1', '0'); -- Cure potency+1%
 INSERT INTO `augments` VALUES ('330', '0', '491', '1', '0'); -- Waltz potency+1%
