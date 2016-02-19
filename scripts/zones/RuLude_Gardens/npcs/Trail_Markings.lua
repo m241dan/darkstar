@@ -24,8 +24,8 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
-   player:PrintToPlayer( "Dynamis Jeuno is disabled until further notice.", 0xE );
---[[	if (player:getVar("Dynamis_Status") == 1) then
+--   player:PrintToPlayer( "Dynamis Jeuno is disabled until further notice.", 0xE );
+	if (player:getVar("Dynamis_Status") == 1) then
 		player:startEvent(0x2720); -- cs with Cornelia
 	elseif (player:getVar("DynaJeuno_Win") == 1) then
 		player:startEvent(0x272a,HYDRA_CORPS_TACTICAL_MAP); -- Win CS
@@ -52,7 +52,6 @@ function onTrigger(player,npc)
 	else
 		player:messageSpecial(UNUSUAL_ARRANGEMENT_LEAVES);
 	end
---]]	
 end;
 
 -----------------------------------
