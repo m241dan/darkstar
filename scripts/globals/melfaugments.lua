@@ -343,7 +343,7 @@ end;
 
 function addAugToPool( pool, aug, val )
    if( pool[aug] ) then
-      pool[aug] = pool[aug] + val;
+      pool[aug] = pool[aug] + val + 1;
    else
       pool[aug] = val;
    end
