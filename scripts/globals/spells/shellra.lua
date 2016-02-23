@@ -14,7 +14,7 @@ function onMagicCastingCheck(caster,target,spell)
 end;
 
 function onSpellCast(caster,target,spell)
-    local power = 24;
+    local power = (24/256)*100;
     local duration = 1800;
 
     duration = calculateDurationForLvl(duration, 18, target:getMainLvl());

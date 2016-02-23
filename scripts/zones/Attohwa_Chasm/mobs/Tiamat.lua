@@ -39,6 +39,11 @@ end;
 -- onMobFight Action
 -----------------------------------
 
+function reportTia(mob)
+   printf( "changetime " .. mob:getLocalVar( "changetime" ) );
+   printf( "current time " .. mob:getBattleTime() );
+end;
+
 function onMobFight(mob,target)
     -- Gains a large attack boost when health is under 25% which cannot be Dispelled. 
     if (mob:getHP() < ((mob:getMaxHP() / 10) * 2.5)) then

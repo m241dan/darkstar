@@ -20,7 +20,7 @@ function onSpellCast(caster,target,spell)
     --Base Power is actually 62, but you will always have atleast 1 merit
     local power = 60 + meritBonus;
     --printf("Shellra V Power: %d", power);
-    
+    power = (power/256) * 100;    
     duration = calculateDurationForLvl(duration, 75, target:getMainLvl());
 
     local typeEffect = EFFECT_SHELL;

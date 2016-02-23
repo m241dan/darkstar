@@ -1939,7 +1939,7 @@ namespace battleutils
                 {
                     if (PDefender->objtype == TYPE_PC)
                     {
-                        absorb = dsp_cap(100 - PDefender->m_Weapons[SLOT_SUB]->getShieldAbsorption(), 0, 100);
+                        absorb = dsp_cap(PDefender->m_Weapons[SLOT_SUB]->getShieldAbsorption(), 0, 100);
 
                         //Shield Mastery
                         if ((dsp_max(damage - (PDefender->getMod(MOD_PHALANX) + PDefender->getMod(MOD_STONESKIN)), 0) > 0)
