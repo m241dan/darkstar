@@ -11,6 +11,7 @@ require("scripts/globals/status");
 -----------------------------------
 
 function onEffectGain(target,effect)
+        effect:setIcon( 32 );
 	target:addMod(MOD_MOVE, effect:getPower());
 end;
 

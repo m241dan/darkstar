@@ -121,7 +121,6 @@ function onTrade(player,npc,trade)
     local NameOfScience = player:getQuestStatus(OTHER_AREAS,IN_THE_NAME_OF_SCIENCE); 
     local count = trade:getItemCount(); --nombre d'objet total
     local itemtarget = player:getVar("NAME_OF_SCIENCE_target");
-    local reward;
 
     if( trade:getItemCount()==8) then
        for _, obi in pairs( obi_table ) do
@@ -129,6 +128,7 @@ function onTrade(player,npc,trade)
              break;
           end
           reward = HACHIRIN_NO_OBI;
+          goto reward_section;
        end
        for _, gorget in pairs( gorget_table ) do
           if( trade:hasItemQty( gorget, 1 ) == false ) then
@@ -137,6 +137,7 @@ function onTrade(player,npc,trade)
           end
           reward = FOTIA_GORGET;
        end
+       ::reward_section::
        player:tradeComplete();
        player:addItem( reward );
        player:messageSpecial(ITEM_OBTAINED,reward);
