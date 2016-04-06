@@ -1,4 +1,4 @@
-﻿/*
+/*
 ===========================================================================
 
   Copyright (c) 2010-2015 Darkstar Dev Teams
@@ -38,7 +38,7 @@
 #include "../items/item_weapon.h"
 
 #define MAX_ITEMID  32768
-#define MAX_DROPID  6000
+#define MAX_DROPID  5000
 #define MAX_LOOTID  1300
 
 struct DropItem_t

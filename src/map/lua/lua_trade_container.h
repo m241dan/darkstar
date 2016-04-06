@@ -27,9 +27,7 @@
 #include "../../common/cbasetypes.h"
 #include "../../common/lua/lunar.h"
 
-#include "../trade_container.h"
-
-
+class CTradeContainer;
 class CLuaTradeContainer
 {
     CTradeContainer *m_pMyTradeContainer;
@@ -50,7 +48,6 @@ public:
     int32 getItem(lua_State*);
     int32 getItemSubId(lua_State*);
     int32 getItemQty(lua_State*);
-    int32 getItemObj(lua_State*);
     int32 hasItemQty(lua_State*);
     int32 getSlotQty(lua_State*);		// количество предметов в указанной ячейке
     int32 getItemCount(lua_State*);		// общее количество предметов

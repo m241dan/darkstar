@@ -10,7 +10,7 @@
 --   Start an Expeditionary Force by giving an E.F. region insignia to you.
 -------------------------------------
 package.loaded["scripts/zones/Windurst_Waters/TextIDs"] = nil;
--------------------------------------
+-------------------------------------
 require("scripts/globals/conquest");
 require("scripts/globals/common");
 require("scripts/zones/Windurst_Waters/TextIDs");
@@ -51,7 +51,6 @@ function onTrigger(player,npc)
         Menu6 = getArg6(player);
         Menu7 = player:getCP();
         Menu8 = getRewardExForce(guardnation,player);
-
         player:startEvent(0x7ff7,Menu1,Menu2,Menu3,Menu4,Menu5,Menu6,Menu7,Menu8);
     end
 

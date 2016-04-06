@@ -26,6 +26,7 @@
 
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
+#include "packets/action.h"
 
 #include "entities/battleentity.h"
 
@@ -37,7 +38,11 @@ enum ADDTYPE
     ADDTYPE_MAIN_ONLY   = 4,
     ADDTYPE_LEARNED     = 8,
     ADDTYPE_LIGHT_ARTS  = 16,
-    ADDTYPE_DARK_ARTS   = 32
+    ADDTYPE_DARK_ARTS   = 32,
+    ADDTYPE_JUGPET      = 64,
+    ADDTYPE_CHARMPET    = 128,
+    ADDTYPE_AVATAR      = 256,
+    ADDTYPE_AUTOMATON   = 512,
 };
 
 enum ABILITY
@@ -626,13 +631,14 @@ enum ABILITY
 
 #define MAX_ABILITY_ID  752
 
-struct Charge_t 
+struct Charge_t
 {
     uint16     ID;          //recastId
     JOBTYPE    job;         //job
     uint8      level;       //level
     uint8      maxCharges;  //maximum number of stored charges
     uint32     chargeTime;  //time required to restore one charge
+    uint16     merit;
 };
 
 /************************************************************************
@@ -647,18 +653,21 @@ public:
 
     CAbility(uint16 id);
 
-    bool        isAvatarAbility();
+    bool        isPetAbility();
     bool        isAoE();
     bool        isConal();
 
     uint16      getID();
+    uint16      getMobSkillID();
     JOBTYPE     getJob();
     uint8       getLevel();
     uint16      getAnimationID();
+    duration    getAnimationTime();
+    duration    getCastTime();
     float       getRange();
     uint8       getAOE();
-    uint8       getValidTarget();
-    uint8       getAddType();
+    uint16      getValidTarget();
+    uint16      getAddType();
     uint16      getMessage();
     uint16      getAoEMsg();
     uint16      getRecastTime();
@@ -666,21 +675,26 @@ public:
     uint16      getCE();
     uint16      getVE();
     uint16      getMeritModID();
+    ACTIONTYPE  getActionType();
 
     void        setID(uint16 id);
+    void        setMobSkillID(uint16 id);
     void        setJob(JOBTYPE Job);
     void        setLevel(uint8 level);
     void        setAnimationID(uint16 animationID);
+    void        setAnimationTime(duration time);
+    void        setCastTime(duration time);
     void        setRange(float range);
     void        setAOE(uint8 aoe);
-    void        setValidTarget(uint8 validTarget);
-    void        setAddType(uint8 addtype);
+    void        setValidTarget(uint16 validTarget);
+    void        setAddType(uint16 addtype);
     void        setMessage(uint16 message);
     void        setRecastTime(uint16 recastTime);
     void        setRecastId(uint16 recastId);
     void        setCE(uint16 CE);
     void        setVE(uint16 VE);
     void        setMeritModID(uint16 value);
+    void        setActionType(ACTIONTYPE type);
 
     const int8* getName();
     void        setName(int8* name);
@@ -691,10 +705,12 @@ private:
     JOBTYPE     m_Job;
     uint8       m_level;
     uint16      m_animationID;
+    duration    m_animationTime;
+    duration    m_castTime;
     uint8       m_range;
     uint8       m_aoe;
-    uint8       m_validTarget;
-    uint8       m_addType;
+    uint16      m_validTarget;
+    uint16      m_addType;
     uint16      m_message;
     uint16      m_recastTime;
     uint16      m_recastId;
@@ -702,6 +718,8 @@ private:
     uint16      m_VE;
     uint16      m_meritModID;
     string_t    m_name;
+    uint16      m_mobskillId;
+    ACTIONTYPE  m_actionType;
 };
 
 /************************************************************************

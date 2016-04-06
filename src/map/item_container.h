@@ -24,7 +24,6 @@
 #ifndef _CITEMCONTAINER_H
 #define _CITEMCONTAINER_H
 
-#include "zone.h"
 #include "../common/cbasetypes.h"
 
 enum CONTAINER_ID
@@ -73,13 +72,23 @@ public:
 	uint8	InsertItem(CItem* PItem);				// добавляем заранее созданный предмет в свободную ячейку
 	uint8	InsertItem(CItem* PItem, uint8 slotID);	// добавляем заранее созданный предмет в выбранную ячейку
 
-    void	SwapPages( CCharEntity *PChar, uint8 page );
+    uint32  SortingPacket;                          // количество запросов на сортировку за такт
+    uint32  LastSortingTime;                        // время последней сортировки контейнера
 
-    uint32	SortingPacket;                          // количество запросов на сортировку за такт
-    uint32	LastSortingTime;                        // время последней сортировки контейнера
-
-	CItem*	GetItem(uint8 slotID);					// получаем указатель на предмет, находящийся в указанной ячейка. 
+	CItem*	GetItem(uint8 slotID);					// получаем указатель на предмет, находящийся в указанной ячейка.
 	void	Clear();								// Remove all items from container
+
+    template<typename F, typename... Args>
+    void ForEachItem(F func, Args&&... args)
+    {
+        for (uint8 SlotID = 0; SlotID <= m_size; ++SlotID)
+        {
+            if (m_ItemList[SlotID])
+            {
+                func(m_ItemList[SlotID], std::forward<Args>(args)...);
+            }
+        }
+    }
 
 private:
 

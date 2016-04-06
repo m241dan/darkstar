@@ -499,7 +499,11 @@ function checkGoVregime(player,mob,rid,index)
         -- Need to add difference because a lvl1 can XP with a level 75 at Ro'Maeve
         local difference = math.abs(mob:getMainLvl() - player:getMainLvl());
 
+<<<<<<< HEAD
         if ((mob:checkBaseExp() and player:checkDistance(mob) < 100 and difference <= 15 and partyType < 2) or player:checkFovDistancePenalty() == 0) then
+=======
+        if ((mob:getBaseExp() > 0 or LOW_LEVEL_REGIME == 1) and difference <= 15 and (player:checkDistance(mob) < 100 or player:checkFovDistancePenalty() == 0)) then
+>>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
             -- Get the number of mobs needed/killed
             local needed = player:getVar("fov_numneeded"..index);
             local killed = player:getVar("fov_numkilled"..index);
@@ -623,6 +627,7 @@ function checkGoVregime(player,mob,rid,index)
         end
     end
 end
+<<<<<<< HEAD
 
 function onGroundsTombTrade( player, trade )
    if( trade:getItemCount() ~= 1 or trade:getGil() ~= 1000 ) then
@@ -681,3 +686,5 @@ function onGroundsTombTrade( player, trade )
    end
    player:tradeComplete();
 end;
+=======
+>>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97

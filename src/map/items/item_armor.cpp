@@ -277,7 +277,8 @@ void CItemArmor::SetAugmentMod(uint16 type, uint8 value)
     {
         setSubType(ITEM_AUGMENTED);
         WBUFB(m_extra, 0x00) |= 0x02;
-        WBUFB(m_extra, 0x01) |= 0x03;
+        if( this->getID() != 16450 )
+           WBUFB(m_extra, 0x01) |= 0x03;
     }
 
 

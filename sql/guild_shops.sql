@@ -356,7 +356,7 @@ INSERT INTO `guild_shops` VALUES ('515', '832', '675', '4500', '255', '48', '100
 INSERT INTO `guild_shops` VALUES ('515', '833', '15', '18', '375', '75', '150');
 INSERT INTO `guild_shops` VALUES ('515', '834', '79', '200', '255', '48', '100');
 INSERT INTO `guild_shops` VALUES ('515', '835', '187', '1000', '375', '75', '100');
-INSERT INTO `guild_shops` VALUES ('515', '838', '3438', '10557', '55', '0', '22');
+INSERT INTO `guild_shops` VALUES ('515', '838', '9438', '34557', '55', '0', '22');
 INSERT INTO `guild_shops` VALUES ('515', '839', '137', '870', '255', '48', '100');
 INSERT INTO `guild_shops` VALUES ('515', '841', '26', '192', '375', '0', '150');
 INSERT INTO `guild_shops` VALUES ('515', '2128', '75', '86', '375', '75', '150');
@@ -397,7 +397,7 @@ INSERT INTO `guild_shops` VALUES ('515', '12736', '1290', '3196', '20', '0', '15
 -- INSERT INTO `guild_shops` VALUES ('5152', '833', '15', '18', '375', '75', '150');
 -- INSERT INTO `guild_shops` VALUES ('5152', '834', '79', '200', '255', '48', '100');
 -- INSERT INTO `guild_shops` VALUES ('5152', '835', '187', '1000', '375', '75', '100');
--- INSERT INTO `guild_shops` VALUES ('5152', '838', '3438', '10557', '55', '0', '22');
+-- INSERT INTO `guild_shops` VALUES ('5152', '838', '9438', '34557', '55', '0', '22');
 -- INSERT INTO `guild_shops` VALUES ('5152', '839', '137', '870', '255', '48', '100');
 -- INSERT INTO `guild_shops` VALUES ('5152', '841', '26', '192', '375', '0', '150');
 -- INSERT INTO `guild_shops` VALUES ('5152', '2128', '75', '86', '375', '75', '150');
@@ -435,7 +435,7 @@ INSERT INTO `guild_shops` VALUES ('516', '827', '9180', '48384', '55', '0', '22'
 INSERT INTO `guild_shops` VALUES ('516', '832', '675', '4500', '255', '48', '100');
 INSERT INTO `guild_shops` VALUES ('516', '833', '15', '18', '375', '75', '150');
 INSERT INTO `guild_shops` VALUES ('516', '835', '187', '1000', '375', '75', '100');
-INSERT INTO `guild_shops` VALUES ('516', '838', '3438', '10557', '55', '0', '22');
+INSERT INTO `guild_shops` VALUES ('516', '838', '9438', '34557', '55', '0', '22');
 INSERT INTO `guild_shops` VALUES ('516', '841', '26', '192', '375', '0', '150');
 
 -- Babubu (Port Windurst) Fishing Guild

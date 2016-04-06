@@ -114,10 +114,7 @@ enum MODIFIER
 
     MOD_ATTP                      = 62, // % Attack
     MOD_DEFP                      = 63, // % Defense
-    MOD_ACCP                      = 64, // % Accuracy
-    MOD_EVAP                      = 65, // % Evasion
     MOD_RATTP                     = 66, // % Ranged Attack
-    MOD_RACCP                     = 67, // % Ranged Attack Accuracy
 
     MOD_EVA                       = 68, // Evasion
     MOD_RDEF                      = 69, // Ranged Defense
@@ -194,7 +191,8 @@ enum MODIFIER
     MOD_DMG                       = 160, // Damage Taken %
     MOD_DMGPHYS                   = 161, // Physical Damage Taken %
     MOD_DMGBREATH                 = 162, // Breath Damage Taken %
-    MOD_DMGMAGIC                  = 163, // Magic Damage Taken % - 256 base! (value of -24 means -24/256 magic damage taken)
+    MOD_DMGMAGIC                  = 163, // Magic Damage Taken %
+    MOD_DMGMAGIC_II               = 831, // Magic Damage Taken II % (Aegis)
     MOD_DMGRANGE                  = 164, // Range Damage Taken %
 
     MOD_UDMGPHYS                  = 387, // Uncapped Damage Multipliers
@@ -377,6 +375,8 @@ enum MODIFIER
     MOD_JUMP_TP_BONUS             = 361, // bonus tp player receives when using jump (must be divided by 10)
     MOD_JUMP_ATT_BONUS            = 362, // ATT% bonus for jump + high jump
     MOD_HIGH_JUMP_ENMITY_REDUCTION = 363, // for gear that reduces more enmity from high jump
+    MOD_FORCE_JUMP_CRIT           = 828, // Critical hit rate bonus for jump and high jump
+    MOD_WYVERN_EFFECTIVE_BREATH   = 829, // Increases the threshold for triggering healing breath/offensive breath more inclined to pick elemental weakness
 
     // Summoner
     MOD_AVATAR_PERPETUATION       = 371, // stores base cost of current avatar
@@ -412,7 +412,8 @@ enum MODIFIER
     MOD_ROLL_DANCERS              = 330, // Tracks totals
     MOD_ROLL_SCHOLARS             = 331, // Tracks totals
     MOD_BUST                      = 332, // # of busts
-    MOD_QUICK_DRAW_DMG            = 411, //
+    MOD_QUICK_DRAW_DMG            = 411, // Flat damage increase to base QD damage
+    MOD_QUICK_DRAW_DMG_PERCENT    = 831, // Percentage increase to QD damage
 
     // Puppetmaster
     MOD_MANEUVER_BONUS            = 504, // Maneuver Stat Bonus
@@ -467,7 +468,6 @@ enum MODIFIER
     MOD_WIND_AFFINITY_DMG         = 352, // DMG, ACC, and PERP, while the wiki lists it as having 1 in each.
     MOD_LIGHT_AFFINITY_DMG        = 353,
     MOD_DARK_AFFINITY_DMG         = 354,
-    MOD_ALL_AFFINITY_DMG          = 543,
     MOD_FIRE_AFFINITY_ACC         = 544,
     MOD_EARTH_AFFINITY_ACC        = 545,
     MOD_WATER_AFFINITY_ACC        = 546,
@@ -476,7 +476,6 @@ enum MODIFIER
     MOD_WIND_AFFINITY_ACC         = 549,
     MOD_LIGHT_AFFINITY_ACC        = 550,
     MOD_DARK_AFFINITY_ACC         = 551,
-    MOD_ALL_AFFINITY_ACC          = 552,
     MOD_FIRE_AFFINITY_PERP        = 553,
     MOD_EARTH_AFFINITY_PERP       = 554,
     MOD_WATER_AFFINITY_PERP       = 555,
@@ -485,7 +484,6 @@ enum MODIFIER
     MOD_WIND_AFFINITY_PERP        = 558,
     MOD_LIGHT_AFFINITY_PERP       = 559,
     MOD_DARK_AFFINITY_PERP        = 560,
-    MOD_ALL_AFFINITY_PERP         = 561,
 
     // Special Modifier+
     MOD_ADDS_WEAPONSKILL          = 355, //
@@ -594,26 +592,37 @@ enum MODIFIER
     MOD_ENH_DRAIN_ASPIR           = 315, // % damage boost to Drain and Aspir
     MOD_AUGMENTS_ABSORB           = 521, // Direct Absorb spell increase while Liberator is equipped (percentage based)
     MOD_AMMO_SWING                = 523, // Extra swing rate w/ ammo (ie. Jailer weapons). Use gearsets, and does nothing for non-players.
+    MOD_AMMO_SWING_TYPE           = 826, // For the handedness of the weapon - 1h (1) vs. 2h/h2h (2). h2h can safely use the same function as 2h.
     MOD_AUGMENTS_CONVERT          = 525, // Convert HP to MP Ratio Multiplier. Value = MP multiplier rate.
     MOD_AUGMENTS_SA               = 526, // Adds Critical Attack Bonus to Sneak Attack, percentage based.
     MOD_AUGMENTS_TA               = 527, // Adds Critical Attack Bonus to Trick Attack, percentage based.
     MOD_ENHANCES_REFRESH          = 529, // "Enhances Refresh" adds +1 per modifier to spell's tick result.
     MOD_NO_SPELL_MP_DEPLETION     = 530, // % to not deplete MP on spellcast.
-    MOD_FORCE_FIRE_DWBONUS        = 531, // Set to 1 to force fire day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_EARTH_DWBONUS       = 532, // Set to 1 to force earth day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_WATER_DWBONUS       = 533, // Set to 1 to force water day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_WIND_DWBONUS        = 534, // Set to 1 to force wind day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_ICE_DWBONUS         = 535, // Set to 1 to force ice day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_LIGHTNING_DWBONUS   = 536, // Set to 1 to force lightning day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_LIGHT_DWBONUS       = 537, // Set to 1 to force light day/weather spell bonus/penalty. Do not have it total more than 1.
-    MOD_FORCE_DARK_DWBONUS        = 538, // Set to 1 to force dark day/weather spell bonus/penalty. Do not have it total more than 1.
+    MOD_FORCE_FIRE_DWBONUS        = 531, // Set to above 0 to force fire day/weather spell bonus/penalty.
+    MOD_FORCE_EARTH_DWBONUS       = 532, // Set to above 0 to force earth day/weather spell bonus/penalty.
+    MOD_FORCE_WATER_DWBONUS       = 533, // Set to above 0 to force water day/weather spell bonus/penalty.
+    MOD_FORCE_WIND_DWBONUS        = 534, // Set to above 0 to force wind day/weather spell bonus/penalty.
+    MOD_FORCE_ICE_DWBONUS         = 535, // Set to above 0 to force ice day/weather spell bonus/penalty.
+    MOD_FORCE_LIGHTNING_DWBONUS   = 536, // Set to above 0 to force lightning day/weather spell bonus/penalty.
+    MOD_FORCE_LIGHT_DWBONUS       = 537, // Set to above 0 to force light day/weather spell bonus/penalty.
+    MOD_FORCE_DARK_DWBONUS        = 538, // Set to above 0 to force dark day/weather spell bonus/penalty.
     MOD_STONESKIN_BONUS_HP        = 539, // Bonus "HP" granted to Stoneskin spell.
     MOD_DAY_NUKE_BONUS            = 565, // Bonus damage from "Elemental magic affected by day" (Sorc. Tonban)
     MOD_IRIDESCENCE               = 566, // Iridesecnce trait (additional weather damage/penalty)
     MOD_BARSPELL_AMOUNT           = 567, // Additional elemental resistance granted by bar- spells
+    MOD_BARSPELL_MDEF_BONUS       = 827, // Extra magic defense bonus granted to the bar- spell effect
     MOD_RAPTURE_AMOUNT            = 568, // Bonus amount added to Rapture effect
     MOD_EBULLIENCE_AMOUNT         = 569, // Bonus amount added to Ebullience effect
 
+    // Weaponskill %damage modifiers
+    // The following modifier should not ever be set, but %damage modifiers to weaponskills use the next 255 IDs (this modifier + the WSID)
+    // For example, +10% damage to Chant du Cygne would be ID 570 + 225 (795)
+    MOD_WEAPONSKILL_DAMAGE_BASE   = 570,
+
+    // MOD_SPARE = 64, // stuff
+    // MOD_SPARE = 65, // stuff
+    // MOD_SPARE = 67, // stuff
+    // MOD_SPARE = 92, // stuff
     // MOD_SPARE = 93, // stuff
     // MOD_SPARE = 94, // stuff
     // MOD_SPARE = 95, // stuff
@@ -622,8 +631,11 @@ enum MODIFIER
     // MOD_SPARE = 98, // stuff
     // MOD_SPARE = 99, // stuff
     // MOD_SPARE = 100, // stuff
-    // MOD_SPARE = 570, // stuff
-    // MOD_SPARE = 571, // stuff
+    // MOD_SPARE = 543, // stuff
+    // MOD_SPARE = 552, // stuff
+    // MOD_SPARE = 561, // stuff
+    // MOD_SPARE = 831, // stuff
+    // MOD_SPARE = 832, // stuff
 
 };
 

@@ -25,8 +25,10 @@
 
 #include "lua_battlefield.h"
 #include "lua_baseentity.h"
+#include "../battlefield.h"
 #include "../utils/mobutils.h"
 #include "../utils/zoneutils.h"
+#include "../status_effect_container.h"
 
 
 /************************************************************************
@@ -77,7 +79,7 @@ inline int32 CLuaBattlefield::getTimeLimit(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PLuaBattlefield == nullptr);
 
-    lua_pushinteger(L, m_PLuaBattlefield->getTimeLimit());
+    lua_pushinteger(L, std::chrono::duration_cast<std::chrono::seconds>(m_PLuaBattlefield->getTimeLimit()).count());
     return 1;
 }
 
@@ -91,7 +93,7 @@ inline int32 CLuaBattlefield::getBcnmID(lua_State* L)
 
 inline int32 CLuaBattlefield::getTimeInside(lua_State* L) {
     DSP_DEBUG_BREAK_IF(m_PLuaBattlefield == nullptr);
-    uint32 duration = (m_PLuaBattlefield->lastTick - m_PLuaBattlefield->getStartTime()) / 1000;
+    uint32 duration = std::chrono::duration_cast<std::chrono::seconds>(m_PLuaBattlefield->getWinTime() - m_PLuaBattlefield->getStartTime()).count();
     lua_pushinteger(L, duration);
     return 1;
 }
@@ -143,6 +145,7 @@ inline int32 CLuaBattlefield::insertAlly(lua_State* L)
     {
         m_PLuaBattlefield->m_AllyList.push_back(PAlly);
         PAlly->PBCNM = m_PLuaBattlefield;
+        PAlly->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_BATTLEFIELD, EFFECT_BATTLEFIELD, m_PLuaBattlefield->getID(), 0, 0), true);
         lua_getglobal(L, CLuaBaseEntity::className);
         lua_pushstring(L, "new");
         lua_gettable(L, -2);
@@ -193,7 +196,7 @@ inline int32 CLuaBattlefield::win(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PLuaBattlefield == nullptr);
 
-    m_PLuaBattlefield->win();
+    m_PLuaBattlefield->win(server_clock::now());
 
     return 0;
 }

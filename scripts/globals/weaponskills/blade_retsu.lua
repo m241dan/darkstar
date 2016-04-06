@@ -12,13 +12,12 @@
 -- 100%TP    200%TP    300%TP
 -- 1.00      1.00      1.00
 -----------------------------------
-
 require("scripts/globals/status");
 require("scripts/globals/settings");
 require("scripts/globals/weaponskills");
 -----------------------------------
 
-function onUseWeaponSkill(player, target, wsID)
+function onUseWeaponSkill(player, target, wsID, tp, primary)
 
     local params = {};
     params.numHits = 2;
@@ -33,10 +32,9 @@ function onUseWeaponSkill(player, target, wsID)
         params.dex_wsc = 0.6;
     end
 
-    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, params);
-    if damage > 0 then
-        local tp = player:getTP();
-        local duration = (tp/100 * 30);
+    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, params, tp, primary);
+    if (damage > 0) then
+        local duration = (tp/1000 * 30);
         if (target:hasStatusEffect(EFFECT_PARALYSIS) == false) then
             -- paralyze proc based on lvl difference
             local power = 30 + (player:getMainLvl() - target:getMainLvl())*3;
@@ -49,7 +47,6 @@ function onUseWeaponSkill(player, target, wsID)
             target:addStatusEffect(EFFECT_PARALYSIS, power, 0, duration);
         end
     end
-    damage = damage * WEAPON_SKILL_POWER
     return tpHits, extraHits, criticalHit, damage;
 
 end

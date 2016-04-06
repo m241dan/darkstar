@@ -19,7 +19,10 @@ end;
 -----------------------------------    
     
 function onTrade(player,npc,trade)    
+<<<<<<< HEAD
    onFieldManualTrade( player, trade );
+=======
+>>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
 end;    
     
 -----------------------------------    

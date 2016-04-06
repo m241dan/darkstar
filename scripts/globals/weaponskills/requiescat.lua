@@ -13,7 +13,7 @@ require("scripts/globals/settings");
 require("scripts/globals/weaponskills");
 -----------------------------------
 
-function onUseWeaponSkill(player, target, wsID)
+function onUseWeaponSkill(player, target, wsID, tp, primary)
 
     local params = {};
     params.numHits = 5;
@@ -22,14 +22,13 @@ function onUseWeaponSkill(player, target, wsID)
     params.crit100 = 0.0; params.crit200 = 0.0; params.crit300 = 0.0;
     params.canCrit = false;
     params.acc100 = 0.0; params.acc200= 0.0; params.acc300= 0.0;
-    params.atkmulti = 0.7 + player:getTP()/1000;
+    params.atkmulti = 0.7 + tp/10000;
 
     if (USE_ADOULIN_WEAPON_SKILL_CHANGES == true) then
         params.mnd_wsc = 0.7 + (player:getMerit(MERIT_REQUIESCAT) / 100);
     end
 
-    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, params);
-    damage = damage * WEAPON_SKILL_POWER
+    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, params, tp, primary);
     return tpHits, extraHits, criticalHit, damage;
 
 end

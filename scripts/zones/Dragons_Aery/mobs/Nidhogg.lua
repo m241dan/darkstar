@@ -27,7 +27,7 @@ function onMobFight(mob, target)
         mob:setLocalVar("twohourTime",math.random(30,90));
     end
     if (battletime >= twohourTime) then
-        mob:useMobAbility(700);
+        mob:useMobAbility(956);
         -- technically aerial hurricane wing, but I'm using 700 for his two hour
         --(since I have no inclination to spend millions on a PI to cap one name you never see)
         mob:setLocalVar("twohourTime",battletime + math.random(60,120));
@@ -59,4 +59,8 @@ function onMobDeath(mob, killer, ally)
         UpdateNMSpawnPoint(Fafnir);
         GetMobByID(Fafnir):setRespawnTime(math.random(75600,86400));
     end
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
 end;
