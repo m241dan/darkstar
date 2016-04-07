@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 -----------------------------------
 -- Area: Caedarva Mire
 --  MOB: Khimaira
@@ -41,26 +40,3 @@ function onMobDeath(mob, killer, ally)
    ally:addTitle(KHIMAIRA_CARVER);
    mob:setRespawnTime((math.random((0),(24))*3600)+172800); -- 48-72 hours proper 1 hour windows
 end;
-=======
------------------------------------
--- Area: Caedarva Mire
---  MOB: Khimaira
------------------------------------
-
-require("scripts/globals/titles");
-
------------------------------------
--- onMobSpawn Action
------------------------------------
-
-function onMobSpawn(mob)
-end;
-
------------------------------------
--- onMobDeath
------------------------------------
-
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(KHIMAIRA_CARVER);
-end;
->>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97

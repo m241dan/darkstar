@@ -435,7 +435,6 @@ function checkRegime(player, mob, rid, index)
         return;
     end
 
-<<<<<<< HEAD
     partyType = player:checkSoloPartyAlliance();
     if( player:isSynced() ) then
        local sync = player:getSync();
@@ -450,9 +449,6 @@ function checkRegime(player, mob, rid, index)
           end
        end
     end
-=======
-    local partyType = player:checkSoloPartyAlliance();
->>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
 
     if (player:checkFovAllianceAllowed() == 1) then
         partyType = 1;

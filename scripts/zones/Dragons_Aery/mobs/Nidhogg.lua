@@ -59,8 +59,4 @@ function onMobDeath(mob, killer, ally)
         UpdateNMSpawnPoint(Fafnir);
         GetMobByID(Fafnir):setRespawnTime(math.random(75600,86400));
     end
-<<<<<<< HEAD
-=======
-
->>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
 end;

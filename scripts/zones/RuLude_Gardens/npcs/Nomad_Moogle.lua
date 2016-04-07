@@ -89,11 +89,7 @@ function onEventFinish(player,csid,option)
     -- printf("RESULT: %u",option);
     local meritCount = player:getMeritCount();
 
-<<<<<<< HEAD
     if (csid == 10045 and ( option == 4 or option == -1 ) ) then
-=======
-    if (csid == 10045 and option == 4) then
->>>>>>> 5fce9ee42fb1ecdb2dea6d9ce39ed5bf25bbec97
         player:addKeyItem(LIMIT_BREAKER);
         player:messageSpecial(KEYITEM_OBTAINED,LIMIT_BREAKER);
     elseif (csid == 10045) then
