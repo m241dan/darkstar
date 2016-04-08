@@ -24,6 +24,7 @@
 #ifndef _CITEMCONTAINER_H
 #define _CITEMCONTAINER_H
 
+#include "zone.h"
 #include "../common/cbasetypes.h"
 
 enum CONTAINER_ID
@@ -68,6 +69,7 @@ public:
 	uint8	SetSize(uint8 size);
 	uint8	SearchItem(uint16 ItemID);				// поиск предмета в хранилище
     uint8   SearchItemWithSpace(uint16 ItemID, uint32 quantity); //search for item that has space to accomodate x items added
+    void        SwapPages( CCharEntity *PChar, uint8 page );
 
 	uint8	InsertItem(CItem* PItem);				// добавляем заранее созданный предмет в свободную ячейку
 	uint8	InsertItem(CItem* PItem, uint8 slotID);	// добавляем заранее созданный предмет в выбранную ячейку

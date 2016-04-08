@@ -1014,3 +1014,46 @@ bool CMobEntity::OnAttack(CAttackState& state, action_t& action)
         return CBattleEntity::OnAttack(state, action);
     }
 }
+
+void CMobEntity::ChangeMJob(uint16 job)
+{
+    this->SetMJob(job);
+
+    // give him a spell list based on job (added SYSTEM_ARCANA for Eraser)
+    if(m_EcoSystem == SYSTEM_BEASTMEN || m_EcoSystem == SYSTEM_UNDEAD || m_EcoSystem == SYSTEM_HUMANOID || m_EcoSystem == SYSTEM_ARCANA ){
+        uint16 spellList = 0;
+
+        switch(job){
+            case JOB_WHM:
+                spellList = 1;
+            break;
+            case JOB_BLM:
+                spellList = 2;
+            break;
+            case JOB_RDM:
+                spellList = 3;
+            break;
+            case JOB_PLD:
+                spellList = 4;
+            break;
+            case JOB_DRK:
+                spellList = 5;
+            break;
+            case JOB_BRD:
+                spellList = 6;
+            break;
+            case JOB_NIN:
+                spellList = 7;
+            break;
+            case JOB_BLU:
+                spellList = 8;
+            break;
+        }
+
+        m_SpellListContainer = mobSpellList::GetMobSpellList(spellList);
+    }
+
+    // give spells and proper traits
+    mobutils::CalculateStats(this);
+}
+

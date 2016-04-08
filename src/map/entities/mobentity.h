@@ -255,6 +255,8 @@ public:
     static constexpr float sound_range {8.f};
     static constexpr float sight_range {15.f};
 
+    void      ChangeMJob(uint16 job );
+
 protected:
 
     void DropItems();

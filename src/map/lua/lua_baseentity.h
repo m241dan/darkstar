@@ -591,9 +591,17 @@ public:
     int32 checkImbuedItems(lua_State* L);
     int32 swapContainerPage(lua_State *L);
 
-    int32 addDelay( lua_State *L );
-    int32 delay( lua_State *L );
     int32 query( lua_State *L );
+
+    int32 AddLinkPearl(lua_State* L);
+    int32 getSFJobs( lua_State *L );
+    int32 getTotalLvls( lua_State *L );
+    int32 getTrueLvl( lua_State *L );
+    int32 changeMobJob(lua_State *L);
+    int32 isTrickAttackAvailable(lua_State *L);
+    int32 getTrickTarget(lua_State *L);
+    int32 PrintToServer(lua_State* L);
+
 };
 
 #endif

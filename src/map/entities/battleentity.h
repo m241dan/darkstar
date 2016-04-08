@@ -474,6 +474,7 @@ public:
     bool			isInDynamis();
     bool			hasImmunity(uint32 imID);
     bool			isAsleep();
+    uint8           GetMTrueLevel();
 
     JOBTYPE		    GetMJob();					// главная профессия
     JOBTYPE		    GetSJob();					// дополнительная профессия
@@ -508,6 +509,7 @@ public:
     virtual int32 	addMP(int32 mp);			// увеличиваем/уменьшаем количество mp
 
     int16		    getMod(uint16 modID);		// величина модификатора
+    int16                   getPetMod(uint16 modID);
 
     bool            CanRest(); // checks if able to heal
     bool			Rest(float rate); // heal an amount of hp / mp

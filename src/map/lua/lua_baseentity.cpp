@@ -125,6 +125,8 @@
 
 #include "../transport.h"
 #include "../mob_modifier.h"
+#include "../linkshell.h"
+#include "../message.h"
 
 CLuaBaseEntity::CLuaBaseEntity(lua_State* L)
 {
@@ -831,40 +833,6 @@ inline int32 CLuaBaseEntity::addItem(lua_State *L)
 
 //==========================================================//
 
-inline int32 CLuaBaseEntity::delItem(lua_State *L )
-{
-   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
-
-   DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
-
-   CCharEntity *PChar = (CCharEntity*)m_PBaseEntity;
-   uint16 ItemID = (uint16)lua_tointeger(L,1);
-   uint8 LocID, SlotID;
-   for (LocID = 0; LocID < MAX_CONTAINER_ID; ++LocID)
-   {
-      if ( ( SlotID = PChar->getStorage(LocID)->SearchItem(ItemID) ) != ERROR_SLOTID)
-         break;
-   }
-   if( LocID == MAX_CONTAINER_ID || SlotID == ERROR_SLOTID )
-   {
-      lua_pushboolean( L, 0 );
-      return 1;
-   }
-
-   charutils::UnequipItem( PChar, SLOT_MAIN, true );
-   charutils::UnequipItem( PChar, SLOT_SUB, true );
-   charutils::UnequipItem( PChar, SLOT_RANGED, true );
-   charutils::UnequipItem( PChar, SLOT_AMMO, true );
-   charutils::SaveCharEquip( PChar );
-   charutils::UpdateItem( PChar, LocID, SlotID, -1 );
-   lua_pushboolean( L, 1 );
-   return 1;
-}
-
-
-//==========================================================//
-
 inline int32 CLuaBaseEntity::addTempItem(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -901,29 +869,38 @@ inline int32 CLuaBaseEntity::addTempItem(lua_State *L)
     return 1;
 }
 
+//==========================================================//
 
-int32 CLuaBaseEntity::delItem(lua_State* L)
+inline int32 CLuaBaseEntity::delItem(lua_State *L )
 {
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
 
-    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
-    auto quantity = 0;
+   DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
 
-    if (!lua_isnil(L, 2) && lua_isnumber(L, 2))
-        quantity = (uint32)lua_tointeger(L, 2);
+   CCharEntity *PChar = (CCharEntity*)m_PBaseEntity;
+   uint16 ItemID = (uint16)lua_tointeger(L,1);
+   uint8 LocID, SlotID;
+   for (LocID = 0; LocID < MAX_CONTAINER_ID; ++LocID)
+   {
+      if ( ( SlotID = PChar->getStorage(LocID)->SearchItem(ItemID) ) != ERROR_SLOTID)
+         break;
+   }
+   if( LocID == MAX_CONTAINER_ID || SlotID == ERROR_SLOTID )
+   {
+      lua_pushboolean( L, 0 );
+      return 1;
+   }
 
-    auto PChar = static_cast<CCharEntity*>(m_PBaseEntity);
-    auto SlotID = PChar->getStorage(LOC_INVENTORY)->SearchItem(lua_tointeger(L, 1));
-    if (SlotID != ERROR_SLOTID)
-    {
-        charutils::UpdateItem(PChar, LOC_INVENTORY, SlotID, -quantity);
-        lua_pushboolean(L, true);
-        PChar->pushPacket(new CInventoryFinishPacket());
-        return 1;
-    }
-    lua_pushboolean(L, false);
-    return 1;
+   charutils::UnequipItem( PChar, SLOT_MAIN, true );
+   charutils::UnequipItem( PChar, SLOT_SUB, true );
+   charutils::UnequipItem( PChar, SLOT_RANGED, true );
+   charutils::UnequipItem( PChar, SLOT_AMMO, true );
+   charutils::SaveCharEquip( PChar );
+   charutils::UpdateItem( PChar, LocID, SlotID, -1 );
+   lua_pushboolean( L, 1 );
+   PChar->pushPacket( new CInventoryFinishPacket() );
+   return 1;
 }
 
 inline int32 CLuaBaseEntity::resetPlayer(lua_State *L)
@@ -8558,6 +8535,24 @@ inline int32 CLuaBaseEntity::getTrickAttackChar(lua_State *L)
     return 1;
 }
 
+inline int32 CLuaBaseEntity::isTrickAttackAvailable(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
+
+    CLuaBaseEntity* PLuaBaseEntity = Lunar<CLuaBaseEntity>::check(L, 1);
+    CBattleEntity* PMob = (CBattleEntity*)PLuaBaseEntity->GetBaseEntity();
+    if (PMob != nullptr)
+    {
+        CBattleEntity* taTarget = battleutils::getAvailableTrickAttackChar((CBattleEntity*)m_PBaseEntity, PMob);
+        lua_pushboolean(L, (taTarget != nullptr ? true : false));
+        return 1;
+    }
+    return 0;
+}
+
 inline int32 CLuaBaseEntity::getTrickTarget(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -10416,33 +10411,6 @@ inline int32 CLuaBaseEntity::swapContainerPage(lua_State *L)
    return 0;
 }
 
-inline int32 CLuaBaseEntity::addDelay(lua_State *L )
-{
-   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
-
-   CBaseEntity *PEntity = (CBaseEntity *)m_PBaseEntity;
-   CAIGeneral *AIGen = (CAIGeneral *)PEntity->PBattleAI;
-
-   AIGen->AddLastMeleeTime( lua_tonumber( L, 1 ) );
-   return 0;
-}
-
-inline int32 CLuaBaseEntity::delay(lua_State *L)
-{
-   DSP_DEBUG_BREAK_IF( m_PBaseEntity == nullptr );
-
-   CBaseEntity *PEntity = (CBaseEntity *)m_PBaseEntity;
-   CAIGeneral *AIGen = (CAIGeneral *)PEntity->PBattleAI;
-
-   if( lua_isnil( L, 1 ) || !lua_isnumber(L , 1) )
-   {
-      lua_pushinteger( L, AIGen->GetLastMeleeTime() );
-      return 1;
-   }
-
-   AIGen->SetLastMeleeTime( lua_tonumber( L, 1 ) );
-   return 0;
-}
 
 inline int32 CLuaBaseEntity::query(lua_State *L)
 {
@@ -10451,6 +10419,7 @@ inline int32 CLuaBaseEntity::query(lua_State *L)
 
    Sql_Query( SqlHandle, lua_tostring( L, 1 ) );
    return 0;
+}
 
 int32 CLuaBaseEntity::queue(lua_State* L)
 {
@@ -10732,7 +10701,6 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMaxHP),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMaxMP),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addItem),
-    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addTempItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSpawnPos),
@@ -11155,8 +11123,6 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,isSyncInRange),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSync),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,swapContainerPage),
-    LUNAR_DECLARE_METHOD(CLuaBaseEntity,addDelay),
-    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delay),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,query),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,queue),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,timer),
