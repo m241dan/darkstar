@@ -16,13 +16,13 @@ function onMobDeath(mob,killer,ally)
     checkRegime(ally,mob,144,1);
 
     -- Get Groundskeeper ID and check if it is a PH of Despot
-    mob = mob:getID();
+    local mobID = mob:getID();
 
     -- Check if Groundskeeper is within the Despot_PH table
-    if (Despot_PH[mob] ~= nil) then
-        -- printf("%u is a PH",mob);
+    if (Despot_PH[mobID] ~= nil) then
+        -- printf("%u is a PH",mobID);
         -- Get Despot previous ToD
-        Despot_ToD = GetServerVariable("[POP]Despot");
+        local Despot_ToD = GetServerVariable("[POP]Despot");
 
         -- Check if Despot window is open, and there is not an Despot popped already(ACTION_NONE = 0)
         if (Despot_ToD <= os.time(t) and GetMobAction(Despot) == 0) then

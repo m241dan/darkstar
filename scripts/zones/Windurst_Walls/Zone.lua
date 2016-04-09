@@ -37,7 +37,7 @@ function onZoneIn(player,prevZone)
         and (prevZone == 238 or prevZone == 241) and player:getMainLvl()>=10) then
         cs = 0x01fe;
     end
-    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+
     return cs;
 end;
 

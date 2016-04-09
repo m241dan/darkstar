@@ -147,6 +147,6 @@ function onEventFinish(player,csid,option)
 
 			showShop(player, SANDORIA, stock);
 	
-	end
-end
+              end
+      end
 end;

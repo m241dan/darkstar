@@ -14,6 +14,7 @@ require("scripts/zones/RuAun_Gardens/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
+    
     -- Trade Gem of the South and Summerstone
     if (GetMobAction(17309983) == 0 and trade:hasItemQty(1420,1) and trade:hasItemQty(1421,1) and trade:getItemCount() == 2) then
         player:tradeComplete();

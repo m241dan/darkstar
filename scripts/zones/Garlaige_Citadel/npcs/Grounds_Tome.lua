@@ -11,7 +11,7 @@ require("scripts/globals/groundsofvalor");
 -----------------------------------
 
 function onTrade(player,npc,trade)
-   onGroundsTombTrade( player, trade );
+    onGroundsTombTrade( player, trade );
 end;
 
 -----------------------------------
@@ -29,7 +29,7 @@ end;
 function onEventUpdate(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    updateGov(player,csid,option,703,704,705,706,707,708,708,710,0,0);
+    updateGov(player,csid,option,703,704,705,706,707,708,709,710,0,0);
 end;
 
 -----------------------------------

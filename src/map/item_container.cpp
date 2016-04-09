@@ -149,7 +149,8 @@ uint8 CItemContainer::InsertItem(CItem* PItem)
 	{
 		if (m_ItemList[SlotID] == nullptr) 
 		{
-            		m_count++;
+            m_count++;
+
 			PItem->setSlotID(SlotID);
 			PItem->setLocationID(m_id);
 
@@ -175,14 +176,13 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 	{
 		if (PItem != nullptr)
 		{
-		    PItem->setSlotID(SlotID);
- 		    PItem->setLocationID(m_id);
+			PItem->setSlotID(SlotID);
+			PItem->setLocationID(m_id);
 
-                    if (m_ItemList[SlotID] == nullptr && SlotID != 0)
-                        m_count++;
-             	}
-                else if(m_ItemList[SlotID] != nullptr && SlotID != 0)
-                   m_count--;
+            if (m_ItemList[SlotID] == nullptr && SlotID != 0) m_count++;
+		}
+        else if(m_ItemList[SlotID] != nullptr && SlotID != 0) m_count--;
+        
 		m_ItemList[SlotID] = PItem;
 		return SlotID;
 	}
@@ -190,68 +190,6 @@ uint8 CItemContainer::InsertItem(CItem* PItem, uint8 SlotID)
 
 	delete PItem;
 	return ERROR_SLOTID;
-}
-
-void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
-{
-   const int8* Query = "UPDATE char_inventory SET slot = %u WHERE slot = %u AND location = %u AND charid = %u AND itemid = %u";
-   int requip[16];
-   CItem *ph, *ph_two;
-
-   memset( &requip[0], 0, sizeof( requip ) );
-
-   for( int y = 0; y < 16; y++ )
-   {
-      if( PChar->equipLoc[y] != m_id )
-         continue;
-      requip[y] = ( PChar->equip[y] + 80 ) % 160;
-      charutils::UnequipItem( PChar, y, true );
-   }
-
-   //do the swap server side
-   for( int x = 1; x < 81; x++ )
-   {
-      ph = m_ItemList[x];
-      ph_two = m_ItemList[x+80];
-
-      InsertItem( nullptr, x );
-      InsertItem( ph_two, x );
-      InsertItem( nullptr, x+80 );
-      InsertItem( ph, x+80 );
-
-      if( m_ItemList[x] != nullptr ) 								//if low end slot is empty, we don't need to do swap magic
-      {
-         // swapped with a blank, so just do a straight move
-         if( m_ItemList[x+80] == nullptr )
-         {
-            Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
-            continue;
-         }
-         //need to use a dummy because we are swappign two unqiue values and sql will complain
-         //let's dummy the low end, swap the high end down and then swap dummy to the high end
-         Sql_Query( SqlHandle, Query, 161, x, m_id, PChar->id, m_ItemList[x+80]->getID() );
-         Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
-         Sql_Query( SqlHandle, Query, x+80, 161, m_id, PChar->id, m_ItemList[x+80]->getID() );
-      }
-      else if( m_ItemList[x+80] != nullptr ) 							//if high end slot is empty, do nothing, we don't need to swap blanks!
-         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x+80]->getID() ); 	//remember, this used to be at X we want it at X+80
-   }
-
-   // now update the client and the database of the swap
-   for( int x = 1; x < 161; x++ )
-   {
-      PChar->pushPacket( new CInventoryItemPacket( nullptr, m_id, x ) );
-      if( m_ItemList[x] != nullptr )
-         PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
-   }
-
-
-   for( int y = 0; y < 16; y++ )
-      if( requip[y] != 0 )
-         charutils::EquipItem( PChar, requip[y], y, m_id );
-   charutils::SaveCharEquip(PChar);
-   PChar->pushPacket( new CInventoryFinishPacket() );
-   return;
 }
 
 /************************************************************************
@@ -322,3 +260,66 @@ void CItemContainer::Clear()
 		m_ItemList[SlotID] = nullptr;
 	}
 }
+
+void CItemContainer::SwapPages( CCharEntity *PChar, uint8 page )
+{
+   const int8* Query = "UPDATE char_inventory SET slot = %u WHERE slot = %u AND location = %u AND charid = %u AND itemid = %u";
+   int requip[16];
+   CItem *ph, *ph_two;
+
+   memset( &requip[0], 0, sizeof( requip ) );
+
+   for( int y = 0; y < 16; y++ )
+   {
+      if( PChar->equipLoc[y] != m_id )
+         continue;
+      requip[y] = ( PChar->equip[y] + 80 ) % 160;
+      charutils::UnequipItem( PChar, y, true );
+   }
+
+   //do the swap server side
+   for( int x = 1; x < 81; x++ )
+   {
+      ph = m_ItemList[x];
+      ph_two = m_ItemList[x+80];
+
+      InsertItem( nullptr, x );
+      InsertItem( ph_two, x );
+      InsertItem( nullptr, x+80 );
+      InsertItem( ph, x+80 );
+
+      if( m_ItemList[x] != nullptr )                                                            //if low end slot is empty, we don't need to do swap magic
+      {
+         // swapped with a blank, so just do a straight move
+         if( m_ItemList[x+80] == nullptr )
+         {
+            Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+            continue;
+         }
+         //need to use a dummy because we are swappign two unqiue values and sql will complain
+         //let's dummy the low end, swap the high end down and then swap dummy to the high end
+         Sql_Query( SqlHandle, Query, 161, x, m_id, PChar->id, m_ItemList[x+80]->getID() );
+         Sql_Query( SqlHandle, Query, x, x+80, m_id, PChar->id, m_ItemList[x]->getID() );
+         Sql_Query( SqlHandle, Query, x+80, 161, m_id, PChar->id, m_ItemList[x+80]->getID() );
+      }
+      else if( m_ItemList[x+80] != nullptr )                                                    //if high end slot is empty, do nothing, we don't need to swap blanks!
+         Sql_Query( SqlHandle, Query, x+80, x, m_id, PChar->id, m_ItemList[x+80]->getID() );    //remember, this used to be at X we want it at X+80
+   }
+
+   // now update the client and the database of the swap
+   for( int x = 1; x < 161; x++ )
+   {
+      PChar->pushPacket( new CInventoryItemPacket( nullptr, m_id, x ) );
+      if( m_ItemList[x] != nullptr )
+         PChar->pushPacket( new CInventoryItemPacket( m_ItemList[x], m_id, x ) );
+   }
+
+
+   for( int y = 0; y < 16; y++ )
+      if( requip[y] != 0 )
+         charutils::EquipItem( PChar, requip[y], y, m_id );
+   charutils::SaveCharEquip(PChar);
+   PChar->pushPacket( new CInventoryFinishPacket() );
+   return;
+}
+

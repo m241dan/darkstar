@@ -43,6 +43,7 @@ function onZoneIn(player,prevZone)
         player:setVar("PlayerMainJob",0);
     end
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+
     return cs;
 end;
 

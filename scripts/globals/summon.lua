@@ -1,4 +1,3 @@
-
 require("scripts/globals/common");
 require("scripts/globals/status");
 
@@ -24,17 +23,8 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
     acc = avatar:getACC() + bonusacc;
     eva = target:getEVA();
 
-    local equippedFeet = avatar:getMaster():getEquipID(SLOT_FEET);
-    local bonusAtk = 1
-
-    if( equippedFeet == 15146 ) then -- summoner's pigaches
-       bonusAtk = bonusAtk + .1;
-    elseif( equippedFeet == 15679 ) then -- summoner's pigaches +1
-       bonusAtk = bonusAtk +.12;
-    end
-
     local base = avatar:getWeaponDmg() + fstr;
-    local ratio = ( avatar:getStat(MOD_ATT) * bonusAtk )/target:getStat(MOD_DEF);
+    local ratio = avatar:getStat(MOD_ATT)/target:getStat(MOD_DEF);
 
     lvldiff = lvluser - lvltarget;
 
@@ -56,9 +46,6 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
     if (base < 1) then
         base = 1;
     end
-
-
-
     hitdamage = base * dmgmod1;
     subsequenthitdamage = base * dmgmodsubsequent;
     if (ratio<=1) then
@@ -136,6 +123,10 @@ function AvatarPhysicalMove(avatar,target,skill,numberofhits,accmod,dmgmod1,dmgm
         finaldmg = 0;
         hitslanded = 0;
         skill:setMsg(MSG_MISS);
+    end
+
+    if finaldmg > 0 then
+        target:wakeUp()
     end
 
     returninfo.dmg = finaldmg;
@@ -314,14 +305,14 @@ function AvatarPhysicalHit(skill, dmg)
 end;
 
 function avatarFTP(tp,ftp1,ftp2,ftp3)
-    if (tp<100) then
-        tp=100;
+    if (tp<1000) then
+        tp=1000;
     end
-    if (tp>=100 and tp<200) then
-        return ftp1 + ( ((ftp2-ftp1)/100) * (tp-100));
-    elseif (tp>=200 and tp<=300) then
+    if (tp>=1000 and tp<2000) then
+        return ftp1 + ( ((ftp2-ftp1)/100) * (tp-1000));
+    elseif (tp>=2000 and tp<=3000) then
         --generate a straight line between ftp2 and ftp3 and find point @ tp
-        return ftp2 + ( ((ftp3-ftp2)/100) * (tp-200));
+        return ftp2 + ( ((ftp3-ftp2)/100) * (tp-2000));
     end
     return 1; --no ftp mod
 end;

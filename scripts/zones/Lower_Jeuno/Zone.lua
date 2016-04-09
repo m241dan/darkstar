@@ -48,6 +48,7 @@ function onZoneIn(player,prevZone)
     elseif (ENABLE_ACP == 1 and player:getCurrentMission(ACP) == A_CRYSTALLINE_PROPHECY and player:getMainLvl() >=10) then
         cs = 0x276E;
     end
+
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;

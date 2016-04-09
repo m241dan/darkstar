@@ -20,9 +20,9 @@ end;
 
 function onMobWeaponSkill(target, mob, skill)
 
-    local dispel =  target:dispelStatusEffect(bit.bor(EFFECTFLAG_DISPELABLE, EFFECTFLAG_FOOD));
-    dispel =1;
-    if(dispel == 0) then
+    local dispel =  target:dispelAllStatusEffect(bit.bor(EFFECTFLAG_DISPELABLE, EFFECTFLAG_FOOD));
+
+    if (dispel == 0) then
         -- no effect
         skill:setMsg(MSG_NO_EFFECT); -- no effect
     else

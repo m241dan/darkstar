@@ -31,6 +31,7 @@ end;
 -----------------------------------
 
 function onMobDeath(mob,killer,ally)
+    
     local mobID = mob:getID();
     -- Time Bonus: 010 020
     if (mobID == 17326839 and mob:isInBattlefieldList() == false) then
@@ -48,4 +49,5 @@ function onMobDeath(mob,killer,ally)
         ally:restoreMP(2000);
         ally:messageBasic(025,(ally:getMaxMP()-ally:getMP()));
     end
+    
 end;

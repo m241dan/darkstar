@@ -5,10 +5,10 @@
 
 cmdprops =
 {
-    permission = 0,
+    permission = 1,
     parameters = ""
 };
 
 function onTrigger(player,npc)
-   player:sendMenu(3);
+    player:sendMenu(3);
 end;

@@ -43,6 +43,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
+
     local LvL = player:getMainLvl();
     local mJob = player:getMainJob();
     local inDefiantChallenge = player:getQuestStatus(JEUNO,IN_DEFIANT_CHALLENGE);
@@ -102,6 +103,7 @@ function onTrigger(player,npc)
     else
         player:showText(npc,MAAT_DIALOG);
     end
+
 end;
 
 -- Maat cap: 0x004a

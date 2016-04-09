@@ -607,6 +607,8 @@ INSERT INTO `status_effects` VALUES (579,'commitment',32,0,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (580,'haste_ii',32,0,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (581,'flurry_ii',32,0,0,0,0,0,0,0);
 INSERT INTO `status_effects` VALUES (583,'apogee',2097185,0,0,0,0,0,0,0);
+
+
 INSERT INTO `status_effects` VALUES (768,'abyssea_str',256,0,0,0,0,0,1,0);
 INSERT INTO `status_effects` VALUES (769,'abyssea_dex',256,0,0,0,0,0,6,0);
 INSERT INTO `status_effects` VALUES (770,'abyssea_vit',256,0,0,0,0,0,2,0);

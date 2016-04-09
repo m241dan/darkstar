@@ -48,6 +48,7 @@ function onZoneIn(player,prevZone)
     if (player:getCurrentMission(COP) == THREE_PATHS and player:getVar("COP_Ulmia_s_Path") == 1) then
              cs =0x0004;
     end
+
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;

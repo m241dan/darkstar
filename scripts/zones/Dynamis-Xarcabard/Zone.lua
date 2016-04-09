@@ -42,7 +42,7 @@ function onZoneIn(player,prevZone)
         player:setPos(569.600,-0.078,-270.000,90);
     end
 
-    if ( player:getVar( "DynamisEntries" ) > 0 or player:getVar("DynamisID") == GetServerVariable("[DynaXarcabard]UniqueID")) then
+    if ((dynaWaitxDay + (BETWEEN_2DYNA_WAIT_TIME * 24 * 60 * 60)) < realDay or player:getVar("DynamisID") == GetServerVariable("[DynaXarcabard]UniqueID")) then
         if (player:isBcnmsFull() == 1) then
             if (player:hasStatusEffect(EFFECT_DYNAMIS, 0) == false) then
                 inst = player:addPlayerToDynamis(1285);

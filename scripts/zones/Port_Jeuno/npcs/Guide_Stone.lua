@@ -5,8 +5,6 @@
 -----------------------------------
 package.loaded["scripts/zones/Port_Jeuno/TextIDs"] = nil;
 require("scripts/zones/Port_Jeuno/TextIDs");
-package.loaded["scripts/globals/oldNMaugs"] = nil;
-require("scripts/globals/oldNMaugs");
 
 -----------------------------------
 -- onTrade Action

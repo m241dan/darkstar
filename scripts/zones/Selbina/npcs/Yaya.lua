@@ -20,15 +20,15 @@ function onTrade(player,npc,trade)
    if( trade:getGil() == 1 and trade:getItemCount() == 1 ) then
       stock = {
          0x1120, 750, -- Black Sole
-	 0x1109, 425, -- Nebimonite
-	 0x10D0, 775, -- Grimmonite
-	 0x116D, 700, -- Bastore Bream	
-	 0x117A, 675, -- Gigant Squid
-	 0x1132, 325, -- Red Terrapin
-	 0x1166,1100, -- Emperor Fish
-	 0x111F,1200, -- Gold Lobster
-	 0x111B,350,  -- Cheval Salmon
-	 0x1102,355,  -- Shining Trout
+         0x1109, 425, -- Nebimonite
+         0x10D0, 775, -- Grimmonite
+         0x116D, 700, -- Bastore Bream  
+         0x117A, 675, -- Gigant Squid
+         0x1132, 325, -- Red Terrapin
+         0x1166,1100, -- Emperor Fish
+         0x111F,1200, -- Gold Lobster
+         0x111B,350,  -- Cheval Salmon
+         0x1102,355,  -- Shining Trout
          0x10DC,1100, -- Armored Pisces
          0x117D, 900, -- Gavial Fish
          0x140F,1000, -- Rhinochimera
@@ -74,7 +74,3 @@ function onEventFinish(player,csid,option)
         player:setVar("underTheSeaVar",1);
     end
 end;
-
-
-
-

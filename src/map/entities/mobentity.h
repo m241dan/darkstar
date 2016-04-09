@@ -26,19 +26,11 @@
 
 #include <unordered_map>
 #include "battleentity.h"
-#include "../enmity_container.h"
-#include "../utils/mobutils.h"
-#include "../mob_modifier.h"
-
-#include "../mob_spell_container.h"
-#include "../mob_spell_list.h"
 
 // forward declaration
 class CMobSpellContainer;
-
-#define MOB_ROAM_HOME_DISTANCE 30
-#define MOB_SOUND_RANGE 8
-#define MOB_SIGHT_RANGE 15
+class CMobSpellList;
+class CEnmityContainer;
 
 enum SPAWNTYPE
 {
@@ -62,7 +54,7 @@ enum SPECIALFLAG
 enum ROAMFLAG : uint16
 {
     ROAMFLAG_NONE    = 0x00,
-    ROAMFLAG_NONE0   = 0x01,  // 
+    ROAMFLAG_NONE0   = 0x01,  //
     ROAMFLAG_NONE1   = 0x02,  //
     ROAMFLAG_NONE2   = 0x04,  //
     ROAMFLAG_NONE3   = 0x08,  //
@@ -86,18 +78,18 @@ enum MOBTYPE
     MOBTYPE_EVENT       = 0x20
 };
 
-enum AGGRO : uint16
+enum DETECT : uint16
 {
-    AGGRO_NONE               = 0x00,
-    AGGRO_DETECT_SIGHT       = 0x01,
-    AGGRO_DETECT_HEARING     = 0x02,
-    AGGRO_DETECT_LOWHP       = 0x04,
-    AGGRO_DETECT_TRUEHEARING = 0x08,
-    AGGRO_DETECT_TRUESIGHT   = 0x10,
-    AGGRO_DETECT_MAGIC       = 0x20,
-    AGGRO_DETECT_WEAPONSKILL = 0x40,
-    AGGRO_DETECT_JOBABILITY  = 0x80,
-    AGGRO_SCENT              = 0x100
+    DETECT_NONE        = 0x00,
+    DETECT_SIGHT       = 0x01,
+    DETECT_HEARING     = 0x02,
+    DETECT_LOWHP       = 0x04,
+    DETECT_NONE1       = 0x08,
+    DETECT_NONE2       = 0x10,
+    DETECT_MAGIC       = 0x20,
+    DETECT_WEAPONSKILL = 0x40,
+    DETECT_JOBABILITY  = 0x80,
+    DETECT_SCENT       = 0x100
 };
 
 enum BEHAVIOUR : uint16
@@ -111,6 +103,7 @@ enum BEHAVIOUR : uint16
     BEHAVIOUR_NO_TURN      = 0x400  // mob does not turn to face target
 };
 
+class CMobSkillState;
 
 /************************************************************************
 *                                                                       *
@@ -121,6 +114,72 @@ enum BEHAVIOUR : uint16
 class CMobEntity : public CBattleEntity
 {
 public:
+    CMobEntity();
+    ~CMobEntity();
+
+    void      setMobFlags(uint32 MobFlags);            // Change the current value in m_flags
+
+    bool      hasRageMode();                           // If the mob has the rage mode: true
+    void      addRageMode();                           // Rage mode ON:  stat x10
+    void      delRageMode();                           // Rage mode OFF: stat /10
+
+    bool      IsFarFromHome();                         // check if mob is too far from spawn
+    bool      CanBeNeutral();                          // check if mob can have killing pause
+
+    uint8     TPUseChance();                           // return % chance to use TP move
+
+    bool      CanDeaggro();
+    time_point GetDespawnTime();
+    void      SetDespawnTime(duration _duration);
+    uint32    GetRandomGil();                          // returns a random amount of gil
+    bool      CanRoamHome();                           // is it possible for me to walk back?
+    bool      CanRoam();                               // check if mob can walk around
+
+    bool      CanLink(position_t* pos, int16 superLink = 0);
+
+    bool      CanDropGil();                            // mob has gil to drop
+    bool      CanStealGil();                            // can steal gil from mob
+    void      ResetGilPurse();                          // reset total gil held
+
+    void      setMobMod(uint16 type, int16 value);
+    int16     getMobMod(uint16 type);
+    void      addMobMod(uint16 type, int16 value);     // add
+    void      defaultMobMod(uint16 type, int16 value); // set value if value has not been already set
+    void      resetMobMod(uint16 type);                // resets mob mod to original value
+    int32     getBigMobMod(uint16 type);               // multiplies mod by 1000
+    void      saveMobModifiers();                      // save current state of modifiers
+    void      restoreMobModifiers();                   // restore to saved state
+
+    void      HideModel(bool hide);                    // hide / show model
+    bool      IsModelHidden();
+    void      CallForHelp(bool call);
+    bool      CalledForHelp();
+    void      HideHP(bool hide);
+    bool      IsHPHidden();
+    void      Untargetable(bool untargetable);
+    bool      IsUntargetable();
+
+    void      PostTick() override;
+    float     GetRoamDistance();
+    float     GetRoamRate();
+    virtual bool ValidTarget(CBattleEntity* PInitiator, uint16 targetFlags) override;
+
+    virtual void HandleErrorMessage(std::unique_ptr<CMessageBasicPacket>&) override {}
+    virtual void Die() override;
+
+    virtual void OnWeaponSkillFinished(CWeaponSkillState&, action_t&) override;
+    virtual void OnMobSkillFinished(CMobSkillState&, action_t&);
+    virtual void OnEngage(CAttackState&) override;
+
+    virtual bool OnAttack(CAttackState&, action_t&);
+    virtual bool CanAttack(CBattleEntity* PTarget, std::unique_ptr<CMessageBasicPacket>& errMsg) override;
+    virtual void OnCastFinished(CMagicState&, action_t&);
+
+    virtual void OnDisengage(CAttackState&) override;
+    virtual void OnDeathTimer() override;
+
+    virtual void Spawn() override;
+    virtual void FadeOut() override;
 
     bool      m_AllowRespawn;             // if true, allow respawn
     uint32    m_RespawnTime;              // respawn time
@@ -141,7 +200,6 @@ public:
 
     bool      m_StatPoppedMobs;           // true if dyna statue has popped mobs
 
-    // stat ranks
     uint8     strRank;
     uint8     dexRank;
     uint8     vitRank;
@@ -161,7 +219,9 @@ public:
     float     m_maxRoamDistance;          // maximum distance mob can be from spawn before despawning
 
     uint8     m_Type;                     // mob type
-    uint16	  m_Aggro;					  // mob aggro type
+    bool	  m_Aggro;
+    bool	  m_TrueDetection;   // Has true sight or sound
+    uint16	  m_Detects;                // mobs detection methods, sight, sound, etc
     uint8     m_Link;                     // link with mobs of it's family
     uint16    m_Behaviour;                // mob behaviour
     SPAWNTYPE m_SpawnType;                // condition for mob to spawn
@@ -185,69 +245,30 @@ public:
     std::map<uint16, uint16>    m_UsedSkillIds;        // mob skill ids used (key) along with mob level (value)
 
     uint32    m_flags;                                 // includes the CFH flag and whether the HP bar should be shown or not (e.g. Yilgeban doesnt)
-    void      setMobFlags(uint32 MobFlags);            // Change the current value in m_flags
     uint8     m_name_prefix;                           // The ding bats VS Ding bats
 
     CEnmityContainer* PEnmityContainer;                // система ненависти монстров
 
-    bool      hasRageMode();                           // If the mob has the rage mode: true
-    void      addRageMode();                           // Rage mode ON:  stat x10
-    void      delRageMode();                           // Rage mode OFF: stat /10
-
-    bool      IsFarFromHome();                         // check if mob is too far from spawn
-    bool      CanBeNeutral();                          // check if mob can have killing pause
-    void      ChangeMJob(uint16 job );
-
-    uint8     TPUseChance();                           // return % chance to use TP move
-
-    bool      CanDeaggro();
-    uint32    GetDespawnTimer();
-    void      SetDespawnTimer(uint32 duration);
-    uint32    GetRandomGil();                          // returns a random amount of gil
-    bool      CanRoamHome();                           // is it possible for me to walk back?
-    bool      CanRoam();                               // check if mob can walk around
-
-    bool      CanLink(position_t* pos, int16 superLink = 0);
-
-    bool      CanDropGil();                            // mob has gil to drop
-    bool      CanStealGil();                            // can steal gil from mob 
-    void      ResetGilPurse();                          // reset total gil held
-
     CMobSpellContainer* SpellContainer;                // retrieves spells for the mob
     uint8     m_HasSpellScript;                        // 1 if they have a spell script to use for working out what to cast.
 
-    void      setMobMod(uint16 type, int16 value);
-    int16     getMobMod(uint16 type);
-    void      addMobMod(uint16 type, int16 value);     // add 
-    void      defaultMobMod(uint16 type, int16 value); // set value if value has not been already set
-    void      resetMobMod(uint16 type);                // resets mob mod to original value
-    int32     getBigMobMod(uint16 type);               // multiplies mod by 1000
-    void      saveMobModifiers();                      // save current state of modifiers
-    void      restoreMobModifiers();                   // restore to saved state
+    static constexpr float sound_range {8.f};
+    static constexpr float sight_range {15.f};
 
-    void      HideModel(bool hide);                    // hide / show model
-    bool      IsModelHidden();
-    void      CallForHelp(bool call);
-    bool      CalledForHelp();
-    void      HideHP(bool hide);
-    bool      IsHPHidden();
-    void      Untargetable(bool untargetable);
-    bool      IsUntargetable();
+    void      ChangeMJob(uint16 job );
 
-    void      UpdateEntity() override;
-    float     GetRoamDistance();
-    float     GetRoamRate();
+protected:
 
-    
-    CMobEntity();
-    ~CMobEntity();
+    void DropItems();
+
 
 private:
 
     bool      m_RageMode;                              // Mode rage
-    uint32    m_DespawnTimer;                          // Despawn Timer to despawn mob after set duration
+    time_point    m_DespawnTimer {time_point::min()};  // Despawn Timer to despawn mob after set duration
     std::unordered_map<int, int16>     m_mobModStat;
     std::unordered_map<int, int16>     m_mobModStatSave;
+    static constexpr float roam_home_distance {60.f};
 };
 
 #endif

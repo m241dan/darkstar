@@ -3,7 +3,6 @@
 -- Deals ice damage to an enemy.
 -----------------------------------------
 
-package.loaded["scripts/globals/magic"] = nil;
 require("scripts/globals/magic");
 require("scripts/globals/status");
 

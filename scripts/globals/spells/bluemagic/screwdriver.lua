@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr2 = SC_SCISSION;
         params.numhits = 1;
         params.multiplier = 1.375;
-        params.tp150 = 20;
-        params.tp300 = 45;
+        params.tp150 = 1.375;
+        params.tp300 = 1.375;
         params.azuretp = 1.375;
         params.duppercap = 27;
         params.str_wsc = 0.2;
@@ -50,7 +50,6 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.0;
         params.mnd_wsc = 0.2;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_AQUAN;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
    

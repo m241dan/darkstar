@@ -5,7 +5,6 @@
 -----------------------------------
 
 require("scripts/globals/status");
-package.loaded["scripts/globals/dynamis"] = nil;
 require("scripts/globals/dynamis");
 
 -----------------------------------
@@ -36,6 +35,7 @@ end;
 -----------------------------------
 
 function onMobDeath(mob,killer,ally)
+    
     local mobID = mob:getID();
     
     -- 035 039: spawn 043 when defeated

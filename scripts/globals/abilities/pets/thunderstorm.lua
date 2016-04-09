@@ -1,10 +1,9 @@
 ---------------------------------------------------
--- Thunderstorm
+-- Geocrush
 ---------------------------------------------------
 
 require("scripts/globals/settings");
 require("scripts/globals/status");
-package.loaded["scripts/globals/monstertpmoves"] = nil;
 require("scripts/globals/monstertpmoves");
 require("scripts/globals/magic");
 
@@ -17,7 +16,7 @@ end;
 function onPetAbility(target, pet, skill)
 
     local dINT = math.floor(pet:getStat(MOD_INT) - target:getStat(MOD_INT));
-    local tp = skill:getTP();
+    local tp = skill:getTP() / 10;
     local master = pet:getMaster();
     local merits = 0;
     if (master ~= nil and master:isPC()) then

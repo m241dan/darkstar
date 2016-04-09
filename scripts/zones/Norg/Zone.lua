@@ -46,10 +46,8 @@ function onZoneIn(player,prevZone)
     elseif (player:getCurrentMission(ZILART) == AWAKENING and player:getVar("ZilartStatus") == 0 or player:getVar("ZilartStatus") == 2) then
         cs = 0x00B0;
     end
-
-   player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
-
 end;
 
 -----------------------------------

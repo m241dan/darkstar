@@ -29,7 +29,7 @@ function onTrigger(player)
         player:addStatusEffect(EFFECT_REGEN,99,0,0);
 
         -- Add bonus mods to the player..
-       player:addMod(MOD_RACC,2500);
+        player:addMod(MOD_RACC,2500);
         player:addMod(MOD_RATT,2500);
         player:addMod(MOD_ACC,2500);
         player:addMod(MOD_ATT,2500);
@@ -38,7 +38,6 @@ function onTrigger(player)
         player:addMod(MOD_RDEF,2500);
         player:addMod(MOD_DEF,2500);
         player:addMod(MOD_MDEF,2500);
-        player:delMod( MOD_FIRERES, 200 );
 
         -- Heal the player from the new buffs..
         player:addHP( 50000 );
@@ -71,6 +70,5 @@ function onTrigger(player)
         player:delMod(MOD_RDEF,2500);
         player:delMod(MOD_DEF,2500);
         player:delMod(MOD_MDEF,2500);
-        player:addMod(MOD_FIRERES, 200 );
     end
 end

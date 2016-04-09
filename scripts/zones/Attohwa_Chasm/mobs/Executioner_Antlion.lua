@@ -21,7 +21,7 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
-    mob:setTP(100);
+    mob:setTP(1000);
 end;
 
 -----------------------------------
@@ -29,7 +29,7 @@ end;
 -----------------------------------
 
 function onMobEngaged(mob, killer)
-    mob:useMobAbility(22); -- Pit Ambush
+    mob:useMobAbility(278); -- Pit Ambush
 end;
 
 -----------------------------------

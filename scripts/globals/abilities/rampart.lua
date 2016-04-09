@@ -27,5 +27,5 @@ function onUseAbility(player,target,ability)
     if (iHead == 15078 or iHeadt == 15251 ) then
        duration = 45;
     end
-    target:addStatusEffect(EFFECT_MAGIC_SHIELD,1,0,45);
+    target:addStatusEffect(EFFECT_MAGIC_SHIELD,1,0,duration);
 end;

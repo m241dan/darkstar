@@ -30,6 +30,7 @@ end;
 -----------------------------------
 
 function onZoneIn(player,prevZone)
+    
     local currentMission = player:getCurrentMission(SANDORIA);
     local MissionStatus = player:getVar("MissionStatus");
     local cs = -1;

@@ -41,8 +41,8 @@ function onZoneIn(player,prevZone)
     if (player:hasKeyItem(SEANCE_STAFF) and player:getVar("Enagakure_Killed") == 1) then
         cs = 0x044d;
     end
-    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
 
+    player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
     return cs;
 end;
 

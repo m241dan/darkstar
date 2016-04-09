@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr = SC_COMPRESSION;
         params.numhits = 1;
         params.multiplier = 1.5;
-        params.tp150 = 1.2;
-        params.tp300 = 1.4;
+        params.tp150 = 1.5;
+        params.tp300 = 1.5;
         params.azuretp = 1.5;
         params.duppercap = 41;
         params.str_wsc = 0.0;
@@ -50,14 +50,13 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.2;
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_UNDEAD;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
 
     if (target:hasStatusEffect(EFFECT_ATTACK_DOWN)) then
         spell:setMsg(75); -- no effect
     else    
-        target:addStatusEffect(EFFECT_ATTACK_DOWN,15,0,120);
+        target:addStatusEffect(EFFECT_ATTACK_DOWN,15,0,20);
     end
 
     return damage;

@@ -22,9 +22,9 @@ function onSpellCast(caster,target,spell)
         -- Calculate duration.
         local duration = math.random(20,120);
         
-        if (caster:hasStatusEffect(EFFECT_SABOTEUR)) then
-            duration = duration * 2;
-        end
+            if (caster:hasStatusEffect(EFFECT_SABOTEUR)) then
+        duration = duration * 2;
+    end
 
         -- Grabbing variables for paralyze potency
         local pMND = caster:getStat(MOD_MND);

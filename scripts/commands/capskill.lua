@@ -6,11 +6,10 @@
 cmdprops =
 {
     permission = 1,
-    parameters = "ss"
+    parameters = "s"
 };
 
-function onTrigger(player, skill, target)
-    local targ;
+function onTrigger(player, skill)
     local skillList =
     {
         -- Combat Skills
@@ -58,19 +57,13 @@ function onTrigger(player, skill, target)
         return;
     end
     
-    if( target == nil ) then
-       targ = player;
-    else
-       targ = GetPlayerByName( target );
-    end
-
     if (tonumber(skill) ~= 0 and tonumber(skill) ~= nil) then
         local skillId = tonumber(skill);
-        targ:capSkill( skillId );
+        player:capSkill( skillId );
         
         for k, v in pairs(skillList) do
             if (v == skillId) then
-                targ:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
+                player:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
                 return;
             end
         end
@@ -80,8 +73,8 @@ function onTrigger(player, skill, target)
     if (skillId == nil) then
         player:PrintToPlayer( string.format( "Invalid skill '%s' given.", skill ) );
     else
-        targ:capSkill( skillId );
-        targ:PrintToPlayer( string.format( "Capped skill '%s'.", skill ) );
+        player:capSkill( skillId );
+        player:PrintToPlayer( string.format( "Capped skill '%s'.", skill ) );
     end
 end
     --[[
@@ -93,11 +86,11 @@ end
     local skillId = skillList[ string.lower( skill ) ];
     if (tonumber(skill) ~= 0) then
         skillId = tonumber(skill);
-        targ:capSkill( skillId );
+        player:capSkill( skillId );
         
         for k, v in pairs(skillList) do
             if (v == skillId) then
-                targ:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
+                player:PrintToPlayer( string.format( "Capped skill '%s'.", k ) );
                 return;
             end
         end
@@ -109,4 +102,4 @@ end
         end
     end
 end
-]]
+--]]

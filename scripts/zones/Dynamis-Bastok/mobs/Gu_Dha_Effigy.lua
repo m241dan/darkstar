@@ -38,6 +38,7 @@ function onMobDeath(mob,killer,ally)
         npc:setPos(mob:getXPos(),mob:getYPos(),mob:getZPos());
         npc:setStatus(0);
 
---        ally:launchDynamisSecondPart(); -- Spawn dynamis second part
+        ally:launchDynamisSecondPart(); -- Spawn dynamis second part
     end
+
 end;

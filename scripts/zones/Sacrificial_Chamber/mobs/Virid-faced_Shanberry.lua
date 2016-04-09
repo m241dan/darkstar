@@ -9,7 +9,6 @@
 -----------------------------------
 
 function onMobSpawn(mob)
-   mob:addMod( MOD_SLEEPRES, -50 );
 end;
 
 -----------------------------------

@@ -65,14 +65,14 @@ function onMobFight(mob, target)
     end;
 
     if (useChainspell == true) then
-        mob:useMobAbility(436); -- Chainspell
+        mob:useMobAbility(692); -- Chainspell
         mob:setMobMod(MOBMOD_GA_CHANCE, 100);
 
     end
 
     -- Spams TP moves and -ga spells
     if (mob:hasStatusEffect(EFFECT_CHAINSPELL) == true) then
-        mob:setTP(200);
+        mob:setTP(2000);
     else
         if (mob:getMobMod(MOBMOD_GA_CHANCE) == 100) then
             mob:setMobMod(MOBMOD_GA_CHANCE, 50);

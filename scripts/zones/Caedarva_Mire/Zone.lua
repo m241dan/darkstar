@@ -18,7 +18,7 @@ function onInitialize(zone)
 
     -- Aynu-kasey
     SetRespawnTime(17101099, 900, 10800);
-    GetMobByID(17101201):setRespawnTime( ( math.random((12),(36)) * 3600 ) + 43200 );
+    
 end;
 
 -----------------------------------        

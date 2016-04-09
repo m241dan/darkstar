@@ -41,7 +41,6 @@ require("scripts/globals/utils")
 
     dayStrong = {FIRESDAY, EARTHSDAY, WATERSDAY, WINDSDAY, ICEDAY, LIGHTNINGDAY, LIGHTSDAY, DARKSDAY};
     dayWeak = {WATERSDAY, WINDSDAY, LIGHTNINGDAY, ICEDAY, FIRESDAY, EARTHSDAY, DARKSDAY, LIGHTSDAY};
-    klimaformElements = { EFFECT_FIRESTORM, EFFECT_SANDSTORM, EFFECT_RAINSTORM, EFFECT_WINDSTORM, EFFECT_HAILSTORM, EFFECT_THUNDERSTORM, EFFECT_AURORASTORM, EFFECT_VOIDSTORM };
     singleWeatherStrong = {WEATHER_HOT_SPELL, WEATHER_DUST_STORM, WEATHER_RAIN, WEATHER_WIND, WEATHER_SNOW, WEATHER_THUNDER, WEATHER_AURORAS, WEATHER_GLOOM};
     doubleWeatherStrong = {WEATHER_HEAT_WAVE, WEATHER_SAND_STORM, WEATHER_SQUALL, WEATHER_GALES, WEATHER_BLIZZARDS, WEATHER_THUNDERSTORMS, WEATHER_STELLAR_GLARE, WEATHER_DARKNESS};
     singleWeatherWeak = {WEATHER_RAIN, WEATHER_WIND, WEATHER_THUNDER, WEATHER_SNOW, WEATHER_HOT_SPELL, WEATHER_DUST_STORM, WEATHER_GLOOM, WEATHER_AURORAS};
@@ -50,9 +49,7 @@ require("scripts/globals/utils")
     elementalObiWeak = {MOD_FORCE_WATER_DWBONUS, MOD_FORCE_WIND_DWBONUS, MOD_FORCE_LIGHTNING_DWBONUS, MOD_FORCE_ICE_DWBONUS, MOD_FORCE_FIRE_DWBONUS, MOD_FORCE_EARTH_DWBONUS, MOD_FORCE_DARK_DWBONUS, MOD_FORCE_LIGHT_DWBONUS};
     spellAcc = {MOD_FIREACC, MOD_EARTHACC, MOD_WATERACC, MOD_WINDACC, MOD_ICEACC, MOD_THUNDERACC, MOD_LIGHTACC, MOD_DARKACC};
     strongAffinityDmg = {MOD_FIRE_AFFINITY_DMG, MOD_EARTH_AFFINITY_DMG, MOD_WATER_AFFINITY_DMG, MOD_WIND_AFFINITY_DMG, MOD_ICE_AFFINITY_DMG, MOD_THUNDER_AFFINITY_DMG, MOD_LIGHT_AFFINITY_DMG, MOD_DARK_AFFINITY_DMG};
-    weakAffinityDmg = {MOD_WATER_AFFINITY_DMG, MOD_WIND_AFFINITY_DMG, MOD_THUNDER_AFFINITY_DMG, MOD_ICE_AFFINITY_DMG, MOD_FIRE_AFFINITY_DMG, MOD_EARTH_AFFINITY_DMG, MOD_DARK_AFFINITY_DMG, MOD_LIGHT_AFFINITY_DMG};
     strongAffinityAcc = {MOD_FIRE_AFFINITY_ACC, MOD_EARTH_AFFINITY_ACC, MOD_WATER_AFFINITY_ACC, MOD_WIND_AFFINITY_ACC, MOD_ICE_AFFINITY_ACC, MOD_THUNDER_AFFINITY_ACC, MOD_LIGHT_AFFINITY_ACC, MOD_DARK_AFFINITY_ACC};
-    weakAffinityAcc = {MOD_WATER_AFFINITY_ACC, MOD_WIND_AFFINITY_ACC, MOD_THUNDER_AFFINITY_ACC, MOD_ICE_AFFINITY_ACC, MOD_FIRE_AFFINITY_ACC, MOD_EARTH_AFFINITY_ACC, MOD_DARK_AFFINITY_ACC, MOD_LIGHT_AFFINITY_ACC};
     resistMod = {MOD_FIRERES, MOD_EARTHRES, MOD_WATERRES, MOD_WINDRES, MOD_ICERES, MOD_THUNDERRES, MOD_LIGHTRES, MOD_DARKRES};
     defenseMod = {MOD_FIREDEF, MOD_EARTHDEF, MOD_WATERDEF, MOD_WINDDEF, MOD_ICEDEF, MOD_THUNDERDEF, MOD_LIGHTDEF, MOD_DARKDEF};
     absorbMod = {MOD_FIRE_ABSORB, MOD_EARTH_ABSORB, MOD_WATER_ABSORB, MOD_WIND_ABSORB, MOD_ICE_ABSORB, MOD_LTNG_ABSORB, MOD_LIGHT_ABSORB, MOD_DARK_ABSORB};
@@ -60,8 +57,8 @@ require("scripts/globals/utils")
     blmMerit = {MERIT_FIRE_MAGIC_POTENCY, MERIT_EARTH_MAGIC_POTENCY, MERIT_WATER_MAGIC_POTENCY, MERIT_WIND_MAGIC_POTENCY, MERIT_ICE_MAGIC_POTENCY, MERIT_LIGHTNING_MAGIC_POTENCY};
     rdmMerit = {MERIT_FIRE_MAGIC_ACCURACY, MERIT_EARTH_MAGIC_ACCURACY, MERIT_WATER_MAGIC_ACCURACY, MERIT_WIND_MAGIC_ACCURACY, MERIT_ICE_MAGIC_ACCURACY, MERIT_LIGHTNING_MAGIC_ACCURACY};
     blmAMIIMerit = {MERIT_FLARE_II, MERIT_QUAKE_II, MERIT_FLOOD_II, MERIT_TORNADO_II, MERIT_FREEZE_II, MERIT_BURST_II};
+    barSpells = {EFFECT_BARFIRE, EFFECT_BARSTONE, EFFECT_BARWATER, EFFECT_BARAERO, EFFECT_BARBLIZZARD, EFFECT_BARTHUNDER};
 
-    helixspells = { [278] = true, [279] = true, [280] = true, [281] = true, [282] = true, [283] = true, [284] = true, [285] = true };
 -- USED FOR DAMAGING MAGICAL SPELLS (Stages 1 and 2 in Calculating Magic Damage on wiki)
 --Calculates magic damage using the standard magic damage calc.
 --Does NOT handle resistance.
@@ -285,7 +282,7 @@ end;
 
 function AffinityBonusDmg(caster,ele)
 
-    local affinity = caster:getMod(strongAffinityDmg[ele]) - caster:getMod(weakAffinityDmg[ele]) + caster:getMod(MOD_ALL_AFFINITY_DMG);
+    local affinity = caster:getMod(strongAffinityDmg[ele]);
     local bonus = 1.00 + affinity * 0.05; -- 5% per level of affinity
     -- print(bonus);
     return bonus;
@@ -293,7 +290,7 @@ end;
 
 function AffinityBonusAcc(caster,ele)
 
-    local affinity = caster:getMod(strongAffinityAcc[ele]) - caster:getMod(weakAffinityAcc[ele]) + caster:getMod(MOD_ALL_AFFINITY_ACC);
+    local affinity = caster:getMod(strongAffinityAcc[ele]);
     local bonus = 0 + affinity * 10; -- 10 acc per level of affinity
     -- print(bonus);
     return bonus;
@@ -382,13 +379,6 @@ function getMagicHitRate(caster, target, skillType, element, percentBonus, bonus
 
     if (skillType ~= 0) then
         magicacc = magicacc + caster:getSkillLevel(skillType) + caster:getMod(79 + skillType);
-        if( skillType == SINGING_SKILL ) then
-            if( caster:getWeaponSkillType(SLOT_RANGED) == SKILL_WND ) then
-                magicacc = magicacc + ( ( caster:getSkillLevel(SKILL_WND) + caster:getMod(79 + SKILL_WND) ) * .33 );
-            elseif( caster:getWeaponSkillType(SLOT_RANGED) == SKILL_STR ) then
-                magicacc = magicacc + ( ( caster:getSkillLevel(SKILL_STR) + caster:getMod(79 + SKILL_STR) ) * .25 );
-            end
-        end    
     else
         -- for mob skills / additional effects which don't have a skill
         magicacc = magicacc + utils.getSkillLvl(1, caster:getMainLvl());
@@ -490,7 +480,7 @@ function getEffectResistance(target, effect)
         effectres = MOD_CURSERES;
     elseif (effect == EFFECT_WEIGHT) then
         effectres = MOD_GRAVITYRES;
-    elseif (effect == EFFECT_SLOW or effect == EFFECT_ELEGY) then
+    elseif (effect == EFFECT_SLOW) then
         effectres = MOD_SLOWRES;
     elseif (effect == EFFECT_STUN) then
         effectres = MOD_STUNRES;
@@ -541,19 +531,9 @@ function getSpellBonusAcc(caster, target, spell)
     end
 
     --Add acc for klimaform
-    local castersWeather = caster:getWeather();
-
-    if( caster:hasStatusEffect( EFFECT_KLIMAFORM ) ) then
-       if(castersWeather == singleWeatherStrong[element]) then
-          magicAccBonus = magicAccBonus + 20;
-       elseif(castersWeather == doubleWeatherStrong[element]) then
-          magicAccBonus = magicAccBonus + 30;
-       end
+    if (caster:hasStatusEffect(EFFECT_KLIMAFORM) and (castersWeather == singleWeatherStrong[element] or castersWeather == doubleWeatherStrong[element])) then
+        magicAccBonus = magicAccBonus + 15;
     end
-    -- helix merits for scholar
-    if(helixspells[spell:getID()] == true ) then
-       magicAccBonus = magicAccBonus + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 3);
-    end;
 
     --Add acc for dark seal
     if (skill == DARK_MAGIC_SKILL and caster:hasStatusEffect(EFFECT_DARK_SEAL)) then
@@ -815,13 +795,14 @@ function addBonuses(caster, spell, target, dmg, bonusmab)
            mab = mab + ( 10 + caster:getMod(MOD_MAGIC_CRIT_DMG_INCREASE ) );
         end
 
-        if (spell:getElement() > 0 and spell:getElement() <= 6 ) then
-            mab = mab + caster:getMerit(blmMerit[spell:getElement()]);
+        local mdefBarBonus = 0;
+        if (ele > 0 and ele <= 6) then
+            mab = mab + caster:getMerit(blmMerit[ele]);
+            if (target:hasStatusEffect(barSpells[ele])) then -- bar- spell magic defense bonus
+                mdefBarBonus = target:getStatusEffect(barSpells[ele]):getSubPower();
+            end
         end
-        if(helixspells[spell:getID()] == true ) then
-            mab = mab + (caster:getMerit(MERIT_HELIX_MAGIC_ACC_ATT) * 2);
-        end
-        mabbonus = (100 + mab) / (100 + target:getMod(MOD_MDEF));
+        mabbonus = (100 + mab) / (100 + target:getMod(MOD_MDEF) + mdefBarBonus);
     end
 
     if (mabbonus < 0) then
@@ -905,10 +886,15 @@ function addBonusesAbility(caster, ele, target, dmg, params)
     dmg = math.floor(dmg * dayWeatherBonus);
 
     local mab = 1;
+    local mdefBarBonus = 0;
+    if (ele > 0 and ele <= 6 and target:hasStatusEffect(barSpells[ele])) then -- bar- spell magic defense bonus
+        mdefBarBonus = target:getStatusEffect(barSpells[ele]):getSubPower();
+    end
+
     if (params ~= nil and params.bonusmab ~= nil and params.includemab == true) then
-        mab = (100 + caster:getMod(MOD_MATT) + params.bonusmab) / (100 + target:getMod(MOD_MDEF));
+        mab = (100 + caster:getMod(MOD_MATT) + params.bonusmab) / (100 + target:getMod(MOD_MDEF) + mdefBarBonus);
     elseif (params == nil or (params ~= nil and params.includemab == true)) then
-        mab = (100 + caster:getMod(MOD_MATT)) / (100 + target:getMod(MOD_MDEF));
+        mab = (100 + caster:getMod(MOD_MATT)) / (100 + target:getMod(MOD_MDEF) + mdefBarBonus);
     end
 
     if (mab < 0) then
@@ -930,7 +916,6 @@ end;
 -- get elemental damage reduction
 function getElementalDamageReduction(target, element)
     local defense = 1;
-
     if (element > 0) then
         defense = 1 - (target:getMod(defenseMod[element]) / 256);
 
@@ -1123,10 +1108,6 @@ function doElementalNuke(caster, spell, target, spellParams)
     --add in final adjustments
     DMG = finalMagicAdjustments(caster, target, spell, DMG);
 
-    if( target:hasStatusEffect( EFFECT_BIND ) and target:isNM() == true and DMG > 0 and math.random(1,100) < 65 ) then
-       target:delStatusEffect( EFFECT_BIND );
-    end
-
     return DMG;
 end
 
@@ -1146,6 +1127,18 @@ function doNuke(V,M,caster,spell,target,hasMultipleTargetReduction,resistBonus,s
     --get the resisted damage
     dmg = dmg*resist;
     if (skill == NINJUTSU_SKILL) then
+        if (caster:getMainJob() == JOB_NIN) then -- NIN main gets a bonus to their ninjutsu nukes
+            local ninSkillBonus = 100;
+            if (spell:getID() % 3 == 2) then -- ichi nuke spell ids are 320, 323, 326, 329, 332, and 335
+                ninSkillBonus = 100 + math.floor((caster:getSkillLevel(SKILL_NIN) - 50)/2); -- getSkillLevel includes bonuses from merits and modifiers (ie. gear)
+            elseif (spell:getID() % 3 == 0) then -- ni nuke spell ids are 1 more than their corresponding ichi spell
+                ninSkillBonus = 100 + math.floor((caster:getSkillLevel(SKILL_NIN) - 125)/2);
+            else -- san nuke spell, also has ids 1 more than their corresponding ni spell
+                ninSkillBonus = 100 + math.floor((caster:getSkillLevel(SKILL_NIN) - 275)/2);
+            end
+            ninSkillBonus = utils.clamp(ninSkillBonus, 100, 200); -- bonus caps at +100%, and does not go negative
+            dmg = dmg * ninSkillBonus/100;
+        end
         -- boost with Futae
         if (caster:hasStatusEffect(EFFECT_FUTAE)) then
             dmg = math.floor(dmg * 1.50);

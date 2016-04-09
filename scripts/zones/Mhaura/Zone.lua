@@ -40,7 +40,7 @@ function onZoneIn(player,prevZone)
         cs=0x0142;
     end
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
-return cs;
+    return cs;
 end;
 
 -----------------------------------

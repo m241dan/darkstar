@@ -14,6 +14,7 @@ require("scripts/zones/RuAun_Gardens/TextIDs");
 -----------------------------------
 
 function onTrade(player,npc,trade)
+    
     -- Trade Gem of the North and Winterstone
     if (GetMobAction(17309980) == 0 and trade:hasItemQty(1424,1) and trade:hasItemQty(1425,1) and trade:getItemCount() == 2) then
         player:tradeComplete();

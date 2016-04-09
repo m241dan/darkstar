@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr2 = SC_IMPACTION;
         params.numhits = 1;
         params.multiplier = 1.5;
-        params.tp150 = 1.2;
-        params.tp300 = 1.4;
+        params.tp150 = 1.5;
+        params.tp300 = 1.5;
         params.azuretp = 1.5;
         params.duppercap = 39;
         params.str_wsc = 0.35;
@@ -50,7 +50,6 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.0;
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_PLANTOID;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
     

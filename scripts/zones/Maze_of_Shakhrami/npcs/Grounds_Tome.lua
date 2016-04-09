@@ -4,7 +4,6 @@
 -----------------------------------
 
 require("scripts/globals/settings");
-package.loaded["scripts/globals/groundsofvalor"] = nil;
 require("scripts/globals/groundsofvalor");
 
 -----------------------------------

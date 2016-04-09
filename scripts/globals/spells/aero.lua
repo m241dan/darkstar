@@ -2,6 +2,7 @@
 -- Spell: Aero
 -- Deals wind damage to an enemy.
 -----------------------------------------
+
 require("scripts/globals/magic");
 require("scripts/globals/status");
 

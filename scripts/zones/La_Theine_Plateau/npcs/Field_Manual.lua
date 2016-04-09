@@ -19,7 +19,7 @@ end;
 -----------------------------------    
     
 function onTrade(player,npc,trade)    
-   onFieldManualTrade( player, trade );
+    onFieldManualTrade( player, trade );
 end;    
     
 -----------------------------------    

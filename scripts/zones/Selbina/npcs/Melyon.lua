@@ -77,7 +77,7 @@ end;
 function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
-   
+    
     if (csid == 0x003c and option == 10) then
         player:addQuest(OTHER_AREAS,ONLY_THE_BEST);
     elseif (csid == 0x003e) then

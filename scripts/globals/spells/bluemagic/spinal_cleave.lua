@@ -39,8 +39,8 @@ function onSpellCast(caster,target,spell)
         params.scattr2 = SC_DETONATION;
         params.numhits = 1;
         params.multiplier = 3.0;
-        params.tp150 = 1.4;
-        params.tp300 = 1.6;
+        params.tp150 = 3.0;
+        params.tp300 = 3.0;
         params.azuretp = 3.0;
         params.duppercap = 75;
         params.str_wsc = 0.3;
@@ -50,7 +50,6 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.0;
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_UNDEAD;
     damage = BluePhysicalSpell(caster, target, spell, params);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
    

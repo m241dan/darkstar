@@ -47,7 +47,6 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.2;
         params.mnd_wsc = 0.0;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_AMORPH;
     damage = BlueMagicalSpell(caster, target, spell, params, INT_BASED);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
 

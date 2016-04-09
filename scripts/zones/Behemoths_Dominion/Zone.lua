@@ -9,7 +9,6 @@ package.loaded["scripts/zones/Behemoths_Dominion/TextIDs"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/zone");
 require("scripts/zones/Behemoths_Dominion/TextIDs");
-require("scripts/globals/melfnm");
 
 -----------------------------------
 -- onInitialize

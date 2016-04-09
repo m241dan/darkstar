@@ -5,7 +5,6 @@
 package.loaded["scripts/zones/Boneyard_Gully/TextIDs"] = nil;
 -----------------------------------
 
-package.loaded["scripts/globals/bcnm"] = nil;
 require("scripts/globals/bcnm");
 require("scripts/globals/quests");
 require("scripts/globals/missions");
@@ -27,11 +26,13 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
+    
     if (EventTriggerBCNM(player,npc)) then
         return 1;
         else
         return 1;
    end
+    
 end;
 
 -----------------------------------

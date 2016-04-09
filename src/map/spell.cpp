@@ -22,13 +22,16 @@
 */
 
 #include <string.h>
+#include <array>
 
 #include "lua/luautils.h"
 
 #include "map.h"
 #include "spell.h"
 #include "blue_spell.h"
+#include "status_effect_container.h"
 #include "utils/blueutils.h"
+#include "items/item_weapon.h"
 
 
 CSpell::CSpell(uint16 id)
@@ -53,6 +56,12 @@ CSpell::CSpell(uint16 id)
 
     memset(m_job, 0, sizeof(m_job));
 }
+
+  std::unique_ptr<CSpell> CSpell::clone()
+  {
+      //no make_unique because it requires the copy constructor to be public
+      return std::unique_ptr<CSpell>(new CSpell(*this));
+  }
 
 void CSpell::setTotalTargets(uint16 total)
 {
@@ -392,12 +401,22 @@ int8* CSpell::getExpansionCode()
     return m_expansionCode;
 }
 
+float CSpell::getRange()
+{
+    return m_range;
+}
+
 void CSpell::setExpansionCode(int8* expansionCode)
 {
     m_expansionCode = expansionCode;
 }
 
-//Implement namespace to work with spells       
+void CSpell::setRange(float range)
+{
+    m_range = range;
+}
+
+//Implement namespace to work with spells
 namespace spell
 {
     std::array<CSpell*, 1024> PSpellList; // spell list
@@ -407,7 +426,7 @@ namespace spell
     void LoadSpellList()
     {
         const int8* Query = "SELECT spellid, name, jobs, `group`, validTargets, skill, castTime, recastTime, animation, animationTime, mpCost, \
-                             AOE, base, element, zonemisc, multiplier, message, magicBurstMessage, CE, VE, requirements, required_expansion \
+                             AOE, base, element, zonemisc, multiplier, message, magicBurstMessage, CE, VE, requirements, required_expansion, spell_range \
                              FROM spell_list;";
 
         int32 ret = Sql_Query(SqlHandle, Query);
@@ -452,6 +471,8 @@ namespace spell
 
                 Sql_GetData(SqlHandle, 21, &expansionCode, nullptr);
                 PSpell->setExpansionCode(expansionCode);
+
+                PSpell->setRange(static_cast<float>(Sql_GetIntData(SqlHandle, 22)) / 10);
 
                 if(PSpell->getAOE())
                 {
@@ -556,11 +577,17 @@ namespace spell
         return PSpellList[SpellID];
     }
 
-    //Check If user can cast spell
     bool CanUseSpell(CBattleEntity* PCaster, uint16 SpellID)
     {
-        bool usable = false;
         CSpell* spell = GetSpell(SpellID);
+        return CanUseSpell(PCaster, spell);
+    }
+
+    //Check If user can cast spell
+    bool CanUseSpell(CBattleEntity* PCaster, CSpell* spell)
+    {
+        bool usable = false;
+
         if (spell != nullptr)
         {
             uint8 JobMLVL = spell->getJob(PCaster->GetMJob());
@@ -683,7 +710,7 @@ namespace spell
         // brd gets bonus radius from string skill
         if(spell->getSpellGroup() == SPELLGROUP_SONG && (spell->getValidTarget() & TARGET_SELF)){
             if(entity->objtype == TYPE_MOB || (entity->GetMJob() == JOB_BRD &&
-                entity->objtype == TYPE_PC && ((CCharEntity*)entity)->getEquip(SLOT_RANGED) && 
+                entity->objtype == TYPE_PC && ((CCharEntity*)entity)->getEquip(SLOT_RANGED) &&
                 ((CItemWeapon*)((CCharEntity*)entity)->getEquip(SLOT_RANGED))->getSkillType() == SKILL_STR)){
                 total += ((float)entity->GetSkill(SKILL_STR) / 276) * 10;
             }

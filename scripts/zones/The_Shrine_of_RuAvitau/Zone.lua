@@ -100,6 +100,7 @@ end;
 -----------------------------------
 
 function onRegionEnter(player,region)
+
     switch (region:GetRegionID()): caseof
     {
         [1] = function (x)
@@ -127,7 +128,7 @@ function onRegionEnter(player,region)
             player:startEvent(6); --> K
         end,
         [9] = function (x)
-            player:startEvent(10); --> L
+            player:startEvent(10); --> L'
         end,
         [10] = function (x)
             player:startEvent(11); 
@@ -151,6 +152,7 @@ function onRegionEnter(player,region)
         default = function (x)
         end,
     }
+
 end;
 
 -----------------------------------

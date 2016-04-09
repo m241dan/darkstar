@@ -9,7 +9,6 @@ package.loaded["scripts/zones/Valley_of_Sorrows/TextIDs"] = nil;
 require("scripts/globals/settings");
 require("scripts/globals/zone");
 require("scripts/zones/Valley_of_Sorrows/TextIDs");
-require("scripts/globals/melfnm");
 
 -----------------------------------
 -- onInitialize
@@ -19,7 +18,6 @@ function onInitialize(zone)
     local manuals = {17301591,17301592};
 
     SetFieldManual(manuals);
-	
 end;
 
 -----------------------------------

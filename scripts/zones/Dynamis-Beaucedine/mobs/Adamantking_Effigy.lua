@@ -47,4 +47,5 @@ function onMobDeath(mob,killer,ally)
         ally:restoreMP(2000);
         ally:messageBasic(025,(ally:getMaxMP()-ally:getMP()));
     end
+    
 end;

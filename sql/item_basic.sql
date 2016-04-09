@@ -6483,10 +6483,14 @@ INSERT INTO `item_basic` VALUES (10944,0,'portus_collar','portus_collar',1,63568
 INSERT INTO `item_basic` VALUES (10945,0,'waylayers_scarf','waylayers_scarf',1,34816,22,0,0);
 INSERT INTO `item_basic` VALUES (10946,0,'coatl_gorget','coatl_gorget',1,34816,22,0,0);
 INSERT INTO `item_basic` VALUES (10947,0,'saevus_pendant','saevus_pendant',1,34816,22,0,0);
+INSERT INTO `item_basic` VALUES (10948,0,'carvers_torque','carvers_torque',1,63568,99,0,0);
 INSERT INTO `item_basic` VALUES (10949,0,'smithys_torque','smithys_torque',1,63568,99,0,0);
+INSERT INTO `item_basic` VALUES (10950,0,'goldsmiths_torque','goldsm._torque',1,63568,99,0,0);
+INSERT INTO `item_basic` VALUES (10951,0,'weavers_torque','weavers_torque',1,63568,99,0,0);
 INSERT INTO `item_basic` VALUES (10952,0,'tanners_torque','tanners_torque',1,63568,99,0,0);
 INSERT INTO `item_basic` VALUES (10953,0,'boneworkers_torque','boneworkers_torque',1,63568,99,0,0);
-INSERT INTO `item_basic` VALUES (10954,0,'alchemists_torque','alchemst_torque',1,63568,99,0,0);
+INSERT INTO `item_basic` VALUES (10954,0,'alchemists_torque','alchemst._torque',1,63568,99,0,0);
+INSERT INTO `item_basic` VALUES (10955,0,'culinarians_torque','culin._torque',1,63568,99,0,0);
 INSERT INTO `item_basic` VALUES (10957,0,'stoicheion_medal','stoicheion_medal',1,34880,22,0,0);
 INSERT INTO `item_basic` VALUES (10958,0,'nefarious_collar','nefarious_collar',1,34816,22,0,0);
 INSERT INTO `item_basic` VALUES (10959,0,'inquisitors_chain','inquisitors_chain',1,34816,99,0,0);
@@ -12831,7 +12835,7 @@ INSERT INTO `item_basic` VALUES (17338,0,'darksteel_bolt','darksteel_bolt',99,20
 INSERT INTO `item_basic` VALUES (17339,0,'bronze_bolt','bronze_bolt',99,2048,15,0,1);
 INSERT INTO `item_basic` VALUES (17340,0,'bullet','bullet',99,2048,15,0,10);
 INSERT INTO `item_basic` VALUES (17341,0,'silver_bullet','silver_bullet',99,2048,15,0,50);
-INSERT INTO `item_basic` VALUES (17342,0,'cannon_shell','cannon_shell',99,2048,15,0,100);
+INSERT INTO `item_basic` VALUES (17342,0,'cannon_shell','cannon_shell',12,2048,15,0,100);
 INSERT INTO `item_basic` VALUES (17343,0,'bronze_bullet','bronze_bullet',99,2048,15,0,3);
 INSERT INTO `item_basic` VALUES (17344,0,'cornette','cornette',1,2080,14,0,59);
 INSERT INTO `item_basic` VALUES (17345,0,'flute','flute',1,2080,14,0,11);
@@ -16203,6 +16207,7 @@ INSERT INTO `item_basic` VALUES (27447,0,'maculele_toeshoes','maculele_toeshoes'
 INSERT INTO `item_basic` VALUES (27448,0,'maculele_toeshoes_+1','maculele_toeshoes_+1',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27449,0,'arbatel_loafers','arbatel_loafers',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27450,0,'arbatel_loafers_+1','arbatel_loafers_+1',1,63552,0,1,0);
+
 INSERT INTO `item_basic` VALUES (27506,0,'defiant_collar','defiant_collar',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27507,0,'deviant_necklace','deviant_necklace',1,63552,0,1,0);
 INSERT INTO `item_basic` VALUES (27565,0,'ifrit_ring_+1','ifrit_ring_+1',1,2144,25,0,1);

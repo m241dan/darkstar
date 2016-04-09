@@ -35,7 +35,7 @@ function onSpellCast(caster,target,spell)
     -- This data should match information on http://wiki.ffxiclopedia.org/wiki/Calculating_Blue_Magic_Damage
         params.multiplier = 3.0;
         params.tMultiplier = 1.5;
-        params.duppercap = 77;
+        params.duppercap = 69;
         params.str_wsc = 0.0;
         params.dex_wsc = 0.0;
         params.vit_wsc = 0.0;

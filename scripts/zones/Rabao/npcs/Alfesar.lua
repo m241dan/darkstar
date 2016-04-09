@@ -8,12 +8,6 @@ package.loaded["scripts/zones/Rabao/TextIDs"] = nil;
 -----------------------------------
 
 require("scripts/globals/settings");
-require("scripts/globals/titles");
-require("scripts/globals/keyitems");
-require("scripts/globals/quests");
-require("scripts/zones/Rabao/TextIDs");
-
-require("scripts/globals/settings");
 require("scripts/globals/keyitems");
 require("scripts/globals/shop");
 require("scripts/globals/quests");
@@ -30,6 +24,7 @@ end;
 -----------------------------------
 
 function onTrigger(player,npc)
+    
     local TheMissingPiece = player:getQuestStatus(OUTLANDS,THE_MISSING_PIECE);
     local Fame = player:getFameLevel(RABAO);
 
@@ -72,6 +67,3 @@ function onEventFinish(player,csid,option)
         player:messageSpecial(KEYITEM_OBTAINED,LETTER_FROM_ALFESAR);
     end;
 end;
-
-
-

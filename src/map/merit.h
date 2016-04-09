@@ -93,8 +93,8 @@ enum MERIT_CATEGORY
     MCATEGORY_PUP_2      = 0x0C40,
     MCATEGORY_DNC_2      = 0x0C80,
     MCATEGORY_SCH_2      = 0x0CC0,
-    MCATEGORY_GEO_2	 = 0x0400,
-    MCATEGORY_RUN_2	 = 0x0440,
+    MCATEGORY_GEO_2      = 0x0400,
+    MCATEGORY_RUN_2      = 0x0440,
 
     MCATEGORY_START      = 0x0040,
     MCATEGORY_COUNT      = 0x0D80,
@@ -111,7 +111,7 @@ enum MERIT_TYPE
     //HP
     MERIT_MAX_HP                    = MCATEGORY_HP_MP + 0x00,
     MERIT_MAX_MP                    = MCATEGORY_HP_MP + 0x02,
-    MERIT_MAX_MERIT		    = MCATEGORY_HP_MP + 0x04,
+    MERIT_MAX_MERIT                 = MCATEGORY_HP_MP + 0x04,
 
     //ATTRIBUTES
     MERIT_STR                       = MCATEGORY_ATTRIBUTES + 0x00,
@@ -156,8 +156,8 @@ enum MERIT_TYPE
     MERIT_STRING                    = MCATEGORY_MAGIC + 0x12,
     MERIT_WIND                      = MCATEGORY_MAGIC + 0x14,
     MERIT_BLUE                      = MCATEGORY_MAGIC + 0x16,
-    MERIT_GEO			    = MCATEGORY_MAGIC + 0x18,
-    MERIT_HANDBELL		    = MCATEGORY_MAGIC + 0x1A,
+    MERIT_GEO                       = MCATEGORY_MAGIC + 0x18,
+    MERIT_HANDBELL                  = MCATEGORY_MAGIC + 0x1A,
 
     //OTHERS
     MERIT_ENMITY_INCREASE           = MCATEGORY_OTHERS + 0x00,

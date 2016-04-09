@@ -44,11 +44,16 @@ ipch/
 *.ncb
 *.opensdf
 *.sdf
+*.opendb
+*.VC.db
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
+
+# Visual Studio Analyzer
+*.lastcodeanalysis*
 
 # Guidance Automation Toolkit
 *.gpState

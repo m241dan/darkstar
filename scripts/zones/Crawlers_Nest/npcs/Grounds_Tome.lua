@@ -4,7 +4,6 @@
 -----------------------------------
 
 require("scripts/globals/settings");
-package.loaded["scripts/globals/groundsofvalor"] = nil;
 require("scripts/globals/groundsofvalor");
 
 -----------------------------------
@@ -30,7 +29,7 @@ end;
 function onEventUpdate(player,csid,option)
     -- printf("CSID: %u",csid);
     -- printf("RESULT: %u",option);
-    updateGov(player,csid,option,687,689,690,691,692,693,694,695,0,0);
+    updateGov(player,csid,option,687,688,689,690,691,692,693,694,0,0);
 end;
 
 -----------------------------------

@@ -44,7 +44,6 @@ function onMobRoam(mob)
         mob:setLocalVar("wait", 0);
     elseif (ready > 0) then
         mob:addEnmity(GetMobByID(ready),0,1);
-        mob:addStatusEffectEx(EFFECT_SILENCE,0,0,0,5)
     else
         mob:setLocalVar("wait", wait+3);
     end
@@ -55,7 +54,8 @@ end;
 -----------------------------------
 
 function onMobEngaged(mob, target)
-    mob:useMobAbility(1231);
+    mob:useMobAbility(1487);
+    mob:addStatusEffectEx(EFFECT_SILENCE,0,0,0,5)
 end;
 
 -----------------------------------
@@ -71,11 +71,11 @@ function onMobFight(mob, target)
         mob:setLocalVar("Raise", 0);
         mob:stun(3000);
     elseif (mob:getHPP() < 70 and mob:getLocalVar("HF") == 0) then
-        mob:useMobAbility(1229);
+        mob:useMobAbility(1485);
         mob:messageText(mob, PRISHE_TEXT + 6);
         mob:setLocalVar("HF", 1);
     elseif (mob:getHPP() < 30 and mob:getLocalVar("Bene") == 0) then
-        mob:useMobAbility(1230);
+        mob:useMobAbility(1486);
         mob:messageText(mob, PRISHE_TEXT + 7);
         mob:setLocalVar("Bene", 1);
     end

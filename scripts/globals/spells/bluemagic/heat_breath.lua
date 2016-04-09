@@ -45,7 +45,6 @@ function onSpellCast(caster,target,spell)
         params.int_wsc = 0.0;
         params.mnd_wsc = 0.3;
         params.chr_wsc = 0.0;
-        params.system = SYSTEM_BEAST;
     damage = BlueMagicalSpell(caster, target, spell, params, MND_BASED);
     damage = BlueFinalAdjustments(caster, target, spell, damage, params);
     

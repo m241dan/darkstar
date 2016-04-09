@@ -53,6 +53,7 @@ function onZoneIn(player,prevZone)
         cs = 871;
     end
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
+
     return cs;
 end;
 

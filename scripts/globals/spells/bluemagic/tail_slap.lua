@@ -38,8 +38,8 @@ function onSpellCast(caster,target,spell)
         params.scattr = SC_REVERBERATION;
         params.numhits = 1;
         params.multiplier = 1.625;
-        params.tp150 = 1.325;
-        params.tp300 = 1.925;
+        params.tp150 = 1.625;
+        params.tp300 = 1.625;
         params.azuretp = 1.625;
         params.duppercap = 75;
         params.str_wsc = 0.2;
