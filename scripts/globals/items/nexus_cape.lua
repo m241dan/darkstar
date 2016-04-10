@@ -14,7 +14,7 @@ require("scripts/globals/missions");
 
 function onItemCheck(target)
    local leader = target:getPartyLeader();
-   local leaderRegion = GetPlayerByName( leader ):getZone():getRegionID();
+   local leaderRegion = leader:getZone():getRegionID();
    local ZilartProgress = target:getCurrentMission(ZILART)
 
    -- sky check
@@ -30,7 +30,7 @@ function onItemCheck(target)
    
    if (leader == nil) then
       return 56; -- Not in a party, fail.
-   elseif (target:getID() == GetPlayerByName(leader):getID()) then
+   elseif (target:getID() == leader:getID()) then
       return 56; -- User is leader, fail.
    end
 
