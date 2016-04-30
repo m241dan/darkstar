@@ -100,7 +100,6 @@ bool CPathFind::PathTo(const position_t& point, uint8 pathFlags, bool clear)
         {
             result = FindPath(m_PTarget->loc.p, point);
         }
-        StopWithin( ((CBattleEntity *)m_PTarget)->m_ModelSize > 2 ? ((CBattleEntity *)m_PTarget)->m_ModelSize - 1.0f : 1.0f);
         if (!result)
         {
             Clear();

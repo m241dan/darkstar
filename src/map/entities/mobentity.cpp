@@ -51,6 +51,7 @@
 #include "../mobskill.h"
 #include "../treasure_pool.h"
 #include "../conquest_system.h"
+#include "../zone_entities.h"
 
 CMobEntity::CMobEntity()
 {
@@ -787,6 +788,7 @@ void CMobEntity::DropItems()
             DropList_t* DropList = itemutils::GetDropList(m_DropID);
             //ShowDebug(CL_CYAN"DropID: %u dropping with TH Level: %u\n" CL_RESET, PMob->m_DropID, PMob->m_THLvl);
 
+/* Custom QR code replacement
             if (DropList != nullptr && !getMobMod(MOBMOD_NO_DROPS) && DropList->size())
             {
                 for (uint8 i = 0; i < DropList->size(); ++i)
@@ -806,7 +808,73 @@ void CMobEntity::DropItems()
                     }
                 }
             }
+*/
 
+// START CUSTOM QR CODE
+            if (DropList != nullptr && !getMobMod(MOBMOD_NO_DROPS) && DropList->size())
+            {
+                for (uint8 i = 0; i < DropList->size(); ++i)
+                {
+                    //THLvl is the number of 'extra chances' at an item. If the item is obtained, then break out.
+                    uint8 tries = 0;
+                    uint8 maxTries = 1 + (m_THLvl > 2 ? 2 : m_THLvl);
+                    uint8 bonus = (m_THLvl > 2 ? (m_THLvl - 2)*10 : 0);
+                    uint16 droprate = DropList->at(i).DropRate;
+                    uint16 calcdrop = DropList->at(i).DropRate + bonus;
+                    uint16 itemID = DropList->at(i).ItemID;
+//                    uint16 current_pop = loc.zone->GetZonePlayerCount();
+                    uint16 current_pop = loc.zone->getZoneEntities()->m_charList.size();
+                    bool dynaDrop = false;
+                    //Melfnamis begin
+                    if( ( itemID >= 15072 && itemID <= 15146 ) ||
+                        ( itemID >= 11292 && itemID <= 11307 ) ||
+                        ( itemID >= 11382 && itemID <= 11398 ) ||
+                        ( itemID >= 11465 && itemID <= 11480 ) ||
+                        ( itemID >= 15025 && itemID <= 15040 ) ||
+                        ( itemID >= 15478 && itemID <= 15484 ) ||
+                        ( itemID >= 15871 && itemID <= 15879 ) ||
+                        ( itemID >= 16346 && itemID <= 16362 ) ||
+                          itemID == 15920 || itemID == 15925 || itemID == 16248 ||
+                          itemID == 16244 || itemID == 16245 )
+                    {
+                       dynaDrop = true;
+                       calcdrop = (uint16)(calcdrop * .25 );
+                           if( current_pop <= 10 && current_pop > 4 )
+                              droprate = (uint16)( calcdrop * 1.15 );
+                           else if( current_pop <= 4 && current_pop > 0 )
+                              droprate = (uint16)( calcdrop * 1.25 );
+                        }
+
+                        if( itemID >= 1449 && itemID <= 1457 )
+                        {
+                           dynaDrop = true;
+                           if( current_pop > 10 )
+                              droprate = (uint16)( calcdrop * .90 );
+                           else if( current_pop > 4 && current_pop <= 10 )
+                              droprate = (uint16)( calcdrop * .80 );
+                           else if( current_pop <= 4 && current_pop > 0 )
+                              droprate = (uint16)( calcdrop * 1.05 );
+                        }
+
+                        while (tries < maxTries)
+                        {
+                           uint16 random = rand()%1000+1;
+                            if ( random < calcdrop )
+                            {
+                                int dropID = itemID;
+                                if( dynaDrop )
+                                {
+                                   dropID = luautils::OnDynaDrop( loc.zone, itemID );
+                                   if( dropID == 0 )
+                                      break;
+                                }
+                                PChar->PTreasurePool->AddItem(dropID, this);
+                                break;
+                            }
+                            tries++;
+                        }
+                    }
+                }
             // check for gil (beastmen drop gil, some NMs drop gil)
             if (CanDropGil() || (map_config.all_mobs_gil_bonus > 0 && getMobMod(MOBMOD_GIL_MAX) >= 0)) // Negative value of MOBMOD_GIL_MAX is used to prevent gil drops in Dynamis/Limbus.
             {

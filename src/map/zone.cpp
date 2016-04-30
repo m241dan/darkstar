@@ -1010,6 +1010,10 @@ void CZone::CheckRegions(CCharEntity* PChar)
     }
     PChar->m_InsideRegionID = RegionID;
 }
+CZoneEntities*  CZone::getZoneEntities()
+{
+   return m_zoneEntities;
+}
 
 //====================================1=======================
 

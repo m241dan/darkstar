@@ -265,6 +265,8 @@ namespace luautils
     int32 OnPlayerLevelDown(CCharEntity* PChar);
 
     bool OnChocoboDig(CCharEntity* PChar, bool pre);                           // chocobo digging, pre = check
+    int32 OnDynaDrop(CZone *PZone, uint16 itemID );
+
 };
 
 #endif //- _LUAUTILS_H -

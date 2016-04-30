@@ -4494,5 +4494,40 @@ namespace luautils
 
         return canDig;
     }
+int32 OnDynaDrop(CZone *PZone, uint16 itemID )
+{
+   lua_prepscript( "scripts/globals/melfnamis.lua" );
+   if( prepFile( File, "onDynaDrop" ) )
+   {
+      return -1;
+   }
 
+   CLuaZone LuaZone(PZone);
+   Lunar<CLuaZone>::push(LuaHandle, &LuaZone);
+
+   lua_pushinteger( LuaHandle, itemID );
+
+   if( lua_pcall( LuaHandle, 2, LUA_MULTRET, 0 ) )
+   {
+      ShowError( "luautils::onDynaDrop: %s\n", lua_tostring( LuaHandle, -1 ) );
+      lua_pop( LuaHandle, 1 );
+      return -1;
+   }
+
+   int32 returns = lua_gettop(LuaHandle) - oldtop;
+   int32 to_return;
+   if( returns > 0 )
+   {
+      if( !lua_isnumber(LuaHandle, -1 ) || returns != 1 )
+      {
+         ShowError("luautils::onDynaDrop: bad return an integer\n" );
+         lua_pop( LuaHandle, returns );
+         return -1;
+      }
+      to_return = lua_tonumber( LuaHandle, -1 );
+      lua_pop( LuaHandle, returns );
+      return to_return;
+   }
+   return 0;
+}
 }; // namespace luautils

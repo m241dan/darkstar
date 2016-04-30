@@ -521,7 +521,6 @@ public:
     uint8           GetBackgroundMusicDay();
     uint8 GetBackgroundMusicNight();
     zoneLine_t*     GetZoneLine(uint32 zoneLineID);
-
     virtual CCharEntity*    GetCharByName(int8* name);                              // finds the player if exists in zone
     virtual CCharEntity*    GetCharByID(uint32 id);
     // Gets an entity - ignores instances (use CBaseEntity->GetEntity if possible)
@@ -577,6 +576,7 @@ public:
     CBattlefieldHandler* m_BattlefieldHandler;  // BCNM Instances in this zone
 
     CNavMesh*       m_navMesh;              // zones navmesh for finding paths
+    CZoneEntities*  getZoneEntities();
 
 private:
 

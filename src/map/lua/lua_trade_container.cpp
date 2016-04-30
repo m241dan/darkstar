@@ -24,6 +24,7 @@
 #include "../../common/showmsg.h"
 #include "../items/item.h"
 
+#include "lua_item.h"
 #include "lua_trade_container.h"
 #include "../trade_container.h"
 
@@ -216,6 +217,25 @@ inline int32 CLuaTradeContainer::confirmItem(lua_State *L)
 
 //======================================================//
 
+inline int32 CLuaTradeContainer::getItemObj( lua_State *L )
+{
+   if( m_pMyTradeContainer != nullptr )
+   {
+      uint8 SlotID = 0;
+      if( !lua_isnil( L, 1 ) && lua_isnumber( L, 1 ) )
+         SlotID = (uint8)lua_tonumber( L, 1 );
+      lua_getglobal(L, CLuaItem::className);
+      lua_pushstring(L,"new");
+      lua_gettable(L,-2);
+      lua_insert(L,-2);
+      lua_pushlightuserdata(L,(void*)m_pMyTradeContainer->getItem(SlotID));
+      lua_pcall(L,2,1,0);
+      return 1;
+
+   }
+   lua_pushnil( L );
+   return 1;
+}
 const int8 CLuaTradeContainer::className[] = "TradeContainer";
 Lunar<CLuaTradeContainer>::Register_t CLuaTradeContainer::methods[] =
 {
@@ -228,5 +248,6 @@ Lunar<CLuaTradeContainer>::Register_t CLuaTradeContainer::methods[] =
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,getSlotQty),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,hasItemQty),
     LUNAR_DECLARE_METHOD(CLuaTradeContainer,confirmItem),
+    LUNAR_DECLARE_METHOD(CLuaTradeContainer,getItemObj),
     {nullptr,nullptr}
 };
