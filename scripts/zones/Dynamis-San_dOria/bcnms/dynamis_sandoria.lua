@@ -21,6 +21,9 @@ function onBcnmEnter(player,instance)
    local relicid = player:getVar( "RelicID" );
    local dynaid = player:getVar( "DynamisID" );
 
+   printf( relicid )
+   printf( dynaid )
+
    if( relicid == dynaid or relicid == -2 ) then
       if( player:getFreeSlotsCount() <= 0 ) then
          player:PrintToPlayer( "Your inventory is full. Clear it and rezone.", 0xE );

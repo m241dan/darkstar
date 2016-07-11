@@ -38,7 +38,7 @@ function onTrigger(player,npc)
         0x138A,    21,3,     --Scroll of Valor Minuet
         0x138B,  1101,3,     --Scroll of Valor Minuet II
         0x138C,  5544,3,     --Scroll of Valor Minuet III
-        0x1383, 23820,3      --Scroll of Mage's Ballad II
+        0x1383,  4995,3      --Scroll of Mage's Ballad II
     }
     showNationShop(player, BASTOK, stock);
 
