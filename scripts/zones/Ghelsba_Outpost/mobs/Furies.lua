@@ -4,11 +4,13 @@
 -- BCNM20
 -----------------------------------
 
+
 -----------------------------------
 -- onMobSpawn Action
 -----------------------------------
 
 function onMobSpawn(mob)
+    mob:setMobMod(MOBMOD_CHARMABLE, 1);
 end;
 
 
@@ -27,5 +29,5 @@ end;
 -- onMobDeath Action
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 end;

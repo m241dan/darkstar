@@ -1,12 +1,11 @@
 -----------------------------------
---  Area: Northern San d'Oria
+-- Area: Northern San d'Oria
 --   NPC: Miaux
 --  Type: Quest Giver
 --  @pos -169.127 2.999 158.677 231
 -----------------------------------
 package.loaded["scripts/zones/Northern_San_dOria/TextIDs"] = nil;
 -----------------------------------
-
 require("scripts/globals/settings");
 require("scripts/globals/keyitems");
 require("scripts/globals/quests");
@@ -81,7 +80,7 @@ function onEventFinish(player,csid,option)
             player:delKeyItem(ALTEPA_POLISHING_STONE);
             player:addItem(16887); 
             player:messageSpecial(ITEM_OBTAINED,16887); -- Peregrine (DRG AF1)
-            player:addFame(SANDORIA,SAN_FAME*AF1_FAME);
+            player:addFame(SANDORIA,AF1_FAME);
             player:completeQuest(SANDORIA,A_CRAFTSMAN_S_WORK);
         end
     elseif (csid == 67) then
@@ -94,7 +93,7 @@ end;
 -- 0x000b Miaux : "<Sigh> Why must all craftsmen be so uptight?"
 -- 0x0049 Miaux : "I wish to have a breastplate repaired... Y/N dialog
 -- 0x0047 Miaux : "I...I hesitate to impose upon you again, but would it be possible for you to find
--- me an Altepa polishing stone? Naturally, I will pay you for your troubles...
+-- me an Altepa polishing stone? Naturplayer, I will pay you for your troubles...
 -- accept the task? Yes/No dialog Thank you.  It would mean so much to me."
 -- 0x0045 Miaux : "The Altepa polishing stone can be found in the Eastern Altepa Desert.  Please take
 -- care on your travels!"    

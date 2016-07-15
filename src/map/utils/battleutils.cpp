@@ -1445,10 +1445,16 @@ namespace battleutils
             if ((charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23))) {
                 acc += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
             }
+
         }
         else if (PAttacker->objtype == TYPE_PET && ((CPetEntity*)PAttacker)->getPetType() == PETTYPE_AUTOMATON)
         {
             acc = PAttacker->RACC(SKILL_ARA);
+        }
+        // Check for Yonin evasion bonus while in front of target
+        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_YONIN) && ((abs(abs(PAttacker->loc.p.rotation - PDefender->loc.p.rotation) - 128) < 23)))
+        {
+            acc -= PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_YONIN)->GetPower();
         }
 
         int eva = PDefender->EVA();
@@ -1562,6 +1568,13 @@ namespace battleutils
             return false;
         }
 
+        // Songs cannot be interrupted by physical attacks.
+        if ((SKILLTYPE)PSpell->getSkillType() == SKILL_SNG)
+        {
+            // ShowDebug("Is song, interrupt prevented.\n");
+            return false;
+        }
+
         //Reasonable assumption for the time being.
         int base = 40;
 
@@ -1588,7 +1601,7 @@ namespace battleutils
             if (cap == 0)
             {
                 cap = GetMaxSkill((SKILLTYPE)PSpell->getSkillType(), PChar->GetSJob(),
-                    PChar->GetSLevel()); // << this might be GetMLevel, however this leaves no chance of avoiding interuption
+                    PChar->GetMLevel()); // This may need to be re-investigated in the future...
             }
 
             if (skill > cap)
@@ -1604,8 +1617,8 @@ namespace battleutils
             meritReduction = ((CCharEntity*)PDefender)->PMeritPoints->GetMeritValue(MERIT_SPELL_INTERUPTION_RATE, (CCharEntity*)PDefender);
         }
 
-        float aquaveil = ((float)((100.0f - (meritReduction + (float)PDefender->getMod(MOD_SPELLINTERRUPT))) / 100.0f));
-        check *= aquaveil;
+        float interruptRate = ((float)((100.0f - (meritReduction + (float)PDefender->getMod(MOD_SPELLINTERRUPT))) / 100.0f));
+        check *= interruptRate;
         uint8 chance = dsprand::GetRandomNumber(100);
 
         // caps, always give a 1% chance of interrupt
@@ -1615,7 +1628,22 @@ namespace battleutils
 
         if (chance < check)
         {
-            //Interrupt the spell cast.
+            // Prevent interrupt if Aquaveil is active, if it were to interrupt.
+            if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_AQUAVEIL))
+            {
+                auto aquaCount = PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_AQUAVEIL)->GetPower();
+                // ShowDebug("Aquaveil counter: %u\n", aquaCount);
+                if (aquaCount - 1 == 0) // removes the status, but still prevents the interrupt
+                {
+                    PDefender->StatusEffectContainer->DelStatusEffect(EFFECT_AQUAVEIL);
+                }
+                else
+                {
+                    PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_AQUAVEIL)->SetPower(aquaCount - 1);
+                }
+                return false;
+            }
+            //Otherwise interrupt the spell cast.
             return true;
         }
 
@@ -2016,10 +2044,15 @@ namespace battleutils
         if (damage > 0)
         {
             damage = dsp_max(damage - PDefender->getMod(MOD_PHALANX), 0);
-
             damage = HandleStoneskin(PDefender, damage);
-            HandleAfflatusMiseryDamage(PDefender, damage);
         }
+        
+        if (!isRanged)
+        {
+            damage = getOverWhelmDamageBonus(PChar, PDefender, (uint16)damage);
+        }
+        
+        HandleAfflatusMiseryDamage(PDefender, damage);
         damage = dsp_cap(damage, -99999, 99999);
 
         int32 corrected = PDefender->addHP(-damage);
@@ -2035,7 +2068,6 @@ namespace battleutils
 
         if (damage > 0)
         {
-            damage = getOverWhelmDamageBonus(PChar, PDefender, (uint16)damage);
             PDefender->StatusEffectContainer->DelStatusEffectsByFlag(EFFECTFLAG_DAMAGE);
 
             // Check for bind breaking
@@ -2118,7 +2150,7 @@ namespace battleutils
     *																		*
     ************************************************************************/
 
-    uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber, uint8 offsetAccuracy) //subWeaponAttack is for calculating acc of dual wielded sub weapon
+    uint8 GetHitRateEx(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber, int8 offsetAccuracy) //subWeaponAttack is for calculating acc of dual wielded sub weapon
     {
         int32 hitrate = 75;
 
@@ -2129,23 +2161,40 @@ namespace battleutils
         }
         else
         {
+            //ShowDebug("Accuracy mod before direction checks: %d\n", offsetAccuracy);
             //Check For Ambush Merit - Melee
-            if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23))) {
+            if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_AMBUSH)) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23)))
+            {
                 offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_AMBUSH, (CCharEntity*)PAttacker);
             }
             // Check for Closed Position merit on attacker and that attacker and defender are facing each other (within ~20 degrees from straight on)
-            if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15))) {
+            if (PAttacker->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PAttacker, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15)))
+            {
                 offsetAccuracy += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PAttacker);
             }
             // Check for Closed Position merit on defender that attacker and defender are facing each other (within ~20 degrees from straight on)
-            if (PDefender->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PDefender, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15))) {
+            if (PDefender->objtype == TYPE_PC && (charutils::hasTrait((CCharEntity*)PDefender, TRAIT_CLOSED_POSITION)) && ((abs(abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) - 128) < 15)))
+            {
                 offsetAccuracy -= ((CCharEntity*)PDefender)->PMeritPoints->GetMeritValue(MERIT_CLOSED_POSITION, (CCharEntity*)PDefender);
             }
+            // Check for Innin accuracy bonus from behind target
+            if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_INNIN) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23)))
+            {
+                offsetAccuracy += PAttacker->StatusEffectContainer->GetStatusEffect(EFFECT_INNIN)->GetPower();
+            }
+            // Check for Yonin evasion bonus while in front of target
+            if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_YONIN) && ((abs(abs(PAttacker->loc.p.rotation - PDefender->loc.p.rotation) - 128) < 23)))
+            {
+                offsetAccuracy -= PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_YONIN)->GetPower();
+            }
+            //ShowDebug("Accuracy mod after direction checks: %d\n", offsetAccuracy);
 
             hitrate = hitrate + (PAttacker->ACC(attackNumber, offsetAccuracy) - PDefender->EVA()) / 2 + (PAttacker->GetMLevel() - PDefender->GetMLevel()) * 2;
 
             if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_ENLIGHT))
+            {
                 hitrate += PAttacker->getMod(MOD_ENSPELL_DMG);
+            }
 
             hitrate = dsp_cap(hitrate, 20, 95);
         }
@@ -2159,7 +2208,7 @@ namespace battleutils
     {
         return GetHitRateEx(PAttacker, PDefender, attackNumber, 0);
     }
-    uint8 GetHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber, uint8 offsetAccuracy)
+    uint8 GetHitRate(CBattleEntity* PAttacker, CBattleEntity* PDefender, uint8 attackNumber, int8 offsetAccuracy)
     {
         return GetHitRateEx(PAttacker, PDefender, attackNumber, offsetAccuracy);
     }
@@ -2196,6 +2245,18 @@ namespace battleutils
             //apply merit mods
             if (PAttacker->objtype == TYPE_PC) crithitrate += ((CCharEntity*)PAttacker)->PMeritPoints->GetMeritValue(MERIT_CRIT_HIT_RATE, (CCharEntity*)PAttacker);
             if (PDefender->objtype == TYPE_PC) crithitrate -= ((CCharEntity*)PDefender)->PMeritPoints->GetMeritValue(MERIT_ENEMY_CRIT_RATE, (CCharEntity*)PDefender);
+            //ShowDebug("Crit rate mod before Innin/Yonin: %d\n", crithitrate);
+            // Check for Innin crit rate bonus from behind target
+            if (PAttacker->StatusEffectContainer->HasStatusEffect(EFFECT_INNIN) && ((abs(PDefender->loc.p.rotation - PAttacker->loc.p.rotation) < 23)))
+            {
+                crithitrate += PAttacker->StatusEffectContainer->GetStatusEffect(EFFECT_INNIN)->GetPower();
+            }
+            // Check for Yonin crit rate bonus while in front of target
+            if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_YONIN) && ((abs(abs(PAttacker->loc.p.rotation - PDefender->loc.p.rotation) - 128) < 23)))
+            {
+                crithitrate -= PDefender->StatusEffectContainer->GetStatusEffect(EFFECT_YONIN)->GetPower();
+            }
+            //ShowDebug("Crit rate mod after Innin/Yonin: %d\n", crithitrate);
 
             int32 attackerdex = PAttacker->DEX();
             int32 defenderagi = PDefender->AGI();
@@ -3617,27 +3678,25 @@ namespace battleutils
     ************************************************************************/
     uint16 getOverWhelmDamageBonus(CCharEntity* m_PChar, CBattleEntity* PDefender, uint16 damage)
     {
-        if (m_PChar->GetMJob() == JOB_SAM || m_PChar->GetSJob() == JOB_SAM) // only allow if player 75 or more
+        if (m_PChar->objtype == TYPE_PC) // Some mobskills use TakeWeaponskillDamage function, which calls upon this one.
         {
-            if (m_PChar->GetMLevel() >= 75)
+            // must be facing mob
+            if (isFaceing(PDefender->loc.p, m_PChar->loc.p, 23))
             {
-                // must be facing mob
-                if (isFaceing(PDefender->loc.p, m_PChar->loc.p, 90))
-                {
-                    uint8 meritCount = m_PChar->PMeritPoints->GetMeritValue(MERIT_OVERWHELM, m_PChar);
-                    float tmpDamage = damage;
+                uint8 meritCount = m_PChar->PMeritPoints->GetMeritValue(MERIT_OVERWHELM, m_PChar);
+                // ShowDebug("Merits: %u\n", meritCount);
+                float tmpDamage = damage;
 
-                    switch (meritCount)
-                    {
-                        case 1:	tmpDamage += tmpDamage * 0.05f; break;
-                        case 2:	tmpDamage += tmpDamage * 0.10f; break;
-                        case 3:	tmpDamage += tmpDamage * 0.15f; break;
-                        case 4:	tmpDamage += tmpDamage * 0.17f; break;
-                        case 5:	tmpDamage += tmpDamage * 0.19f; break;
-                        default: break;
-                    }
-                    damage = (uint16)floor(tmpDamage);
+                switch (meritCount)
+                {
+                    case 1:	tmpDamage += tmpDamage * 0.05f; break;
+                    case 2:	tmpDamage += tmpDamage * 0.10f; break;
+                    case 3:	tmpDamage += tmpDamage * 0.15f; break;
+                    case 4:	tmpDamage += tmpDamage * 0.17f; break;
+                    case 5:	tmpDamage += tmpDamage * 0.19f; break;
+                    default: break;
                 }
+                damage = (uint16)floor(tmpDamage);
             }
         }
         return damage;
@@ -3878,24 +3937,18 @@ namespace battleutils
         uint32 CharmTime = 0;
         uint32 base = 0;
 
-
         // player charming mob
         if (PVictim->objtype == TYPE_MOB && PCharmer->objtype == TYPE_PC)
         {
-            //Bind uncharmable mobs for 5 seconds
-            if (PVictim->m_EcoSystem == SYSTEM_BEASTMEN || PVictim->m_EcoSystem == SYSTEM_ARCANA ||
-                PVictim->m_EcoSystem == SYSTEM_UNCLASSIFIED || PVictim->m_EcoSystem == SYSTEM_ARCHAICMACHINE ||
-                PVictim->m_EcoSystem == SYSTEM_AVATAR || PVictim->m_EcoSystem == SYSTEM_DEMON ||
-                PVictim->m_EcoSystem == SYSTEM_ELEMENTAL || PVictim->m_EcoSystem == SYSTEM_EMPTY ||
-                PVictim->m_EcoSystem == SYSTEM_LUMORIAN || PVictim->m_EcoSystem == SYSTEM_LUMINION ||
-                PVictim->m_EcoSystem == SYSTEM_UNDEAD || PVictim->PMaster != nullptr) {
-                PVictim->StatusEffectContainer->AddStatusEffect(
-                    new CStatusEffect(EFFECT_BIND, EFFECT_BIND, 1, 0, 5));
+            // cannot charm NM
+            if (((CMobEntity*)PVictim)->m_Type & MOBTYPE_NOTORIOUS) {
                 return;
             }
 
-            // cannot charm NM
-            if (((CMobEntity*)PVictim)->m_Type & MOBTYPE_NOTORIOUS) {
+            //Bind uncharmable mobs for 5 seconds
+            if ( ((CMobEntity*)PVictim)->getMobMod(MOBMOD_CHARMABLE) == 0 ||  PVictim->PMaster != nullptr) {
+                PVictim->StatusEffectContainer->AddStatusEffect(
+                    new CStatusEffect(EFFECT_BIND, EFFECT_BIND, 1, 0, dsprand::GetRandomNumber(1, 5)));
                 return;
             }
 
@@ -4255,8 +4308,10 @@ namespace battleutils
 
     void HandleAfflatusMiseryDamage(CBattleEntity* PDefender, int32 damage)
     {
-        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_AFFLATUS_MISERY)) {
+        if (PDefender->StatusEffectContainer->HasStatusEffect(EFFECT_AFFLATUS_MISERY) && damage > 0)
+        {
             PDefender->setModifier(MOD_AFFLATUS_MISERY, damage);
+            // ShowDebug("Misery power: %d\n", damage);
         }
     }
 
@@ -4915,7 +4970,7 @@ namespace battleutils
 
         if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_HASSO) || PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_SEIGAN))
         {
-            cast = cast * 1.5f;
+            cast = cast * 2.0f;
         }
 
         if (PSpell->getSpellGroup() == SPELLGROUP_BLACK)
@@ -5084,7 +5139,7 @@ namespace battleutils
 
         bool applyArts = true;
         uint32 base = PSpell->getRecastTime();
-        uint32 recast = base;
+        int32 recast = base;
 
         //apply Fast Cast
         recast *= ((100.0f - dsp_cap((float)PEntity->getMod(MOD_FASTCAST) / 2.0f, 0.0f, 25.0f)) / 100.0f);
@@ -5092,8 +5147,29 @@ namespace battleutils
         int16 haste = PEntity->getMod(MOD_HASTE_MAGIC) + PEntity->getMod(MOD_HASTE_GEAR);
 
         recast *= ((float)(1024 - haste) / 1024);
-
-        recast = dsp_max(recast, base * 0.2f);
+		
+        if (PSpell->getSpellGroup() == SPELLGROUP_SONG)
+        {
+            if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_NIGHTINGALE))
+            {
+                recast *= 0.5f;
+            }
+            // The following modifiers are not multiplicative - as such they must be applied last.
+            // ShowDebug("Recast before reduction: %u\n", recast);
+            if (PEntity->objtype == TYPE_PC)
+            {
+                if (PSpell->getID() == 462) // apply Finale recast merits
+                {
+                    recast -= ((CCharEntity*)PEntity)->PMeritPoints->GetMeritValue(MERIT_FINALE_RECAST, (CCharEntity*)PEntity) * 1000;
+                }
+                if (PSpell->getID() == 376 || PSpell->getID() == 377 || PSpell->getID() == 463 || PSpell->getID() == 471) // apply Lullaby recast merits
+                {
+                    recast -= ((CCharEntity*)PEntity)->PMeritPoints->GetMeritValue(MERIT_LULLABY_RECAST, (CCharEntity*)PEntity) * 1000;
+                }
+            }
+            recast -= PEntity->getMod(MOD_SONG_RECAST_DELAY);
+            // ShowDebug("Recast after merit reduction: %u\n", recast);
+        }
 
         if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_COMPOSURE))
         {
@@ -5105,6 +5181,9 @@ namespace battleutils
             recast *= 1.5;
         }
 
+        recast = dsp_max(recast, base * 0.2f);
+
+        // Light/Dark arts recast bonus/penalties applies after the 80% cap
         if (PSpell->getSpellGroup() == SPELLGROUP_BLACK)
         {
             if (PSpell->getAOE() == SPELLAOE_RADIAL_MANI && PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_MANIFESTATION))
@@ -5183,13 +5262,9 @@ namespace battleutils
                 }
             }
         }
-        else if (PSpell->getSpellGroup() == SPELLGROUP_SONG)
-        {
-            if (PEntity->StatusEffectContainer->HasStatusEffect(EFFECT_NIGHTINGALE))
-            {
-                recast *= 0.5f;
-            }
-        }
+
+        recast = dsp_max(recast, 0);
+
         return recast / 1000;
     }
 

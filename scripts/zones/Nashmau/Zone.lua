@@ -5,9 +5,8 @@
 -----------------------------------
 package.loaded["scripts/zones/Nashmau/TextIDs"] = nil;
 -----------------------------------
-
-require("scripts/globals/settings");
 require("scripts/zones/Nashmau/TextIDs");
+require("scripts/globals/settings");
 
 -----------------------------------
 -- onInitialize
@@ -22,16 +21,16 @@ end;
 
 function onZoneIn(player,prevZone)
     local cs = -1;
-  if ((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then 
-   if (prevZone == 58) then 
-      cs = 0x00C9;
-      player:setPos(11,2,-102,128);
-   else
-      player:setPos(40.658,-7.527,-24.001,128);
-   end
-  end
+    if ((player:getXPos() == 0) and (player:getYPos() == 0) and (player:getZPos() == 0)) then 
+        if (prevZone == 58) then 
+            cs = 0x00C9;
+            player:setPos(11,2,-102,128);
+        else
+            player:setPos(40.658,-7.527,-24.001,128);
+        end
+    end
     player:addStatusEffect(EFFECT_TOWNMOVE,50,0,0);
- return cs;
+    return cs;
 end;
 
 -----------------------------------
@@ -53,9 +52,9 @@ end;
 -- onTransportEvent
 -----------------------------------
 function onTransportEvent(player,transport)
-   if (transport == 59) then
-     player:startEvent(0x00c8);
-   end
+    if (transport == 59) then
+        player:startEvent(200);
+    end
 end;
 
 -----------------------------------
@@ -63,8 +62,8 @@ end;
 -----------------------------------
 
 function onEventUpdate(player,csid,option)
-    --printf("CSID: %u",csid);
-    --printf("RESULT: %u",option);
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
 end;
 
 -----------------------------------
@@ -72,7 +71,9 @@ end;
 -----------------------------------
 
 function onEventFinish(player,csid,option)
-   if (csid == 0x00c8) then
-     player:setPos(0,-2,0,0,59);
-   end
+    -- printf("CSID: %u",csid);
+    -- printf("RESULT: %u",option);
+    if (csid == 200) then
+        player:setPos(0,-2,0,0,59);
+    end
 end;

@@ -39,8 +39,9 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(NIDHOGG_SLAYER);
+function onMobDeath(mob, player, isKiller)
+
+    player:addTitle(NIDHOGG_SLAYER);
 
     -- Set Nidhogg's Window Open Time
     if (LandKingSystem_HQ ~= 1) then

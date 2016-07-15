@@ -121,8 +121,9 @@ namespace luautils
     void pushFunc(int lua_func, int index = 0);
     void callFunc(int nargs);
 
-    int32 SendEntityVisualPacket(lua_State*);                                    // временное решение для работы гейзеров в Dangruf_Wadi
+    int32 random(lua_State*);
 
+    int32 SendEntityVisualPacket(lua_State*);                                    // временное решение для работы гейзеров в Dangruf_Wadi
     int32 GetNPCByID(lua_State*);												// Returns NPC By Id
     int32 GetMobByID(lua_State*);												// Returns Mob By Id
     int32 GetMobIDByJob(lua_State*);											// Return mobid by job
@@ -194,6 +195,8 @@ namespace luautils
     int32 OnEffectTick(CBattleEntity* PEntity, CStatusEffect* StatusEffect);	// triggers when effect tick timer has been reached
     int32 OnEffectLose(CBattleEntity* PEntity, CStatusEffect* StatusEffect);	// triggers when effect has been lost
 
+    int32 OnAttachmentEquip(CBattleEntity* PEntity, CItemPuppet* attachment);
+    int32 OnAttachmentUnequip(CBattleEntity* PEntity, CItemPuppet* attachment);
     int32 OnManeuverGain(CBattleEntity* PEntity, CItemPuppet* attachment, uint8 maneuvers);
     int32 OnManeuverLose(CBattleEntity* PEntity, CItemPuppet* attachment, uint8 maneuvers);
 

@@ -38,7 +38,7 @@ function onGameIn(player, firstlogin, zoning)
        if( zid ~= 39 and zid ~= 40 and zid ~= 41 and zid ~= 42 and zid ~= 134 and zid ~= 135 and zid ~= 185 and zid ~= 186 and zid ~= 187 and zid ~= 188 ) then
           local rb = player:getVar( "RelicBought" );
           if( rb ~= 0 and player:hasItem( rb ) ) then
-             player:delItem( rb );
+             player:delItem_Melf( rb );
           end
        end
     end

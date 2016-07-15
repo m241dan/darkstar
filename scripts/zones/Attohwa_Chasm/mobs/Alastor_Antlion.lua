@@ -3,9 +3,9 @@
 --  NPC: Alastor Antlion
 -----------------------------------
 
-require("scripts/globals/titles");
 require("scripts/globals/status");
 require("scripts/globals/magic");
+mixins = {require("scripts/mixins/families/antlion_ambush")}
 
 -----------------------------------
 -- onMobInitialize Action
@@ -25,21 +25,19 @@ end;
 -----------------------------------
 
 function onMobSpawn(mob)
-    mob:setTP(1000);
 end;
 
 -----------------------------------
 -- onMobEngaged
 -----------------------------------
-function onMobEngaged(mob, killer)
-    mob:useMobAbility(278); -- Pit Ambush
+function onMobEngaged(mob, target)
 end;
 
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
 end;
 
 -----------------------------------

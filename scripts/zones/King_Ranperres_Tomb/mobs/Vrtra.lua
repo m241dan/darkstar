@@ -19,12 +19,12 @@ end;
 -- onMobEngaged
 -----------------------------------
 
-function onMobEngaged(mob)
+function onMobEngaged(mob, target)
     mob:resetLocalVars();
 end
 
 -----------------------------------
--- onMobDeath
+-- onMobFight Action
 -----------------------------------
 
 function onMobFight(mob, target)
@@ -73,8 +73,8 @@ end
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(VRTRA_VANQUISHER);
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(VRTRA_VANQUISHER);
     
     -- Set Vrtra's spawnpoint and respawn time (3-5 days)
     UpdateNMSpawnPoint(mob:getID());

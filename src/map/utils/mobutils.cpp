@@ -562,6 +562,12 @@ void CalculateStats(CMobEntity * PMob)
         PMob->ResetGilPurse();
     }
 
+    if(PMob->m_Type & MOBTYPE_EVENT || PMob->m_Type & MOBTYPE_FISHED || PMob->m_Type & MOBTYPE_BATTLEFIELD ||
+        zoneType == ZONETYPE_BATTLEFIELD || zoneType == ZONETYPE_DYNAMIS)
+    {
+        PMob->setMobMod(MOBMOD_CHARMABLE, 0);
+    }
+
     // Check for possible miss-setups
     if (PMob->getMobMod(MOBMOD_SPECIAL_SKILL) != 0 && PMob->getMobMod(MOBMOD_SPECIAL_COOL) == 0)
     {
@@ -577,11 +583,6 @@ void CalculateStats(CMobEntity * PMob)
             !(PMob->m_Detects & DETECT_SCENT))
     {
         ShowError("Mobutils::CalculateStats Mob (%s, %d, %d) has no detection methods!\n", PMob->GetName(), PMob->id, PMob->m_Family);
-    }
-
-    if (PMob->m_EcoSystem == SYSTEM_BEASTMEN && !(PMob->m_Detects & DETECT_SCENT))
-    {
-        ShowError("Mobutils::CalculateStats Mob (%s, %d, %d) beastman does not detect by scent!\n", PMob->GetName(), PMob->id, PMob->m_Family);
     }
 }
 
@@ -729,8 +730,6 @@ void SetupRoaming(CMobEntity* PMob)
 
     if(PMob->m_roamFlags & ROAMFLAG_AMBUSH)
     {
-        PMob->setMobMod(MOBMOD_SPECIAL_SKILL, 278);
-        PMob->setMobMod(MOBMOD_SPECIAL_COOL, 1);
         PMob->m_specialFlags |= SPECIALFLAG_HIDDEN;
         // always stay close to spawn
         PMob->m_maxRoamDistance = 2.0f;

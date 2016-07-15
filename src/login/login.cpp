@@ -1,7 +1,7 @@
 /*
 ===========================================================================
 
-  Copyright (c) 2010-2015 Darkstar Dev Teams
+  Copyright (c) 2010-2016 Darkstar Dev Teams
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,6 @@ const char* VERSION_INFO_FILENAME = nullptr;
 login_config_t login_config;	//main settings
 version_info_t version_info;
 
-
 Sql_t *SqlHandle = nullptr;
 std::thread messageThread;
 
@@ -81,14 +80,14 @@ int32 do_init(int32 argc, char** argv)
     version_info_read(VERSION_INFO_FILENAME);
 
 
-    login_fd = makeListenBind_tcp(login_config.uiLoginAuthIp, login_config.usLoginAuthPort, connect_client_login);
-    ShowStatus("The login-server-auth is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.usLoginAuthPort);
+    login_fd = makeListenBind_tcp(login_config.login_auth_ip, login_config.login_auth_port, connect_client_login);
+    ShowStatus("The login-server-auth is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.login_auth_port);
 
-    login_lobbydata_fd = makeListenBind_tcp(login_config.uiLobbyDataIp, login_config.usLobbyDataPort, connect_client_lobbydata);
-    ShowStatus("The login-server-lobbydata is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.usLobbyDataPort);
+    login_lobbydata_fd = makeListenBind_tcp(login_config.login_data_ip, login_config.login_data_port, connect_client_lobbydata);
+    ShowStatus("The login-server-lobbydata is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.login_data_port);
 
-    login_lobbyview_fd = makeListenBind_tcp(login_config.uiLobbyViewIp, login_config.usLobbyViewPort, connect_client_lobbyview);
-    ShowStatus("The login-server-lobbyview is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.usLobbyViewPort);
+    login_lobbyview_fd = makeListenBind_tcp(login_config.login_view_ip, login_config.login_view_port, connect_client_lobbyview);
+    ShowStatus("The login-server-lobbyview is " CL_GREEN"ready" CL_RESET" (Server is listening on the port %u).\n\n", login_config.login_view_port);
 
     SqlHandle = Sql_Malloc();
     if (Sql_Connect(SqlHandle, login_config.mysql_login,
@@ -308,6 +307,30 @@ int32 login_config_read(const char *cfgName)
             ShowInfo("Console Silent Setting: %d\n", atoi(w2));
             msg_silent = atoi(w2);
         }
+        else if (strcmp(w1, "login_data_ip") == 0)
+        {
+            login_config.login_data_ip = aStrdup(w2);
+        }
+        else if (strcmp(w1, "login_data_port") == 0)
+        {
+            login_config.login_data_port = atoi(w2);
+        }
+        else if (strcmp(w1, "login_view_ip") == 0)
+        {   
+            login_config.login_view_ip = aStrdup(w2);
+        }
+        else if (strcmp(w1, "login_view_port") == 0)
+        {
+            login_config.login_view_port = atoi(w2);
+        }
+        else if (strcmp(w1, "login_auth_ip") == 0)
+        {   
+            login_config.login_auth_ip = aStrdup(w2);
+        }
+        else if (strcmp(w1, "login_auth_port") == 0)
+        {
+            login_config.login_auth_port = atoi(w2);
+        }
         else if (strcmp(w1, "mysql_host") == 0)
         {
             login_config.mysql_host = aStrdup(w2);
@@ -352,6 +375,10 @@ int32 login_config_read(const char *cfgName)
         {
             login_config.msg_server_ip = aStrdup(w2);
         }
+        else if (strcmp(w1, "log_user_ip") == 0)
+        {
+            login_config.log_user_ip = config_switch(w2);
+        }
         else
         {
             ShowWarning("Unknown setting '%s' in file %s\n", w1, cfgName);
@@ -389,9 +416,9 @@ int32 version_info_read(const char *fileName)
         ptr++;
         *ptr = '\0';
 
-        if (strcmp(w1, "Min_Client_Ver") == 0)
+        if (strcmp(w1, "CLIENT_VER") == 0)
         {
-            version_info.Min_Client_Ver = aStrdup(w2);
+            version_info.CLIENT_VER = aStrdup(w2);
         }
     }
     fclose(fp);
@@ -400,12 +427,12 @@ int32 version_info_read(const char *fileName)
 
 int32 login_config_default()
 {
-    login_config.uiLobbyDataIp = INADDR_ANY;
-    login_config.usLobbyDataPort = 54230;
-    login_config.uiLobbyViewIp = INADDR_ANY;
-    login_config.usLobbyViewPort = 54001;
-    login_config.uiLoginAuthIp = INADDR_ANY;
-    login_config.usLoginAuthPort = 54231;
+    login_config.login_data_ip = "127.0.0.1";
+    login_config.login_data_port = 54230;
+    login_config.login_view_ip = "127.0.0.1";
+    login_config.login_view_port = 54001;
+    login_config.login_auth_ip = "127.0.0.1";
+    login_config.login_auth_port = 54231;
 
     login_config.expansions = 0xFFFF;
     login_config.servername = "DarkStar";
@@ -419,12 +446,14 @@ int32 login_config_default()
     login_config.search_server_port = 54002;
     login_config.msg_server_port = 54003;
     login_config.msg_server_ip = "127.0.0.1";
+
+    login_config.log_user_ip = "false";
     return 0;
 }
 
 int32 version_info_default()
 {
-    version_info.Min_Client_Ver = "99999999_9"; // xxYYMMDD_m = xx:MajorRelease YY:year MM:month DD:day _m:MinorRelease
+    version_info.CLIENT_VER = "99999999_9"; // xxYYMMDD_m = xx:MajorRelease YY:year MM:month DD:day _m:MinorRelease
     // version_info.DSP_VER = 0;
     return 0;
 }

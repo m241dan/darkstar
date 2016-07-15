@@ -40,8 +40,9 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(BEHEMOTH_DETHRONER);
+function onMobDeath(mob, player, isKiller)
+
+    player:addTitle(BEHEMOTH_DETHRONER);
 
     -- Set King_Behemoth's Window Open Time
     if (LandKingSystem_HQ ~= 1) then
