@@ -370,7 +370,8 @@ function BlueFinalAdjustments(caster, target, spell, dmg, params)
     dmg = utils.stoneskin(target, dmg);
 
     target:delHP(dmg);
-    target:updateEnmityFromDamage(caster,dmg);
+
+    target:updateEnmityFromDamage(params.enmTarget,dmg);
     target:handleAfflatusMiseryDamage(dmg);
     -- TP has already been dealt with.
     return dmg;

@@ -894,6 +894,38 @@ inline int32 CLuaBaseEntity::addTempItem(lua_State *L)
 
 //==========================================================//
 
+inline int32 CLuaBaseEntity::delItem_Melf(lua_State *L )
+{
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+   DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
+
+   CCharEntity *PChar = (CCharEntity*)m_PBaseEntity;
+   uint16 ItemID = (uint16)lua_tointeger(L,1);
+   uint8 LocID, SlotID;
+   for (LocID = 0; LocID < MAX_CONTAINER_ID; ++LocID)
+   {
+      if ( ( SlotID = PChar->getStorage(LocID)->SearchItem(ItemID) ) != ERROR_SLOTID)
+         break;
+   }
+   if( LocID == MAX_CONTAINER_ID || SlotID == ERROR_SLOTID )
+   {
+      lua_pushboolean( L, 0 );
+      return 1;
+   }
+
+   charutils::UnequipItem( PChar, SLOT_MAIN, true );
+   charutils::UnequipItem( PChar, SLOT_SUB, true );
+   charutils::UnequipItem( PChar, SLOT_RANGED, true );
+   charutils::UnequipItem( PChar, SLOT_AMMO, true );
+   charutils::SaveCharEquip( PChar );
+   charutils::UpdateItem( PChar, LocID, SlotID, -1 );
+   lua_pushboolean( L, 1 );
+   PChar->pushPacket( new CInventoryFinishPacket() );
+   return 1;
+}
+
 int32 CLuaBaseEntity::delItem(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -11040,6 +11072,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addTempItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delItem),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delItem_Melf),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSpawnPos),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getFreeSlotsCount),

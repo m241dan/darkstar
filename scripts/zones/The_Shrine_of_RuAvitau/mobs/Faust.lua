@@ -15,6 +15,9 @@ end;
 -----------------------------------
 -- onMobDespawn
 -----------------------------------
+function onMobDeath(mob, player, isKiller)
+    mob:setRespawnTime(math.random(10800,21600)); -- respawn 3-6 hrs
+end;
 
 function onMobFight(mob,target)
    typhoon = mob:getLocalVar( "FaustTyphoon" )
@@ -22,8 +25,4 @@ function onMobFight(mob,target)
       mob:useMobAbility(283);
       SetServerVariable( "FaustTyphoon", os.time() + 10 );
    end
-end
-
-function onMobDespawn(mob)
-    mob:setRespawnTime(math.random(10800,21600)); -- respawn 3-6 hrs
 end;

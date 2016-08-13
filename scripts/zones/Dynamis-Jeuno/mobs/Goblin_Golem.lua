@@ -25,5 +25,4 @@ function onMobDeath(mob, player, isKiller)
     npc:setPos(mob:getXPos(),mob:getYPos(),mob:getZPos());
     npc:setStatus(0);
 
-
 end;
