@@ -473,8 +473,7 @@ int32 lobbyview_parse(int32 fd)
             string_t expected_version(version_info.CLIENT_VER, 6); // Same deal here!
             expected_version = expected_version+"xx_x";
 
-/*            if (version_info.Min_Client_Ver != client_ver)
-            if (expected_version != client_ver_data)
+/*            if (expected_version != client_ver_data)
             {
                 sendsize = 0x24;
                 LOBBBY_ERROR_MESSAGE(ReservePacket);
@@ -492,11 +491,11 @@ int32 lobbyview_parse(int32 fd)
                 }
             }
             else
-            {
+            { */
                 LOBBY_026_RESERVEPACKET(ReservePacket);
                 WBUFW(ReservePacket, 32) = login_config.expansions; // BitMask for expansions;
                 memcpy(MainReservePacket, ReservePacket, sendsize);
-            }
+  /*          }  */
             //Хеширование пакета, и запись значения Хеш функции в пакет
             unsigned char Hash[16];
             md5(MainReservePacket, Hash, sendsize);
