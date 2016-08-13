@@ -1,5 +1,5 @@
 -- update zone server
-UPDATE zone_setting SET zoneip='216.105.171.45';
+UPDATE zone_settings SET zoneip='216.105.171.45';
 
 -- wyrms in general have WAY too much charisma
 UPDATE mob_family_system SET CHR=7 WHERE family='Wyrm';
