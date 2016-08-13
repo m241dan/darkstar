@@ -233,3 +233,5 @@ INSERT INTO `item_mods` VALUES (27510,92,10);
 INSERT INTO `item_mods` VALUES (27510,48,10);
 
 
+-- groundskeepers shouldn't aggro
+UPDATE `mob_pools` SET aggro=0 WHERE poolid=1827;
