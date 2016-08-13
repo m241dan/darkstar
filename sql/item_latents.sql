@@ -2768,8 +2768,6 @@ INSERT INTO `item_latents` VALUES(17093, 369, -4, 56, 0); -- Rune Staff -4MP/tic
 INSERT INTO `item_latents` VALUES(15532, 370, 1, 56, 0); -- Regen +1HP/tic
 INSERT INTO `item_latents` VALUES(15532, 369, -3, 56, 0); -- MP Drain -3MP/tic
 
-<<<<<<< HEAD
-=======
 -- -------------------------------------------------------
 -- Shadow Mantle/Ring
 -- -------------------------------------------------------
@@ -2792,4 +2790,3 @@ INSERT INTO `item_latents` VALUES (10962,169,-12,13,14); -- CHARMED:DECREASES MO
 -- -------------------------------------------------------
 INSERT INTO `item_latents` VALUES (10975, 25, 13, 52, 8); -- DARK WEATHER:ACC
 INSERT INTO `item_latents` VALUES (10975, 23, 13, 52, 8); -- DARK WEATHER:ATT
->>>>>>> 0157a46e3b44508971e148a129e815f328774eec

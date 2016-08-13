@@ -179,7 +179,7 @@ function onAugmentTrade(player, trade)
       if( item_one == ITEM_DAGGER ) then
          dagger = trade:getItemObj(0);
          item_to_aug = trade:getItemObj(1);
-      elseif( item_two == ITEM_DGGER ) then
+      elseif( item_two == ITEM_DAGGER ) then
          dagger = trade:getItemObj(1);
          item_to_aug = trade:getItemObj(0);
       else

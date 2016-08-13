@@ -1,6 +1,30 @@
 require("scripts/globals/status");
 require("scripts/globals/keyitems");
 
+JOB_NON             = 0;
+JOB_WAR             = 1;
+JOB_MNK             = 2;
+JOB_WHM             = 3;
+JOB_BLM             = 4;
+JOB_RDM             = 5;
+JOB_THF             = 6;
+JOB_PLD             = 7;
+JOB_DRK             = 8;
+JOB_BST             = 9;
+JOB_BRD             = 10;
+JOB_RNG             = 11;
+JOB_SAM             = 12;
+JOB_NIN             = 13;
+JOB_DRG             = 14;
+JOB_SMN             = 15;
+JOB_BLU             = 16;
+JOB_COR             = 17;
+JOB_PUP             = 18;
+JOB_DNC             = 19;
+JOB_SCH             = 20;
+JOB_GEO             = 21;
+JOB_RUN             = 22;
+
 -- level_incentive lib
 
 mid_tier = {};
