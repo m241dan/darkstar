@@ -41,13 +41,15 @@ function onUseAbility(player,target,ability,action)
 
     if (target:isMob()) then
         local enmityShed = 50;
-        if player:getMainJob() ~= JOB_DRG then 
+        if player:getMainJob() ~= JOBS.DRG then 
             enmityShed = 30;
         end
         target:lowerEnmity(player, enmityShed + player:getMod(MOD_HIGH_JUMP_ENMITY_REDUCTION)); -- reduce total accumulated enmity
     end
+    
+    local taChar = player:getTrickAttackChar(target);
 
-    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, 0, params, 0, true)
+    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, 0, 0, true, action, taChar, params);
 
     if (tpHits + extraHits > 0) then
         -- Under Spirit Surge, High Jump reduces TP of target

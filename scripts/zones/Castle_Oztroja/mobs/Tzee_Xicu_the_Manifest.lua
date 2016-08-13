@@ -27,10 +27,17 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(DEITY_DEBUNKER);
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(DEITY_DEBUNKER);
     -- Needs to be zone wide message
     -- mob:messagePublic(mob,YAGUDO_KING_DEATH);
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
 
     -- Set Tzee_Xicu_the_Manifest's Window Open Time
     SetServerVariable("[POP]Tzee_Xicu_the_Manifest", os.time(t) + 72 * 3600); -- 3 days

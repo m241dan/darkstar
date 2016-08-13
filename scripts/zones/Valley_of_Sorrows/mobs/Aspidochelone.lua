@@ -19,9 +19,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(ASPIDOCHELONE_SINKER);
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(ASPIDOCHELONE_SINKER);
+end;
 
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     -- Set Aspidochelone's Window Open Time
     if (LandKingSystem_HQ ~= 1) then
         local wait = 72 * 3600;
@@ -43,7 +49,7 @@ end;
 
 function onMobEngaged( mob, target )
    mob:setLocalVar( "outHPP", mob:getHHP() );
-end
+end;
 
 function onMobSpawn( mob )
    mob:addMod( MOD_DEF, 300 );
@@ -51,7 +57,7 @@ function onMobSpawn( mob )
    mob:addMod( MOD_INT, 10 );
    mob:addMod( MOD_MDEF, 25 );
    mob:addMod( MOD_MEVA, 125 );
-end
+end;
 
 function onMobFight(mob, target)
 	
@@ -78,7 +84,7 @@ function onMobFight(mob, target)
          exitShell( mob );
       end
    end
-end
+end;
 
 function enterShell( aspid )
    aspid:addMod( MOD_REGEN, 200 );
@@ -87,7 +93,7 @@ function enterShell( aspid )
    aspid:speed( 0 );
    aspid:setLocalVar( "inTime", os.time() );
    aspid:setLocalVar( "inHPP", aspid:getHPP() );
-end
+end;
 
 function exitShell( aspid )
    aspid:delMod( MOD_REGEN, 200 );
@@ -98,4 +104,4 @@ function exitShell( aspid )
    end
    aspid:setLocalVar( "outTime", os.time() );
    aspid:setLocalVar( "outHPP", aspid:getHPP() );
-end
+end;

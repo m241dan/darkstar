@@ -17,7 +17,7 @@ require("scripts/globals/settings");
 require("scripts/globals/weaponskills");
 -----------------------------------
 
-function onUseWeaponSkill(player, target, wsID, tp, primary)
+function onUseWeaponSkill(player, target, wsID, tp, primary, action, taChar)
 
     local params = {};
     params.numHits = 1;
@@ -34,7 +34,7 @@ function onUseWeaponSkill(player, target, wsID, tp, primary)
         params.atkmulti = 1.3125;
     end
 
-    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, params, tp, primary);
+    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, tp, primary, action, taChar, params);
     if (damage > 0) then
         local duration = (tp/1000 * 45) + 30;
         if (target:hasStatusEffect(EFFECT_ACCURACY_DOWN) == false) then
@@ -43,7 +43,7 @@ function onUseWeaponSkill(player, target, wsID, tp, primary)
     end
 
 
-    if ((player:getEquipID(SLOT_MAIN) == 19003) and (player:getMainJob() == JOB_NIN)) then
+    if ((player:getEquipID(SLOT_MAIN) == 19003) and (player:getMainJob() == JOBS.NIN)) then
         if (damage > 0) then
             applyAftermathEffect(player, tp)
         end

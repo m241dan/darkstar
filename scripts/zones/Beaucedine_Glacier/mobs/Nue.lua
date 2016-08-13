@@ -4,10 +4,10 @@
 -----------------------------------
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     -- Set Nue's Window Open Time
     local wait = 3600;

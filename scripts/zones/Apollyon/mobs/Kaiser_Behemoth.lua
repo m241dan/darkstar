@@ -46,10 +46,10 @@ function onSpellPrecast(mob, spell)
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
       local mobX = mob:getXPos();
     local mobY = mob:getYPos();
     local mobZ = mob:getZPos();

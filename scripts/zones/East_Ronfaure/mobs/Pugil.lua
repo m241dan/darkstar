@@ -10,10 +10,18 @@ require("scripts/zones/East_Ronfaure/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
-    checkRegime(ally,mob,64,1);
+function onMobDeath(mob, player, isKiller)
+    checkRegime(player,mob,64,1);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Swamfisk_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Swamfisk");
         if (ToD <= os.time(t) and GetMobAction(Swamfisk) == 0) then

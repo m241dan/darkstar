@@ -4,10 +4,10 @@
 -----------------------------------
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     -- Set Pelican's Window Open Time
     local wait = math.random(10800,43200); -- 4-12 hours

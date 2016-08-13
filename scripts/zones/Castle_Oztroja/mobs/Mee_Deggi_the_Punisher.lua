@@ -4,10 +4,10 @@
 -----------------------------------
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     if (math.random(1,100) <= 15) then -- Hardcoded "this or this item" drop rate until implemented.
         SetDropRate(1936,14986,1000); -- Ochimusha Kote

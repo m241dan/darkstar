@@ -77,7 +77,7 @@ bool CMobController::TryDeaggro()
         CheckDetection(PTarget) ||
         CheckHide(PTarget))
     {
-        PMob->PEnmityContainer->Clear(PTarget->id);
+        if (PTarget) PMob->PEnmityContainer->Clear(PTarget->id);
         PTarget = PMob->PEnmityContainer->GetHighestEnmity();
         PMob->SetBattleTargetID(PTarget ? PTarget->targid : 0);
         return TryDeaggro();
@@ -111,7 +111,11 @@ bool CMobController::CheckHide(CBattleEntity* PTarget)
 
 bool CMobController::CheckDetection(CBattleEntity* PTarget)
 {
-    if (CanDetectTarget(PTarget) || CanPursueTarget(PTarget) || PMob->StatusEffectContainer->HasStatusEffect(EFFECT_BIND))
+    if (CanDetectTarget(PTarget) || CanPursueTarget(PTarget) || 
+        PMob->StatusEffectContainer->HasStatusEffect(EFFECT_BIND) || 
+        PMob->StatusEffectContainer->HasStatusEffect(EFFECT_SLEEP) || 
+        PMob->StatusEffectContainer->HasStatusEffect(EFFECT_SLEEP_II) ||
+        PMob->StatusEffectContainer->HasStatusEffect(EFFECT_LULLABY))
     {
         TapDeaggroTime();
     }
@@ -143,7 +147,7 @@ void CMobController::TryLink()
     // my pet should help as well
     if (PMob->PPet != nullptr && PMob->PPet->PAI->IsRoaming())
     {
-        ((CMobEntity*)PMob->PPet)->PEnmityContainer->AddLinkEnmity(PTarget);
+        ((CMobEntity*)PMob->PPet)->PEnmityContainer->AddBaseEnmity(PTarget);
     }
 
     // Handle monster linking if they are close enough
@@ -155,7 +159,7 @@ void CMobController::TryLink()
 
             if (PPartyMember->PAI->IsRoaming() && PPartyMember->CanLink(&PMob->loc.p, PMob->getMobMod(MOBMOD_SUPERLINK)))
             {
-                PPartyMember->PEnmityContainer->AddLinkEnmity(PTarget);
+                PPartyMember->PEnmityContainer->AddBaseEnmity(PTarget);
 
                 if (PPartyMember->m_roamFlags & ROAMFLAG_IGNORE)
                 {
@@ -174,7 +178,7 @@ void CMobController::TryLink()
 
         if (PMaster->PAI->IsRoaming() && PMaster->CanLink(&PMob->loc.p, PMob->getMobMod(MOBMOD_SUPERLINK)))
         {
-            PMaster->PEnmityContainer->AddLinkEnmity(PTarget);
+            PMaster->PEnmityContainer->AddBaseEnmity(PTarget);
         }
     }
 }
@@ -501,11 +505,6 @@ void CMobController::DoCombatTick(time_point tick)
 
     float currentDistance = distance(PMob->loc.p, PTarget->loc.p);
 
-    if (!(PMob->m_Behaviour & BEHAVIOUR_NO_TURN))
-    {
-        PMob->PAI->PathFind->LookAt(PTarget->loc.p);
-    }
-
     luautils::OnMobFight(PMob, PTarget);
 
     // Try to spellcast (this is done first so things like Chainspell spam is prioritised over TP moves etc.
@@ -522,6 +521,17 @@ void CMobController::DoCombatTick(time_point tick)
         return;
     }
 
+    Move();
+    return;
+}
+
+void CMobController::Move()
+{
+    if (!PMob->PAI->CanFollowPath())
+    {
+        return;
+    }
+    float currentDistance = distance(PMob->loc.p, PTarget->loc.p);
     if (PMob->PAI->PathFind->IsFollowingScriptedPath() && PMob->PAI->CanFollowPath())
     {
         PMob->PAI->PathFind->FollowPath();
@@ -573,7 +583,7 @@ void CMobController::DoCombatTick(time_point tick)
             if (currentDistance >= PMob->m_ModelSize * 2)
                 battleutils::DrawIn(PTarget, PMob, PMob->m_ModelSize - 0.2f);
         }
-        if (PMob->speed != 0 && m_Tick >= m_LastSpecialTime)
+        if (PMob->speed != 0 && PMob->getMobMod(MOBMOD_NO_MOVE) == 0 && m_Tick >= m_LastSpecialTime)
         {
             // attempt to teleport to target (if in range)
             if (PMob->getMobMod(MOBMOD_TELEPORT_TYPE) == 2)
@@ -619,6 +629,13 @@ void CMobController::DoCombatTick(time_point tick)
             }
         }
     }
+    else
+    {
+        if (!(PMob->m_Behaviour & BEHAVIOUR_NO_TURN))
+        {
+            PMob->PAI->PathFind->LookAt(PTarget->loc.p);
+        }
+    }
 }
 
 void CMobController::HandleEnmity()
@@ -637,7 +654,7 @@ void CMobController::HandleEnmity()
     else
     {
         auto PTarget {PMob->PEnmityContainer->GetHighestEnmity()};
-        ChangeTarget(PTarget ? PTarget->targid : 0);
+        if (PTarget) ChangeTarget(PTarget->targid);
     }
 }
 
@@ -876,6 +893,8 @@ void CMobController::Reset()
 
     // Don't attack player right off of spawn
     m_NeutralTime = m_Tick;
+
+    PTarget = nullptr;
 }
 
 bool CMobController::MobSkill(uint16 targid, uint16 wsid)
@@ -899,7 +918,7 @@ void CMobController::Disengage()
 
     if (PMob->getMobMod(MOBMOD_IDLE_DESPAWN))
     {
-        PMob->SetDespawnTime(std::chrono::milliseconds(PMob->getMobMod(MOBMOD_IDLE_DESPAWN)));
+        PMob->SetDespawnTime(std::chrono::seconds(PMob->getMobMod(MOBMOD_IDLE_DESPAWN)));
     }
 
     PMob->delRageMode();
@@ -936,6 +955,12 @@ bool CMobController::CanAggroTarget(CBattleEntity* PTarget)
 {
     // don't aggro i'm neutral
     if (!PMob->m_Aggro || PMob->m_neutral || PMob->isDead())
+    {
+        return false;
+    }
+
+    // Don't aggro I'm an underground worm
+    if ((PMob->m_roamFlags & ROAMFLAG_WORM) && PMob->IsNameHidden())
     {
         return false;
     }

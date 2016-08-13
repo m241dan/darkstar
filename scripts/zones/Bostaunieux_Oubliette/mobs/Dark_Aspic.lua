@@ -10,11 +10,19 @@ require("scripts/globals/groundsofvalor");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,610,1); -- Check GOV Page
+    checkGoVregime(player,mob,610,1); -- Check GOV Page
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Sewer_Syrup_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Sewer_Syrup");
         if (ToD <= os.time(t) and GetMobAction(Sewer_Syrup) == 0) then

@@ -11,45 +11,17 @@
 require("scripts/globals/status");
 require("scripts/globals/utils");
 require("scripts/globals/magic");
+require("scripts/globals/magicburst");
 
-local elementalGorget = { 15495, 15498, 15500, 15497, 15496, 15499, 15501, 15502 };
-local elementalBelt =   { 11755, 11758, 11760, 11757, 11756, 11759, 11761, 11762 };
 
 -- params contains: ftp100, ftp200, ftp300, str_wsc, dex_wsc, vit_wsc, int_wsc, mnd_wsc, canCrit, crit100, crit200, crit300, acc100, acc200, acc300, ignoresDef, ignore100, ignore200, ignore300, atkmulti
-function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
+function doPhysicalWeaponskill(attacker, target, wsID, tp, primary, action, taChar, params)
 
     local criticalHit = false;
-    local bonusacc = 0;
-    local bonusfTP = 0;
     local bonusTP = params.bonusTP or 0
     local multiHitfTP = params.multiHitfTP or false
-
-    if (attacker:getObjType() == TYPE_PC) then
-        local neck = attacker:getEquipID(SLOT_NECK);
-        local belt = attacker:getEquipID(SLOT_WAIST);
-        local SCProp1, SCProp2, SCProp3 = attacker:getWSSkillchainProp();
-
-        for i,v in ipairs(elementalGorget) do
-            if (neck == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-
-        for i,v in ipairs(elementalBelt) do
-            if (belt == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-        -- printf("bonusacc = %u bonusfTP = %f", bonusacc, bonusfTP);
-    end
+    local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
+    bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
     -- get fstr
     local fstr = fSTR(attacker:getStat(MOD_STR),target:getStat(MOD_VIT),attacker:getWeaponDmgRank());
@@ -79,11 +51,6 @@ function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
         ignoredDef = calculatedIgnoredDef(tp, target:getStat(MOD_DEF), params.ignored100, params.ignored200, params.ignored300);
     end
 
-    local taChar = nil
-    if (primary and attacker:hasStatusEffect(EFFECT_TRICK_ATTACK)) then
-        taChar = attacker:getTrickAttackChar(target)
-    end
-
     -- get cratio min and max
     local cratio, ccritratio = cMeleeRatio(attacker, target, params, ignoredDef);
     local ccmin = 0;
@@ -95,10 +62,7 @@ function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
     end
     attacker:delStatusEffectsByFlag(EFFECTFLAG_DETECTABLE);
     attacker:delStatusEffect(EFFECT_SNEAK_ATTACK);
-    local isTrickValid = taChar == nil
-    if (isTrickValid) then
-        isTrickValid = false;
-    end
+    local isTrickValid = taChar ~= nil
 
     local isAssassinValid = isTrickValid;
     if (isAssassinValid and not attacker:hasTrait(68)) then
@@ -116,7 +80,10 @@ function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
             critrate = critrate + (10 + flourisheffect:getSubPower()/2)/100;
         end
         nativecrit = (attacker:getStat(MOD_DEX) - target:getStat(MOD_AGI))*0.005; -- assumes +0.5% crit rate per 1 dDEX
-        nativecrit = nativecrit + (attacker:getMod(MOD_CRITHITRATE)/100);
+        nativecrit = nativecrit + (attacker:getMod(MOD_CRITHITRATE)/100) + attacker:getMerit(MERIT_CRIT_HIT_RATE)/100 - target:getMerit(MERIT_ENEMY_CRIT_RATE)/100;
+        if (attacker:hasStatusEffect(EFFECT_INNIN) and attacker:isBehind(target, 23)) then -- Innin acc boost attacker is behind target
+            nativecrit = nativecrit + attacker:getStatusEffect(EFFECT_INNIN):getPower();
+        end
 
         if (nativecrit > 0.2) then -- caps!
             nativecrit = 0.2;
@@ -200,11 +167,12 @@ function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
 
     local extraHitsLanded = 0;
 
-    if (numHits>1) then
+    if (numHits > 1) then
 
         local hitsdone = 1;
         while (hitsdone < numHits) do
             local chance = math.random();
+            local targetHP = target:getHP();
             if ((chance<=hitrate or math.random() < attacker:getMod(MOD_ZANSHIN)/100) and
                     not target:hasStatusEffect(EFFECT_PERFECT_DODGE) and not target:hasStatusEffect(EFFECT_ALL_MISS) ) then  -- it hit
                 pdif = generatePdif (cratio[1], cratio[2], true);
@@ -223,6 +191,9 @@ function doPhysicalWeaponskill(attacker, target, wsID, params, tp, primary)
                 extraHitsLanded = extraHitsLanded + 1;
             end
             hitsdone = hitsdone + 1;
+            if (finaldmg > targetHP) then
+                break;
+            end
         end
     end
     finaldmg = finaldmg + souleaterBonus(attacker, (tpHitsLanded+extraHitsLanded));
@@ -256,38 +227,11 @@ end;
 -- params: ftp100, ftp200, ftp300, wsc_str, wsc_dex, wsc_vit, wsc_agi, wsc_int, wsc_mnd, wsc_chr,
 --         ele (ELE_FIRE), skill (SKILL_STF), includemab = true
 
-function doMagicWeaponskill(attacker, target, wsID, params, tp, primary)
+function doMagicWeaponskill(attacker, target, wsID, tp, primary, action, params)
 
-    local bonusacc = 0;
-    local bonusfTP = 0;
     local bonusTP = params.bonusTP or 0
-
-    if (attacker:getObjType() == TYPE_PC) then
-        local neck = attacker:getEquipID(SLOT_NECK);
-        local belt = attacker:getEquipID(SLOT_WAIST);
-        local SCProp1, SCProp2, SCProp3 = attacker:getWSSkillchainProp();
-
-        for i,v in ipairs(elementalGorget) do
-            if (neck == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-
-        for i,v in ipairs(elementalBelt) do
-            if (belt == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-        -- printf("bonusacc = %u bonusfTP = %f", bonusacc, bonusfTP);
-    end
+    local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
+    bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
     local fint = utils.clamp(8 + (attacker:getStat(MOD_INT) - target:getStat(MOD_INT)), -32, 32);
     local dmg = attacker:getMainLvl() + 2 + (attacker:getStat(MOD_STR) * params.str_wsc + attacker:getStat(MOD_DEX) * params.dex_wsc +
@@ -301,7 +245,7 @@ function doMagicWeaponskill(attacker, target, wsID, params, tp, primary)
     dmg = dmg * ftp;
     
     dmg = addBonusesAbility(attacker, params.ele, target, dmg, params);
-    dmg = dmg * applyResistanceAbility(attacker,target,params.ele,params.skill, 0);
+    dmg = dmg * applyResistanceAbility(attacker,target,params.ele,params.skill, bonusacc);
     dmg = target:magicDmgTaken(dmg);
     dmg = adjustForTarget(target,dmg,params.ele);
     
@@ -363,9 +307,17 @@ function getHitRate(attacker,target,capHitRate,bonus)
     if flourisheffect ~= nil and flourisheffect:getPower() > 1 then
         attacker:delMod(MOD_ACC, 20 + flourisheffect:getSubPower())
     end
-    if (bonus) then
-        acc = acc + bonus;
+    if (bonus == nil) then
+        bonus = 0;
     end
+    if (attacker:hasStatusEffect(EFFECT_INNIN) and attacker:isBehind(target, 23)) then -- Innin acc boost if attacker is behind target
+        bonus = bonus + attacker:getStatusEffect(EFFECT_INNIN):getPower();
+    end
+    if (target:hasStatusEffect(EFFECT_YONIN) and attacker:isFacing(target, 23)) then -- Yonin evasion boost if attacker is facing target
+        bonus = bonus - target:getStatusEffect(EFFECT_YONIN):getPower();
+    end
+
+    acc = acc + bonus;
     
     if (attacker:getMainLvl() > target:getMainLvl()) then -- acc bonus!
         acc = acc + ((attacker:getMainLvl()-target:getMainLvl())*4);
@@ -402,9 +354,14 @@ function getRangedHitRate(attacker,target,capHitRate,bonus)
     local acc = attacker:getRACC();
     local eva = target:getEVA();
 
-    if (bonus) then
-        acc = acc + bonus;
+    if (bonus == nil) then
+        bonus = 0;
     end
+    if (target:hasStatusEffect(EFFECT_YONIN) and target:isFacing(attacker, 23)) then -- Yonin evasion boost if defender is facing attacker
+        bonus = bonus - target:getStatusEffect(EFFECT_YONIN):getPower();
+    end
+
+    acc = acc + bonus;
 
     if (attacker:getMainLvl() > target:getMainLvl()) then -- acc bonus!
         acc = acc + ((attacker:getMainLvl()-target:getMainLvl())*4);
@@ -452,9 +409,9 @@ end;
 
 function calculatedIgnoredDef(tp, def, ignore1, ignore2, ignore3)
     if (tp>=1000 and tp <2000) then
-        return (ignore1 + ( ((ignore2-ignore1)/100) * (tp-1000)))*def;
+        return (ignore1 + ( ((ignore2-ignore1)/1000) * (tp-1000)))*def;
     elseif (tp>=2000 and tp<=3000) then
-        return (ignore2 + ( ((ignore3-ignore2)/100) * (tp-2000)))*def;
+        return (ignore2 + ( ((ignore3-ignore2)/1000) * (tp-2000)))*def;
     end
     return 1; -- no def ignore mod
 end
@@ -494,7 +451,7 @@ function cMeleeRatio(attacker, defender, params, ignoredDef)
         pdifmax = cratio + 0.3;
     elseif (cratio < 1.5) then
         pdifmax = (cratio * 0.25) + cratio;
-    elseif (cratio < 1.5) then
+    elseif (cratio < 2.625) then
         pdifmax = cratio + 0.375;
     else
         pdifmax = 3;
@@ -531,7 +488,7 @@ function cMeleeRatio(attacker, defender, params, ignoredDef)
         pdifmax = cratio + 0.3;
     elseif (cratio < 1.5) then
         pdifmax = (cratio * 0.25) + cratio;
-    elseif (cratio < 1.5) then
+    elseif (cratio < 2.625) then
         pdifmax = cratio + 0.375;
     else
         pdifmax = 3;
@@ -694,37 +651,10 @@ end;
  -- params contains: ftp100, ftp200, ftp300, str_wsc, dex_wsc, vit_wsc, int_wsc, mnd_wsc, canCrit, crit100, crit200, crit300, acc100, acc200, acc300, ignoresDef, ignore100, ignore200, ignore300, atkmulti
  function doRangedWeaponskill(attacker, target, wsID, params, tp, primary)
 
-    local bonusacc = 0;
-    local bonusfTP = 0;
     local bonusTP = params.bonusTP or 0
     local multiHitfTP = params.multiHitfTP or false
-
-    if (attacker:getObjType() == TYPE_PC) then
-        local neck = attacker:getEquipID(SLOT_NECK);
-        local belt = attacker:getEquipID(SLOT_WAIST);
-        local SCProp1, SCProp2, SCProp3 = attacker:getWSSkillchainProp();
-
-        for i,v in ipairs(elementalGorget) do
-            if (neck == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-
-        for i,v in ipairs(elementalBelt) do
-            if (belt == v) then
-                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
-                    bonusacc = bonusacc + 10;
-                    bonusfTP = bonusfTP + 0.1;
-                end
-                break;
-            end
-        end
-        -- printf("bonusacc = %u bonusfTP = %f", bonusacc, bonusfTP);
-    end
+    local bonusfTP, bonusacc = handleWSGorgetBelt(attacker);
+    bonusacc = bonusacc + attacker:getMod(MOD_WSACC);
 
     -- get fstr
     local fstr = fSTR(attacker:getStat(MOD_STR),target:getStat(MOD_VIT),attacker:getRangedDmgForRank());
@@ -755,6 +685,11 @@ end;
         critrate = fTP(tp,params.crit100,params.crit200,params.crit300);
         -- add on native crit hit rate (guesstimated, it actually follows an exponential curve)
         local nativecrit = (attacker:getStat(MOD_DEX) - target:getStat(MOD_AGI))*0.005; -- assumes +0.5% crit rate per 1 dDEX
+        nativecrit = nativecrit + (attacker:getMod(MOD_CRITHITRATE)/100) + attacker:getMerit(MERIT_CRIT_HIT_RATE)/100 - target:getMerit(MERIT_ENEMY_CRIT_RATE)/100;
+        if (attacker:hasStatusEffect(EFFECT_INNIN) and attacker:isBehind(target, 23)) then -- Innin crit boost if attacker is behind target
+            nativecrit = nativecrit + attacker:getStatusEffect(EFFECT_INNIN):getPower();
+        end
+
         if (nativecrit > 0.2) then -- caps!
             nativecrit = 0.2;
         elseif (nativecrit < 0.05) then
@@ -847,41 +782,36 @@ end;
 
 function getMultiAttacks(attacker, numHits)
     local bonusHits = 0;
-    local tripleChances = 1;
-    local doubleRate = attacker:getMod(MOD_DOUBLE_ATTACK)/100;
-    local tripleRate = attacker:getMod(MOD_TRIPLE_ATTACK)/100;
+    local multiChances = 1;
+    local doubleRate = (attacker:getMod(MOD_DOUBLE_ATTACK) + attacker:getMerit(MERIT_DOUBLE_ATTACK_RATE))/100;
+    local tripleRate = (attacker:getMod(MOD_TRIPLE_ATTACK) + attacker:getMerit(MERIT_TRIPLE_ATTACK_RATE))/100;
+    local quadRate = attacker:getMod(MOD_QUAD_ATTACK)/100;
 
-    -- triple only procs on first hit, or first two hits if dual wielding
-    if (attacker:getOffhandDmg() > 0) then
-        tripleChances = 2;
+    -- QA/TA/DA can only proc on the first hit of each weapon or each fist
+    if (attacker:getOffhandDmg() > 0 or attacker:getWeaponSkillType(SLOT_MAIN) == SKILL_H2H) then
+        multiChances = 2;
     end
 
-    for i = 1, numHits, 1 do
-        chance = math.random();
-        if (chance < tripleRate and i <= tripleChances) then
+    for i = 1, multiChances, 1 do
+        local chance = math.random()
+        if (chance < quadRate) then
+            bonusHits = bonusHits + 3;
+        elseif (chance < tripleRate + quadRate) then
             bonusHits = bonusHits + 2;
-        else
-            -- have to check if triples are possible, or else double attack chance
-            -- gets accidentally increased by triple chance (since it can only proc on 1 or 2)
-            if (i <= tripleChances) then
-                if (chance < tripleRate + doubleRate) then
-                    bonusHits = bonusHits + 1;
-                end
-            else
-                if (chance < doubleRate) then
-                    bonusHits = bonusHits + 1;
-                end
-            end
+        elseif(chance < doubleRate + tripleRate + quadRate) then
+            bonusHits = bonusHits + 1;
         end
         if (i == 1) then
             attacker:delStatusEffect(EFFECT_ASSASSIN_S_CHARGE);
             attacker:delStatusEffect(EFFECT_WARRIOR_S_CHARGE);
 
-            -- recalculate mods
-            doubleRate = attacker:getMod(MOD_DOUBLE_ATTACK)/100;
-            tripleRate = attacker:getMod(MOD_TRIPLE_ATTACK)/100;
+            -- recalculate DA/TA/QA rate
+            doubleRate = (attacker:getMod(MOD_DOUBLE_ATTACK) + attacker:getMerit(MERIT_DOUBLE_ATTACK_RATE))/100;
+            tripleRate = (attacker:getMod(MOD_TRIPLE_ATTACK) + attacker:getMerit(MERIT_TRIPLE_ATTACK_RATE))/100;
+            quadRate = attacker:getMod(MOD_QUAD_ATTACK)/100;
         end
     end
+
     if ((numHits + bonusHits ) > 8) then
         return 8;
     end
@@ -1019,4 +949,38 @@ function initAftermathParams()
     params.duration.lv3 = 120
 
     return params
+end;
+
+function handleWSGorgetBelt(attacker)
+    local ftpBonus = 0;
+    local accBonus = 0;
+    if (attacker:getObjType() == TYPE_PC) then
+        -- TODO: Get these out of itemid checks when possible.
+        local elementalGorget = { 15495, 15498, 15500, 15497, 15496, 15499, 15501, 15502 };
+        local elementalBelt =   { 11755, 11758, 11760, 11757, 11756, 11759, 11761, 11762 };
+        local neck = attacker:getEquipID(SLOT_NECK);
+        local belt = attacker:getEquipID(SLOT_WAIST);
+        local SCProp1, SCProp2, SCProp3 = attacker:getWSSkillchainProp();
+
+        for i,v in ipairs(elementalGorget) do
+            if (neck == v) then
+                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
+                    accBonus = accBonus + 10;
+                    ftpBonus = ftpBonus + 0.1;
+                end
+                break;
+            end
+        end
+
+        for i,v in ipairs(elementalBelt) do
+            if (belt == v) then
+                if (doesElementMatchWeaponskill(i, SCProp1) or doesElementMatchWeaponskill(i, SCProp2) or doesElementMatchWeaponskill(i, SCProp3)) then
+                    accBonus = accBonus + 10;
+                    ftpBonus = ftpBonus + 0.1;
+                end
+                break;
+            end
+        end
+    end
+    return ftpBonus, accBonus;
 end;

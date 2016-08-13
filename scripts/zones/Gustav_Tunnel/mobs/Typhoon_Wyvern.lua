@@ -11,11 +11,19 @@ require("scripts/zones/Gustav_Tunnel/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,769,2);
+    checkGoVregime(player,mob,769,2);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Ungur_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Ungur");
         if (ToD <= os.time(t) and GetMobAction(Ungur) == 0) then

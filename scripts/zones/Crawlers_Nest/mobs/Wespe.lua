@@ -10,11 +10,19 @@ require("scripts/zones/Crawlers_Nest/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,691,2);
+    checkGoVregime(player,mob,691,2);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Demonic_Tiphia_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Demonic_Tiphia");
         if (ToD <= os.time(t) and GetMobAction(Demonic_Tiphia) == 0) then

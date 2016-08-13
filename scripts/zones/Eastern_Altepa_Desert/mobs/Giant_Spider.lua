@@ -10,11 +10,19 @@ require("scripts/zones/Eastern_Altepa_Desert/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkRegime(ally,mob,109,1);
+    checkRegime(player,mob,109,1);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Dune_Widow_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Dune_Widow");
         if (ToD <= os.time(t) and GetMobAction(Dune_Widow) == 0) then

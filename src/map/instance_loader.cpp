@@ -34,6 +34,7 @@ This file is part of DarkStar-server source code.
 #include "items/item_weapon.h"
 #include "utils/mobutils.h"
 #include "mob_spell_list.h"
+#include "mob_modifier.h"
 
 CInstanceLoader::CInstanceLoader(uint8 instanceid, CZone* PZone, CCharEntity* PRequester)
 {
@@ -110,7 +111,8 @@ CInstance* CInstanceLoader::LoadInstance(CInstance* instance)
 		Fire, Ice, Wind, Earth, Lightning, Water, Light, Dark, Element, \
 		mob_pools.familyid, name_prefix, flags, animationsub, \
 		(mob_family_system.HP / 100), (mob_family_system.MP / 100), hasSpellScript, spellList, ATT, ACC, mob_groups.poolid, \
-		allegiance, namevis, aggro, mob_pools.skill_list_id, mob_pools.true_detection, detects \
+		allegiance, namevis, aggro, mob_pools.skill_list_id, mob_pools.true_detection, detects, \
+		mob_family_system.charmable \
 		FROM instance_entities INNER JOIN mob_spawn_points ON instance_entities.id = mob_spawn_points.mobid \
 		INNER JOIN mob_groups ON mob_groups.groupid = mob_spawn_points.groupid \
 		INNER JOIN mob_pools ON mob_groups.poolid = mob_pools.poolid \
@@ -219,6 +221,8 @@ CInstance* CInstanceLoader::LoadInstance(CInstance* instance)
             PMob->m_TrueDetection = Sql_GetUIntData(SqlInstanceHandle, 63);
             PMob->m_Detects = Sql_GetUIntData(SqlInstanceHandle, 64);
 
+            PMob->setMobMod(MOBMOD_CHARMABLE, Sql_GetUIntData(SqlInstanceHandle, 65));
+
             // must be here first to define mobmods
             mobutils::InitializeMob(PMob, zone);
             PMob->PInstance = instance;
@@ -229,7 +233,7 @@ CInstance* CInstanceLoader::LoadInstance(CInstance* instance)
         Query =
             "SELECT npcid, name, pos_rot, pos_x, pos_y, pos_z,\
 			flag, speed, speedsub, animation, animationsub, namevis,\
-			status, flags, look, name_prefix \
+			status, flags, look, name_prefix, widescan \
 			FROM instance_entities INNER JOIN npc_list ON \
 			(instance_entities.id = npc_list.npcid) \
 			WHERE instanceid = %u AND npcid >= %u and npcid < %u;";
@@ -267,6 +271,7 @@ CInstance* CInstanceLoader::LoadInstance(CInstance* instance)
                 PNpc->m_flags = (uint32)Sql_GetUIntData(SqlInstanceHandle, 13);
 
                 PNpc->name_prefix = (uint8)Sql_GetIntData(SqlInstanceHandle, 15);
+                PNpc->widescan = (uint8)Sql_GetIntData(SqlInstanceHandle, 16);
 
                 memcpy(&PNpc->look, Sql_GetData(SqlInstanceHandle, 14), 20);
 

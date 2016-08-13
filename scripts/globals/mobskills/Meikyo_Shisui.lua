@@ -10,7 +10,7 @@ require("scripts/globals/monstertpmoves");
 
 function onMobSkillCheck(target,mob,skill)
     if (mob:getMobMod(MOBMOD_SCRIPTED_2HOUR) == 1) then
-        return 1;
+        return 0;
     elseif (mob:getHPP() <= mob:getMobMod(MOBMOD_2HOUR_PROC)) then
         return 0;
     end
@@ -26,6 +26,6 @@ function onMobWeaponSkill(target, mob, skill)
     MobBuffMove(mob, typeEffect, 1, 0, duration);
 
     skill:setMsg(MSG_USES);
-    mob:addTP(300);
+    mob:addTP(3000);
     return typeEffect;
 end;

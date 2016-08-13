@@ -24,9 +24,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(SIMURGH_POACHER);
+end;
 
-    ally:addTitle(SIMURGH_POACHER);
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
 
     -- Set Simurgh's spawnpoint and respawn time (21-24 hours)
     UpdateNMSpawnPoint(mob:getID());

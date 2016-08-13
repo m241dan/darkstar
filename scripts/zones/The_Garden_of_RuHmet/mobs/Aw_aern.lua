@@ -25,10 +25,10 @@ function onMobSpawn(mob)
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDespawn(mob)
     local currentMobID = mob:getID();
 
     -- Ix'Aern (DRG) Placeholder mobs

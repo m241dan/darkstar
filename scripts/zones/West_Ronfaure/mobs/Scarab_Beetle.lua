@@ -11,11 +11,19 @@ require("scripts/zones/West_Ronfaure/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
-    checkRegime(ally,mob,3,1);
-    checkRegime(ally,mob,4,2);
+function onMobDeath(mob, player, isKiller)
+    checkRegime(player,mob,3,1);
+    checkRegime(player,mob,4,2);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Fungus_Beetle_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Fungus_Beetle");
         if (ToD <= os.time(t) and GetMobAction(Fungus_Beetle) == 0) then

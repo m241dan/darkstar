@@ -24,10 +24,10 @@ function onMobEngaged(mob,target)
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
     -- Needs to be zone wide message
     -- mob:messagePublic(mob, YAGUDO_AVATAR_DEATH);
 

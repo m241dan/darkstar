@@ -17,7 +17,7 @@ require("scripts/globals/settings");
 require("scripts/globals/weaponskills");
 -----------------------------------
 
-function onUseWeaponSkill(player, target, wsID, tp, primary)
+function onUseWeaponSkill(player, target, wsID, tp, primary, action, taChar)
 
     local params = {};
     params.numHits = 2;
@@ -28,7 +28,7 @@ function onUseWeaponSkill(player, target, wsID, tp, primary)
     params.canCrit = false;
     params.acc100 = 0.0; params.acc200= 0.0; params.acc300= 0.0;
     params.atkmulti = 1;
-    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, params, tp, primary);
+    local damage, criticalHit, tpHits, extraHits = doPhysicalWeaponskill(player, target, wsID, tp, primary, action, taChar, params);
 
     if (USE_ADOULIN_WEAPON_SKILL_CHANGES == true) then
         params.ftp100 = 5; params.ftp200 = 5; params.ftp300 = 5;
@@ -40,7 +40,7 @@ function onUseWeaponSkill(player, target, wsID, tp, primary)
         target:addStatusEffect(EFFECT_WEIGHT, 50, 0, 60);
     end
 
-    if ((player:getEquipID(SLOT_MAIN) == 19000) and (player:getMainJob() == JOB_BRD)) then
+    if ((player:getEquipID(SLOT_MAIN) == 19000) and (player:getMainJob() == JOBS.BRD)) then
         if (damage > 0) then
             local params = initAftermathParams()
             params.subpower.lv1 = 2

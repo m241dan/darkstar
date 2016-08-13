@@ -40,10 +40,10 @@ function onMobRoam(mob)
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDespawn(mob)
 
     local Heliodromos = mob:getID();
     local Heliodromos_Table =

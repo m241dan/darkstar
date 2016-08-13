@@ -28,6 +28,7 @@ function onMobSpawn(mob)
     mob:addMod( MOD_INT, 10 );
     mob:addMod( MOD_MEVA, 20 );
     mob:speed( 40 );
+    mob:setLocalVar("numAdds", 1);
 end
 
 -----------------------------------
@@ -41,7 +42,8 @@ function onMobFight( mob, target )
         mob:spawnPet();
         mob:setLocalVar("astralFlow", 1);
     end
-    if (mob:getBattleTime() ~= 0 and mob:getBattleTime() % 180 == 0) then
+    local numAdds = mob:getLocalVar("numAdds");
+    if (mob:getBattleTime() / 180 == numAdds) then
         -- Ensure we have not spawned all pets yet..
         local genbu = mob:getLocalVar("genbu");
         local seiryu = mob:getLocalVar("seiryu");
@@ -76,6 +78,7 @@ function onMobFight( mob, target )
 
         -- Update Kirins extra vars..
         mob:setLocalVar(newVar, 1);
+        mob:setLocalVar("numAdds", numAdds + 1);
     end
 
     -- Ensure all spawned pets are doing stuff..
@@ -91,10 +94,10 @@ end
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
     -- Award title and cleanup..
-    ally:addTitle( KIRIN_CAPTIVATOR );
-    ally:showText( mob, KIRIN_OFFSET + 1 );
+    player:addTitle( KIRIN_CAPTIVATOR );
+    player:showText( mob, KIRIN_OFFSET + 1 );
 
     -- Despawn pets..
     DespawnMob( 17506671 );

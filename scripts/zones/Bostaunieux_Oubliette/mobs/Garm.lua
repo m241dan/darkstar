@@ -10,11 +10,19 @@ require("scripts/globals/groundsofvalor");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,612,1);
+    checkGoVregime(player,mob,612,1);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Shii_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Shii");
         if (ToD <= os.time(t) and GetMobAction(Shii) == 0) then

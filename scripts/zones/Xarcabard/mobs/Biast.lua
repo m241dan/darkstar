@@ -16,10 +16,10 @@ function onMobInitialize(mob)
 end;
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     -- Set Biast's ToD
     SetServerVariable("[POP]Biast", os.time(t) + 75600); -- 21 hour

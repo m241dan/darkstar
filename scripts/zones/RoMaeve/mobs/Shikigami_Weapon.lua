@@ -3,6 +3,7 @@
 --  MOB: Shikigami Weapon
 -----------------------------------
 
+require("scripts/globals/pathfind");
 
 local path = {
 -47, -4, -37,
@@ -61,6 +62,6 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
-    checkRegime(ally,mob,119,2);
+function onMobDeath(mob, player, isKiller)
+    checkRegime(player,mob,119,2);
 end;

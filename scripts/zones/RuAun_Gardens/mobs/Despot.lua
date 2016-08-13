@@ -6,12 +6,14 @@
 require("scripts/globals/fieldsofvalor");
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
-function onMobDeath(mob,killer,ally)
-    checkRegime(ally,mob,143,2);
-    checkRegime(ally,mob,144,1);
+function onMobDeath(mob,player,isKiller)
+    checkRegime(player,mob,143,2);
+    checkRegime(player,mob,144,1);
+end;
 
+function onMobDespawn(mob)
     -- Set Despot ToD
     SetServerVariable("[POP]Despot", os.time(t) + 7200); -- 2 hour
     DeterMob(mob:getID(), true);

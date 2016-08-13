@@ -15,14 +15,19 @@ function onMobInitialize(mob)
     mob:setMobMod(MOBMOD_DRAW_IN, 2);
 end;
 
-
 -----------------------------------
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(THE_VIVISECTOR);
+end;
 
-    ally:addTitle(THE_VIVISECTOR);
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
 
     -- Set VV's ToD
     SetServerVariable("[POP]Voluptuous_Vivian", os.time(t) + math.random(57600,86400)); -- 16-24 hours

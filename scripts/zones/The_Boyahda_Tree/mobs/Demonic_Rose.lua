@@ -7,10 +7,10 @@
 require("scripts/zones/The_Boyahda_Tree/MobIDs");
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     -- Get Demonic Rose ID and check if it is a PH of Orctrap
     local mobID = mob:getID();

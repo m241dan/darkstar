@@ -4,10 +4,10 @@
 -----------------------------------
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)    
+function onMobDespawn(mob)    
 
     -- Set Demonic_Tiphia's Window Open Time
     local wait = math.random(7200,28800);

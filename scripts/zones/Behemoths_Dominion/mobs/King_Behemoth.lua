@@ -40,9 +40,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(BEHEMOTH_DETHRONER);
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(BEHEMOTH_DETHRONER);
+end;
 
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     -- Set King_Behemoth's Window Open Time
     if (LandKingSystem_HQ ~= 1) then
         local wait = 72 * 3600;
@@ -62,12 +68,13 @@ function onMobDeath(mob, killer, ally)
     end
 end;
 
-function onSpellPrecast(mob, spell)
-    if (spell:getID() == 218) then
-        spell:setAoE(SPELLAOE_RADIAL);
-        spell:setFlag(SPELLFLAG_HIT_ALL);
-        spell:setRadius(30);
-        spell:setAnimation(280);
-        spell:setMPCost(1);
-    end
-end;
+--
+--function onSpellPrecast(mob, spell)
+--    if (spell:getID() == 218) then
+--        spell:setAoE(SPELLAOE_RADIAL);
+--        spell:setFlag(SPELLFLAG_HIT_ALL);
+--        spell:setRadius(30);
+--        spell:setAnimation(280);
+--        spell:setMPCost(1);
+--    end
+--end;

@@ -326,9 +326,6 @@ function BlueMagicalSpell(caster, target, spell, params, statMod)
         end
     end
 
-    local magAccMerit = caster:getMerit(MERIT_MAGICAL_ACCURACY);
-    -- print(magAccMerit);
-
     local statBonus = 0;
     local dStat = 0; -- Please make sure to add an additional stat check if there is to be a spell that uses neither INT, MND, or CHR. None currently exist.
     if (statMod == INT_BASED) then -- Stat mod is INT
@@ -349,7 +346,7 @@ function BlueMagicalSpell(caster, target, spell, params, statMod)
     local magicAttack = 1.0;
     local multTargetReduction = 1.0; -- TODO: Make this dynamically change, temp static till implemented.
     magicAttack = math.floor(D * multTargetReduction);
-    magicAttack = math.floor(magicAttack * applyResistance(caster,spell,target,dStat,BLUE_SKILL,magAccMerit));
+    magicAttack = math.floor(magicAttack * applyResistance(caster,spell,target,dStat,BLUE_SKILL,0));
     dmg = math.floor(addBonuses(caster, spell, target, magicAttack));
     dmg = target:magicDmgTaken(dmg);
     caster:delStatusEffectSilent(EFFECT_BURST_AFFINITY);
@@ -358,12 +355,14 @@ function BlueMagicalSpell(caster, target, spell, params, statMod)
 end;
 
 function BlueFinalAdjustments(caster, target, spell, dmg, params)
-    if (dmg<0) then
+    if (dmg < 0) then
         dmg = 0;
     end
 
+    dmg = dmg * BLUE_POWER;
+
     dmg = dmg - target:getMod(MOD_PHALANX);
-    if (dmg<0) then
+    if (dmg < 0) then
         dmg = 0;
     end
 
@@ -371,8 +370,8 @@ function BlueFinalAdjustments(caster, target, spell, dmg, params)
     dmg = utils.stoneskin(target, dmg);
 
     target:delHP(dmg);
-    target:updateEnmityFromDamage(params.enmTarget,dmg);
-
+    target:updateEnmityFromDamage(caster,dmg);
+    target:handleAfflatusMiseryDamage(dmg);
     -- TP has already been dealt with.
     return dmg;
 end;

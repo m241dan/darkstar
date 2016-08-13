@@ -16,9 +16,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(CASSIENOVA);
+end;
 
-    ally:addTitle(CASSIENOVA);
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
 
     -- Set Capricious_Cassie's spawnpoint and respawn time (21-24 hours)
     UpdateNMSpawnPoint(mob:getID());

@@ -6,10 +6,10 @@
 require("scripts/zones/Buburimu_Peninsula/MobIDs");
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
 
     local mobID = mob:getID();
     if (Helldiver_PH[mobID] ~= nil) then

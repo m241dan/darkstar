@@ -11,11 +11,19 @@ require("scripts/zones/Rolanberry_Fields/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkRegime(ally,mob,88,1);
+    checkRegime(player,mob,88,1);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Drooling_Daisy_PH[mobID] ~= nil) then
 
         local ToD = GetServerVariable("[POP]Drooling_Daisy");

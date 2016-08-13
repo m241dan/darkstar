@@ -11,11 +11,19 @@ require("scripts/zones/Kuftal_Tunnel/MobIDs");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,738,2);
+    checkGoVregime(player,mob,738,2);
 
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local mobID = mob:getID();
+
     if (Sabotender_Mariachi_PH[mobID] ~= nil) then
         local ToD = GetServerVariable("[POP]Sabotender_Mariachi");
         if (ToD <= os.time(t) and GetMobAction(Sabotender_Mariachi) == 0) then

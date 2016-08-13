@@ -5,10 +5,10 @@
 -----------------------------------
 
 -----------------------------------
--- onMobDeath
+-- onMobDespawn
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDespawn(mob)
     local B_ToD = GetServerVariable("[POP]Biast");
     local X = mob:getXPos();
     local Y = mob:getYPos();

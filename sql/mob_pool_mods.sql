@@ -193,14 +193,6 @@ INSERT INTO `mob_pool_mods` VALUES (1851,16,1,1);
 INSERT INTO `mob_pool_mods` VALUES (1851,32,1,1);
 
 -- -------------------------
---  Antlion MOBMOD_SPECIAL_SKILL Pit_Ambush 
--- -------------------------
-INSERT INTO `mob_pool_mods` VALUES (586,30,278,1); -- Burrow Antlion 
-INSERT INTO `mob_pool_mods` VALUES (3141,30,278,1); -- Pit Antlion 
-INSERT INTO `mob_pool_mods` VALUES (3996,30,278,1); -- Trench Antlion 
-INSERT INTO `mob_pool_mods` VALUES (662,30,278,1); -- Cave Antlion 
-
--- -------------------------
 --  Race Runner
 -- -------------------------
 INSERT INTO `mob_pool_mods` VALUES (3301, 29, 100, 0); -- Magic Def 
@@ -287,6 +279,12 @@ INSERT INTO `mob_pool_mods` VALUES (2220,31,200,0); -- 200 magic evasion boost
 INSERT INTO `mob_pool_mods` VALUES (2220,251,-50,0); -- stunres ibid(cerberus) reasoning ^
 INSERT INTO `mob_pool_mods` VALUES (2220,242,100,0); -- parares 100
 INSERT INTO `mob_pool_mods` VALUES (2220,247,100,0); -- bindres 100
+
+-- Variable Hare 10% exp bonus
+INSERT INTO `mob_pool_mods` VALUES (4204,28,10,1);
+
+-- Morbolger
+INSERT INTO `mob_pool_mods` VALUES (2742,37,1,1);
 
 /*!40000 ALTER TABLE `mob_pool_mods` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -66,6 +66,7 @@ public:
     //whether the state can be interrupted (including by stun/sleep)
     virtual bool CanInterrupt() = 0;
     bool IsCompleted();
+    void ResetEntryTime();
 
 protected:
     //state logic done per tick - returns whether to exit the state or not

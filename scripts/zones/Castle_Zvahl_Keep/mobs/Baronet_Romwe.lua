@@ -16,8 +16,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    ally:addTitle(HELLSBANE);
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(HELLSBANE);
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
 
     -- Set Baronet_Romwe's Window Open Time
     local wait = math.random(3600,28800);

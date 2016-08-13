@@ -2,6 +2,7 @@
 -- Area: The Shrine of Ru'Avitau
 --  MOB: Olla Pequena
 -----------------------------------
+require("scripts/globals/settings");
 
 -----------------------------------
 -- onMobSpawn Action
@@ -14,8 +15,10 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
-    SpawnMob(mob:getID() + 1,180):updateEnmity(killer);
+function onMobDeath(mob, player, isKiller)
+    if (isKiller == true) then
+        SpawnMob(mob:getID() + 1,180):updateClaim(player);
+    end
 end;
 
 -----------------------------------

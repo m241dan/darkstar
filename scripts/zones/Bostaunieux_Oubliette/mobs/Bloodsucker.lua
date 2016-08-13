@@ -10,10 +10,16 @@ require("scripts/globals/groundsofvalor");
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob,killer,ally)
+function onMobDeath(mob, player, isKiller)
 
-    checkGoVregime(ally,mob,613,1);
+    checkGoVregime(player,mob,613,1);
+end;
 
+-----------------------------------
+-- onMobDeath
+-----------------------------------
+
+function onMobDespawn(mob)
    local mobID = mob:getID();
 
    if (mobID == 17461478) then

@@ -1,13 +1,12 @@
 -----------------------------------
 -- Area: Al'Taieu
--- NM:  Jailer of Prudence
+--  NM:  Jailer of Prudence
 -- IDs: 16912846, 16912847
 -- AnimationSubs: 0 - Normal, 3 - Mouth Open
 -- Wiki: http://ffxiclopedia.wikia.com/wiki/Jailer_of_Prudence
 -----------------------------------
-
-require("scripts/globals/status");
 require("scripts/zones/AlTaieu/mobIDs");
+require("scripts/globals/status");
 
 -----------------------------------
 -- onMobInitialize Action
@@ -76,7 +75,14 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
+end;
+
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
+
+function onMobDespawn(mob)
     local firstPrudence     = GetMobByID(PrudenceOne);
     local secondPrudence    = GetMobByID(PrudenceTwo);
     if (mob:getID() == PrudenceOne) then

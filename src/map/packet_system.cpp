@@ -1009,7 +1009,7 @@ void SmallPacket0x032(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     uint16 targid = RBUFW(data, (0x08));
 
     CCharEntity* PTarget = (CCharEntity*)PChar->GetEntity(targid, TYPE_PC);
-	ShowDebug(CL_CYAN"%s initiated trade request with %s\n" CL_RESET, PChar->GetName(), PTarget->GetName());
+    ShowDebug(CL_CYAN"%s initiated trade request with %s\n" CL_RESET, PChar->GetName(), PTarget->GetName());
     if ((PTarget != nullptr) && (PTarget->id == charid))
     {
         if (jailutils::InPrison(PChar) || jailutils::InPrison(PTarget))
@@ -1058,7 +1058,7 @@ void SmallPacket0x033(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
         case 0x00: // request accepted
         {
-			ShowDebug(CL_CYAN"%s accepted trade request from %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
+            ShowDebug(CL_CYAN"%s accepted trade request from %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
             if (PChar->TradePending.id == PTarget->id && PTarget->TradePending.id == PChar->id)
             {
                 if (PChar->UContainer->IsContainerEmpty() && PTarget->UContainer->IsContainerEmpty())
@@ -1082,7 +1082,7 @@ void SmallPacket0x033(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         break;
         case 0x01: // trade cancelled
         {
-			ShowDebug(CL_CYAN"%s cancelled trade with %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
+            ShowDebug(CL_CYAN"%s cancelled trade with %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
             if (PChar->TradePending.id == PTarget->id && PTarget->TradePending.id == PChar->id)
             {
                 if (PTarget->UContainer->GetType() == UCONTAINER_TRADE)
@@ -1104,7 +1104,7 @@ void SmallPacket0x033(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         break;
         case 0x02: // trade accepted
         {
-			ShowDebug(CL_CYAN"%s accepted trade with %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
+            ShowDebug(CL_CYAN"%s accepted trade with %s\n" CL_RESET, PTarget->GetName(), PChar->GetName());
             if (PChar->TradePending.id == PTarget->id && PTarget->TradePending.id == PChar->id)
             {
                 PChar->UContainer->SetLock();
@@ -1124,7 +1124,7 @@ void SmallPacket0x033(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                     {
                         // Failed to trade..
                         // Either players containers are full or illegal item trade attempted..
-						ShowDebug(CL_CYAN"%s->%s trade failed (full inventory or illegal items)\n" CL_RESET, PChar->GetName(), PTarget->GetName());
+                        ShowDebug(CL_CYAN"%s->%s trade failed (full inventory or illegal items)\n" CL_RESET, PChar->GetName(), PTarget->GetName());
                         PChar->pushPacket(new CTradeActionPacket(PTarget, 1));
                         PTarget->pushPacket(new CTradeActionPacket(PChar, 1));
                     }
@@ -1163,22 +1163,25 @@ void SmallPacket0x034(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         // We used to disable Rare/Ex items being added to the container, but that is handled properly else where now
         if (PItem != nullptr && PItem->getID() == itemID && quantity + PItem->getReserve() <= PItem->getQuantity())
         {
+            // whoever commented above lied about ex items
+            if (PItem->getFlag() & ITEM_FLAG_EX)
+                return;
 
             PItem->setReserve(quantity);
             // If item count is zero.. remove from container..
-			if (quantity > 0)
-			{
-				ShowDebug(CL_CYAN"%s->%s trade updating trade slot id %d with item %s, quantity %d\n" CL_RESET, PChar->GetName(), PTarget->GetName(), tradeSlotID, PItem->getName(), quantity);
-				PChar->UContainer->SetItem(tradeSlotID, PItem);
-			}
-			else
-			{
-				ShowDebug(CL_CYAN"%s->%s trade updating trade slot id %d with item %d, quantity 0\n" CL_RESET, PChar->GetName(), PTarget->GetName(), tradeSlotID, PItem->getName());
-				PChar->UContainer->SetItem(tradeSlotID, nullptr);
-			}
-			ShowDebug(CL_CYAN"%s->%s trade pushing packet to %s\n" CL_RESET, PChar->GetName(), PTarget->GetName(), PChar->GetName());
+            if (quantity > 0)
+            {
+                ShowDebug(CL_CYAN"%s->%s trade updating trade slot id %d with item %s, quantity %d\n" CL_RESET, PChar->GetName(), PTarget->GetName(), tradeSlotID, PItem->getName(), quantity);
+                PChar->UContainer->SetItem(tradeSlotID, PItem);
+            }
+            else
+            {
+                ShowDebug(CL_CYAN"%s->%s trade updating trade slot id %d with item %d, quantity 0\n" CL_RESET, PChar->GetName(), PTarget->GetName(), tradeSlotID, PItem->getName());
+                PChar->UContainer->SetItem(tradeSlotID, nullptr);
+            }
+            ShowDebug(CL_CYAN"%s->%s trade pushing packet to %s\n" CL_RESET, PChar->GetName(), PTarget->GetName(), PChar->GetName());
             PChar->pushPacket(new CTradeItemPacket(PItem, tradeSlotID));
-			ShowDebug(CL_CYAN"%s->%s trade pushing packet to %s\n" CL_RESET, PChar->GetName(), PTarget->GetName(), PTarget->GetName());
+            ShowDebug(CL_CYAN"%s->%s trade pushing packet to %s\n" CL_RESET, PChar->GetName(), PTarget->GetName(), PTarget->GetName());
             PTarget->pushPacket(new CTradeUpdatePacket(PItem, tradeSlotID));
 
             PChar->UContainer->UnLock();
@@ -1518,7 +1521,6 @@ void SmallPacket0x04D(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                         PItem->setSlotID(Sql_GetIntData(SqlHandle, 2));
                         PItem->setQuantity(Sql_GetUIntData(SqlHandle, 3));
 
-                        int what = Sql_GetUIntData(SqlHandle, 4);
                         if (Sql_GetUIntData(SqlHandle, 4) > 0)
                         {
                             PItem->setSent(true);
@@ -2103,8 +2105,8 @@ void SmallPacket0x04E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             !(PItem->isSubType(ITEM_LOCKED)) &&
             !(PItem->getFlag() & ITEM_FLAG_NOAUCTION))
         {
-            PItem->setCharPrice(price);
-            PChar->pushPacket(new CAuctionHousePacket(action, PItem, quantity));
+            PItem->setCharPrice(price); // not sure setCharPrice is right
+            PChar->pushPacket(new CAuctionHousePacket(action, PItem, quantity, price));
         }
     }
     break;
@@ -2161,18 +2163,33 @@ void SmallPacket0x04E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             !(PItem->isSubType(ITEM_LOCKED)) &&
             !(PItem->getFlag() & ITEM_FLAG_NOAUCTION))
         {
-            if (quantity == 0 &&
-                (PItem->getStackSize() == 1 ||
-                PItem->getStackSize() != PItem->getQuantity()))
+            uint32 auctionFee = 0;
+            if (quantity == 0)
             {
-                ShowError(CL_RED"SmallPacket0x04E::AuctionHouse: Incorrect quantity of item %s\n" CL_RESET, PItem->getName());
-                PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); //failed to place up
+                if (PItem->getStackSize() == 1 || PItem->getStackSize() != PItem->getQuantity())
+                {
+                    ShowError(CL_RED"SmallPacket0x04E::AuctionHouse: Incorrect quantity of item %s\n" CL_RESET, PItem->getName());
+                    PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); // Failed to place up
+                    return;
+                }
+                auctionFee = map_config.ah_base_fee_stacks+(price*map_config.ah_tax_rate_stacks/100);
+            }
+            else
+            {
+                auctionFee = map_config.ah_base_fee_single+(price*map_config.ah_tax_rate_single/100);
+            }
+
+            if (PChar->getStorage(LOC_INVENTORY)->GetItem(0)->getQuantity() < auctionFee)
+            {
+                // ShowDebug(CL_CYAN"%s Can't afford the AH fee\n" CL_RESET,PChar->GetName());
+                PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); // Not enough gil to pay fee
                 return;
             }
+
             if (PChar->m_ah_history.size() >= 7)
             {
-				ShowDebug(CL_CYAN"%s already has 7 items on the AH\n" CL_RESET,PChar->GetName());
-                PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); //failed to place up
+                // ShowDebug(CL_CYAN"%s already has 7 items on the AH\n" CL_RESET,PChar->GetName());
+                PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); // Failed to place up
                 return;
             }
 
@@ -2187,14 +2204,15 @@ void SmallPacket0x04E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 (uint32)time(nullptr),
                 price) == SQL_ERROR)
             {
-				ShowError(CL_RED"SmallPacket0x04E::AuctionHouse: Cannot insert item %s to database\n" CL_RESET, PItem->getName());
+                ShowError(CL_RED"SmallPacket0x04E::AuctionHouse: Cannot insert item %s to database\n" CL_RESET, PItem->getName());
                 PChar->pushPacket(new CAuctionHousePacket(action, 197, 0, 0)); //failed to place up
                 return;
             }
             charutils::UpdateItem(PChar, LOC_INVENTORY, slot, -(int32)(quantity != 0 ? 1 : PItem->getStackSize()));
+            charutils::UpdateItem(PChar, LOC_INVENTORY, 0, -auctionFee); // Deduct AH fee
 
-            PChar->pushPacket(new CAuctionHousePacket(action, 1, 0, 0)); //merchandise put up on auction msg
-            PChar->pushPacket(new CAuctionHousePacket(0x0C, PChar->m_ah_history.size(), PChar)); //inform history of slot
+            PChar->pushPacket(new CAuctionHousePacket(action, 1, 0, 0)); // Merchandise put up on auction msg
+            PChar->pushPacket(new CAuctionHousePacket(0x0C, PChar->m_ah_history.size(), PChar)); // Inform history of slot
         }
     }
     break;
@@ -2258,9 +2276,9 @@ void SmallPacket0x04E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         }
     }
     break;
-    case 0x0C: //removing item from ah
+    case 0x0C: // Removing item from AH
     {
-        //check user has invent space
+        // Check user has invent space
         if (PChar->getStorage(LOC_INVENTORY)->GetFreeSlotsCount() == 0)
         {
             PChar->pushPacket(new CAuctionHousePacket(action, 0xE5, PChar, slotid, true)); //invent full, unable to remove msg
@@ -2305,8 +2323,8 @@ void SmallPacket0x04E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                     count++;
                 }
             }
-            //let client know something went wrong
-            PChar->pushPacket(new CAuctionHousePacket(action, 0xE5, PChar, slotid, true)); //invent full, unable to remove msg
+            // Let client know something went wrong
+            PChar->pushPacket(new CAuctionHousePacket(action, 0xE5, PChar, slotid, true)); // Inventory full, unable to remove msg
         }
     }
     break;
@@ -2334,10 +2352,8 @@ void SmallPacket0x050(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     uint8 equipSlotID = RBUFB(data, (0x05));        // charequip slot
     uint8 containerID = RBUFB(data, (0x06));     // container id
 
-    if (containerID != 0 && containerID != 8)
-    {
+    if (containerID != LOC_INVENTORY && containerID != LOC_WARDROBE && containerID != LOC_WARDROBE2 && containerID != LOC_WARDROBE3 && containerID != LOC_WARDROBE4)
         return;
-    }
 
     charutils::EquipItem(PChar, slotID, equipSlotID, containerID); //current
     charutils::SaveCharEquip(PChar);
@@ -2362,7 +2378,7 @@ void SmallPacket0x051(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         uint8 slotID = RBUFB(data, (0x08 + (0x04 * i)));        // inventory slot
         uint8 equipSlotID = RBUFB(data, (0x09 + (0x04 * i)));        // charequip slot
         uint8 containerID = RBUFB(data, (0x0A + (0x04 * i)));     // container id
-        if (containerID == 0 || containerID == 8)
+        if (containerID == LOC_INVENTORY || containerID == LOC_WARDROBE || containerID == LOC_WARDROBE2 || containerID == LOC_WARDROBE3 || containerID == LOC_WARDROBE4)
         {
             charutils::EquipItem(PChar, slotID, equipSlotID, containerID);
         }
@@ -2751,10 +2767,10 @@ void SmallPacket0x060(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     int8* string = data[12];
     luautils::OnEventUpdate(PChar, string);
 
-	PChar->pushPacket(new CReleasePacket(PChar, RELEASE_EVENT));
-	PChar->pushPacket(new CReleasePacket(PChar, RELEASE_UNKNOWN));
+    PChar->pushPacket(new CReleasePacket(PChar, RELEASE_EVENT));
+    PChar->pushPacket(new CReleasePacket(PChar, RELEASE_UNKNOWN));
 
-	return;
+    return;
 }
 
 /************************************************************************
@@ -2859,17 +2875,17 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             }
             if (PInvitee)
             {
-				ShowDebug(CL_CYAN"%s sent party invite to %s\n" CL_RESET, PChar->GetName(), PInvitee->GetName());
+                ShowDebug(CL_CYAN"%s sent party invite to %s\n" CL_RESET, PChar->GetName(), PInvitee->GetName());
                 //make sure invitee isn't dead or in jail, they aren't a party member and don't already have an invite pending, and your party is not full
                 if (PInvitee->isDead() || jailutils::InPrison(PInvitee) || PInvitee->InvitePending.id != 0 || PInvitee->PParty != nullptr)
                 {
-					ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party\n" CL_RESET, PInvitee->GetName());
+                    ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 23));
                     break;
                 }
                 if (PInvitee->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC))
                 {
-					ShowDebug(CL_CYAN"%s has level sync, unable to send invite\n" CL_RESET, PInvitee->GetName());
+                    ShowDebug(CL_CYAN"%s has level sync, unable to send invite\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 236));
                     break;
                 }
@@ -2877,7 +2893,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 PInvitee->InvitePending.id = PChar->id;
                 PInvitee->InvitePending.targid = PChar->targid;
                 PInvitee->pushPacket(new CPartyInvitePacket(charid, targid, PChar, INVITE_PARTY));
-				ShowDebug(CL_CYAN"Sent party invite packet to %s\n" CL_RESET, PInvitee->GetName());
+                ShowDebug(CL_CYAN"Sent party invite packet to %s\n" CL_RESET, PInvitee->GetName());
                 if (PChar->PParty && PChar->PParty->GetSyncTarget())
                     PInvitee->pushPacket(new CMessageStandardPacket(PInvitee, 0, 0, 235));
             }
@@ -2895,11 +2911,11 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 ShowDebug(CL_CYAN"Sent invite packet to lobby server from %s to (%d)\n" CL_RESET, PChar->GetName(), charid);
             }
         }
-		else //in party but not leader, cannot invite
-		{
-			ShowDebug(CL_CYAN"%s is not party leader, cannot send invite\n" CL_RESET, PChar->GetName());
-			PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 21));
-		}
+        else //in party but not leader, cannot invite
+        {
+            ShowDebug(CL_CYAN"%s is not party leader, cannot send invite\n" CL_RESET, PChar->GetName());
+            PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 21));
+        }
         break;
 
     case 5: // alliance - must be unallied party leader or alliance leader of a non-full alliance
@@ -2914,18 +2930,18 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             }
             if (PInvitee)
             {
-				ShowDebug(CL_CYAN"%s sent party invite to %s\n" CL_RESET, PChar->GetName(), PInvitee->GetName());
+                ShowDebug(CL_CYAN"%s sent party invite to %s\n" CL_RESET, PChar->GetName(), PInvitee->GetName());
                 //make sure intvitee isn't dead or in jail, they are an unallied party leader and don't already have an invite pending
                 if (PInvitee->isDead() || jailutils::InPrison(PInvitee) || PInvitee->InvitePending.id != 0 ||
                     PInvitee->PParty == nullptr || PInvitee->PParty->GetLeader() != PInvitee || PInvitee->PParty->m_PAlliance)
                 {
-					ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party/alliance\n" CL_RESET, PInvitee->GetName());
+                    ShowDebug(CL_CYAN"%s is dead, in jail, has a pending invite, or is already in a party/alliance\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 23));
                     break;
                 }
                 if (PInvitee->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC))
                 {
-					ShowDebug(CL_CYAN"%s has level sync, unable to send invite\n" CL_RESET, PInvitee->GetName());
+                    ShowDebug(CL_CYAN"%s has level sync, unable to send invite\n" CL_RESET, PInvitee->GetName());
                     PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 236));
                     break;
                 }
@@ -2933,7 +2949,7 @@ void SmallPacket0x06E(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                 PInvitee->InvitePending.id = PChar->id;
                 PInvitee->InvitePending.targid = PChar->targid;
                 PInvitee->pushPacket(new CPartyInvitePacket(charid, targid, PChar, INVITE_ALLIANCE));
-				ShowDebug(CL_CYAN"Sent party invite packet to %s\n" CL_RESET, PInvitee->GetName());
+                ShowDebug(CL_CYAN"Sent party invite packet to %s\n" CL_RESET, PInvitee->GetName());
             }
             else
             {
@@ -2972,41 +2988,41 @@ void SmallPacket0x06F(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         case 0: // party - anyone may remove themself from party regardless of leadership or alliance
             if (PChar->PParty->m_PAlliance && PChar->PParty->members.size() == 1) // single member alliance parties must be removed from alliance before disband
             {
-				ShowDebug(CL_CYAN"%s party size is one\n" CL_RESET, PChar->GetName());
-				if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
-				{
-					ShowDebug(CL_CYAN"%s alliance size is one party\n" CL_RESET, PChar->GetName());
-					PChar->PParty->m_PAlliance->dissolveAlliance();
-					ShowDebug(CL_CYAN"%s alliance is dissolved\n" CL_RESET, PChar->GetName());
-				}
-				else
-				{
-					ShowDebug(CL_CYAN"Removing %s party from alliance\n" CL_RESET, PChar->GetName());
-					PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
-					ShowDebug(CL_CYAN"%s party is removed from alliance\n" CL_RESET, PChar->GetName());
-				}
+                ShowDebug(CL_CYAN"%s party size is one\n" CL_RESET, PChar->GetName());
+                if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
+                {
+                    ShowDebug(CL_CYAN"%s alliance size is one party\n" CL_RESET, PChar->GetName());
+                    PChar->PParty->m_PAlliance->dissolveAlliance();
+                    ShowDebug(CL_CYAN"%s alliance is dissolved\n" CL_RESET, PChar->GetName());
+                }
+                else
+                {
+                    ShowDebug(CL_CYAN"Removing %s party from alliance\n" CL_RESET, PChar->GetName());
+                    PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
+                    ShowDebug(CL_CYAN"%s party is removed from alliance\n" CL_RESET, PChar->GetName());
+                }
             }
-			ShowDebug(CL_CYAN"Removing %s from party\n" CL_RESET, PChar->GetName());
+            ShowDebug(CL_CYAN"Removing %s from party\n" CL_RESET, PChar->GetName());
             PChar->PParty->RemoveMember(PChar);
-			ShowDebug(CL_CYAN"%s is removed from party\n" CL_RESET, PChar->GetName());
+            ShowDebug(CL_CYAN"%s is removed from party\n" CL_RESET, PChar->GetName());
             break;
 
         case 5: // alliance - any party leader in alliance may remove their party
             if (PChar->PParty->m_PAlliance && PChar->PParty->GetLeader() == PChar)
             {
-				ShowDebug(CL_CYAN"%s is leader of a party in an alliance\n" CL_RESET, PChar->GetName());
-				if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
-				{
-					ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
-					PChar->PParty->m_PAlliance->dissolveAlliance();
-					ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
-				}
-				else
-				{
-					ShowDebug(CL_CYAN"%s wants to remove their party from the alliance\n" CL_RESET, PChar->GetName());
-					PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
-					ShowDebug(CL_CYAN"%s party is removed from the alliance\n" CL_RESET, PChar->GetName());
-				}
+                ShowDebug(CL_CYAN"%s is leader of a party in an alliance\n" CL_RESET, PChar->GetName());
+                if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
+                {
+                    ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
+                    PChar->PParty->m_PAlliance->dissolveAlliance();
+                    ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
+                }
+                else
+                {
+                    ShowDebug(CL_CYAN"%s wants to remove their party from the alliance\n" CL_RESET, PChar->GetName());
+                    PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
+                    ShowDebug(CL_CYAN"%s party is removed from the alliance\n" CL_RESET, PChar->GetName());
+                }
             }
             break;
 
@@ -3029,21 +3045,21 @@ void SmallPacket0x070(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         switch (RBUFB(data, (0x04)))
     {
         case 0: // party - party leader may disband party if not an alliance member
-			if (PChar->PParty->m_PAlliance == nullptr)
-			{
-				ShowDebug(CL_CYAN"%s is disbanding the party (pcmd breakup)\n" CL_RESET, PChar->GetName());
-				PChar->PParty->DisbandParty();
-				ShowDebug(CL_CYAN"%s party has been disbanded (pcmd breakup)\n" CL_RESET, PChar->GetName());
-			}
+            if (PChar->PParty->m_PAlliance == nullptr)
+            {
+                ShowDebug(CL_CYAN"%s is disbanding the party (pcmd breakup)\n" CL_RESET, PChar->GetName());
+                PChar->PParty->DisbandParty();
+                ShowDebug(CL_CYAN"%s party has been disbanded (pcmd breakup)\n" CL_RESET, PChar->GetName());
+            }
             break;
 
         case 5: // alliance - only alliance leader may dissolve the entire alliance
-			if (PChar->PParty->m_PAlliance && PChar->PParty->m_PAlliance->getMainParty() == PChar->PParty)
-			{
-				ShowDebug(CL_CYAN"%s is disbanding the alliance (acmd breakup)\n" CL_RESET, PChar->GetName());
-				PChar->PParty->m_PAlliance->dissolveAlliance();
-				ShowDebug(CL_CYAN"%s alliance has been disbanded (acmd breakup)\n" CL_RESET, PChar->GetName());
-			}
+            if (PChar->PParty->m_PAlliance && PChar->PParty->m_PAlliance->getMainParty() == PChar->PParty)
+            {
+                ShowDebug(CL_CYAN"%s is disbanding the alliance (acmd breakup)\n" CL_RESET, PChar->GetName());
+                PChar->PParty->m_PAlliance->dissolveAlliance();
+                ShowDebug(CL_CYAN"%s alliance has been disbanded (acmd breakup)\n" CL_RESET, PChar->GetName());
+            }
             break;
 
         default:
@@ -3069,30 +3085,30 @@ void SmallPacket0x071(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             CCharEntity* PVictim = (CCharEntity*)(PChar->PParty->GetMemberByName(data[0x0C]));
             if (PVictim)
             {
-				ShowDebug(CL_CYAN"%s is trying to kick %s from party\n" CL_RESET, PChar->GetName(), PVictim->GetName());
+                ShowDebug(CL_CYAN"%s is trying to kick %s from party\n" CL_RESET, PChar->GetName(), PVictim->GetName());
                 if (PVictim == PChar) // using kick on yourself, let's borrow the logic from /pcmd leave to prevent alliance crash
                 {
                     if (PChar->PParty->m_PAlliance && PChar->PParty->members.size() == 1) // single member alliance parties must be removed from alliance before disband
                     {
-						if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
-						{
-							ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
-							PChar->PParty->m_PAlliance->dissolveAlliance();
-							ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
-						}
-						else
-						{
-							ShowDebug(CL_CYAN"%s wants to remove their party from the alliance\n" CL_RESET, PChar->GetName());
-							PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
-							ShowDebug(CL_CYAN"%s party is removed from the alliance\n" CL_RESET, PChar->GetName());
-						}
+                        if (PChar->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
+                        {
+                            ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
+                            PChar->PParty->m_PAlliance->dissolveAlliance();
+                            ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
+                        }
+                        else
+                        {
+                            ShowDebug(CL_CYAN"%s wants to remove their party from the alliance\n" CL_RESET, PChar->GetName());
+                            PChar->PParty->m_PAlliance->removeParty(PChar->PParty);
+                            ShowDebug(CL_CYAN"%s party is removed from the alliance\n" CL_RESET, PChar->GetName());
+                        }
                     }
                 }
                 else if (PChar->PParty->GetLeader() != PChar) // not leader, cannot kick others
                     break;
 
                 PChar->PParty->RemoveMember(PVictim);
-				ShowDebug(CL_CYAN"%s has removed %s from party\n" CL_RESET, PChar->GetName(), PVictim->GetName());
+                ShowDebug(CL_CYAN"%s has removed %s from party\n" CL_RESET, PChar->GetName(), PVictim->GetName());
             }
         }
         break;
@@ -3134,23 +3150,23 @@ void SmallPacket0x071(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             for (uint8 i = 0; i < PChar->PParty->m_PAlliance->partyList.size(); ++i)
             {
                 PVictim = (CCharEntity*)(PChar->PParty->m_PAlliance->partyList[i]->GetMemberByName(data[0x0C]));
-				ShowDebug(CL_CYAN"%s is trying to kick %s party from alliance\n" CL_RESET, PChar->GetName(), PVictim->GetName());
+                ShowDebug(CL_CYAN"%s is trying to kick %s party from alliance\n" CL_RESET, PChar->GetName(), PVictim->GetName());
                 if (PVictim && PVictim->PParty && PVictim->PParty->m_PAlliance) // victim is in this party
                 {
                     //if using kick on yourself, or alliance leader using kick on another party leader - remove the party
                     if (PVictim == PChar || (PChar->PParty->m_PAlliance->getMainParty() == PChar->PParty && PVictim->PParty->GetLeader() == PVictim))
                     {
-						if (PVictim->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
-						{
-							ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
-							PVictim->PParty->m_PAlliance->dissolveAlliance();
-							ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
-						}
-						else
-						{
-							PVictim->PParty->m_PAlliance->removeParty(PVictim->PParty);
-							ShowDebug(CL_CYAN"%s has removed %s party from alliance\n" CL_RESET, PChar->GetName(), PVictim->GetName());
-						}
+                        if (PVictim->PParty->m_PAlliance->partyCount() == 1) // if there is only 1 party then dissolve alliance
+                        {
+                            ShowDebug(CL_CYAN"One party in alliance, %s wants to dissolve the alliance\n" CL_RESET, PChar->GetName());
+                            PVictim->PParty->m_PAlliance->dissolveAlliance();
+                            ShowDebug(CL_CYAN"%s has dissolved the alliance\n" CL_RESET, PChar->GetName());
+                        }
+                        else
+                        {
+                            PVictim->PParty->m_PAlliance->removeParty(PVictim->PParty);
+                            ShowDebug(CL_CYAN"%s has removed %s party from alliance\n" CL_RESET, PChar->GetName(), PVictim->GetName());
+                        }
                     }
                     break; // we're done, break the for
                 }
@@ -3181,7 +3197,7 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     {
         if (InviteAnswer == 0)
         {
-			ShowDebug(CL_CYAN"%s declined party invite from %s\n" CL_RESET, PChar->GetName(), PInviter->GetName());
+            ShowDebug(CL_CYAN"%s declined party invite from %s\n" CL_RESET, PChar->GetName(), PInviter->GetName());
             //invitee declined invite
             PInviter->pushPacket(new CMessageStandardPacket(PInviter, 0, 0, 11));
             PChar->InvitePending.clean();
@@ -3194,14 +3210,14 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             //both invitee and and inviter are party leaders
             if (PInviter->PParty->GetLeader() == PInviter && PChar->PParty->GetLeader() == PChar)
             {
-				ShowDebug(CL_CYAN"%s invited %s to an alliance\n" CL_RESET, PInviter->GetName(), PChar->GetName());
+                ShowDebug(CL_CYAN"%s invited %s to an alliance\n" CL_RESET, PInviter->GetName(), PChar->GetName());
                 //the inviter already has an alliance and wants to add another party - only add if they have room for another party
                 if (PInviter->PParty->m_PAlliance && PInviter->PParty->m_PAlliance->getMainParty() == PInviter->PParty)
                 {
                     //break if alliance is full
                     if (PInviter->PParty->m_PAlliance->partyCount() == 3)
                     {
-						ShowDebug(CL_CYAN"Alliance is full, invite to %s cancelled\n" CL_RESET, PChar->GetName());
+                        ShowDebug(CL_CYAN"Alliance is full, invite to %s cancelled\n" CL_RESET, PChar->GetName());
                         PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 14));
                         PChar->InvitePending.clean();
                         return;
@@ -3210,17 +3226,17 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
                     //alliance is not full, add the new party
                     PInviter->PParty->m_PAlliance->addParty(PChar->PParty);
                     PChar->InvitePending.clean();
-					ShowDebug(CL_CYAN"%s party added to %s alliance\n" CL_RESET, PChar->GetName(), PInviter->GetName());
+                    ShowDebug(CL_CYAN"%s party added to %s alliance\n" CL_RESET, PChar->GetName(), PInviter->GetName());
                     return;
                 }
                 else
                 {
                     //party leaders have no alliance - create a new one!
-					ShowDebug(CL_CYAN"Creating new alliance\n" CL_RESET);
+                    ShowDebug(CL_CYAN"Creating new alliance\n" CL_RESET);
                     CAlliance* PAlliance = new CAlliance(PInviter);
                     PInviter->PParty->m_PAlliance->addParty(PChar->PParty);
                     PChar->InvitePending.clean();
-					ShowDebug(CL_CYAN"%s party added to %s alliance\n" CL_RESET, PChar->GetName(), PInviter->GetName());
+                    ShowDebug(CL_CYAN"%s party added to %s alliance\n" CL_RESET, PChar->GetName(), PInviter->GetName());
                     return;
                 }
             }
@@ -3231,22 +3247,22 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
             if (!(PChar->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_SYNC) && PChar->StatusEffectContainer->HasStatusEffect(EFFECT_LEVEL_RESTRICTION)))
             {
-				ShowDebug(CL_CYAN"%s is not under lvl sync or restriction\n" CL_RESET, PChar->GetName());
+                ShowDebug(CL_CYAN"%s is not under lvl sync or restriction\n" CL_RESET, PChar->GetName());
                 if (PInviter->PParty == nullptr)
                 {
-					ShowDebug(CL_CYAN"Creating new party\n" CL_RESET);
+                    ShowDebug(CL_CYAN"Creating new party\n" CL_RESET);
                     CParty* PParty = new CParty(PInviter);
                 }
                 if (PInviter->PParty->GetLeader() == PInviter)
                 {
                     if (PInviter->PParty->members.size() > 5){//someone else accepted invitation
                         //PInviter->pushPacket(new CMessageStandardPacket(PInviter, 0, 0, 14)); Don't think retail sends error packet to inviter on full pt
-						ShowDebug(CL_CYAN"Someone else accepted party invite, %s cannot be added to party\n" CL_RESET, PChar->GetName());
+                        ShowDebug(CL_CYAN"Someone else accepted party invite, %s cannot be added to party\n" CL_RESET, PChar->GetName());
                         PChar->pushPacket(new CMessageStandardPacket(PChar, 0, 0, 14));
                     }
                     else
-					{
-						ShowDebug(CL_CYAN"Added %s to %s's party\n" CL_RESET, PChar->GetName(), PInviter->GetName());
+                    {
+                        ShowDebug(CL_CYAN"Added %s to %s's party\n" CL_RESET, PChar->GetName(), PInviter->GetName());
                         PInviter->PParty->AddMember(PChar);
                     }
                 }
@@ -3259,7 +3275,7 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
     }
     else
     {
-		ShowDebug(CL_CYAN"(Party)Building invite packet to send to lobby server for %s\n" CL_RESET, PChar->GetName());
+        ShowDebug(CL_CYAN"(Party)Building invite packet to send to lobby server for %s\n" CL_RESET, PChar->GetName());
         uint8 packetData[13] {};
         WBUFL(packetData, 0) = PChar->InvitePending.id;
         WBUFW(packetData, 4) = PChar->InvitePending.targid;
@@ -3268,7 +3284,7 @@ void SmallPacket0x074(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         WBUFB(packetData, 12) = InviteAnswer;
         PChar->InvitePending.clean();
         message::send(MSG_PT_INV_RES, packetData, sizeof packetData, nullptr);
-		ShowDebug(CL_CYAN"(Party)Sent invite packet to send to lobby server for %s\n" CL_RESET, PChar->GetName());
+        ShowDebug(CL_CYAN"(Party)Sent invite packet to send to lobby server for %s\n" CL_RESET, PChar->GetName());
     }
     PChar->InvitePending.clean();
     return;
@@ -3309,7 +3325,7 @@ void SmallPacket0x077(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         if (PChar->PParty != nullptr &&
             PChar->PParty->GetLeader() == PChar)
         {
-			ShowDebug(CL_CYAN"(Party)Changing leader to %s\n" CL_RESET, data[0x04]);
+            ShowDebug(CL_CYAN"(Party)Changing leader to %s\n" CL_RESET, data[0x04]);
             PChar->PParty->AssignPartyRole(data[0x04], RBUFB(data, (0x15)));
         }
     }
@@ -3346,7 +3362,7 @@ void SmallPacket0x077(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             PChar->PParty->GetLeader() == PChar &&
             PChar->PParty->m_PAlliance->getMainParty() == PChar->PParty)
         {
-			ShowDebug(CL_CYAN"(Alliance)Changing leader to %s\n" CL_RESET, data[0x04]);
+            ShowDebug(CL_CYAN"(Alliance)Changing leader to %s\n" CL_RESET, data[0x04]);
             PChar->PParty->m_PAlliance->assignAllianceLeader(data[0x04]);
             uint8 data[4] {};
             WBUFL(data, 0) = PChar->PParty->m_PAlliance->m_AllianceID;
@@ -3953,16 +3969,13 @@ void SmallPacket0x0C3(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         PItemLinkshell = (CItemLinkshell*)PChar->getEquip(SLOT_LINK2);
     }
 
-    if (PItemLinkshell != nullptr && PItemLinkshell->isType(ITEM_LINKSHELL))
+    if (PItemLinkshell != nullptr && PItemLinkshell->isType(ITEM_LINKSHELL) && (PItemLinkshell->GetLSType() == LSTYPE_PEARLSACK || PItemLinkshell->GetLSType() == LSTYPE_LINKSHELL))
     {
-        CItemLinkshell* PItemLinkPearl = new CItemLinkshell(*PItemLinkshell);
-
-        if (PItemLinkPearl->GetLSType() == LSTYPE_PEARLSACK ||
-            PItemLinkPearl->GetLSType() == LSTYPE_LINKSHELL)
+        CItemLinkshell* PItemLinkPearl = (CItemLinkshell*)itemutils::GetItem(515);
+        if (PItemLinkPearl)
         {
-            PItemLinkPearl->setID(515);
-            PItemLinkPearl->setSubType(ITEM_UNLOCKED);
-
+            PItemLinkPearl->setQuantity(1);
+            memcpy(PItemLinkPearl->m_extra, PItemLinkshell->m_extra, 24);
             charutils::AddItem(PChar, LOC_INVENTORY, PItemLinkPearl);
         }
     }
@@ -4000,7 +4013,12 @@ void SmallPacket0x0C4(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
             if (LinkshellID = linkshell::RegisterNewLinkshell(DecodedName, LinkshellColor))
             {
-                PItemLinkshell->setID(513);
+                delete PItemLinkshell;
+                PItemLinkshell = (CItemLinkshell*)itemutils::GetItem(513);
+                if (PItemLinkshell == nullptr)
+                    return;
+                PItemLinkshell->setQuantity(1);
+                PChar->getStorage(LOC_INVENTORY)->InsertItem(PItemLinkshell, SlotID);
                 PItemLinkshell->SetLSID(LinkshellID);
                 PItemLinkshell->setSignature(EncodedName); //because apparently the format from the packet isn't right, and is missing terminators
                 PItemLinkshell->SetLSColor(LinkshellColor);
@@ -4313,7 +4331,7 @@ void SmallPacket0x0DD(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         {
             CMobEntity* PTarget = (CMobEntity*)PEntity;
 
-            if (PTarget->m_Type & MOBTYPE_NOTORIOUS)
+            if (PTarget->m_Type & MOBTYPE_NOTORIOUS || PTarget->m_Type & MOBTYPE_BATTLEFIELD)
             {
                 PChar->pushPacket(new CMessageBasicPacket(PChar, PTarget, 0, 0, 249));
             }
@@ -4535,7 +4553,7 @@ void SmallPacket0x0E7(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             (PChar->PPet->m_EcoSystem != SYSTEM_AVATAR &&
             PChar->PPet->m_EcoSystem != SYSTEM_ELEMENTAL))
         {
-            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, 10, 0));
+            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, map_config.healing_tick_delay, 0));
         }
         PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_LEAVEGAME, 0, ExitType, 5, 0));
     }
@@ -4583,7 +4601,7 @@ void SmallPacket0x0E8(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             {
                 PChar->PPet->PAI->Disengage();
             }
-            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, 10, 0));
+            PChar->StatusEffectContainer->AddStatusEffect(new CStatusEffect(EFFECT_HEALING, 0, 0, map_config.healing_tick_delay, 0));
             return;
         }
         PChar->pushPacket(new CMessageBasicPacket(PChar, PChar, 0, 0, 345));
@@ -4629,6 +4647,13 @@ void SmallPacket0x0F1(map_session_data_t* session, CCharEntity* PChar, CBasicPac
 
     if (IconID != 0)
     {
+        auto effect = PChar->StatusEffectContainer->GetStatusEffect((EFFECT)IconID);
+
+        // think this covers all the removable effects
+        if (!effect || effect->GetFlag() & EFFECTFLAG_CONFRONTATION || effect->GetFlag() & EFFECTFLAG_FOOD ||
+            effect->GetFlag() & EFFECTFLAG_ERASABLE)
+            return;
+
         PChar->StatusEffectContainer->DelStatusEffectsByIcon(IconID);
     }
     return;
@@ -4871,11 +4896,12 @@ void SmallPacket0x0FA(map_session_data_t* session, CCharEntity* PChar, CBasicPac
         PItem->getID() == ItemID &&
         PItem->isType(ITEM_FURNISHING))
     {
-        if (PItem->getFlag() & ITEM_FLAG_WALLHANDING)
+        if (PItem->getFlag() & ITEM_FLAG_WALLHANGING)
         {
             rotation = (col >= 2 ? 3 : 1);
         }
 
+        bool wasInstalled = PItem->isInstalled();
         PItem->setInstalled(true);
         PItem->setCol(col);
         PItem->setRow(row);
@@ -4893,7 +4919,7 @@ void SmallPacket0x0FA(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             "extra = '%s' "
             "WHERE location = 1 AND slot = %u AND charid = %u";
 
-        if (Sql_Query(SqlHandle, Query, extra, slotID, PChar->id) != SQL_ERROR && Sql_AffectedRows(SqlHandle) != 0)
+        if (Sql_Query(SqlHandle, Query, extra, slotID, PChar->id) != SQL_ERROR && Sql_AffectedRows(SqlHandle) != 0 && !wasInstalled)
         {
             PChar->getStorage(LOC_STORAGE)->AddBuff(PItem->getStorage());
 
@@ -5171,6 +5197,7 @@ void SmallPacket0x102(map_session_data_t* session, CCharEntity* PChar, CBasicPac
             else if (RBUFB(data, 0x0D) != 0)
             {
                 puppetutils::setFrame(PChar, RBUFB(data, 0x0D));
+                puppetutils::LoadAutomatonStats(PChar);
             }
             else
             {

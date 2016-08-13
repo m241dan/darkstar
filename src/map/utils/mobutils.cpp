@@ -562,6 +562,12 @@ void CalculateStats(CMobEntity * PMob)
         PMob->ResetGilPurse();
     }
 
+    if(PMob->m_Type & MOBTYPE_EVENT || PMob->m_Type & MOBTYPE_FISHED || PMob->m_Type & MOBTYPE_BATTLEFIELD ||
+        zoneType == ZONETYPE_BATTLEFIELD || zoneType == ZONETYPE_DYNAMIS)
+    {
+        PMob->setMobMod(MOBMOD_CHARMABLE, 0);
+    }
+
     // Check for possible miss-setups
     if (PMob->getMobMod(MOBMOD_SPECIAL_SKILL) != 0 && PMob->getMobMod(MOBMOD_SPECIAL_COOL) == 0)
     {
@@ -573,21 +579,16 @@ void CalculateStats(CMobEntity * PMob)
         ShowError("Mobutils::CalculateStats Mob (%s, %d) with magic but no cool down set!\n", PMob->GetName(), PMob->id);
     }
 
-    if (!(PMob->m_Detects & DETECT_SIGHT) && !(PMob->m_Detects & DETECT_HEARING) &&
-            !(PMob->m_Detects & DETECT_SCENT))
+    if (PMob->m_Detects == 0)
     {
         ShowError("Mobutils::CalculateStats Mob (%s, %d, %d) has no detection methods!\n", PMob->GetName(), PMob->id, PMob->m_Family);
-    }
-
-    if (PMob->m_EcoSystem == SYSTEM_BEASTMEN && !(PMob->m_Detects & DETECT_SCENT))
-    {
-        ShowError("Mobutils::CalculateStats Mob (%s, %d, %d) beastman does not detect by scent!\n", PMob->GetName(), PMob->id, PMob->m_Family);
     }
 }
 
 void SetupJob(CMobEntity* PMob)
 {
     JOBTYPE mJob = PMob->GetMJob();
+    JOBTYPE sJob = PMob->GetSJob();
 
     switch(mJob)
     {
@@ -676,9 +677,11 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_HP_STANDBACK, 70);
             break;
         case JOB_PLD:
+            PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
             break;
         case JOB_DRK:
+            PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 7);
             break;
         case JOB_WHM:
@@ -690,19 +693,41 @@ void SetupJob(CMobEntity* PMob)
             PMob->defaultMobMod(MOBMOD_GA_CHANCE, 25);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 60);
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
+            break;
         case JOB_BLU:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
+            break;
         case JOB_RDM:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
             PMob->defaultMobMod(MOBMOD_GA_CHANCE, 15);
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 40);
             PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
+            break;
         case JOB_SMN:
             PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 70);
             // smn only has "buffs"
             PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 100);
     }
 
+    // Just a fallback at the moment
+    switch(sJob)
+    {
+        case JOB_BLM:
+        case JOB_WHM:
+        case JOB_RDM:
+        case JOB_DRK:
+        case JOB_BLU:
+        case JOB_SMN:
+        case JOB_BRD:
+        case JOB_NIN:
+            if(PMob->getMobMod(MOBMOD_MP_BASE))
+            {
+                PMob->defaultMobMod(MOBMOD_MAGIC_COOL, 35);
+                PMob->defaultMobMod(MOBMOD_GA_CHANCE, 15);
+                PMob->defaultMobMod(MOBMOD_BUFF_CHANCE, 40);
+                PMob->defaultMobMod(MOBMOD_MAGIC_DELAY, 10);
+            }
+    }
 }
 
 void SetupRoaming(CMobEntity* PMob)
@@ -729,8 +754,6 @@ void SetupRoaming(CMobEntity* PMob)
 
     if(PMob->m_roamFlags & ROAMFLAG_AMBUSH)
     {
-        PMob->setMobMod(MOBMOD_SPECIAL_SKILL, 278);
-        PMob->setMobMod(MOBMOD_SPECIAL_COOL, 1);
         PMob->m_specialFlags |= SPECIALFLAG_HIDDEN;
         // always stay close to spawn
         PMob->m_maxRoamDistance = 2.0f;
@@ -992,7 +1015,6 @@ void InitializeMob(CMobEntity* PMob, CZone* PZone)
     PMob->defaultMobMod(MOBMOD_SIGHT_RANGE, CMobEntity::sight_range);
     PMob->defaultMobMod(MOBMOD_SOUND_RANGE, CMobEntity::sound_range);
 
-
     // Killer Effect
     switch (PMob->m_EcoSystem)
       {
@@ -1018,7 +1040,6 @@ void InitializeMob(CMobEntity* PMob, CZone* PZone)
             ShowError("Mob %s level is 0! zoneid %d, poolid %d\n", PMob->GetName(), PMob->getZone(), PMob->m_Pool);
         }
     }
-
 }
 
 /*

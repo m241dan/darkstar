@@ -124,6 +124,7 @@
 #include "../ai/states/magic_state.h"
 
 #include "../transport.h"
+#include "../treasure_pool.h"
 #include "../mob_modifier.h"
 #include "../linkshell.h"
 #include "../message.h"
@@ -759,6 +760,28 @@ inline int32 CLuaBaseEntity::getSpawnPos(lua_State* L)
 
 //==========================================================//
 
+inline int32 CLuaBaseEntity::addTreasure(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+
+    if (PChar->PTreasurePool != nullptr)
+    {
+        PChar->PTreasurePool->AddItem((uint16)lua_tointeger(L, 1), PChar);
+    }
+    else
+    {
+        ShowError(CL_RED"Lua::addTreasure: Tried to add item to a treasure pool that was nullptr! \n" CL_RESET);
+    }
+    return 0;
+}
+
+//==========================================================//
+
 inline int32 CLuaBaseEntity::addItem(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -871,36 +894,43 @@ inline int32 CLuaBaseEntity::addTempItem(lua_State *L)
 
 //==========================================================//
 
-inline int32 CLuaBaseEntity::delItem(lua_State *L )
+int32 CLuaBaseEntity::delItem(lua_State* L)
 {
-   DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
-   DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
 
-   DSP_DEBUG_BREAK_IF(lua_isnil(L,1) || !lua_isnumber(L,1));
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+    auto quantity = 0;
+    auto location = 0;
 
-   CCharEntity *PChar = (CCharEntity*)m_PBaseEntity;
-   uint16 ItemID = (uint16)lua_tointeger(L,1);
-   uint8 LocID, SlotID;
-   for (LocID = 0; LocID < MAX_CONTAINER_ID; ++LocID)
-   {
-      if ( ( SlotID = PChar->getStorage(LocID)->SearchItem(ItemID) ) != ERROR_SLOTID)
-         break;
-   }
-   if( LocID == MAX_CONTAINER_ID || SlotID == ERROR_SLOTID )
-   {
-      lua_pushboolean( L, 0 );
-      return 1;
-   }
+    if (!lua_isnil(L, 2) && lua_isnumber(L, 2))
+    {
+        quantity = (uint32)lua_tointeger(L, 2);
+    }
 
-   charutils::UnequipItem( PChar, SLOT_MAIN, true );
-   charutils::UnequipItem( PChar, SLOT_SUB, true );
-   charutils::UnequipItem( PChar, SLOT_RANGED, true );
-   charutils::UnequipItem( PChar, SLOT_AMMO, true );
-   charutils::SaveCharEquip( PChar );
-   charutils::UpdateItem( PChar, LocID, SlotID, -1 );
-   lua_pushboolean( L, 1 );
-   PChar->pushPacket( new CInventoryFinishPacket() );
-   return 1;
+    if (!lua_isnil(L, 3) && lua_isnumber(L, 3))
+    {
+        if ((uint32)lua_tointeger(L, 3) < MAX_CONTAINER_ID)
+        {
+            location = (uint32)lua_tointeger(L, 3);
+        }
+        else
+        {
+            ShowWarning(CL_YELLOW"Lua::delItem: Attempting to delete an item from an invalid slot. Defaulting to main inventory.\n" CL_RESET);
+        }
+    }
+
+    auto PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+    auto SlotID = PChar->getStorage(location)->SearchItem(lua_tointeger(L, 1));
+    if (SlotID != ERROR_SLOTID)
+    {
+        charutils::UpdateItem(PChar, location, SlotID, -quantity);
+        lua_pushboolean(L, true);
+        PChar->pushPacket(new CInventoryFinishPacket());
+        return 1;
+    }
+    lua_pushboolean(L, false);
+    return 1;
 }
 
 inline int32 CLuaBaseEntity::resetPlayer(lua_State *L)
@@ -2328,6 +2358,57 @@ inline int32 CLuaBaseEntity::delLearnedAbility(lua_State *L)
         charutils::SaveLearnedAbilities(PChar);
         PChar->pushPacket(new CCharAbilitiesPacket(PChar));
     }
+    return 0;
+}
+
+inline int32 CLuaBaseEntity::addLearnedWeaponskill(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+
+    uint8 wsid = (uint16)lua_tointeger(L, 1);
+
+    charutils::addLearnedWeaponskill(PChar, wsid);
+    charutils::BuildingCharWeaponSkills(PChar);
+    charutils::SaveLearnedAbilities(PChar);
+    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
+    return 0;
+}
+
+inline int32 CLuaBaseEntity::hasLearnedWeaponskill(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    uint8 wsid = (uint16)lua_tointeger(L, 1);
+
+    lua_pushboolean(L, (charutils::hasLearnedWeaponskill((CCharEntity*)m_PBaseEntity, wsid) != 0));
+    return 1;
+}
+
+//==========================================================//
+
+inline int32 CLuaBaseEntity::delLearnedWeaponskill(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+
+    uint8 wsid = (uint16)lua_tointeger(L, 1);
+
+    charutils::delLearnedWeaponskill(PChar, wsid);
+    charutils::BuildingCharWeaponSkills(PChar);
+    charutils::SaveLearnedAbilities(PChar);
+    PChar->pushPacket(new CCharAbilitiesPacket(PChar));
     return 0;
 }
 
@@ -4021,6 +4102,21 @@ inline int32 CLuaBaseEntity::getFame(lua_State *L)
         case 5: // Norg
             fame = PChar->profile.fame[3]*fameMultiplier;
             break;
+        // Abyssea
+        case 6: // Konschtat
+        case 7: // Tahrongi
+        case 8: // La Theine
+        case 9: // Misareaux
+        case 10: // Vunkerl
+        case 11: // Attohwa
+        case 12: // Altepa
+        case 13: // Grauberg
+        case 14: // Uleguerand
+            fame = PChar->profile.fame[fameArea-1] * fameMultiplier;
+            break;
+        case 15: // Adoulin
+            fame = PChar->profile.fame[14] * fameMultiplier;
+            break;
     }
     lua_pushinteger(L, fame);
     return 1;
@@ -4037,6 +4133,7 @@ inline int32 CLuaBaseEntity::getFameLevel(lua_State *L)
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
     DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
 
+    uint8  fameArea = (uint8)lua_tointeger(L, 1);
     this->getFame(L);
 
     uint16 fame = (uint16)lua_tointeger(L, -1);
@@ -4058,6 +4155,9 @@ inline int32 CLuaBaseEntity::getFameLevel(lua_State *L)
         fameLevel = 3;
     else if (fame >= 50)
         fameLevel = 2;
+
+    if ((fameArea >= 6) && (fameArea <= 14) && (fameLevel >= 6))
+        fameLevel = 6; // Abyssea areas cap out at level 6 fame.
 
     lua_pushinteger(L, fameLevel);
     return 1;
@@ -4096,6 +4196,21 @@ inline int32 CLuaBaseEntity::setFame(lua_State *L)
             break;
         case 5: // Norg
             ((CCharEntity*)m_PBaseEntity)->profile.fame[3] = fame;
+            break;
+        // Abyssea
+        case 6: // Konschtat
+        case 7: // Tahrongi
+        case 8: // La Theine
+        case 9: // Misareaux
+        case 10: // Vunkerl
+        case 11: // Attohwa
+        case 12: // Altepa
+        case 13: // Grauberg
+        case 14: // Uleguerand
+            ((CCharEntity*)m_PBaseEntity)->profile.fame[fameArea-1] = fame;
+            break;
+        case 15: // Adoulin
+            ((CCharEntity*)m_PBaseEntity)->profile.fame[14] = fame;
             break;
     }
     charutils::SaveFame((CCharEntity*)m_PBaseEntity);
@@ -4137,6 +4252,21 @@ inline int32 CLuaBaseEntity::addFame(lua_State *L)
             break;
         case 5: // Norg
             PChar->profile.fame[3] += fame;
+            break;
+        // Abyssea
+        case 6: // Konschtat
+        case 7: // Tahrongi
+        case 8: // La Theine
+        case 9: // Misareaux
+        case 10: // Vunkerl
+        case 11: // Attohwa
+        case 12: // Altepa
+        case 13: // Grauberg
+        case 14: // Uleguerand
+            PChar->profile.fame[fameArea-1] += fame;
+            break;
+        case 15: // Adoulin
+            PChar->profile.fame[14] += fame;
             break;
     }
     charutils::SaveFame(PChar);
@@ -4778,6 +4908,17 @@ inline int32 CLuaBaseEntity::hasBustEffect(lua_State *L)
     return 1;
 }
 
+inline int32 CLuaBaseEntity::numBustEffects(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
+
+    uint8 numEffects = ((CBattleEntity*)m_PBaseEntity)->StatusEffectContainer->GetEffectsCount(EFFECT_BUST);
+
+    lua_pushinteger(L, numEffects);
+    return 1;
+}
+
 inline int32 CLuaBaseEntity::canGainStatusEffect(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -5298,6 +5439,48 @@ inline int32 CLuaBaseEntity::setMobMod(lua_State *L)
     ((CMobEntity*)m_PBaseEntity)->setMobMod(
         lua_tointeger(L, 1),
         lua_tointeger(L, 2));
+    return 0;
+}
+
+inline int32 CLuaBaseEntity::addMobMod(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+
+    // putting this in here to find elusive bug
+    if (!(m_PBaseEntity->objtype & TYPE_MOB))
+    {
+        // this once broke on an entity (17532673) but it could not be found
+        ShowError("CLuaBaseEntity::addMobMod Expected type mob (%d) but its a (%d)\n", m_PBaseEntity->id, m_PBaseEntity->objtype);
+        return 0;
+    }
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 2) || !lua_isnumber(L, 2));
+
+    ((CMobEntity*)m_PBaseEntity)->addMobMod(
+        lua_tointeger(L, 1),
+        lua_tointeger(L, 2));
+    return 0;
+}
+
+inline int32 CLuaBaseEntity::delMobMod(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+
+    // putting this in here to find elusive bug
+    if (!(m_PBaseEntity->objtype & TYPE_MOB))
+    {
+        // this once broke on an entity (17532673) but it could not be found
+        ShowError("CLuaBaseEntity::addMobMod Expected type mob (%d) but its a (%d)\n", m_PBaseEntity->id, m_PBaseEntity->objtype);
+        return 0;
+    }
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 2) || !lua_isnumber(L, 2));
+
+    ((CMobEntity*)m_PBaseEntity)->addMobMod(
+        lua_tointeger(L, 1),
+        -lua_tointeger(L, 2));
     return 0;
 }
 
@@ -6423,6 +6606,34 @@ inline int32 CLuaBaseEntity::updateEnmityFromDamage(lua_State *L)
 
 /************************************************************************
 *                                                                       *
+*  Returns the CE and VE the mob has towards the player                 *
+*                                                                       *
+************************************************************************/
+
+inline int32 CLuaBaseEntity::getCE(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
+
+    CLuaBaseEntity* PEntity = Lunar<CLuaBaseEntity>::check(L, 1);
+
+    lua_pushinteger(L, ((CMobEntity*)m_PBaseEntity)->PEnmityContainer->GetCE((CBattleEntity*)PEntity->GetBaseEntity()));
+    return 1;
+}
+
+inline int32 CLuaBaseEntity::getVE(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
+
+    CLuaBaseEntity* PEntity = Lunar<CLuaBaseEntity>::check(L, 1);
+
+    lua_pushinteger(L, ((CMobEntity*)m_PBaseEntity)->PEnmityContainer->GetVE((CBattleEntity*)PEntity->GetBaseEntity()));
+    return 1;
+}
+
+/************************************************************************
+*                                                                       *
 *  Adds a specified amount of enmity towards the target if the base     *
 *  entity is a mob, or towards the base entity if the base entity is a  *
 *  player.                                                              *
@@ -7396,6 +7607,10 @@ inline int32 CLuaBaseEntity::setRespawnTime(lua_State* L)
     if (!lua_isnil(L, 1) && lua_isnumber(L, 1))
     {
         PMob->m_RespawnTime = lua_tointeger(L, 1) * 1000;
+        if (PMob->PAI->IsCurrentState<CDespawnState>())
+        {
+            PMob->PAI->GetCurrentState()->ResetEntryTime();
+        }
 
         if (!lua_isnil(L, 2) && lua_isboolean(L, 2) && lua_toboolean(L, 2)) //set optional parameter to true to only modify the timer
             return 0;
@@ -7824,6 +8039,25 @@ inline int32 CLuaBaseEntity::getCurrency(lua_State *L)
 
 //==========================================================//
 
+inline int32 CLuaBaseEntity::setCurrency(lua_State *L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PC);
+
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isstring(L, 1));
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 2) || !lua_isnumber(L, 2));
+
+    const char* type = lua_tostring(L, 1);
+    int32 amount = (int32)lua_tointeger(L, 2);
+    CCharEntity* PChar = (CCharEntity*)m_PBaseEntity;
+
+    charutils::SetPoints(PChar, type, amount);
+
+    return 0;
+}
+
+//==========================================================//
+
 inline int32 CLuaBaseEntity::addCurrency(lua_State *L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -8209,11 +8443,8 @@ inline int32 CLuaBaseEntity::isBehind(lua_State *L)
     DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isuserdata(L, 1));
 
     CLuaBaseEntity* PLuaBaseEntity = Lunar<CLuaBaseEntity>::check(L, 1);
-    uint8 angle = 42;
-    if (lua_gettop(L) > 1)
-    {
-        angle = lua_tonumber(L, 2);
-    }
+
+    uint8 angle = lua_gettop(L) > 1 ? lua_tointeger(L, 2) : 42;
 
     uint8 turn = PLuaBaseEntity->GetBaseEntity()->loc.p.rotation - getangle(PLuaBaseEntity->GetBaseEntity()->loc.p, m_PBaseEntity->loc.p);
 
@@ -8235,9 +8466,11 @@ inline int32 CLuaBaseEntity::isFacing(lua_State *L)
 
     CLuaBaseEntity* PLuaBaseEntity = Lunar<CLuaBaseEntity>::check(L, 1);
 
+    uint8 angle = lua_gettop(L) > 1 ? lua_tointeger(L, 2) : 45;
+
     DSP_DEBUG_BREAK_IF(PLuaBaseEntity == nullptr);
 
-    lua_pushboolean(L, isFaceing(m_PBaseEntity->loc.p, PLuaBaseEntity->GetBaseEntity()->loc.p, 45));
+    lua_pushboolean(L, isFaceing(m_PBaseEntity->loc.p, PLuaBaseEntity->GetBaseEntity()->loc.p, angle));
     return 1;
 }
 
@@ -9537,6 +9770,24 @@ inline int32 CLuaBaseEntity::hideHP(lua_State* L)
     return 0;
 }
 
+inline int32 CLuaBaseEntity::hideModel(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isboolean(L, 1));
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB && m_PBaseEntity->objtype != TYPE_NPC);
+
+    if (m_PBaseEntity->objtype == TYPE_MOB)
+    {
+        ((CMobEntity*)m_PBaseEntity)->HideModel(lua_toboolean(L, 1));
+    }
+    else if (m_PBaseEntity->objtype == TYPE_NPC)
+    {
+        ((CNpcEntity*)m_PBaseEntity)->HideModel(lua_toboolean(L, 1));
+    }
+    m_PBaseEntity->updatemask |= UPDATE_HP;
+    return 0;
+}
+
 inline int32 CLuaBaseEntity::entityVisualPacket(lua_State* L)
 {
     DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
@@ -9853,14 +10104,17 @@ inline int32 CLuaBaseEntity::getEnmityList(lua_State* L)
         int i = 1;
         for (auto member : *enmityList)
         {
-            lua_getglobal(L, CLuaBaseEntity::className);
-            lua_pushstring(L, "new");
-            lua_gettable(L, -2);
-            lua_insert(L, -2);
-            lua_pushlightuserdata(L, (void*)member.second->PEnmityOwner);
-            lua_pcall(L, 2, 1, 0);
+            if (member.second.PEnmityOwner)
+            {
+                lua_getglobal(L, CLuaBaseEntity::className);
+                lua_pushstring(L, "new");
+                lua_gettable(L, -2);
+                lua_insert(L, -2);
+                lua_pushlightuserdata(L, (void*)member.second.PEnmityOwner);
+                lua_pcall(L, 2, 1, 0);
 
-            lua_rawseti(L, -2, i++);
+                lua_rawseti(L, -2, i++);
+            }
         }
     }
     else
@@ -10099,6 +10353,17 @@ inline int32 CLuaBaseEntity::setTrueDetection(lua_State* L)
     DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
 
     ((CMobEntity*)m_PBaseEntity)->m_TrueDetection = lua_tointeger(L, -1);
+
+    return 0;
+}
+
+inline int32 CLuaBaseEntity::setAggressive(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_MOB);
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    ((CMobEntity*)m_PBaseEntity)->m_Aggro = lua_tointeger(L, -1);
 
     return 0;
 }
@@ -10517,6 +10782,19 @@ int32 CLuaBaseEntity::takeWeaponskillDamage(lua_State* L)
     return 1;
 }
 
+int32 CLuaBaseEntity::handleAfflatusMiseryDamage(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype == TYPE_NPC);
+    DSP_DEBUG_BREAK_IF(lua_isnil(L, 1) || !lua_isnumber(L, 1));
+
+    auto damage = lua_tointeger(L, 1);
+
+    battleutils::HandleAfflatusMiseryDamage(static_cast<CBattleEntity*>(m_PBaseEntity), damage);
+
+    return 0;
+}
+
 
 int32 CLuaBaseEntity::setEquipBlock(lua_State* L)
 {
@@ -10610,6 +10888,64 @@ int32 CLuaBaseEntity::checkImbuedItems(lua_State* L)
     return 1;
 }
 
+inline int32 CLuaBaseEntity::getNearbyEntities(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+
+    CCharEntity* iterTarget = (CCharEntity*)(m_PBaseEntity->objtype == TYPE_PC ? m_PBaseEntity : nullptr);
+
+    if (!iterTarget)
+    {
+        if (m_PBaseEntity->objtype == TYPE_MOB && ((CBattleEntity*)m_PBaseEntity)->GetBattleTarget()->objtype == TYPE_PC)
+        {
+            iterTarget = (CCharEntity*)((CBattleEntity*)m_PBaseEntity)->GetBattleTarget();
+        }
+        else if (((CBattleEntity*)m_PBaseEntity)->PMaster && ((CBattleEntity*)m_PBaseEntity)->PMaster->objtype == TYPE_PC)
+        {
+            iterTarget = (CCharEntity*)((CBattleEntity*)m_PBaseEntity)->PMaster;
+        }
+    }
+
+    lua_newtable(L);
+    int newTable = lua_gettop(L);
+    
+    for (auto&& list : {iterTarget->SpawnMOBList, iterTarget->SpawnPCList, iterTarget->SpawnPETList})
+    {
+        for (auto&& entity : list)
+        {
+            lua_getglobal(L, CLuaBaseEntity::className);
+            lua_pushstring(L, "new");
+            lua_gettable(L, -2);
+            lua_insert(L, -2);
+            lua_pushlightuserdata(L, (void*)entity.second);
+            lua_pcall(L, 2, 1, 0);
+            lua_rawseti(L, newTable, entity.first);
+        }
+    }
+
+    return 1;
+}
+
+int32 CLuaBaseEntity::getAutomatonFrame(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PET || static_cast<CPetEntity*>(m_PBaseEntity)->getPetType() != PETTYPE_AUTOMATON);
+
+    lua_pushinteger(L, static_cast<CAutomatonEntity*>(m_PBaseEntity)->getFrame());
+
+    return 1;
+}
+
+int32 CLuaBaseEntity::getAutomatonHead(lua_State* L)
+{
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity == nullptr);
+    DSP_DEBUG_BREAK_IF(m_PBaseEntity->objtype != TYPE_PET || static_cast<CPetEntity*>(m_PBaseEntity)->getPetType() != PETTYPE_AUTOMATON);
+
+    lua_pushinteger(L, static_cast<CAutomatonEntity*>(m_PBaseEntity)->getHead());
+
+    return 1;
+}
+
 //==========================================================//
 
 //=========================================================//
@@ -10700,6 +11036,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getStat),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMaxHP),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMaxMP),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,addTreasure),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addTempItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delItem),
@@ -10767,6 +11104,9 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasLearnedAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,canLearnAbility),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delLearnedAbility),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,addLearnedWeaponskill),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasLearnedWeaponskill),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delLearnedWeaponskill),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMainJob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getSFJobs),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getTotalLvls),
@@ -10849,6 +11189,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasStatusEffect),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasStatusEffectByFlag),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hasBustEffect),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,numBustEffects),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getStatusEffectElement),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delStatusEffect),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delStatusEffectsByFlag),
@@ -10871,6 +11212,8 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delMod),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getMobMod),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setMobMod),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,addMobMod),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,delMobMod),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setFlag),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,moghouseFlag),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,injectPacket),
@@ -10881,6 +11224,8 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,lowerEnmity),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,transferEnmity),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,updateEnmityFromDamage),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getCE),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getVE),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addEnmity),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getEquipID),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getShieldSize),
@@ -10958,6 +11303,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,BCNMSetLoot),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getBattlefieldID),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getCurrency),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,setCurrency),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,addCurrency),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,delCurrency),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getCP),
@@ -11077,6 +11423,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hideName),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,untargetable),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,hideHP),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,hideModel),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,breathDmgTaken),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,magicDmgTaken),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,physicalDmgTaken),
@@ -11104,6 +11451,7 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getModelId),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setModelId),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setTrueDetection),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,setAggressive),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,instantiateMob),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,getActiveManeuvers),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,removeOldestManeuver),
@@ -11131,10 +11479,12 @@ Lunar<CLuaBaseEntity>::Register_t CLuaBaseEntity::methods[] =
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,triggerListener),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,removeAmmo),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,takeWeaponskillDamage),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,handleAfflatusMiseryDamage),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setEquipBlock),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,setStatDebilitation),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,unequipItem),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,recalculateStats),
     LUNAR_DECLARE_METHOD(CLuaBaseEntity,checkImbuedItems),
+    LUNAR_DECLARE_METHOD(CLuaBaseEntity,getNearbyEntities),
     {nullptr,nullptr}
 };

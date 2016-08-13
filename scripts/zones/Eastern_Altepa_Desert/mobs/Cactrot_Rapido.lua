@@ -352,10 +352,15 @@ end;
 -- onMobDeath
 -----------------------------------
 
-function onMobDeath(mob, killer, ally)
+function onMobDeath(mob, player, isKiller)
+    player:addTitle(CACTROT_DESACELERADOR);
+end;
 
-    ally:addTitle(CACTROT_DESACELERADOR);
+-----------------------------------
+-- onMobDespawn
+-----------------------------------
 
+function onMobDespawn(mob)
     -- Set Cactrot Rapido's spawnpoint and respawn time (24-72 hours)
     UpdateNMSpawnPoint(mob:getID());
     mob:setRespawnTime(math.random(86400,259200));
