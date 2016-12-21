@@ -16,9 +16,9 @@ require("scripts/zones/Inner_Horutoto_Ruins/TextIDs");
 
 function onInitialize(zone)    
 
-    local tomes = {17563919,17563920,17563921};
+--    local tomes = {17563919,17563920,17563921};
     
-    SetGroundsTome(tomes);
+--    SetGroundsTome(tomes);
     
     zone:registerRegion(1, -261, -1, -31, -257, 1, -27); -- Red
     zone:registerRegion(2, -265, -1, -26, -261, 1, -22); -- White    

@@ -23,7 +23,9 @@ function onTrigger(player,npc)
     
 player:showText(npc,SUSU_SHOP_DIALOG);
 
-stock = {0x1227,20000,        -- Banishga II
+stock = {0x128f,400000, 	-- Erase
+     0x126a,100000,	-- Phalanx	
+     0x1227,20000,        -- Banishga II
      0x1248,244,        -- Barsleep
      0x1249,400,        -- Barpoison
      0x124a,780,        -- Barparalyze

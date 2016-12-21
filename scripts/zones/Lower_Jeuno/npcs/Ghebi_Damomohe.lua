@@ -73,7 +73,9 @@ function onEventFinish(player,csid,option)
 --printf("CSID: %u",csid);
 --printf("RESULT: %u",option);
     if (csid == 0x006a and option == 0) then
-        stock = {0x1135,144,  -- Rice Ball
+        stock = {0x1353,650000, -- Utsusemi: Ni
+		 0x1352,350000, -- Utsusemi: Ichi
+		 0x1135,144,  -- Rice Ball
                  0x1169,2700, -- Eel Kabob 
                  0x1173,3}       -- Garlic Cracker
         showShop(player, NORG, stock);

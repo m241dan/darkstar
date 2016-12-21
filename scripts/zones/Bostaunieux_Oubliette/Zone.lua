@@ -15,9 +15,9 @@ require("scripts/globals/zone");
 -----------------------------------
 
 function onInitialize(zone)
-    local tomes = {17461580,17461581,17461582};
+--    local tomes = {17461580,17461581,17461582};
 
-    SetGroundsTome(tomes);
+--    SetGroundsTome(tomes);
 
     -- Drexerion the Condemned
     SetRespawnTime(17461338, 900, 10800);

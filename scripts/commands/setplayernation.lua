@@ -6,10 +6,10 @@
 cmdprops =
 {
     permission = 1,
-    parameters = "si"
+    parameters = "sii"
 };
 
-function onTrigger(player, target, nation)
+function onTrigger(player, target, nation, rank)
     
     nation = tonumber(nation) or _G[nation];
     
@@ -28,4 +28,9 @@ function onTrigger(player, target, nation)
     else
         player:PrintToPlayer( string.format( "Player named '%s' not found!", target ) );
     end
+
+    if( rank > 0 ) then
+       player:setRank( rank );
+    end
+
 end;

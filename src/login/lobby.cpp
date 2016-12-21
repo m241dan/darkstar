@@ -757,7 +757,7 @@ int32 lobby_createchar(login_session_data_t *loginsd, char *buf)
     {
         Sql_NextRow(SqlHandle);
 
-        CharID = (uint32)Sql_GetUIntData(SqlHandle, 0) + 1;
+        CharID = (uint32)Sql_GetUIntData(SqlHandle, 0) + 2;
     }
 
     CharID = (CharID < 21828 ? 21828 : CharID);

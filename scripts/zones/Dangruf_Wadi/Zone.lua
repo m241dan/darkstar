@@ -18,9 +18,9 @@ require("scripts/zones/Dangruf_Wadi/TextIDs");
 
 function onInitialize(zone)
 
-    local tomes = {17559931,17559932};
+--    local tomes = {17559931,17559932};
     
-    SetGroundsTome(tomes);
+--    SetGroundsTome(tomes);
 
     zone:registerRegion(1, -133.5, 2, 132.6, -132.7, 4,  133.8);  -- I-8 Geyser    
     zone:registerRegion(2, -213.5, 2,  92.6, -212.7, 4,   94.0);  -- H-8 Geyser    

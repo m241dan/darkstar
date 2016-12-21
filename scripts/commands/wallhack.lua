@@ -10,6 +10,6 @@ cmdprops =
 };
 
 function onTrigger(player, target)
-    target = GetPlayerByName(target) or player;
+    target = GetPlayerByName( target) or player;
     target:setFlag( 0x00000200 );
 end
