@@ -180,6 +180,8 @@ UPDATE `weapon_skills` SET skilllevel=285 WHERE weaponskillID=217;
 -- Leaden Salute
 UPDATE `weapon_skills` SET skilllevel=260 WHERE weaponskillID=218;
 
+UPDATE `weapon_skills` SET unlock_id=0;
+
 -- RespawnTimer Adjustments
 UPDATE `mob_groups` SET respawnTime=300 WHERE respawnTime>300 AND respawnTime<=1201;
 
