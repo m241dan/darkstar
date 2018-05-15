@@ -26,6 +26,12 @@ end;
 -----------------------------------
 
 function onEffectLose(target,effect)
+
+    --keep people from warping out of jail
+    if( target:getVar( "inJail" ) ~= 0 ) then
+       return;
+    end
+
     local Teleport = effect:getPower();
     if (target:isMob()) then
         DespawnMob(target:getID())
